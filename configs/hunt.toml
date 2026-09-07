@@ -1,0 +1,20 @@
+[general]
+name = "IRIS"
+campaign = "ispy"
+environment = "development"
+
+[storage]
+root = "../var/iris"
+
+[hunt]
+broker = "alerce"
+object_limit = 1000
+discovered_within_days = 30.0
+min_detections = 3
+broker_classes = ["SN", "SNIa", "SNIbc", "SNII"]
+
+[review]
+nightly_budget = 20
+required_reviewers = 1
+require_human_approval = true
+allow_self_approval = false

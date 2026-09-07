@@ -1,0 +1,37 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.test-tmp/
+build/
+dist/
+*.egg-info/
+
+# Runtime state and generated scientific products
+var/
+runs/
+outputs/
+output/
+tmp/
+iris-audit.*/
+torchinductor_*/
+checkpoints/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.pt
+*.pth
+*.joblib
+
+# Local paper/build-tool by-products (keep source, bibliography, and final PDFs)
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.log
+paper/*.out

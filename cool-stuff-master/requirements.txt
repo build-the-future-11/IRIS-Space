@@ -1,0 +1,7 @@
+numpy>=1.26
+pandas>=2.2
+requests>=2.31
+matplotlib>=3.8
+astropy>=6.0
+astroquery>=0.4.8
+alerce>=1.4.0

@@ -1,0 +1,3 @@
+# Compatibility entry point for tools that still consume requirements.txt.
+# pyproject.toml is the single source of dependency constraints.
+.[all]

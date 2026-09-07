@@ -1,0 +1,26 @@
+# This repository tracks PIPELINE SOURCE ONLY.
+#
+# Run outputs, download caches, candidate shortlists, TNS report packages and
+# outreach correspondence stay local and are never committed. The strategy is
+# deny-by-default: everything is ignored, and source files are re-included
+# explicitly below. Adding a new run-output directory therefore requires no
+# .gitignore change -- it is ignored automatically.
+
+# 1. Ignore everything.
+*
+
+# 2. Re-include pipeline source.
+!*.py
+!requirements.txt
+
+# 3. Re-include documentation.
+!*.md
+
+# 4. Re-include this file.
+!.gitignore
+
+# 5. Explicit exclusions from the rules above.
+#    Empty placeholder, no implementation yet -- drop this line to publish it.
+comet_candidate_hunter.py
+#    Scratch trigonometry notes, unrelated to the pipeline.
+Untitled-1

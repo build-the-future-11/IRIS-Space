@@ -1,0 +1,2 @@
+{"object_id":"validation-a","times":[12,15,18,22],"values":[0.1,0.2,0.9,0.6],"errors":[0.1,0.1,0.15,0.12],"bands":["g","r","r","g"],"detections":[true,true,true,true],"value_kind":"flux"}
+{"object_id":"validation-b","times":[11,12,15,19],"values":[0.3,0.5,0.8,0.2],"errors":[0.1,0.1,0.1,0.1],"bands":["i","i","r","r"],"detections":[true,true,true,true],"value_kind":"flux"}

@@ -1,0 +1,10 @@
+include README.md
+include SECURITY.md
+include CONTRIBUTING.md
+include Makefile
+include requirements.txt
+include .env.example
+recursive-include configs *.toml
+recursive-include docs *.md
+recursive-include examples *.md *.csv *.jsonl
+recursive-exclude * __pycache__ *.py[cod]

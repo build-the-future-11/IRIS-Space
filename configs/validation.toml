@@ -1,0 +1,27 @@
+[general]
+name = "IRIS"
+campaign = "i_spy_validation"
+environment = "development"
+
+[storage]
+root = "../var/iris"
+
+[validation]
+required_checks = ["skybot", "tns", "simbad", "vsx"]
+evidence_ttl_hours = 12.0
+skybot_radius_arcsec = 10.0
+tns_radius_arcsec = 5.0
+catalog_radius_arcsec = 3.0
+fail_closed = true
+
+[network]
+timeout_seconds = 30.0
+max_retries = 4
+backoff_seconds = 1.5
+user_agent = "iris-astronomy/0.2"
+
+[review]
+nightly_budget = 10
+required_reviewers = 1
+require_human_approval = true
+allow_self_approval = false

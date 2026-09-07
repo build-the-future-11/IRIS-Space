@@ -1,6 +1,6 @@
 numpy>=1.26
 pandas>=2.2
-requests>=2.31
+requests>=2.34.2
 matplotlib>=3.8
 astropy>=6.0
 astroquery>=0.4.8

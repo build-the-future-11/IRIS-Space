@@ -67,9 +67,7 @@ def test_known_trial_identity_is_stable() -> None:
 def test_semantic_trial_streams_are_loop_order_independent() -> None:
     keys = [_key(index) for index in range(8)]
     forward = {key: trial_rng(DEVELOPMENT_SEED, key).integers(0, 2**31) for key in keys}
-    reverse = {
-        key: trial_rng(DEVELOPMENT_SEED, key).integers(0, 2**31) for key in reversed(keys)
-    }
+    reverse = {key: trial_rng(DEVELOPMENT_SEED, key).integers(0, 2**31) for key in reversed(keys)}
     assert forward == reverse
     assert len(set(forward.values())) == len(keys)
 

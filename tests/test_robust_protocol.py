@@ -20,13 +20,16 @@ PROTOCOL = Path("paper/experiments/robust_search_protocol.v2.json")
 def test_frozen_protocol_bytes_and_phase_seeds_are_locked() -> None:
     config = verify_frozen_protocol(PROTOCOL)
     design = config["design"]
-    assert len(
-        {
-            design["development_seed"],
-            design["calibration_seed"],
-            design["locked_evaluation_seed"],
-        }
-    ) == 3
+    assert (
+        len(
+            {
+                design["development_seed"],
+                design["calibration_seed"],
+                design["locked_evaluation_seed"],
+            }
+        )
+        == 3
+    )
 
 
 def test_exact_cadence_manifest_is_precommitted() -> None:
@@ -42,7 +45,9 @@ def test_exact_cadence_manifest_is_precommitted() -> None:
     assert all(
         left < right
         for row in payload["cadences"]
-        for left, right in zip(row["times_days"], row["times_days"][1:], strict=True)
+        for left, right in zip(
+            row["times_days"][:-1], row["times_days"][1:], strict=True
+        )
     )
     for row in payload["cadences"][-5:]:
         assert sum(value <= 20.0 for value in row["times_days"]) == 32

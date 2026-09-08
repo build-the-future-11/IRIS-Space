@@ -6,8 +6,8 @@ from pathlib import Path
 import pytest
 
 from siderea.research.robust_protocol import (
-    FROZEN_CADENCE_MANIFEST_SHA256,
     build_cadence_manifest,
+    FROZEN_CADENCE_MANIFEST_SHA256,
     materialize_cadence_manifest,
     verify_cadence_manifest,
     verify_frozen_protocol,

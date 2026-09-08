@@ -13,6 +13,8 @@ AMENDMENT = ROOT / "paper/experiments/robust_search_amendment.v2.0.1.json"
 EXECUTION_AMENDMENT = ROOT / "paper/experiments/robust_search_amendment.v2.0.2.json"
 IDENTIFIER_ERRATUM = ROOT / "paper/experiments/robust_search_amendment.v2.0.3.json"
 TRIAL_RNG_AMENDMENT = ROOT / "paper/experiments/robust_search_amendment.v2.0.4.json"
+TRIAL_PLAN_AMENDMENT = ROOT / "paper/experiments/robust_search_amendment.v2.0.5.json"
+TRIAL_PLAN_LOCK = ROOT / "paper/experiments/robust_trial_plan_lock.v2.json"
 REPORTED_ERRORS = ROOT / "paper/experiments/robust_search_reported_errors.v2.json"
 
 
@@ -24,6 +26,8 @@ def main() -> None:
         EXECUTION_AMENDMENT,
         IDENTIFIER_ERRATUM,
         TRIAL_RNG_AMENDMENT,
+        TRIAL_PLAN_AMENDMENT,
+        TRIAL_PLAN_LOCK,
         REPORTED_ERRORS,
     )
     print(json.dumps(receipt, sort_keys=True, indent=2))

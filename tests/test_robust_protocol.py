@@ -14,6 +14,7 @@ from siderea.research.robust_protocol import (
 )
 
 PROTOCOL = Path("paper/experiments/robust_search_protocol.v2.json")
+CADENCE_MANIFEST = Path("paper/experiments/robust_search_cadences.v2.json")
 
 
 def test_frozen_protocol_bytes_and_phase_seeds_are_locked() -> None:
@@ -49,6 +50,14 @@ def test_exact_cadence_manifest_is_precommitted() -> None:
     for row in payload["cadences"][-5:]:
         assert sum(value <= 20.0 for value in row["times_days"]) == 32
         assert sum(value >= 40.0 for value in row["times_days"]) == 32
+
+
+def test_committed_cadence_manifest_matches_the_frozen_generator() -> None:
+    expected = verify_cadence_manifest(verify_frozen_protocol(PROTOCOL))
+    assert CADENCE_MANIFEST.read_bytes() == expected
+    assert hashlib.sha256(CADENCE_MANIFEST.read_bytes()).hexdigest() == (
+        FROZEN_CADENCE_MANIFEST_SHA256
+    )
 
 
 def test_protocol_mutation_fails_closed(tmp_path: Path) -> None:

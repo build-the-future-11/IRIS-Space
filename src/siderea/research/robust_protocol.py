@@ -32,9 +32,7 @@ FROZEN_PROTOCOL_GIT_BLOB_SHA1 = "9ab09a2ad2702649fe31ab19eb8b73d45fc7d60b"
 # SHA-256 of ``stable_json(build_cadence_manifest(protocol)) + "\n"`` for the
 # frozen protocol.  The digest commits the exact 25 x 64 time arrays before any
 # v2 candidate is evaluated, while keeping the source tree compact.
-FROZEN_CADENCE_MANIFEST_SHA256 = (
-    "5abfdaa328f5793e92bed7aa6dcfaade44ac1a54a1996b8c310e51112dc72451"
-)
+FROZEN_CADENCE_MANIFEST_SHA256 = "5abfdaa328f5793e92bed7aa6dcfaade44ac1a54a1996b8c310e51112dc72451"
 
 
 def _git_blob_sha1(data: bytes) -> str:
@@ -140,9 +138,7 @@ def build_cadence_manifest(config: dict[str, Any]) -> dict[str, Any]:
         "generator": {
             "numpy_rng": "default_rng(SeedSequence(cadence_seed).spawn(25)[index])",
             "irregular": "sort(Uniform(0,60), size=64)",
-            "seasonal_gap": (
-                "sort(concat(Uniform(0,20), size=32; Uniform(40,60), size=32))"
-            ),
+            "seasonal_gap": ("sort(concat(Uniform(0,20), size=32; Uniform(40,60), size=32))"),
             "note": (
                 "Frozen before any v2 candidate development evaluation; these times are "
                 "inputs, not results."

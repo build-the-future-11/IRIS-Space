@@ -9,11 +9,13 @@ import pytest
 from siderea.research.robust_execution import (
     EFFECTIVE_CANDIDATES,
     FROZEN_EXECUTION_AMENDMENT_GIT_BLOB_SHA1,
+    FROZEN_IDENTIFIER_ERRATUM_GIT_BLOB_SHA1,
     FROZEN_REPORTED_ERRORS_MANIFEST_SHA256,
     build_reported_error_manifest,
     reported_error_manifest_bytes,
     verify_frozen_amendment,
     verify_frozen_execution_amendment,
+    verify_frozen_identifier_erratum,
     verify_predevelopment_inputs,
     verify_reported_error_lock,
 )
@@ -21,6 +23,7 @@ from siderea.research.robust_execution import (
 PROTOCOL = Path("paper/experiments/robust_search_protocol.v2.json")
 AMENDMENT = Path("paper/experiments/robust_search_amendment.v2.0.1.json")
 EXECUTION_AMENDMENT = Path("paper/experiments/robust_search_amendment.v2.0.2.json")
+IDENTIFIER_ERRATUM = Path("paper/experiments/robust_search_amendment.v2.0.3.json")
 REPORTED_ERROR_LOCK = Path("paper/experiments/robust_search_reported_errors.v2.json")
 
 
@@ -40,6 +43,23 @@ def test_execution_amendment_is_bound_to_prior_frozen_artifacts() -> None:
     assert len(FROZEN_EXECUTION_AMENDMENT_GIT_BLOB_SHA1) == 40
     assert execution["changes"]["paired_bootstrap"]["replicates"] == 10000
     assert execution["changes"]["generalization_probe_allocation"]["trials_per_probe"] == 5000
+
+
+def test_identifier_erratum_matches_the_frozen_cadence_generator() -> None:
+    _, _, _, erratum = verify_frozen_identifier_erratum(
+        IDENTIFIER_ERRATUM,
+        EXECUTION_AMENDMENT,
+        AMENDMENT,
+        PROTOCOL,
+    )
+    identifiers = erratum["changes"]["cadence_identifier_erratum"]
+    assert identifiers["canonical_ordinary_ids"] == [
+        f"irregular_{index:02d}" for index in range(1, 21)
+    ]
+    assert identifiers["canonical_seasonal_gap_ids"] == [
+        f"seasonal_gap_{index:02d}" for index in range(1, 6)
+    ]
+    assert len(FROZEN_IDENTIFIER_ERRATUM_GIT_BLOB_SHA1) == 40
 
 
 def test_reported_error_vectors_are_precommitted_and_disjoint_from_cadence_children() -> None:
@@ -76,6 +96,18 @@ def test_execution_amendment_mutation_fails_closed(tmp_path: Path) -> None:
         verify_frozen_execution_amendment(changed, AMENDMENT, PROTOCOL)
 
 
+def test_identifier_erratum_mutation_fails_closed(tmp_path: Path) -> None:
+    changed = tmp_path / "identifier-erratum.json"
+    changed.write_bytes(IDENTIFIER_ERRATUM.read_bytes() + b"\n")
+    with pytest.raises(RuntimeError, match="versioned amendment"):
+        verify_frozen_identifier_erratum(
+            changed,
+            EXECUTION_AMENDMENT,
+            AMENDMENT,
+            PROTOCOL,
+        )
+
+
 def test_reported_error_lock_mutation_fails_closed(tmp_path: Path) -> None:
     protocol, amendment = verify_frozen_amendment(AMENDMENT, PROTOCOL)
     lock = json.loads(REPORTED_ERROR_LOCK.read_text(encoding="utf-8"))
@@ -91,12 +123,16 @@ def test_predevelopment_gate_returns_only_input_receipts() -> None:
         PROTOCOL,
         AMENDMENT,
         EXECUTION_AMENDMENT,
+        IDENTIFIER_ERRATUM,
         REPORTED_ERROR_LOCK,
     )
     assert receipt["status"] == "PASS_PREDEVELOPMENT_INPUT_LOCKS_NO_PERFORMANCE_STATISTICS"
     assert receipt["reported_errors_sha256"] == FROZEN_REPORTED_ERRORS_MANIFEST_SHA256
     assert receipt["execution_amendment_git_blob_sha1"] == (
         FROZEN_EXECUTION_AMENDMENT_GIT_BLOB_SHA1
+    )
+    assert receipt["identifier_erratum_git_blob_sha1"] == (
+        FROZEN_IDENTIFIER_ERRATUM_GIT_BLOB_SHA1
     )
     assert "threshold" not in receipt
     assert "false_alarm" not in receipt

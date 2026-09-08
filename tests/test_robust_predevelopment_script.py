@@ -23,6 +23,7 @@ def test_predevelopment_verifier_entrypoint_executes_complete_lock_chain() -> No
     assert len(receipt["protocol_git_blob_sha1"]) == 40
     assert len(receipt["amendment_git_blob_sha1"]) == 40
     assert len(receipt["execution_amendment_git_blob_sha1"]) == 40
+    assert len(receipt["identifier_erratum_git_blob_sha1"]) == 40
     assert len(receipt["reported_errors_sha256"]) == 64
     assert "threshold" not in receipt
     assert "false_alarm" not in receipt

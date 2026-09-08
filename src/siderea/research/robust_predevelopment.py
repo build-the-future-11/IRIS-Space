@@ -1,8 +1,9 @@
 """Canonical predevelopment input gate for robust transient-search v2.
 
 This module produces no scientific result. It binds the existing protocol,
-amendment, cadence, reported-error, and stochastic trial-identity locks before
-any candidate-performance statistic can be generated.
+amendment, cadence, reported-error, stochastic trial-identity, and complete
+semantic trial-plan locks before any candidate-performance statistic can be
+generated.
 """
 
 from __future__ import annotations
@@ -16,6 +17,12 @@ from siderea.research.robust_protocol import (
     FROZEN_CADENCE_MANIFEST_SHA256,
     verify_cadence_manifest,
     verify_frozen_protocol,
+)
+from siderea.research.robust_trial_plan import (
+    FROZEN_TRIAL_PLAN_AMENDMENT_GIT_BLOB_SHA1,
+    FROZEN_TRIAL_PLAN_LOCK_GIT_BLOB_SHA1,
+    verify_frozen_trial_plan_amendment,
+    verify_frozen_trial_plan_lock,
 )
 from siderea.research.robust_trial_rng import (
     FROZEN_TRIAL_RNG_AMENDMENT_GIT_BLOB_SHA1,
@@ -54,13 +61,17 @@ def verify_all_predevelopment_inputs(
     execution_amendment_path: Path,
     identifier_erratum_path: Path,
     trial_rng_amendment_path: Path,
+    trial_plan_amendment_path: Path,
+    trial_plan_lock_path: Path,
     reported_error_lock_path: Path,
 ) -> dict[str, Any]:
-    """Verify every pre-result input, including cadence bytes and trial RNG identity."""
+    """Verify every pre-result input, including the complete semantic trial plan."""
 
     protocol = verify_frozen_protocol(protocol_path)
     cadence_sha256 = verify_materialized_cadence_manifest(cadence_manifest_path, protocol)
     verify_frozen_trial_rng_amendment(trial_rng_amendment_path)
+    verify_frozen_trial_plan_amendment(trial_plan_amendment_path)
+    trial_plan_lock = verify_frozen_trial_plan_lock(trial_plan_lock_path, protocol)
     receipt = verify_predevelopment_inputs(
         protocol_path,
         amendment_path,
@@ -71,6 +82,11 @@ def verify_all_predevelopment_inputs(
     bound_receipt = dict(receipt)
     bound_receipt["cadence_manifest_sha256"] = cadence_sha256
     bound_receipt["trial_rng_amendment_git_blob_sha1"] = FROZEN_TRIAL_RNG_AMENDMENT_GIT_BLOB_SHA1
+    bound_receipt["trial_plan_amendment_git_blob_sha1"] = (
+        FROZEN_TRIAL_PLAN_AMENDMENT_GIT_BLOB_SHA1
+    )
+    bound_receipt["trial_plan_lock_git_blob_sha1"] = FROZEN_TRIAL_PLAN_LOCK_GIT_BLOB_SHA1
+    bound_receipt["trial_plan_sha256"] = trial_plan_lock["digest"]["sha256"]
     return bound_receipt
 
 

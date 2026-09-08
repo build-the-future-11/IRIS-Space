@@ -131,9 +131,7 @@ def test_predevelopment_gate_returns_only_input_receipts() -> None:
     assert receipt["execution_amendment_git_blob_sha1"] == (
         FROZEN_EXECUTION_AMENDMENT_GIT_BLOB_SHA1
     )
-    assert receipt["identifier_erratum_git_blob_sha1"] == (
-        FROZEN_IDENTIFIER_ERRATUM_GIT_BLOB_SHA1
-    )
+    assert receipt["identifier_erratum_git_blob_sha1"] == (FROZEN_IDENTIFIER_ERRATUM_GIT_BLOB_SHA1)
     assert "threshold" not in receipt
     assert "false_alarm" not in receipt
     assert "recovery" not in receipt

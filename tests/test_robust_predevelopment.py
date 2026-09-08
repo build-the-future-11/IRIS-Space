@@ -51,9 +51,7 @@ def test_canonical_predevelopment_gate_binds_all_pre_result_identity() -> None:
 
     assert receipt["status"] == "PASS_PREDEVELOPMENT_INPUT_LOCKS_NO_PERFORMANCE_STATISTICS"
     assert receipt["cadence_manifest_sha256"] == FROZEN_CADENCE_MANIFEST_SHA256
-    assert receipt["trial_rng_amendment_git_blob_sha1"] == (
-        FROZEN_TRIAL_RNG_AMENDMENT_GIT_BLOB_SHA1
-    )
+    assert receipt["trial_rng_amendment_git_blob_sha1"] == FROZEN_TRIAL_RNG_AMENDMENT_GIT_BLOB_SHA1
     assert "threshold" not in receipt
     assert "false_alarm" not in receipt
     assert "recovery" not in receipt

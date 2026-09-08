@@ -100,8 +100,7 @@ def build_phase_receipt(
         expected_phase = PHASE_ORDER[phase_index - 1]
         if previous_payload["phase"] != expected_phase:
             raise RuntimeError(
-                f"{phase} requires predecessor {expected_phase}, got "
-                f"{previous_payload['phase']}"
+                f"{phase} requires predecessor {expected_phase}, got {previous_payload['phase']}"
             )
         previous = {
             "path": previous_relative,
@@ -223,8 +222,7 @@ def _verify_phase_receipt(
         expected_phase = PHASE_ORDER[phase_index - 1]
         if previous_payload["phase"] != expected_phase:
             raise RuntimeError(
-                f"{phase} requires predecessor {expected_phase}, got "
-                f"{previous_payload['phase']}"
+                f"{phase} requires predecessor {expected_phase}, got {previous_payload['phase']}"
             )
 
     visited.remove(resolved)

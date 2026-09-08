@@ -1,14 +1,16 @@
 """Fail-closed predevelopment execution locks for robust transient-search v2.
 
 This module deliberately generates no candidate-performance statistic. It binds
-the v2.0.1 amendment and the amendment-mandated reported-error vectors before a
-development runner is allowed to exist.
+the v2.0.1 scientific amendment, the v2.0.2 execution/analysis contract, and the
+amendment-mandated reported-error vectors before a development runner is allowed
+to exist.
 
 The base protocol and cadence times are locked in :mod:`robust_protocol`. This
-module closes the remaining execution-contract gap:
+module closes the remaining execution-contract gaps:
 
-* the exact amendment bytes must match the pre-result v2.0.1 amendment;
-* the effective candidate set and development split must match that amendment;
+* the exact v2.0.1 and v2.0.2 amendment bytes must match their pre-result artifacts;
+* the effective candidate set and development split must match v2.0.1;
+* signal/cadence allocation and bootstrap mechanics must match v2.0.2;
 * one heteroskedastic reported-error vector is deterministically frozen for each
   of the 25 already-frozen cadence realizations; and
 * the committed lock must bind the complete generated vector manifest by SHA-256.
@@ -34,6 +36,7 @@ from siderea.research.robust_protocol import (
 )
 
 FROZEN_AMENDMENT_GIT_BLOB_SHA1 = "8262ffb14b95ea7c67164935b694ff41df31fa7b"
+FROZEN_EXECUTION_AMENDMENT_GIT_BLOB_SHA1 = "52fdce6a876e189450beb87d08326597a8473f67"
 FROZEN_REPORTED_ERRORS_MANIFEST_SHA256 = (
     "c047f7c56138ba562ad41e960d8ee52b8c773d199c9347e64e0db39bde857bd7"
 )
@@ -52,7 +55,7 @@ def verify_frozen_amendment(
     amendment_path: Path,
     protocol_path: Path,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
-    """Verify the exact pre-result amendment and its binding to the base protocol."""
+    """Verify the exact pre-result v2.0.1 amendment and base-protocol binding."""
 
     protocol = verify_frozen_protocol(protocol_path)
     raw = amendment_path.read_bytes()
@@ -106,6 +109,87 @@ def verify_frozen_amendment(
             raise ValueError(f"frozen development split field {key!r} drifted")
 
     return protocol, amendment
+
+
+def verify_frozen_execution_amendment(
+    execution_amendment_path: Path,
+    amendment_path: Path,
+    protocol_path: Path,
+) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+    """Verify the pre-result v2.0.2 execution and analysis contract."""
+
+    protocol, amendment = verify_frozen_amendment(amendment_path, protocol_path)
+    raw = execution_amendment_path.read_bytes()
+    actual = _git_blob_sha1(raw)
+    if actual != FROZEN_EXECUTION_AMENDMENT_GIT_BLOB_SHA1:
+        raise RuntimeError(
+            "robust-search v2.0.2 execution amendment differs from the frozen "
+            f"predevelopment artifact: expected git blob "
+            f"{FROZEN_EXECUTION_AMENDMENT_GIT_BLOB_SHA1}, got {actual}; create a new "
+            "versioned amendment before generating any result"
+        )
+
+    execution_amendment = json.loads(raw)
+    if execution_amendment.get("schema") != "siderea.robust_search_protocol_amendment.v2.0.2":
+        raise ValueError("unexpected robust-search execution-amendment schema")
+    if execution_amendment.get("status") != (
+        "frozen_before_any_v2_candidate_development_evaluation"
+    ):
+        raise ValueError("execution amendment is not marked frozen before development")
+    if execution_amendment.get("base_protocol_git_blob_sha1") != FROZEN_PROTOCOL_GIT_BLOB_SHA1:
+        raise ValueError("execution amendment is not bound to the frozen base protocol")
+    if execution_amendment.get("previous_amendment_git_blob_sha1") != (
+        FROZEN_AMENDMENT_GIT_BLOB_SHA1
+    ):
+        raise ValueError("execution amendment is not bound to the frozen v2.0.1 amendment")
+
+    observed = execution_amendment.get("observed_before_amendment")
+    if not isinstance(observed, dict):
+        raise ValueError("execution amendment is missing observed-before state")
+    forbidden_observed = (
+        "v2_candidate_development_statistics",
+        "v2_calibration_statistics",
+        "v2_locked_evaluation_statistics",
+        "v2_generalization_probe_statistics",
+    )
+    if any(observed.get(name) is not False for name in forbidden_observed):
+        raise ValueError("execution amendment must remain pre-result for every v2 phase")
+
+    changes = execution_amendment.get("changes")
+    if not isinstance(changes, dict):
+        raise ValueError("execution amendment is missing changes")
+
+    null_allocation = changes.get("null_trial_allocation")
+    if not isinstance(null_allocation, dict):
+        raise ValueError("execution amendment is missing null-trial allocation")
+    expected_allocations = {
+        ("development_threshold_construction", "ordinary_trials_per_cadence_per_regime"): 50,
+        ("development_threshold_construction", "seasonal_gap_trials_per_cadence"): 200,
+        ("development_independent_feasibility", "ordinary_trials_per_cadence_per_regime"): 50,
+        ("development_independent_feasibility", "seasonal_gap_trials_per_cadence"): 200,
+        ("calibration", "ordinary_trials_per_cadence_per_regime"): 500,
+        ("calibration", "seasonal_gap_trials_per_cadence"): 2000,
+        ("locked_evaluation", "ordinary_trials_per_cadence_per_regime"): 250,
+        ("locked_evaluation", "seasonal_gap_trials_per_cadence"): 1000,
+    }
+    for (section, key), expected in expected_allocations.items():
+        block = null_allocation.get(section)
+        if not isinstance(block, dict) or block.get(key) != expected:
+            raise ValueError(f"frozen execution allocation {section}.{key} drifted")
+
+    bootstrap = changes.get("paired_bootstrap")
+    if not isinstance(bootstrap, dict):
+        raise ValueError("execution amendment is missing paired-bootstrap contract")
+    if bootstrap.get("cadence_count") != 25 or bootstrap.get("replicates") != 10000:
+        raise ValueError("paired-bootstrap size drifted from the frozen execution contract")
+    if bootstrap.get("rng") != "numpy.random.default_rng(2026091104)":
+        raise ValueError("paired-bootstrap RNG drifted from the frozen execution contract")
+
+    probes = changes.get("generalization_probe_allocation")
+    if not isinstance(probes, dict) or probes.get("trials_per_probe") != 5000:
+        raise ValueError("generalization-probe allocation drifted from the frozen contract")
+
+    return protocol, amendment, execution_amendment
 
 
 def build_reported_error_manifest(
@@ -214,16 +298,22 @@ def verify_reported_error_lock(
 def verify_predevelopment_inputs(
     protocol_path: Path,
     amendment_path: Path,
+    execution_amendment_path: Path,
     reported_error_lock_path: Path,
 ) -> dict[str, Any]:
     """Verify every predevelopment input lock without producing a scientific result."""
 
-    protocol, amendment = verify_frozen_amendment(amendment_path, protocol_path)
+    protocol, amendment, _ = verify_frozen_execution_amendment(
+        execution_amendment_path,
+        amendment_path,
+        protocol_path,
+    )
     errors_sha256 = verify_reported_error_lock(reported_error_lock_path, protocol, amendment)
     return {
         "status": "PASS_PREDEVELOPMENT_INPUT_LOCKS_NO_PERFORMANCE_STATISTICS",
         "protocol_git_blob_sha1": FROZEN_PROTOCOL_GIT_BLOB_SHA1,
         "amendment_git_blob_sha1": FROZEN_AMENDMENT_GIT_BLOB_SHA1,
+        "execution_amendment_git_blob_sha1": FROZEN_EXECUTION_AMENDMENT_GIT_BLOB_SHA1,
         "reported_errors_sha256": errors_sha256,
         "effective_candidates": list(EFFECTIVE_CANDIDATES),
         "development_null_split": {
@@ -236,10 +326,12 @@ def verify_predevelopment_inputs(
 __all__ = [
     "EFFECTIVE_CANDIDATES",
     "FROZEN_AMENDMENT_GIT_BLOB_SHA1",
+    "FROZEN_EXECUTION_AMENDMENT_GIT_BLOB_SHA1",
     "FROZEN_REPORTED_ERRORS_MANIFEST_SHA256",
     "build_reported_error_manifest",
     "reported_error_manifest_bytes",
     "verify_frozen_amendment",
+    "verify_frozen_execution_amendment",
     "verify_predevelopment_inputs",
     "verify_reported_error_lock",
     "verify_reported_error_manifest",

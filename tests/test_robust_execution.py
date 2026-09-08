@@ -15,7 +15,6 @@ from siderea.research.robust_execution import (
     verify_predevelopment_inputs,
 )
 
-
 PROTOCOL = Path("paper/experiments/robust_search_protocol.v2.json")
 AMENDMENT = Path("paper/experiments/robust_search_amendment.v2.0.1.json")
 REPORTED_ERRORS = Path("paper/experiments/robust_search_reported_errors.v2.json")
@@ -38,11 +37,7 @@ def test_reported_error_vectors_are_precommitted_and_disjoint_from_cadence_child
     assert [row["seed_spawn_index"] for row in rows] == list(range(25, 50))
     assert [row["cadence_index"] for row in rows] == list(range(25))
     assert all(len(row["reported_errors"]) == 64 for row in rows)
-    assert all(
-        0.7 <= value <= 1.3
-        for row in rows
-        for value in row["reported_errors"]
-    )
+    assert all(0.7 <= value <= 1.3 for row in rows for value in row["reported_errors"])
 
 
 def test_committed_reported_error_artifact_matches_generator_exactly() -> None:

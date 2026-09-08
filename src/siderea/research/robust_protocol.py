@@ -51,7 +51,10 @@ def verify_frozen_protocol(path: Path) -> dict[str, Any]:
             f"expected git blob {FROZEN_PROTOCOL_GIT_BLOB_SHA1}, got {actual}; "
             "create a versioned amendment instead of running this study"
         )
-    config = json.loads(raw)
+    parsed = json.loads(raw)
+    if not isinstance(parsed, dict):
+        raise ValueError("robust-search protocol must be a JSON object")
+    config: dict[str, Any] = parsed
     if config.get("schema") != "siderea.robust_search_protocol.v2":
         raise ValueError("unexpected robust-search protocol schema")
     if config.get("status") != "frozen_before_v2_development_execution":

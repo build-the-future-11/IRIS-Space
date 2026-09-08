@@ -8,16 +8,19 @@ import pytest
 
 from siderea.research.robust_execution import (
     EFFECTIVE_CANDIDATES,
+    FROZEN_EXECUTION_AMENDMENT_GIT_BLOB_SHA1,
     FROZEN_REPORTED_ERRORS_MANIFEST_SHA256,
     build_reported_error_manifest,
     reported_error_manifest_bytes,
     verify_frozen_amendment,
+    verify_frozen_execution_amendment,
     verify_predevelopment_inputs,
     verify_reported_error_lock,
 )
 
 PROTOCOL = Path("paper/experiments/robust_search_protocol.v2.json")
 AMENDMENT = Path("paper/experiments/robust_search_amendment.v2.0.1.json")
+EXECUTION_AMENDMENT = Path("paper/experiments/robust_search_amendment.v2.0.2.json")
 REPORTED_ERROR_LOCK = Path("paper/experiments/robust_search_reported_errors.v2.json")
 
 
@@ -25,6 +28,18 @@ def test_frozen_amendment_and_effective_candidate_set_are_locked() -> None:
     _, amendment = verify_frozen_amendment(AMENDMENT, PROTOCOL)
     candidates = amendment["changes"]["candidate_statistics"]["effective_candidates"]
     assert tuple(candidates) == EFFECTIVE_CANDIDATES
+
+
+def test_execution_amendment_is_bound_to_prior_frozen_artifacts() -> None:
+    _, _, execution = verify_frozen_execution_amendment(
+        EXECUTION_AMENDMENT,
+        AMENDMENT,
+        PROTOCOL,
+    )
+    assert execution["previous_amendment_git_blob_sha1"]
+    assert len(FROZEN_EXECUTION_AMENDMENT_GIT_BLOB_SHA1) == 40
+    assert execution["changes"]["paired_bootstrap"]["replicates"] == 10000
+    assert execution["changes"]["generalization_probe_allocation"]["trials_per_probe"] == 5000
 
 
 def test_reported_error_vectors_are_precommitted_and_disjoint_from_cadence_children() -> None:
@@ -54,6 +69,13 @@ def test_amendment_mutation_fails_closed(tmp_path: Path) -> None:
         verify_frozen_amendment(changed, PROTOCOL)
 
 
+def test_execution_amendment_mutation_fails_closed(tmp_path: Path) -> None:
+    changed = tmp_path / "execution-amendment.json"
+    changed.write_bytes(EXECUTION_AMENDMENT.read_bytes() + b"\n")
+    with pytest.raises(RuntimeError, match="versioned amendment"):
+        verify_frozen_execution_amendment(changed, AMENDMENT, PROTOCOL)
+
+
 def test_reported_error_lock_mutation_fails_closed(tmp_path: Path) -> None:
     protocol, amendment = verify_frozen_amendment(AMENDMENT, PROTOCOL)
     lock = json.loads(REPORTED_ERROR_LOCK.read_text(encoding="utf-8"))
@@ -65,9 +87,17 @@ def test_reported_error_lock_mutation_fails_closed(tmp_path: Path) -> None:
 
 
 def test_predevelopment_gate_returns_only_input_receipts() -> None:
-    receipt = verify_predevelopment_inputs(PROTOCOL, AMENDMENT, REPORTED_ERROR_LOCK)
+    receipt = verify_predevelopment_inputs(
+        PROTOCOL,
+        AMENDMENT,
+        EXECUTION_AMENDMENT,
+        REPORTED_ERROR_LOCK,
+    )
     assert receipt["status"] == "PASS_PREDEVELOPMENT_INPUT_LOCKS_NO_PERFORMANCE_STATISTICS"
     assert receipt["reported_errors_sha256"] == FROZEN_REPORTED_ERRORS_MANIFEST_SHA256
+    assert receipt["execution_amendment_git_blob_sha1"] == (
+        FROZEN_EXECUTION_AMENDMENT_GIT_BLOB_SHA1
+    )
     assert "threshold" not in receipt
     assert "false_alarm" not in receipt
     assert "recovery" not in receipt

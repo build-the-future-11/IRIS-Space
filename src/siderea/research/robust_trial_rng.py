@@ -148,14 +148,46 @@ def canonical_trial_key(
     return stable_json(payload)
 
 
+def _validate_canonical_trial_key(canonical_key_json: str) -> None:
+    """Reject partial, extra-field, malformed, or noncanonical semantic trial keys."""
+
+    try:
+        parsed = json.loads(canonical_key_json)
+    except (TypeError, json.JSONDecodeError) as exc:
+        raise ValueError("canonical_key_json is not a canonical v2 trial key") from exc
+    if not isinstance(parsed, dict):
+        raise ValueError("canonical_key_json is not a canonical v2 trial key")
+
+    expected_fields = {"schema", *TRIAL_KEY_FIELDS}
+    if set(parsed) != expected_fields or parsed.get("schema") != TRIAL_RNG_SCHEMA:
+        raise ValueError("canonical_key_json is not a canonical v2 trial key")
+
+    try:
+        rebuilt = canonical_trial_key(
+            phase=parsed["phase"],
+            role=parsed["role"],
+            cadence_id=parsed["cadence_id"],
+            null_regime=parsed["null_regime"],
+            candidate_id=parsed["candidate_id"],
+            signal_family=parsed["signal_family"],
+            signal_width_days=parsed["signal_width_days"],
+            amplitude_sigma=parsed["amplitude_sigma"],
+            noise_regime=parsed["noise_regime"],
+            probe_id=parsed["probe_id"],
+            trial_index=parsed["trial_index"],
+        )
+    except (TypeError, ValueError) as exc:
+        raise ValueError("canonical_key_json is not a canonical v2 trial key") from exc
+    if rebuilt != canonical_key_json:
+        raise ValueError("canonical_key_json is not a canonical v2 trial key")
+
+
 def trial_seed_words(phase_seed: int, canonical_key_json: str) -> tuple[int, int, int, int]:
     """Derive four big-endian uint32 seed words from phase seed plus canonical key."""
 
     if isinstance(phase_seed, bool) or not isinstance(phase_seed, int) or phase_seed < 0:
         raise ValueError("phase_seed must be a nonnegative integer")
-    parsed = json.loads(canonical_key_json)
-    if stable_json(parsed) != canonical_key_json or parsed.get("schema") != TRIAL_RNG_SCHEMA:
-        raise ValueError("canonical_key_json is not a canonical v2 trial key")
+    _validate_canonical_trial_key(canonical_key_json)
 
     digest = hashlib.sha256(f"{phase_seed}\n{canonical_key_json}".encode("utf-8")).digest()
     return tuple(int.from_bytes(digest[offset : offset + 4], "big") for offset in range(0, 16, 4))

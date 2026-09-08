@@ -70,9 +70,7 @@ def verify_all_predevelopment_inputs(
     )
     bound_receipt = dict(receipt)
     bound_receipt["cadence_manifest_sha256"] = cadence_sha256
-    bound_receipt["trial_rng_amendment_git_blob_sha1"] = (
-        FROZEN_TRIAL_RNG_AMENDMENT_GIT_BLOB_SHA1
-    )
+    bound_receipt["trial_rng_amendment_git_blob_sha1"] = FROZEN_TRIAL_RNG_AMENDMENT_GIT_BLOB_SHA1
     return bound_receipt
 
 

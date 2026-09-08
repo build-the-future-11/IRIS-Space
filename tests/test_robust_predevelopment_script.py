@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
 import subprocess
 import sys
+from pathlib import Path
 
 from siderea.research.robust_protocol import FROZEN_CADENCE_MANIFEST_SHA256
 from siderea.research.robust_trial_rng import FROZEN_TRIAL_RNG_AMENDMENT_GIT_BLOB_SHA1

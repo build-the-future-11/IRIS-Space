@@ -45,9 +45,7 @@ def test_exact_cadence_manifest_is_precommitted() -> None:
     assert all(
         left < right
         for row in payload["cadences"]
-        for left, right in zip(
-            row["times_days"][:-1], row["times_days"][1:], strict=True
-        )
+        for left, right in zip(row["times_days"][:-1], row["times_days"][1:], strict=True)
     )
     for row in payload["cadences"][-5:]:
         assert sum(value <= 20.0 for value in row["times_days"]) == 32

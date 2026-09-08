@@ -22,16 +22,16 @@ authenticate old decisions, or replace unfinished work with a success flag.
 
 - [x] **R01 — Freeze the release scope.** In README.md and release notes, identify local CSV triage, evidence review, and shadow experiments as supported. Name live polling, physical classification and unattended reporting as unqualified or absent. **Done:** CLI help, README and paper make the same claims.
 - [x] **R02 — Validate the exact release revision.** Run formatting, lint, strict typing, full coverage tests and compilation from Makefile after the last source edit. **Done:** save command, Python/dependency versions, exit status, test count and coverage; do not reuse the earlier 400-test result for changed code.
-- [ ] **R03 — Run the actual CI matrix.** Inspect .github/workflows/ci.yml results for Python 3.11, 3.12, 3.13 and 3.14, quality, security and packaging jobs. **Done:** every required job passes on the published revision, or the documented support policy is deliberately revised with evidence.
+- [x] **R03 — Run the actual CI matrix.** Inspect .github/workflows/ci.yml results for Python 3.11, 3.12, 3.13 and 3.14, quality, security and packaging jobs. **Done:** every required job passes on the published revision, or the documented support policy is deliberately revised with evidence.
 - [x] **R04 — Rebuild clean distributions.** Build the sdist and then its wheel using `python -m build`; do not reuse build/lib from before the IRIS rename. **Done:** the wheel contains siderea, default.toml and py.typed, contains no retired iris package, and installs in a fresh environment outside the checkout.
 - [x] **R05 — Smoke-test the installed wheel.** Execute doctor with explicit writable storage, config-show, example analysis, review-set verification, outcome-summary, backup verification and transient-search. **Done:** outputs are readable; example analysis remains blocked from reporting; pulse/constant shadow outputs retain explicit status and scope.
-- [ ] **R06 — Rehearse the beginner instructions.** Follow docs/FIRST_RUN.md in a new core-only virtual environment, then repeat with the optional scientific dependencies. **Done:** missing optional packages produce useful diagnostics, every copied command works, and first run needs no private credentials.
+- [x] **R06 — Rehearse the beginner instructions.** Follow docs/FIRST_RUN.md in a new core-only virtual environment, then repeat with the optional scientific dependencies. **Done:** missing optional packages produce useful diagnostics, every copied command works, and first run needs no private credentials.
 - [ ] **R07 — Verify output collisions and interruption messages.** Exercise existing run IDs/output paths, unreadable input, unwritable storage and Ctrl-C in supported long operations. **Done:** existing evidence survives; the user receives an actionable error; a started analysis has a terminal or explicitly recoverable manifest.
 - [x] **R08 — Audit the exact publication set for secrets.** Inspect staged changes, example configurations, fixture bytes, notebook/script outputs and paper artifacts. **Done:** only intentional public author metadata and synthetic test credentials remain; real credentials, if found, are rotated and removed through an explicit history policy.
 - [x] **R09 — Reconcile the overlapping audit documents.** Update PROJECT_FINISH_CHECKLIST.md, docs/PROJECT_STATUS_2026-09-08.md and paper/AUDIT.md with dated current evidence. **Done:** completed backups/dashboard/atomic cohorts are not described as missing; partial image, covariance and live-service work is not described as complete.
 - [x] **R10 — Preserve newer remote work.** Fetch origin, inspect the current divergence and integrate its changes, including the observed cool-stuff-master/requirements.txt update. **Done:** the release contains the intended local migration and the newer remote dependency change; no force push or discarded contributor work.
 - [x] **R11 — Create and verify the release commit.** Stage an explicitly inspected set including new source, tests, fixtures, documentation and intended paper outputs. **Done:** review staged diff, run git diff --check, commit with a descriptive message, and inspect git status for unintended leftovers. Do not silently overwrite the pre-existing staged migration.
-- [ ] **R12 — Publish and verify the commit.** Push the authorized destination normally and read back its commit SHA. **Done:** remote SHA matches the intended commit and CI is checked. Describe the release as experimental research software; package-index publication or journal submission is a separate action.
+- [x] **R12 — Publish and verify the commit.** Push the authorized destination normally and read back its commit SHA. **Done:** remote SHA matches the intended commit and CI is checked. Describe the release as experimental research software; package-index publication or journal submission is a separate action.
 
 ## D — Measurement contracts and provenance
 
@@ -168,3 +168,26 @@ automatic approval review rejected exporting the broad source/research commit to
 explicit user approval. Exact repository/branch approval has been requested. No
 push occurred. R03 remains pending until the published revision can run CI. The
 existing remote revision passed CI; that is not evidence for this local commit.
+
+## Published revision recheck
+
+The earlier push-approval blocker is resolved: the user approved publication and
+`44d286784c62fdecef391b5647450f7ff19b3385` was pushed to the named GitHub main
+branch. CI run 34222812198 passed quality, security, Python 3.11/3.12/3.13/3.14
+tests and packaging. The new local run passed 405 tests and 96 subtests with
+78.34% coverage, plus formatting, lint, typing, compilation and a fresh build.
+All three search experiments reproduced exact result rows and trial digests;
+all 20 baseline predictions and JEPA training/validation matched. Full evidence:
+`paper/research/final-check-rerun.json`. No source changes were needed.
+
+R06 was subsequently rehearsed in a new Python 3.14.7 virtual environment. A
+core-only editable install completed without credentials; `doctor` reported NumPy
+and pandas available and each optional science dependency as a warning. The copied
+analysis command produced two candidates, both correctly blocked by missing
+external evidence, with scientific fingerprint `analysis-7d203c8f40012eb4`.
+The copied shadow-search command evaluated the synthetic constant and pulse,
+flagged only the pulse, and produced result digest
+`684af0a5de0baa26517fae63068d6fc2291f84c67f0dd3e9863a371ee89f5d4a`.
+After installing `.[all]`, strict doctor and `pip check` passed; repeating both
+commands produced the same fingerprint, decisions and result digest. Temporary
+outputs remain under the gitignored `.test-tmp/first-run-core-20260908/` directory.

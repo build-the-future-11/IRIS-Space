@@ -1,0 +1,84 @@
+{
+  "checked_at_utc": "2026-09-08T12:00:19.274538+00:00",
+  "checked_commit": "44d286784c62fdecef391b5647450f7ff19b3385",
+  "scope": "final software validation and synthetic experiment reproduction; no real-sky qualification",
+  "local_checks": {
+    "command": "make check PYTHON=.test-tmp/release-env/bin/python",
+    "exit_code": 0,
+    "tests": 405,
+    "subtests": 96,
+    "coverage_percent": 78.34,
+    "format_files": 107,
+    "typed_source_files": 74,
+    "build": "fresh isolated sdist and wheel passed",
+    "dependencies": "pip check passed",
+    "experiment_runner_lint": "passed",
+    "log": ".test-tmp/final-check-20260908/check.log",
+    "log_sha256": "96a1ead5dfcba974d613d658c26453a85e544acff6f3751f35dee76efb440f10"
+  },
+  "github_ci": {
+    "run": 34222812198,
+    "url": "https://github.com/build-the-future-11/IRIS-Space/actions/runs/34222812198",
+    "conclusion": "success",
+    "passed_jobs": [
+      "quality",
+      "security",
+      "test (3.11)",
+      "test (3.12)",
+      "test (3.13)",
+      "test (3.14)",
+      "package"
+    ]
+  },
+  "experiments": [
+    {
+      "name": "iid",
+      "scenario_method_rows": 30,
+      "result_rows_equal": true,
+      "trial_digest_equal": true,
+      "trial_statistics_sha256": "d2035d91699ec061c51718d02dfec22c6dbcf0ce0c77acf40c4eaac7b4a014e2",
+      "fresh_output": ".test-tmp/final-check-20260908/iid",
+      "protocol_digest": "88e089a75026394445a4171d5dd8858a45892f8aa2acf10c8ee89b9bd8a48dfd"
+    },
+    {
+      "name": "covariance",
+      "scenario_method_rows": 30,
+      "result_rows_equal": true,
+      "trial_digest_equal": true,
+      "trial_statistics_sha256": "7f4f2ede62f023b74aa51faed242dff3fb281249f3e55fe586539d57904a16ed",
+      "fresh_output": ".test-tmp/final-check-20260908/covariance",
+      "protocol_digest": "82eaf5f57fe5b49abc53758adb9dfe29da4837a85d45066f108efcec6035e381"
+    },
+    {
+      "name": "noise",
+      "scenario_method_rows": 7,
+      "result_rows_equal": true,
+      "trial_digest_equal": true,
+      "trial_statistics_sha256": "22e66d058266777b2864447f26e73bcce69557fa45f73eae3ce1de4726eefa6b",
+      "fresh_output": ".test-tmp/final-check-20260908/noise",
+      "protocol_digest": "d5701841072f0b9e812cfbee4b12a351c00ddad51db5e7270aeab3a4ee503d47"
+    }
+  ],
+  "baseline": {
+    "rows": 20,
+    "predictions_identical": true,
+    "maximum_absolute_difference": 0.0,
+    "metadata_difference": "trained_at_utc only; expected new execution timestamp",
+    "calibration_applied": false,
+    "reason": "not applied: the held-out calibration partition needs at least 5 examples of each class"
+  },
+  "jepa": {
+    "epochs": 3,
+    "training_equal": true,
+    "validation_equal": true,
+    "validation_loss": 0.44441317915916445,
+    "mask_repeats": 5,
+    "scope": "tiny synthetic execution check, not evidence of useful astronomical representations"
+  },
+  "manuscript_digest_matches_verified_pdf": true,
+  "source_changes_required": false,
+  "execution_notes": [
+    "Initial baseline invocation used incorrect column names and correctly failed validation; rerun used the fixture header names.",
+    "Fresh outputs are separate from archived experiments; expected training timestamps differ."
+  ]
+}

@@ -231,7 +231,7 @@ Release assessment: **NOT READY for hosted or scientific production use**. The l
 - [x] Add regression comparisons against weighted and generalized least squares, numeric/input boundaries, repeatability and no-clobber CLI publication.
 - [x] Run fixed-design recovery, noise/outlier stress, covariance follow-up, baseline and JEPA smoke experiments and preserve measured failures (`paper/experiments/`; synthetic diagnostics only).
 - [x] Update and render the manuscript with current software evidence, model assumptions and actual experiment results (29 pages visually inspected).
-- [ ] Complete final package/tests/diff checks and publish the authorized commit without discarding newer remote work.
+- [x] Complete final package/tests/diff checks and publish the authorized commit without discarding newer remote work (44d2867; CI run 34222812198 passed).
 
 ## Pre-run hardening
 
@@ -274,3 +274,8 @@ Local publication preparation completed at `fd7ec02`; newer remote work was
 preserved. Push is blocked by automatic approval review pending explicit approval
 of `build-the-future-11/IRIS-Space`, branch `main`. Nothing was pushed. This supersedes
 earlier phase-specific statements that no local commit had been created.
+
+Publication blocker resolved after explicit user approval. The published commit
+`44d2867` passed all seven GitHub CI jobs. A fresh local check and all synthetic
+experiment reruns passed; see `paper/research/final-check-rerun.json`. Remaining
+scientific, hosted-operation and license qualifications are unchanged.

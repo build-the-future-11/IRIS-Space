@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, cast
 
 import numpy as np
 from numpy.typing import NDArray
@@ -23,7 +23,10 @@ def _vector(value: Any, name: str) -> Array:
     result = np.asarray(value, dtype=float)
     if result.ndim != 1 or not len(result) or not np.isfinite(result).all():
         raise ValueError(f"{name} must be a nonempty finite one-dimensional array")
-    return result
+    # ``np.asarray(..., dtype=float)`` guarantees float64 at runtime.  Keep that
+    # contract explicit for newer NumPy typing, which otherwise leaves ``Any``
+    # in the inferred dtype.
+    return cast(Array, result)
 
 
 def transient_template(times: Any, *, center: float, width: float, family: str) -> Array:
@@ -41,7 +44,7 @@ def transient_template(times: Any, *, center: float, width: float, family: str) 
     if not np.isfinite(phase).all():
         raise ValueError("template phase exceeds supported numeric range")
     if family == "gaussian":
-        return np.exp(-0.5 * np.square(np.clip(phase, -40, 40)))
+        return cast(Array, np.exp(-0.5 * np.square(np.clip(phase, -40, 40))))
     if family == "exponential":
         clipped = np.clip(phase, -1e100, 1e100)
         return np.asarray(np.exp(-np.maximum(clipped, 0) + 3 * np.minimum(clipped, 0)), dtype=float)
@@ -332,10 +335,15 @@ def search_flux_table(
         raise ValueError("noise timescale must be finite and positive")
     data = frame.copy()
     for column in ("source_id", "survey", "band"):
-        if data[column].isna().any() or data[column].astype(str).str.strip().eq("").any():
+        if data[column].isna().any():
             raise ValueError(f"{column} identifiers must be present")
-        data[column] = data[column].astype(str).str.strip()
-    if "is_detection" in data and not data["is_detection"].astype(str).str.lower().eq("true").all():
+        normalized = [str(value).strip() for value in data[column].tolist()]
+        if any(not value for value in normalized):
+            raise ValueError(f"{column} identifiers must be present")
+        data[column] = normalized
+    if "is_detection" in data and not all(
+        str(value).lower() == "true" for value in data["is_detection"].tolist()
+    ):
         raise ValueError("censored/non-detection rows need measured forced flux, not limits")
     for column in ("mjd", "flux", "flux_error"):
         data[column] = pd.to_numeric(data[column], errors="raise")

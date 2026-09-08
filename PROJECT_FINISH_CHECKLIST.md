@@ -269,3 +269,8 @@ Final finishing-pass local verification: **405 tests and 96 subtests passed**,
 and deterministic replay passed; package and experiment evidence lives under
 `paper/research/`. Intermediate failing checks remain preserved locally and are
 not used as release results.
+
+Local publication preparation completed at `fd7ec02`; newer remote work was
+preserved. Push is blocked by automatic approval review pending explicit approval
+of `build-the-future-11/IRIS-Space`, branch `main`. Nothing was pushed. This supersedes
+earlier phase-specific statements that no local commit had been created.

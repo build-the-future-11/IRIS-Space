@@ -29,8 +29,8 @@ authenticate old decisions, or replace unfinished work with a success flag.
 - [ ] **R07 — Verify output collisions and interruption messages.** Exercise existing run IDs/output paths, unreadable input, unwritable storage and Ctrl-C in supported long operations. **Done:** existing evidence survives; the user receives an actionable error; a started analysis has a terminal or explicitly recoverable manifest.
 - [x] **R08 — Audit the exact publication set for secrets.** Inspect staged changes, example configurations, fixture bytes, notebook/script outputs and paper artifacts. **Done:** only intentional public author metadata and synthetic test credentials remain; real credentials, if found, are rotated and removed through an explicit history policy.
 - [x] **R09 — Reconcile the overlapping audit documents.** Update PROJECT_FINISH_CHECKLIST.md, docs/PROJECT_STATUS_2026-09-08.md and paper/AUDIT.md with dated current evidence. **Done:** completed backups/dashboard/atomic cohorts are not described as missing; partial image, covariance and live-service work is not described as complete.
-- [ ] **R10 — Preserve newer remote work.** Fetch origin, inspect the current divergence and integrate its changes, including the observed cool-stuff-master/requirements.txt update. **Done:** the release contains the intended local migration and the newer remote dependency change; no force push or discarded contributor work.
-- [ ] **R11 — Create and verify the release commit.** Stage an explicitly inspected set including new source, tests, fixtures, documentation and intended paper outputs. **Done:** review staged diff, run git diff --check, commit with a descriptive message, and inspect git status for unintended leftovers. Do not silently overwrite the pre-existing staged migration.
+- [x] **R10 — Preserve newer remote work.** Fetch origin, inspect the current divergence and integrate its changes, including the observed cool-stuff-master/requirements.txt update. **Done:** the release contains the intended local migration and the newer remote dependency change; no force push or discarded contributor work.
+- [x] **R11 — Create and verify the release commit.** Stage an explicitly inspected set including new source, tests, fixtures, documentation and intended paper outputs. **Done:** review staged diff, run git diff --check, commit with a descriptive message, and inspect git status for unintended leftovers. Do not silently overwrite the pre-existing staged migration.
 - [ ] **R12 — Publish and verify the commit.** Push the authorized destination normally and read back its commit SHA. **Done:** remote SHA matches the intended commit and CI is checked. Describe the release as experimental research software; package-index publication or journal submission is a separate action.
 
 ## D — Measurement contracts and provenance
@@ -159,3 +159,12 @@ box warnings concern spacing; no undefined citations or clipped content were fou
 Publication-pattern scan inspected 220 text files and found only an intentional
 `SENTINEL` credential URL in a negative test; `.env.example` contains empty values.
 This is a bounded publication audit, not a guarantee against all possible secrets.
+
+Publication status: implementation commit `fd7ec02` was created locally and rebased
+on `origin/main`, preserving `01e20b6` and its requests dependency update. Source
+and test trees still match the recorded validation digests. R12 is **blocked**:
+automatic approval review rejected exporting the broad source/research commit to
+`https://github.com/build-the-future-11/IRIS-Space` because the destination lacked
+explicit user approval. Exact repository/branch approval has been requested. No
+push occurred. R03 remains pending until the published revision can run CI. The
+existing remote revision passed CI; that is not evidence for this local commit.

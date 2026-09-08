@@ -12,6 +12,7 @@ CADENCES = ROOT / "paper/experiments/robust_search_cadences.v2.json"
 AMENDMENT = ROOT / "paper/experiments/robust_search_amendment.v2.0.1.json"
 EXECUTION_AMENDMENT = ROOT / "paper/experiments/robust_search_amendment.v2.0.2.json"
 IDENTIFIER_ERRATUM = ROOT / "paper/experiments/robust_search_amendment.v2.0.3.json"
+TRIAL_RNG_AMENDMENT = ROOT / "paper/experiments/robust_search_amendment.v2.0.4.json"
 REPORTED_ERRORS = ROOT / "paper/experiments/robust_search_reported_errors.v2.json"
 
 
@@ -22,6 +23,7 @@ def main() -> None:
         AMENDMENT,
         EXECUTION_AMENDMENT,
         IDENTIFIER_ERRATUM,
+        TRIAL_RNG_AMENDMENT,
         REPORTED_ERRORS,
     )
     print(json.dumps(receipt, sort_keys=True, indent=2))

@@ -3,11 +3,12 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from siderea.research.robust_execution import verify_predevelopment_inputs
+from siderea.research.robust_predevelopment import verify_all_predevelopment_inputs
 
 
 ROOT = Path(__file__).resolve().parents[2]
 PROTOCOL = ROOT / "paper/experiments/robust_search_protocol.v2.json"
+CADENCES = ROOT / "paper/experiments/robust_search_cadences.v2.json"
 AMENDMENT = ROOT / "paper/experiments/robust_search_amendment.v2.0.1.json"
 EXECUTION_AMENDMENT = ROOT / "paper/experiments/robust_search_amendment.v2.0.2.json"
 IDENTIFIER_ERRATUM = ROOT / "paper/experiments/robust_search_amendment.v2.0.3.json"
@@ -15,8 +16,9 @@ REPORTED_ERRORS = ROOT / "paper/experiments/robust_search_reported_errors.v2.jso
 
 
 def main() -> None:
-    receipt = verify_predevelopment_inputs(
+    receipt = verify_all_predevelopment_inputs(
         PROTOCOL,
+        CADENCES,
         AMENDMENT,
         EXECUTION_AMENDMENT,
         IDENTIFIER_ERRATUM,

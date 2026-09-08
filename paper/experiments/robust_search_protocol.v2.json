@@ -1,0 +1,142 @@
+{
+  "schema": "siderea.robust_search_protocol.v2",
+  "status": "frozen_before_v2_development_execution",
+  "preregistration_scope": "Prospective follow-up informed by already observed v1 synthetic failures; not an independent preregistration of those prior results and not an astronomical completeness claim.",
+  "scientific_question": "Can a matched-template transient search control per-curve false alarms across a prespecified noise-misspecification envelope while retaining useful 4-sigma recovery relative to a single-epoch baseline?",
+  "claim_boundary": "Synthetic statistical qualification only. A passing result may justify a more robust shadow-search statistic for real-data evaluation; it cannot establish survey completeness, astrophysical classification, novelty, reportability, or live operational readiness.",
+  "known_prior_evidence": {
+    "iid_calibrated_bank": {
+      "iid_false_alarm_fraction": 0.013,
+      "ar1_rho_0_7_false_alarm_fraction": 0.454,
+      "single_positive_8sigma_outlier_false_alarm_fraction": 0.71
+    },
+    "ar1_rho_0_7_calibrated_bank": {
+      "ar1_rho_0_7_false_alarm_fraction": 0.011,
+      "iid_false_alarm_fraction": 0.417,
+      "single_positive_8sigma_outlier_false_alarm_fraction": 0.805
+    },
+    "declared_tau_6d_noise_stress": {
+      "matched_false_alarm_fraction": 0.011,
+      "errors_underestimated_1_5_false_alarm_fraction": 0.337,
+      "student_t3_false_alarm_fraction": 0.104,
+      "variance_doubles_second_half_false_alarm_fraction": 0.118,
+      "true_timescale_1d_false_alarm_fraction": 0.129
+    }
+  },
+  "design": {
+    "duration_days": 60,
+    "epochs_per_curve": 64,
+    "cadence_realizations": 20,
+    "seasonal_gap_cadence_realizations": 5,
+    "template_families": ["gaussian", "exponential", "bazin", "fallback"],
+    "template_widths_days": [1.0, 3.0, 10.0],
+    "center_count": 21,
+    "signal_amplitudes_sigma": [2.0, 4.0, 8.0],
+    "target_evaluation_alpha": 0.01,
+    "calibration_tail_alpha": 0.005,
+    "development_trials_per_null_regime": 2000,
+    "calibration_trials_per_null_regime": 10000,
+    "locked_evaluation_trials_per_null_regime": 5000,
+    "locked_signal_trials_per_family_amplitude_noise_regime": 1000,
+    "development_seed": 2026091101,
+    "calibration_seed": 2026091102,
+    "locked_evaluation_seed": 2026091103,
+    "cadence_seed": 2026091120
+  },
+  "null_envelope_used_for_calibration": [
+    "iid_gaussian",
+    "ar1_rho_0_3",
+    "ar1_rho_0_5",
+    "ar1_rho_0_7",
+    "ou_tau_1d_correlated_fraction_0_8",
+    "ou_tau_6d_correlated_fraction_0_8",
+    "ou_tau_20d_correlated_fraction_0_8",
+    "errors_underestimated_factor_1_5",
+    "student_t3_unit_variance",
+    "variance_doubles_second_half",
+    "single_positive_6sigma_outlier",
+    "single_positive_8sigma_outlier",
+    "two_positive_5sigma_outliers",
+    "seasonal_gap_with_matched_gaussian_noise"
+  ],
+  "locked_generalization_probes_not_used_for_threshold_selection": [
+    "ar1_rho_0_85",
+    "one_percent_contaminated_gaussian_with_sigma8_component",
+    "linear_variance_drift_from_0_75x_to_1_75x"
+  ],
+  "candidate_statistics": [
+    {
+      "id": "raw_bank_envelope_calibrated",
+      "definition": "Current maximum positive profiled matched-template statistic; no new covariance is inferred from the evaluation curve. Threshold is calibrated against the full nuisance envelope rather than one null model."
+    },
+    {
+      "id": "selected_template_leave_one_out_stability",
+      "definition": "For the template selected by the full curve, use min(full statistic, minimum leave-one-observation-out selected-template statistic with the constant background refit). This deliberately requires evidence not to depend on one observation."
+    },
+    {
+      "id": "huberized_stability",
+      "definition": "Development-only candidate: robustly center standardized residuals, divide by max(1, 1.4826*MAD), clip to [-4,4], apply the same template bank, and combine with the same leave-one-observation-out minimum. The resulting value is an empirical search statistic, not a Gaussian z-score or chi-square."
+    }
+  ],
+  "candidate_selection_rule": {
+    "stage": "development_only",
+    "feasibility": "Reject a candidate if its maximum development false-alarm fraction across calibration-envelope null regimes exceeds 0.02 after a provisional worst-regime threshold is applied.",
+    "utility": "Among feasible candidates, maximize macro-average 4-sigma recovery across template families and the prespecified signal-noise regimes.",
+    "simplicity_tie_break": "If candidates differ by less than 0.01 absolute macro-average 4-sigma recovery, choose the simpler candidate in this order: raw_bank_envelope_calibrated, selected_template_leave_one_out_stability, huberized_stability.",
+    "lock": "After selection, freeze the statistic implementation and digest before calibration and locked evaluation. No candidate switching after calibration or locked evaluation begins."
+  },
+  "threshold_calibration_rule": "For the frozen selected statistic, compute a threshold independently within each calibration-envelope null regime using only calibration data at the 99.5th percentile, then use the maximum of those regime thresholds as the single locked threshold. Do not use locked-evaluation or generalization-probe data to choose or alter the threshold.",
+  "signal_noise_regimes": [
+    "iid_gaussian",
+    "ar1_rho_0_7",
+    "student_t3_unit_variance",
+    "errors_underestimated_factor_1_5"
+  ],
+  "comparators": [
+    "single_epoch_maximum_positive_standardized_residual",
+    "v1_iid_calibrated_raw_bank",
+    "v1_declared_covariance_bank_when_the_true_covariance_is_supplied_as_an_oracle_reference"
+  ],
+  "primary_endpoints": {
+    "safety": "Maximum locked false-alarm fraction across the calibration-envelope null regimes.",
+    "utility": "Macro-average paired 4-sigma recovery difference versus the single-epoch comparator across signal families, signal-noise regimes, and cadence realizations."
+  },
+  "secondary_endpoints": [
+    "2-sigma and 8-sigma recovery",
+    "recovery by signal family and width",
+    "false-alarm fraction on each locked generalization probe",
+    "distribution of false-alarm fractions across cadence realizations",
+    "recovery difference versus the current raw bank under matched IID noise",
+    "fraction of detections rejected by leave-one-observation-out stability",
+    "runtime and template-bank size"
+  ],
+  "uncertainty": {
+    "false_alarm_intervals": "Two-sided 95% Wilson intervals with exact numerator and denominator for every null regime; do not pool regimes before reporting them.",
+    "recovery_comparisons": "Paired bootstrap over cadence realizations, preserving the shared simulated signal/noise draw across methods; report point estimate and 95% interval.",
+    "multiple_comparisons": "Primary endpoints are prespecified. Subgroup and generalization-probe analyses are secondary and must be labelled exploratory unless separately corrected."
+  },
+  "promotion_gate": {
+    "safety_point_estimate": "For every calibration-envelope null regime, locked false-alarm fraction must be <= 0.01.",
+    "safety_uncertainty": "For every calibration-envelope null regime, the upper bound of the 95% Wilson interval must be <= 0.015.",
+    "utility_minimum_useful_effect": "Macro-average paired 4-sigma recovery improvement versus single epoch must be >= 0.05 absolute and its 95% paired-bootstrap lower bound must exceed 0.",
+    "matched_noise_noninferiority": "Under matched IID Gaussian noise, 4-sigma recovery may not be more than 0.10 absolute below the v1 raw bank.",
+    "failure_rule": "Failure of any safety gate blocks promotion of the statistic. Results remain publishable as a negative/null robustness result; do not retune against locked evaluation."
+  },
+  "reproducibility": {
+    "required_artifacts": [
+      "frozen protocol and digest",
+      "exact implementation source and digest",
+      "environment inventory",
+      "cadence definitions and seeds",
+      "development summary",
+      "calibration null statistics and threshold",
+      "locked per-trial statistics",
+      "locked aggregate results with intervals",
+      "runtime summary",
+      "machine-readable claim-boundary record"
+    ],
+    "separation": "Development, calibration, and locked evaluation use disjoint seeds and generated curves. Generalization probes are never used to select the statistic or threshold.",
+    "negative_results": "All failed gates and adverse regimes must remain in the final artifact set and manuscript text."
+  },
+  "amendment_policy": "Any change to endpoints, nuisance regimes, candidate definitions, selection rule, threshold rule, sample sizes, or promotion gates after the first v2 development run requires a versioned amendment that states what was observed before the change. The original protocol remains immutable."
+}

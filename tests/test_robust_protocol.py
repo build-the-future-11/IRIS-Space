@@ -6,13 +6,12 @@ from pathlib import Path
 import pytest
 
 from siderea.research.robust_protocol import (
-    build_cadence_manifest,
     FROZEN_CADENCE_MANIFEST_SHA256,
+    build_cadence_manifest,
     materialize_cadence_manifest,
     verify_cadence_manifest,
     verify_frozen_protocol,
 )
-
 
 PROTOCOL = Path("paper/experiments/robust_search_protocol.v2.json")
 

@@ -1,272 +1,226 @@
-# Robust transient-search qualification: frozen prospective follow-up
+# Robust transient-search qualification: prospective v2 study
 
-Machine-readable protocol: `robust_search_protocol.v2.json`
+Authoritative machine-readable artifacts, in order:
 
-## Status
+1. `robust_search_protocol.v2.json`
+2. `robust_search_amendment.v2.0.1.json`
+3. `robust_search_amendment.v2.0.2.json`
 
-This document freezes the next synthetic statistical qualification study before any v2 development execution. It is a **prospective follow-up informed by already observed failures**, not an independent preregistration of the earlier experiments. The earlier IID-calibrated, covariance-calibrated, and noise-stress results remain part of the record and must not be hidden, overwritten, or relabelled as holdout evidence.
+This Markdown file is a human-readable index of that frozen design. It does not override the machine-readable artifacts. Earlier versions remain in Git history. Both amendments were written before any v2 candidate-development, calibration, locked-evaluation, or generalization-probe performance statistic was generated.
 
-The study is intentionally narrow. A successful result would support only this statement:
+## Claim boundary
+
+This is a prospective synthetic statistical qualification study informed by already observed v1 failures. It is not an independent preregistration of those earlier results.
+
+A passing result would support only this statement:
 
 > A frozen SIDEREA shadow-search statistic controlled per-curve false alarms over the prespecified synthetic nuisance envelope while retaining the prespecified useful recovery relative to declared comparators.
 
-It would **not** establish astronomical completeness, purity, physical classification, novelty, a discovery probability, live broker safety, survey-wide false-discovery control, or reportability. Real-sky evidence and a complete prospective denominator remain separate requirements.
+It would not establish astronomical completeness, purity, physical classification, novelty, discovery probability, survey-wide false-discovery control, live broker safety, reportability, or operational readiness. A complete prospective real-data denominator remains a separate requirement.
 
-## Why this is the highest-priority statistical problem
+## Why this study exists
 
-The current matched-template search is executable and useful as a software diagnostic, but its nominal significance is conditional on the assumed noise model. The prior experiments show that this condition is not a minor technicality.
+The existing matched-template search is executable, but its nominal significance is conditional on the assumed noise model. Preserved v1 results showed that this is not a minor caveat. An IID-calibrated bank had a 1.3% false-alarm fraction under IID Gaussian noise but 45.4% under AR(1) rho 0.7 and 71.0% after one positive 8-sigma outlier. A bank calibrated to the known AR(1) rho 0.7 covariance moved the failure: 1.1% under the matching null, 41.7% under IID noise, and 80.5% with the isolated outlier. A separate declared-timescale stress test also failed under underestimated errors, heavy tails, changing variance, and correlation-timescale mismatch.
 
-The IID-calibrated bank produced a 1.3% false-alarm fraction on IID Gaussian nulls, close to the nominal 1% target, but 45.4% under an AR(1) null with rho 0.7 and 71.0% after one positive 8-sigma outlier. The follow-up bank calibrated to the known AR(1) rho 0.7 covariance recovered the matching null at 1.1%, but its false-alarm fraction became 41.7% on IID noise and 80.5% for the isolated outlier. A separate declared-timescale stress experiment again behaved near nominal under its matched model while failing badly when errors were underestimated, tails were heavy, variance changed over time, or the correlation timescale was wrong.
-
-Those results falsify a broad interpretation of the current empirical p-value as a generally reliable significance measure. They do **not** falsify matched filtering itself. They show that model-specific calibration can move the failure from one noise regime to another.
-
-The next question is therefore not “can another covariance be guessed?” It is:
-
-> Can a deliberately conservative search rule retain useful transient recovery while controlling false alarms across a frozen family of plausible misspecifications?
-
-That is a sharper, falsifiable claim and a more valuable prerequisite for any real-data shadow study.
-
-## Core assumptions being challenged
-
-### 1. A single Gaussian covariance model is sufficient
-
-It is not supported by the current synthetic evidence. The protocol therefore treats covariance uncertainty, scale error, heavy tails, nonstationarity, isolated outliers, and cadence changes as first-class nuisance conditions rather than optional post hoc plots.
-
-### 2. A large maximum matched-template score is enough evidence
-
-A maximum over many correlated templates is particularly vulnerable to one abnormal epoch or a misspecified covariance. The v2 candidates include a leave-one-observation-out stability statistic that explicitly asks whether the selected template remains supported when the most consequential observation is removed.
-
-This stability quantity is a **search statistic**, not a calibrated z-score. Its null behavior will be measured empirically.
-
-### 3. Robustness can be claimed from one cadence realization
-
-The previous studies were conditional on one synthetic cadence. V2 therefore uses multiple independently generated irregular cadences plus separate seasonal-gap cadences. Results will be reported by cadence as well as in aggregate.
-
-### 4. A threshold can be tuned until the stress plot looks good
-
-The protocol separates development, calibration, and locked evaluation by seeds and generated data. Candidate choice occurs only in development. Threshold selection occurs only in calibration. Locked evaluation is run once for the frozen implementation and frozen threshold. Adverse holdout results remain adverse results.
-
-### 5. Passing known stress cases implies distribution-free validity
-
-It does not. The nuisance envelope is finite and declared. Three additional generalization probes are excluded from threshold selection to test whether the method merely overfits the named calibration family. Even success on those probes does not create a distribution-free guarantee.
+Those results falsify a broad interpretation of the current empirical p-value as a generally reliable significance measure. They do not falsify matched filtering. V2 asks a narrower question: can a deliberately conservative statistic retain useful recovery while controlling false alarms over one finite, frozen family of misspecifications?
 
 ## Frozen scientific question
 
-**Primary question:** Can a frozen matched-template statistic achieve a false-alarm fraction no greater than 1% in every prespecified calibration-envelope null regime, with each 95% Wilson upper bound no greater than 1.5%, while improving macro-average 4-sigma recovery over the single-epoch baseline by at least five absolute percentage points with a paired-bootstrap lower confidence bound above zero?
+Can a frozen matched-template statistic satisfy all of the following on untouched locked data?
 
-A second non-inferiority condition protects against obtaining robustness only by making the method scientifically inert: under matched IID Gaussian noise, 4-sigma recovery may not fall more than ten absolute percentage points below the existing v1 raw bank.
+- Every prespecified calibration-envelope null regime has false-alarm fraction `<= 0.01`.
+- Every regime's two-sided 95% Wilson upper bound is `<= 0.015`.
+- Macro-average paired 4-sigma recovery improves over the envelope-calibrated single-epoch comparator by at least 0.05 absolute, with the 95% paired-bootstrap lower bound above zero.
+- Under matched IID Gaussian noise, 4-sigma recovery is no more than 0.10 absolute below the v1 raw bank.
 
-Failure of a safety criterion blocks promotion even if recovery is excellent.
+Failure of any safety gate blocks promotion. A failed gate remains a publishable negative result and is not permission to retune against locked data.
 
-## Candidate statistics
+## Effective candidate statistics
 
-Only three candidates may enter development.
+The base protocol originally listed three candidates. The pre-result v2.0.1 amendment removed the Huberized candidate because its baseline-invariance and heteroskedastic/correlated-error semantics were under-specified. Defining those choices after observing performance would create avoidable researcher degrees of freedom.
+
+V2 therefore has exactly two effective candidates.
 
 ### A. Raw bank with nuisance-envelope calibration
 
-The search statistic is the existing maximum positive profiled matched-template statistic. The change is statistical rather than architectural: instead of calibrating against one assumed null, the final threshold is the most conservative threshold required by every calibration-envelope regime.
-
-This candidate tests the simplest possibility: perhaps the current statistic is acceptable if its threshold acknowledges noise uncertainty.
+Use the existing maximum positive profiled matched-template statistic. The statistic itself is unchanged; only the calibration principle changes. The provisional and final thresholds are the maxima of the corresponding regime-specific 0.995 empirical quantiles.
 
 ### B. Selected-template leave-one-observation-out stability
 
-Let `T_full` be the current maximum statistic and let the selected template be the one achieving that maximum. For each observation, delete that observation, refit the constant background on the retained covariance marginal, and recompute the selected-template statistic. Define
+Let `T_full` be the current maximum statistic and retain the template selected by the full curve. Delete each observation in turn, refit the constant background on the retained covariance marginal, and evaluate that same selected template. Define
 
 `T_stable = min(T_full, min_i T_selected_without_i)`.
 
-This is intentionally conservative. A candidate whose apparent significance depends on one measurement will have a low stability statistic. The template is **not reselected** after deletion, preventing the diagnostic from quietly turning into another multiple-template search. The existing influence calculation already contains the necessary selected-template leave-one-out primitive; v2 must expose and test the statistic without changing current v1 output semantics.
+The template is deliberately not reselected after deletion. If a deletion makes the selected template unidentifiable, the research statistic fails closed. This quantity is an empirically calibrated search statistic, not a Gaussian z-score, chi-square, probability, or physical-class score.
 
-### C. Huberized stability
+## Development and candidate selection
 
-This is the only development candidate requiring a new robust residual transformation. Standardized residuals are robustly centered, divided by `max(1, 1.4826 * MAD)`, and clipped to `[-4, 4]` before applying the template bank and the same selected-template leave-one-out minimum.
+The base total of 2,000 development null trials per regime is unchanged, but v2.0.1 splits it into two independent halves:
 
-Because the transformation changes the sampling distribution, the result must not be called a Gaussian z-score or chi-square. It is an empirically calibrated ranking/search statistic.
+- 1,000 threshold-construction trials per regime; and
+- 1,000 feasibility-evaluation trials per regime.
 
-No additional clipping constants, robust estimators, covariance grids, neural models, or template families may be added after development starts without a versioned amendment.
+For each candidate, construct a provisional threshold from only the threshold-construction half. Each regime uses the 0.995 empirical quantile with NumPy's `method="higher"`; the candidate's provisional threshold is the maximum over regimes. Apply that threshold only to the independent feasibility half. A candidate is infeasible if any regime has false-alarm fraction above 0.02.
 
-## Candidate-selection rule
+Among feasible candidates, select the one with the highest frozen macro-average 4-sigma recovery. If candidates differ by less than 0.01 absolute, choose the simpler candidate: raw bank before leave-one-out stability. Freeze the selected implementation and source digest before calibration.
 
-Development data are used only to choose among the three frozen candidates.
+Development signal evaluation uses 250 trials for every family x width x noise-regime cell, exactly 10 paired draws on each of the 25 frozen cadences. Signal centers are independent `Uniform(0,60)` days; edge and seasonal-gap misses remain part of end-to-end recovery rather than being conditioned away.
 
-1. Construct the provisional threshold for each candidate from development nulls using the same worst-regime principle planned for calibration.
-2. Mark a candidate infeasible if any development calibration-envelope regime has false-alarm fraction above 2%.
-3. Among feasible candidates, choose the one with the largest macro-average 4-sigma recovery across frozen signal families and signal-noise regimes.
-4. If two candidates differ by less than one absolute percentage point in that recovery metric, select the simpler candidate in this order: raw bank, leave-one-out stability, Huberized stability.
-5. Freeze the selected implementation, source digest, template contract, and statistic name before calibration begins.
+## Calibration and locked threshold
 
-Development results remain publishable as development results but cannot be combined with locked evaluation counts.
-
-## Calibration rule
-
-For the frozen statistic, generate an independent calibration set for each prespecified null regime. Within each regime, estimate its 99.5th percentile statistic. The **single locked threshold** is the maximum of these regime-specific thresholds.
-
-The 0.5% calibration tail is deliberately more conservative than the 1% evaluation target, leaving margin for Monte Carlo uncertainty and between-regime variation.
+After candidate selection, generate an independent calibration set using the calibration seed namespace. For the frozen selected statistic, estimate each null regime's 0.995 `higher` empirical quantile and take the maximum as one locked threshold. Detection uses `statistic >= threshold`; ties are not jittered and calibration tie counts are retained.
 
 The threshold cannot be changed after any locked-evaluation statistic is observed.
 
-## Prespecified calibration-envelope null regimes
+The primary single-epoch comparator is calibrated under the same nuisance-envelope principle on the same independent v2 calibration curves. This prevents the primary utility comparison from being confounded by deliberately different false-alarm calibration philosophies.
 
-The envelope contains:
+## Prespecified nuisance envelope
+
+The calibration envelope contains:
 
 - IID Gaussian noise;
 - AR(1) rho 0.3, 0.5, and 0.7;
 - OU-like covariance with 80% correlated variance at 1-, 6-, and 20-day timescales;
 - measurement errors underestimated by a factor of 1.5;
-- Student-t noise with 3 degrees of freedom, scaled to unit variance;
+- Student-t(3) noise scaled to unit variance;
 - variance doubling in the second half of the curve;
 - one positive 6-sigma outlier;
 - one positive 8-sigma outlier;
 - two positive 5-sigma outliers; and
 - a seasonal-gap cadence under matched Gaussian noise.
 
-These are not asserted to span real astronomical systematics. They are a deliberately adverse synthetic family motivated by the failures already observed.
+The envelope is deliberately adverse but finite. It is not asserted to span real astronomical systematics.
 
 ## Locked generalization probes
 
-The following are generated only after the statistic and threshold are frozen and are not used in candidate or threshold selection:
+Only after statistic and threshold freeze, evaluate:
 
 - AR(1) rho 0.85;
 - 1% contaminated Gaussian noise with a sigma-8 contamination component; and
-- a linear variance drift from 0.75x to 1.75x nominal scale.
+- linear variance drift from 0.75x to 1.75x nominal variance.
 
-Results on these probes are secondary. Severe failure must be reported and should narrow any robustness language even if the primary envelope passes.
+Each probe uses 5,000 trials, 250 on each of the 20 ordinary cadences. Probe results cannot alter candidate selection, threshold calibration, promotion gates, or primary endpoint definitions.
 
-## Signal study
+## Cadence and reported-error locks
 
-The signal bank retains the four phenomenological families already used by the repository: Gaussian, exponential, Bazin, and fallback-shaped profiles. These remain templates, not physical-class probabilities.
+The study uses 20 ordinary irregular cadences and 5 seasonal-gap cadences, each with 64 epochs over 60 days. The exact arrays are deterministic children of `SeedSequence(2026091120)` and are bound by `robust_search_cadence_lock.v2.json` to canonical manifest SHA-256
 
-Signal amplitudes are 2, 4, and 8 sigma with widths 1, 3, and 10 days. Signal evaluations are repeated under IID Gaussian, AR(1) rho 0.7, Student-t3, and 1.5x error-underestimation conditions. Each method receives the identical simulated cadence, noise, signal family, signal parameters, and signal realization so method differences are paired rather than confounded by different random samples.
+`5abfdaa328f5793e92bed7aa6dcfaade44ac1a54a1996b8c310e51112dc72451`.
 
-The 4-sigma macro-average is primary for utility. The 2-sigma and 8-sigma rows are secondary sensitivity curves.
+The exact manifest still needs to be materialized as `robust_search_cadences.v2.json` before performance execution. The generator and digest are already frozen.
 
-## Cadence design
+Each cadence also has one fixed 64-element reported-error vector generated from the reserved child streams 25 through 49, with values drawn from `Uniform(0.7,1.3)`. The deterministic complete error manifest is bound by `robust_search_reported_errors.v2.json` to SHA-256
 
-Use 20 independently seeded irregular 64-epoch cadences over 60 days and 5 additional seasonal-gap cadences. The exact times and seeds must be written before any method is evaluated on them and included in the artifact bundle.
+`c047f7c56138ba562ad41e960d8ee52b8c773d199c9347e64e0db39bde857bd7`.
 
-The primary false-alarm table reports exact numerator/denominator and Wilson intervals by null regime. A second table reports the distribution across cadence realizations so a pooled count cannot hide one cadence family with pathological behavior.
+## Locked signal design and weighting
 
-Recovery differences use a paired bootstrap over cadence realizations, preserving the same simulated examples across compared methods.
+The base value of 1,000 locked signal trials per family x amplitude x signal-noise-regime cell remains the total sample size; width is a prespecified within-cell factor rather than a multiplier of that count.
+
+Every such cell uses exactly 40 paired draws on each of 25 cadences. Widths 1, 3, and 10 days are assigned deterministically from global trial index and cell index, yielding 334/333/333 trials per width with the extra trial rotating across cells.
+
+For the primary 4-sigma utility endpoint, compute recovery separately within each cadence for all 4 families x 3 widths x 4 signal-noise regimes, take the unweighted mean of those 48 cell recoveries, then take the unweighted mean across the 25 cadence-level values. The paired effect is selected-statistic macro recovery minus single-epoch macro recovery using the same trials and aggregation.
 
 ## Comparators
 
-Every locked result table includes:
+### Primary utility comparator
 
-1. the maximum positive single-epoch standardized residual after profiling the constant baseline;
-2. the current v1 IID-calibrated raw bank; and
-3. the current covariance-aware bank when the true simulated covariance is supplied as an **oracle reference**.
+Maximum positive standardized residual after fitting the constant baseline, envelope-calibrated on the independent v2 calibration curves with the same max-over-regime 0.995 threshold principle.
 
-The oracle comparator is not an operational baseline. Its purpose is to separate “matched filtering can work when the noise model is known” from “the deployed method can know the correct noise model.”
+### Matched-IID non-inferiority comparator
 
-## Primary acceptance gates
+The v1 raw bank is used only for the matched-IID 4-sigma non-inferiority gate and descriptive matched-IID comparisons. On each frozen cadence it reproduces the v1 4,095-curve IID calibration and empirical-p rule, with comparator-calibration streams disjoint from v2 envelope-calibration streams.
 
-### Safety gate
+### Oracle covariance reference
 
-For **every** calibration-envelope null regime:
+The existing covariance-aware bank may be reported when the true simulated covariance is supplied. It is an oracle reference, not an operational comparator, and does not imply that a deployed search can know the correct covariance.
 
-- locked false-alarm point estimate `<= 0.01`; and
-- two-sided 95% Wilson upper bound `<= 0.015`.
+## Uncertainty and safety diagnostics
 
-If one regime fails, the statistic does not pass synthetic robustness qualification.
+Primary false-alarm intervals remain the preregistered marginal two-sided 95% Wilson intervals, with exact numerator and denominator shown for every regime. The primary paired recovery interval is a cadence-level paired percentile bootstrap with 10,000 replicates from `numpy.random.default_rng(2026091104)`.
 
-### Utility gate
+Because 14 separate marginal Wilson intervals do not themselves provide simultaneous 95% family coverage, v2.0.2 additionally requires a secondary conference-facing table of one-sided exact-binomial upper bounds using Bonferroni family-wise alpha `0.05/14`. This diagnostic does not alter the frozen promotion gate.
 
-Across the frozen 4-sigma signal evaluation:
+## Phase integrity
 
-- macro-average paired recovery improvement over the single-epoch comparator `>= 0.05` absolute; and
-- the 95% paired-bootstrap lower bound for that improvement is `> 0`.
+The eventual runner must enforce the following state progression:
 
-### Matched-noise non-inferiority gate
+`development_complete -> selection_frozen -> calibration_complete -> threshold_frozen -> locked_evaluation_complete -> generalization_complete`
 
-Under IID Gaussian noise, 4-sigma recovery cannot be more than 0.10 absolute below the current v1 raw bank.
+`siderea.research.robust_phase_receipts` now provides fail-closed immutable receipts for that sequence. Every receipt binds exact artifact SHA-256 digests; every phase after development must bind the immediately preceding verified receipt. Mutated artifacts, overwritten receipts, skipped phases, duplicate artifact paths, cycles, and paths outside the study root fail closed.
 
-### Interpretation of failure
+The researcher-facing `verify_robust_search_predevelopment.py` entrypoint now verifies the base protocol, v2.0.1 amendment, v2.0.2 amendment, and reported-error lock together. A subprocess regression test executes that entrypoint directly so stale CLI/script wiring cannot escape coverage merely because its helper function passes unit tests.
 
-A failed gate is not permission to retune on locked data. It produces a negative robustness result. Any later redesign becomes v3, with a written amendment stating exactly which v2 results were already known.
+No phase-control artifact computes a candidate statistic, threshold, false-alarm count, or recovery value.
 
-## Reproducibility requirements
+## Reproducibility bundle
 
-Before locked evaluation, archive:
+Before locked evaluation, retain at minimum:
 
-- this Markdown document;
-- `robust_search_protocol.v2.json`;
-- protocol digest;
+- base protocol and both amendments with exact digests;
+- exact cadence manifest and reported-error lock;
 - exact selected implementation source and digest;
-- Python, NumPy, and relevant dependency versions;
-- cadence arrays and generation seeds;
-- template-bank identity/digest;
-- development summary;
-- calibration trial statistics and selected threshold; and
-- a machine-readable statement of the claim boundary.
+- environment and dependency inventory;
+- template-bank identities;
+- complete development per-trial records and selection receipt;
+- complete calibration per-trial records and threshold receipt; and
+- a machine-readable claim-boundary record.
 
-After evaluation, additionally archive:
+After evaluation, additionally retain:
 
-- per-trial locked null statistics;
-- per-trial paired signal outcomes;
-- exact counts and intervals for every regime;
-- cadence-level summaries;
-- generalization-probe results;
-- runtime and memory summary; and
-- a result digest binding all of the above.
+- every locked null per-trial statistic;
+- every paired signal trial and method outcome;
+- exact counts, marginal Wilson intervals, and the secondary simultaneous safety table;
+- cadence-level utility summaries and paired bootstrap samples/summary;
+- all generalization-probe records;
+- runtime and memory summaries;
+- source/environment/result digests; and
+- a final result manifest binding the complete bundle.
 
-No failed stress case may be deleted from the final artifact set.
+No failed stress case may be removed from the final artifact set.
 
-## Implementation checklist
+## Current implementation status
 
-### P0 — freeze and integrity
+### Completed before performance execution
 
-- [x] Freeze the v2 machine-readable protocol before any v2 development run.
-- [x] Record the already observed v1 failures as prior evidence rather than holdout evidence.
-- [ ] Add a protocol-digest verification test so an experiment runner refuses a modified protocol unless its expected digest is deliberately updated.
-- [ ] Generate and commit the exact 20 irregular and 5 seasonal-gap cadence definitions before development evaluation.
+- [x] Base v2 protocol frozen and byte-locked.
+- [x] Prior v1 failures preserved explicitly as prior information.
+- [x] V2.0.1 fixes the same-sample feasibility flaw and removes the under-specified Huber candidate.
+- [x] V2.0.2 freezes signal/cadence allocation, weighting, bank centers, comparator calibration, bootstrap mechanics, generalization allocation, and secondary family-wise safety reporting.
+- [x] Deterministic cadence generator and canonical manifest digest frozen.
+- [x] Deterministic reported-error generator and canonical manifest digest frozen.
+- [x] Selected-template leave-one-out statistic implemented in the research namespace without changing v1 semantics.
+- [x] Research statistic tests cover one-point outlier collapse, supported multi-epoch signal, covariance use, constant curves, and validation behavior.
+- [x] Predevelopment verifier checks both amendments and the reported-error lock.
+- [x] Researcher-facing verifier entrypoint is exercised by an end-to-end subprocess regression test.
+- [x] Fail-closed phase receipt chain implemented and tested.
 
-### P1 — statistic implementation
+### Still required before the first performance statistic
 
-- [ ] Add a public, explicitly named stability-statistic helper that uses the existing selected-template leave-one-out primitive without changing v1 `fit()` semantics.
-- [ ] Add unit tests showing a one-epoch injected outlier collapses the stability statistic while a multi-epoch supported signal can remain nonzero.
-- [ ] Implement Huberized stability only behind the research namespace, with tests for zero MAD, missing/non-finite inputs, extreme values, deterministic behavior, and scale equivariance where applicable.
-- [ ] Ensure robust statistics are never labelled `z`, `sigma`, `chi_square`, or probability in machine-readable outputs.
+- [ ] Exact-head CI must pass after the latest integrity changes.
+- [ ] Materialize and commit `robust_search_cadences.v2.json`; its bytes must reproduce the frozen SHA-256.
+- [ ] Reconcile any cadence-identifier wording with the canonical generated manifest before a runner depends on string IDs; never silently reinterpret a frozen text field after seeing results.
+- [ ] Implement the v2 runner with explicit development/calibration/locked/generalization modes, exact allocation checks, disjoint seed namespaces, source snapshots, per-trial output, and mandatory phase receipts.
+- [ ] Add tests for exact null allocations, locked width assignment, pairing, comparator calibration, seed disjointness, and refused phase skipping.
 
-### P2 — experiment runner
+### Then execute exactly once per frozen phase
 
-- [ ] Build a v2 runner that has explicit `development`, `calibration`, and `locked_evaluation` modes and refuses to use the same seed namespace for more than one phase.
-- [ ] Materialize exact source snapshots alongside results, as the current experiments already do.
-- [ ] Enforce the candidate-selection rule mechanically rather than by manual spreadsheet choice.
-- [ ] Enforce the max-over-regime calibration threshold mechanically.
-- [ ] Emit per-trial statistics so aggregate counts can be independently recomputed.
+- [ ] Development; freeze candidate and source digest.
+- [ ] Independent calibration; freeze selected threshold and comparator thresholds.
+- [ ] Locked null and paired signal evaluation.
+- [ ] Generalization probes only after the locked-evaluation receipt exists.
+- [ ] Aggregate results solely from retained per-trial records.
 
-### P3 — locked statistical run
+## Core assumption still at risk
 
-- [ ] Execute development once and freeze the selected candidate plus source digest.
-- [ ] Execute independent calibration once and freeze the threshold.
-- [ ] Execute the locked null envelope once.
-- [ ] Execute the locked paired signal evaluation once.
-- [ ] Execute the three generalization probes only after all preceding artifacts are frozen.
-- [ ] Produce Wilson intervals, paired cadence bootstrap intervals, and exact counts from source trial records.
+Leave-one-observation-out stability directly tests dependence on a single corrupted measurement. The nuisance envelope deliberately also includes two positive 5-sigma outliers. Two mutually supporting contaminated observations may survive every one-point deletion and therefore expose a real limitation of the v2 candidate. That outcome should not be designed away inside v2.
 
-### P4 — manuscript integration
+If v2 reveals this failure, the clean follow-up is a separately preregistered v3 candidate based on fixed-selected-template bounded `k=2` deletion stability, calibrated and evaluated on new data. It must not be added to v2 after locked behavior is observed. A robust Student-t or other heavy-tailed likelihood is another possible v3 direction, but it requires fully specified heteroskedastic/correlation semantics before evaluation.
 
-- [ ] Add one compact robustness table containing every primary null regime; do not cherry-pick only the matching covariance row.
-- [ ] Add a recovery-vs-robustness figure using locked signal results.
-- [ ] State explicitly that the nuisance envelope is finite and synthetic.
-- [ ] Preserve the prior catastrophic misspecification results as motivation, not as results that were “fixed away.”
-- [ ] If v2 fails, write the negative result directly into the manuscript and keep the search shadow-only.
+## Conference-readiness boundary
 
-### P5 — real-data evidence after synthetic qualification
+A complete v2, including a failed v2, can support a serious synthetic robustness/methods result if the full protocol, per-trial records, adverse regimes, code identity, uncertainty analysis, and reconstruction bundle are published without cherry-picking.
 
-Regardless of whether v2 passes, conference-grade scientific claims still require a frozen, object-grouped, time-forward real cohort containing the complete eligible denominator and mature outcomes. That cohort must retain point-in-time broker state, source identity/aliases, image-review evidence, catalogue-response provenance, policy version, review allocation route, reviewer time, and matured outcome.
+It still cannot support real-sky completeness or discovery-performance claims. Those require the broader repository work on measurement contracts, time/flux/coordinate provenance, background-noise calibration, survey-wide/repeated-testing error control, template-grid loss, evidence-version binding, and a complete object-grouped prospective real cohort with mature outcomes and fixed review budget.
 
-The real-data comparison should then evaluate the SIDEREA heuristic, logistic baseline, JEPA-derived score, and any qualified robust transient statistic under the **same arrivals and the same fixed review budget**, with experimental scores hidden during the first prospective phase. Random-audit slots are required to estimate what the control ranking misses.
-
-Synthetic robustness is therefore a prerequisite to a stronger shadow experiment, not the endpoint of the research program.
-
-## Conference-readiness decision rule
-
-The software/methods paper is already strongest when it states exactly what evidence exists. For a stronger empirical conference submission, the next defensible progression is:
-
-1. complete v2 synthetic robustness qualification without retuning on locked results;
-2. publish a full failure table even if v2 does not pass;
-3. freeze the real cohort protocol and capture the complete denominator prospectively;
-4. compare methods under a shared finite review budget with object-grouped, time-forward outcomes; and
-5. keep all model outputs shadow-only until the prospective evidence supports ranking assistance.
-
-A clean negative v2 result plus a rigorous prospective cohort can be scientifically stronger than a superficially impressive detector whose nominal p-values fail under ordinary misspecification.
+The scientifically strongest path is therefore: finish v2 without retuning; publish the full success/failure surface; then freeze and execute the prospective real-data cohort as a separate stage.

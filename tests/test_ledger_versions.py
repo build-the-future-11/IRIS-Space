@@ -6,7 +6,7 @@ import unittest
 from contextlib import closing
 from pathlib import Path
 
-from iris.ledger import SCHEMA_VERSION, OutcomeLedger
+from siderea.ledger import SCHEMA_VERSION, OutcomeLedger
 
 
 class VersionBoundReviewTests(unittest.TestCase):
@@ -321,7 +321,7 @@ class VersionBoundReviewTests(unittest.TestCase):
                 "outcome": "followup_requested",
                 "designation": "",
                 "evidence_json": "{}",
-                "taxonomy_version": "iris.outcome.v1",
+                "taxonomy_version": "siderea.outcome.v1",
                 "evidence_digest": "6" * 64,
                 "recorded_at": "2026-01-01T00:00:00+00:00",
             }
@@ -530,7 +530,7 @@ class VersionBoundReviewTests(unittest.TestCase):
                         "",
                         '{"spectrum": "sha256:abc"}',
                         version,
-                        "iris.outcome.v1",
+                        "siderea.outcome.v1",
                         "0" * 64,
                         "2026-09-06T00:00:00+00:00",
                     ),
@@ -567,7 +567,7 @@ class VersionBoundReviewTests(unittest.TestCase):
                 designation="AT 2026abc",
                 evidence={"spectrum_sha256": "f" * 64},
                 candidate_version=version_a,
-                taxonomy_version="iris.outcome.v1",
+                taxonomy_version="siderea.outcome.v1",
             )
             self.assertEqual(outcome.candidate_version, version_a)
             self.assertEqual(len(outcome.evidence_digest), 64)

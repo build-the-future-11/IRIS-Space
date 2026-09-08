@@ -1,55 +1,24 @@
 {
-  "audit_date": "2026-09-06",
+  "audit_date": "2026-09-08",
+  "scope": "local research software; no live-service or real-sky scientific qualification",
   "python": "3.11.15",
-  "static_analysis": {
-    "command": "ruff check paper/figures/make_figures.py src tests",
-    "result": "pass"
-  },
-  "repairs": [
-    "Validated binary labels before enforcing entity-ID policy in the supervised baseline.",
-    "Bound every SkyBoT epoch response before aggregation so returned coordinates cannot be overwritten by requested coordinates.",
-    "Restored a peak-significance assertion to its defining test.",
-    "Made a fixed-time candidate-state test explicit about creation and update timestamps.",
-    "Resolved static import and line-format violations.",
-    "Normalized the broker-fetch path assertion across the macOS /tmp and /private/tmp alias."
-  ],
-  "test_suite": {
-    "command": "python3.11 -m pytest -q",
-    "tests_passed": 212,
-    "subtests_passed": 54,
-    "failures": 0,
-    "temporary_directory": "/Volumes/PRO-BLADE/IRIS-Project/tmp/pytest",
-    "environment_note": "The macOS system temporary volume produced SQLite disk I/O errors; rerunning the unchanged suite on the workspace volume passed."
-  },
-  "deterministic_replay": {
-    "input": "examples/photometry.csv",
-    "executions": 2,
-    "candidates_per_execution": 2,
-    "reportable_per_execution": 0,
-    "blocked_per_execution": 2,
-    "scientific_fingerprint": "analysis-f9b8a923ad21af66",
-    "byte_identical_artifacts": [
-      "photometry.normalized.csv",
-      "features.csv",
-      "ranked_candidates.csv"
-    ],
-    "candidate_versions_identical": true,
-    "execution_envelopes_identical": false,
-    "execution_difference_reason": "Run identifiers and pending-check timestamps are execution provenance and are intentionally excluded from scientific identity."
-  },
-  "dependency_inventory": {
-    "available": [
-      "numpy",
-      "pandas",
-      "scikit-learn",
-      "torch",
-      "matplotlib"
-    ],
-    "unavailable_in_audit_runtime": [
-      "astropy",
-      "astroquery",
-      "alerce"
-    ],
-    "interpretation": "Local deterministic analysis was verified; live broker and catalogue integration was not exercised in this audit runtime."
-  }
+  "command": "TMPDIR=<workspace>/.test-tmp/release-tmp MPLCONFIGDIR=<workspace>/.test-tmp/matplotlib COVERAGE_FILE=<workspace>/.test-tmp/finish-validation/.coverage-execution-final make check PYTHON=.test-tmp/release-env/bin/python",
+  "exit_code": 0,
+  "tests_passed": 405,
+  "subtests_passed": 96,
+  "coverage_percent": 78.35,
+  "typed_source_files": 74,
+  "format_checked_files": 107,
+  "source_tree_sha256": "31fa069e3b378b1cdfbd54017dfec06365ec45b556085f3fb98db492195811b6",
+  "tests_tree_sha256": "8d3995856d9e43fd956378a1ded9cb0b719ff389b3707364a1cf28b742664083",
+  "log": "paper/research/software-verification-execution.txt",
+  "log_sha256": "d8ba58b6328ec9ab1766b8592503641b4a4f0674ad9834d40b74ac2772e91d61",
+  "dependencies": "paper/experiments/runtime-dependencies.json",
+  "deterministic_replay": "paper/research/replay-execution.json",
+  "historical_verification": "paper/research/software-verification-2026-09-07.json",
+  "limitations": [
+    "Latest full local suite ran on Python 3.11 only; do not transfer historical multi-interpreter claims to this revision.",
+    "An initial targeted sandbox run had two socket-permission failures; full suite rerun with loopback access.",
+    "Earlier intermediate type errors were fixed; superseded logs are not release results."
+  ]
 }

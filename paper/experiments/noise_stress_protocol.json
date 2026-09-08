@@ -1,0 +1,16 @@
+{
+  "schema": "siderea.noise_stress_protocol.v1",
+  "seed": 20260910,
+  "epochs": 64,
+  "duration_days": 60,
+  "centers": 21,
+  "widths_days": [1, 3, 10],
+  "calibration_trials": 4095,
+  "evaluation_trials": 1000,
+  "alpha": 0.01,
+  "assumed_timescale_days": 6,
+  "correlated_fraction": 0.8,
+  "scenarios": ["matched_gaussian", "errors_underestimated_1.5", "student_t_3_unit_variance", "variance_doubles_second_half", "seasonal_gap_matched", "true_timescale_1_day", "true_timescale_20_days"],
+  "scope": "Adaptive follow-up diagnostic planned before this run; one synthetic cadence, supplied covariance, no real-sky claim",
+  "endpoint": "Null exceedances of a separately simulated per-curve 1-percent bank threshold; no target fitting or retuning after evaluation"
+}

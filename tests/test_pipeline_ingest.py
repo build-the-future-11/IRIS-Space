@@ -12,19 +12,25 @@ from unittest.mock import patch
 
 import pandas as pd
 
-from iris.config import GeneralConfig, HuntConfig, IRISConfig, RankingConfig, StorageConfig
-from iris.features import compute_photometry_features
-from iris.ingest import AlerceAdapter, BrokerQuery, IngestionError, ingest_csv
-from iris.ingest.snapshot import BROKER_SNAPSHOT_ID_COLUMN, broker_snapshot_id
-from iris.ledger import OutcomeLedger
-from iris.manifest import RunManifest
-from iris.pipeline import _frame_digest, analyze_batch, analyze_csv, deterministic_run_id
-from iris.provenance import CheckProvenance, CheckStatus, digest_value
-from iris.reporting.preflight import reporting_preflight
+from siderea.config import (
+    GeneralConfig,
+    HuntConfig,
+    RankingConfig,
+    SIDEREAConfig,
+    StorageConfig,
+)
+from siderea.features import compute_photometry_features
+from siderea.ingest import AlerceAdapter, BrokerQuery, IngestionError, ingest_csv
+from siderea.ingest.snapshot import BROKER_SNAPSHOT_ID_COLUMN, broker_snapshot_id
+from siderea.ledger import OutcomeLedger
+from siderea.manifest import RunManifest
+from siderea.pipeline import _frame_digest, analyze_batch, analyze_csv, deterministic_run_id
+from siderea.provenance import CheckProvenance, CheckStatus, digest_value
+from siderea.reporting.preflight import reporting_preflight
 
 
-def _config(root: Path) -> IRISConfig:
-    return IRISConfig(
+def _config(root: Path) -> SIDEREAConfig:
+    return SIDEREAConfig(
         general=GeneralConfig(campaign="i_spy"),
         storage=StorageConfig(
             root=root,
@@ -243,12 +249,12 @@ class CSVIngestionTests(unittest.TestCase):
             sidecar.write_text(
                 json.dumps(
                     {
-                        "schema": "iris.broker_snapshot.v1",
+                        "schema": "siderea.broker_snapshot.v1",
                         "source": "broker:alerce",
                         "retrieved_at": datetime.now(UTC).isoformat(),
                         "photometry_sha256": sha256(content.encode()).hexdigest(),
                         "provenance": {
-                            "adapter": "iris.ingest.alerce.v1",
+                            "adapter": "siderea.ingest.alerce.v1",
                             "row_count": 1,
                             "query": {"classes": ["SN"]},
                         },
@@ -261,7 +267,7 @@ class CSVIngestionTests(unittest.TestCase):
             batch = ingest_csv(path)
 
             self.assertEqual(batch.source, "broker:alerce")
-            self.assertEqual(batch.provenance["adapter"], "iris.ingest.alerce.v1")
+            self.assertEqual(batch.provenance["adapter"], "siderea.ingest.alerce.v1")
             self.assertIn("broker-test", batch.warnings)
             path.write_text(content.replace("19.0", "18.0"), encoding="utf-8")
             with self.assertRaisesRegex(IngestionError, "does not match"):
@@ -271,7 +277,7 @@ class CSVIngestionTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / "broker-marked.csv"
             provenance = {
-                "adapter": "iris.ingest.alerce.v1",
+                "adapter": "siderea.ingest.alerce.v1",
                 "row_count": 1,
                 "query": {"classes": ["SN"]},
             }
@@ -295,7 +301,7 @@ class CSVIngestionTests(unittest.TestCase):
 
             sidecar = path.with_suffix(".csv.provenance.json")
             payload = {
-                "schema": "iris.broker_snapshot.v1",
+                "schema": "siderea.broker_snapshot.v1",
                 "snapshot_id": snapshot_id,
                 "source": "broker:alerce",
                 "retrieved_at": retrieved_at,
@@ -361,7 +367,7 @@ class LocalPipelineTests(unittest.TestCase):
 
     @staticmethod
     def _clear_checks(
-        config: IRISConfig,
+        config: SIDEREAConfig,
         *,
         candidate_id: str = "A",
         ra: float = 10.0,
@@ -478,7 +484,7 @@ class LocalPipelineTests(unittest.TestCase):
 
             with (
                 patch(
-                    "iris.pipeline.compute_photometry_features",
+                    "siderea.pipeline.compute_photometry_features",
                     side_effect=KeyboardInterrupt,
                 ),
                 self.assertRaises(KeyboardInterrupt),

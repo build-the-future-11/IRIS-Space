@@ -348,8 +348,8 @@ def make_flowchart() -> None:
     _save(fig, "pipeline_flow.png")
 
 
-def make_iris_architecture() -> None:
-    """Render IRIS as three coupled planes with one fail-closed reporting gate."""
+def make_siderea_architecture() -> None:
+    """Render SIDEREA as three coupled planes with one fail-closed reporting gate."""
 
     fig, ax = plt.subplots(figsize=(11.0, 7.8))
     ax.set_xlim(0, 11)
@@ -426,9 +426,9 @@ def make_iris_architecture() -> None:
     decision_y = 1.47
     decision_nodes = [
         (0.34, "Inspectable\npriority $q_i$"),
-        (2.48, "Finite review\nqueue $\mathcal{Q}_K$"),
+        (2.48, "Finite review\nqueue $\\mathcal{Q}_K$"),
         (4.62, "Portable dossier +\nindependent review"),
-        (6.76, "Preflight gate\n$\mathcal{P}_i=1$"),
+        (6.76, "Preflight gate\n$\\mathcal{P}_i=1$"),
         (8.90, "Human review +\nreport preparation"),
     ]
     for index, (x, label) in enumerate(decision_nodes):
@@ -474,7 +474,7 @@ def make_iris_architecture() -> None:
     )
     _arrow(ax, (3.88, 1.38), (3.37, decision_y), color=VIOLET, style="--")
 
-    _save(fig, "iris_architecture.png")
+    _save(fig, "siderea_architecture.png")
 
 
 def make_operational_heatmap(runs: list[Run]) -> None:
@@ -766,7 +766,7 @@ def main() -> None:
     runs = load_runs()
     make_claim_boundary()
     make_flowchart()
-    make_iris_architecture()
+    make_siderea_architecture()
     make_operational_heatmap(runs)
     metrics = make_campaign_dynamics(runs)
     metrics.update(make_regime_bootstrap(runs))

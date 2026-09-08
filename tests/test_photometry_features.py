@@ -3,7 +3,7 @@ from __future__ import annotations
 import pandas as pd
 import pytest
 
-from iris.features import (
+from siderea.features import (
     PhotometryFeatureConfig,
     compute_grouped_photometry_features,
     compute_photometry_features,
@@ -227,7 +227,7 @@ def test_forced_flux_is_a_first_class_unit_invariant_measurement() -> None:
     features = compute_photometry_features(observations)
     band = features["band_features"]["g"]
 
-    assert features["feature_schema"] == "iris.photometry.v4"
+    assert features["feature_schema"] == "siderea.photometry.v4"
     assert features["n_detections"] == 3
     assert features["n_nondetections_with_forced_flux"] == 1
     assert band["fractional_flux_excursion"] > 1.0
@@ -335,7 +335,7 @@ def test_different_surveys_in_the_same_passband_are_never_pooled() -> None:
 
     features = compute_photometry_features(frame)
 
-    assert features["feature_schema"] == "iris.photometry.v4"
+    assert features["feature_schema"] == "siderea.photometry.v4"
     assert features["n_bands"] == 1
     assert features["n_channels"] == 2
     assert features["channels"] == ["survey-a::g", "survey-b::g"]

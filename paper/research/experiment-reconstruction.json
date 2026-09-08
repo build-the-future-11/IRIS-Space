@@ -1,0 +1,9 @@
+{
+  "results_equal": true,
+  "trial_statistics_sha256_equal": true,
+  "trial_statistics_sha256": "d2035d91699ec061c51718d02dfec22c6dbcf0ce0c77acf40c4eaac7b4a014e2",
+  "rows": 30,
+  "old_source_sha256": "ea77153aca2e0cdd194a80d8735d1cda33b1c767dd26fa57b19799c3ffcdd467",
+  "new_source_sha256": "182736f98f629bb2830ab96b4a443f42c9ceab0fa697d7b8a7172d98ad7c25c5",
+  "note": "Influence diagnostics added after preserved experiment; search statistics and all counts reproduced exactly with the current implementation."
+}

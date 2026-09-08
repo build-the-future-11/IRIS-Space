@@ -1,12 +1,12 @@
-# IRIS architecture
+# SIDEREA architecture
 
 ## Purpose
 
-IRIS separates candidate discovery, scientific evidence, human decisions, and
+SIDEREA separates candidate discovery, scientific evidence, human decisions, and
 external reporting. The architecture is designed so a useful ranking model can
 fail without turning a candidate into a false discovery claim.
 
-This document describes code that exists under `src/iris/`. A component being
+This document describes code that exists under `src/siderea/`. A component being
 implemented does not mean it has been validated on a representative live stream;
 that evidence is defined in [`SCIENTIFIC_VALIDATION.md`](SCIENTIFIC_VALIDATION.md).
 
@@ -39,37 +39,37 @@ stage; it cannot provide catalogue clearance or human approval.
 
 | Component | Module | Current responsibility |
 |---|---|---|
-| Configuration | `iris.config` | Load strict TOML, reject unknown keys, validate safety invariants, resolve paths |
-| Command layer | `iris.cli` | Expose local analysis, bounded broker fetch, verification, queueing/review-set assembly, dossiers, exact-version reviews/adjudications/outcomes, read-only reporting preflight, baseline, and JEPA commands |
-| Domain model | `iris.domain` | Immutable candidates, observations, evidence, and lifecycle states |
-| State policy | `iris.state` | Allowed transitions and fresh-evidence reportability checks for domain records |
-| Ingestion contract | `iris.ingest.base`, `iris.ingest.schema` | Canonical photometry table, broker protocol, aliases, validation, deterministic ordering |
-| Local ingestion | `iris.ingest.csv` | Parse and hash one byte snapshot, preserve string identifiers, normalize JD/MJD and common schemas, and validate content-bound broker sidecars |
-| Broker adapter | `iris.ingest.alerce` | Lazily query bounded ALeRCE candidates plus detections/non-detections through the common contract with an explicit `ztf`/`lsst` namespace on every request; the CLI emits a digest-bound snapshot sidecar |
-| Local orchestration | `iris.pipeline` | Emit immutable `iris.local_analysis.v4` runs with normalized data, v4 features, v2 rankings, evidence, snapshot, terminal manifest, ledger state, and a separate scientific fingerprint |
-| Photometry | `iris.features.photometry` | Emit `iris.photometry.v4` features inside survey/passband channels from magnitudes and supplied forced/difference flux, including survey/uncertainty missingness and separate band/channel prior non-detection counts |
-| Baseline score | `iris.scoring.heuristic` | Emit `iris.heuristic_priority.v2`, a bounded relative priority with visible inputs, basis selection, components, and warnings |
-| Supervised baseline | `iris.ml.baseline` | Fit a logistic baseline on an early time block, optionally calibrate on a later block, evaluate on the latest block, and require entity purging or an explicit unique-entity assertion |
-| Service execution | `iris.clients.base` | Retry remote operations and preserve error/match/clear provenance |
-| Catalogue adapters | `iris.clients.catalogs` | Lazy SkyBoT, SIMBAD, and VSX searches |
-| TNS search | `iris.clients.tns` | Read-only two-stage duplicate search by internal name and sky cone; aggregate both responses and reject malformed successful response shapes |
-| Catalogue policy | `iris.validation.catalog_policy` | Treat known stellar/variable counterparts as vetoes; route ambiguous host context to review |
-| Evidence binding | `iris.validation.binding` | Bind completed clearance to candidate identity/position, radius, every required SkyBoT epoch, and TTL policy; hash the exact preflight inputs |
-| External gate | `iris.validation.gates` | Require fresh, auditable clearance from every mandatory service after orchestration applies binding |
-| Verification coordinator | `iris.validation.suite` | Run configured checks, aggregate all required SkyBoT epochs, attach expiries, bind results to the request, and return a structured gate decision |
-| Review/outcomes | `iris.ledger` | Maintain the current candidate view plus append-only first-seen version snapshots and exact-version reviews, catalogue-context adjudications, and downstream outcomes in SQLite |
-| Reporting preflight | `iris.reporting.preflight` | Rebind and hash-check reviewed evidence, verify the published run/candidate artifact, then require independent approval of the current candidate version; exposed read-only as `iris preflight` |
-| Dossier | `iris.review.dossier` | Write portable JSON and HTML evidence views for one candidate |
-| Review-set assembly | `iris.review.assembly` | Atomically bind exact ranking/candidate snapshots to a finite queue, selected dossiers, and an `iris.review_set.v1` manifest containing artifact hashes |
-| Local review UI | `iris.review.server` | Serve a loopback candidate queue and append exact-version reason-coded review/adjudication events; no report/follow-up endpoint |
-| Reproducibility | `iris.manifest`, `iris.data.snapshot` | Hash artifacts and datasets; record config, Git state when available, checkout or installed-package code digest, runtime, labels, split policy, and terminal interruption state |
-| Evaluation | `iris.evaluation` | Chronological splits and finite-budget ranking/calibration metrics |
-| Review queue | `iris.ranking` | Allocate reproducible finite capacity with explicit, de-duplicated priority, anomaly, and seeded random-audit routes plus audit propensity |
-| Host association | `iris.host` | Rank possible hosts by geometry and Poisson chance coincidence; withhold ambiguous associations |
-| Representation learning | `iris.ml.*` | Tokenize irregular light curves under a hashed per-curve contract, reject incompatible batches, train/evaluate TS-JEPA, checkpoint, and extract embeddings |
-| Retrieval/anomaly | `iris.similarity`, `iris.anomaly` | Deterministically tied cosine retrieval with provenance-required persisted indexes, plus robust anomaly scores and optional Isolation Forest |
-| Follow-up | `iris.followup` | Combine reality, novelty, value, urgency, observability, information gain, and anomaly route |
-| Advisory campaign sketches | `iris.campaigns` | Suggest research targets, review budgets, and services without activating or overriding operational TOML policy |
+| Configuration | `siderea.config` | Load strict TOML, reject unknown keys, validate safety invariants, resolve paths |
+| Command layer | `siderea.cli` | Expose local analysis, bounded broker fetch, verification, queueing/review-set assembly, dossiers, exact-version reviews/adjudications/outcomes, read-only reporting preflight, baseline, and JEPA commands |
+| Domain model | `siderea.domain` | Immutable candidates, observations, evidence, and lifecycle states |
+| State policy | `siderea.state` | Allowed transitions and fresh-evidence reportability checks for domain records |
+| Ingestion contract | `siderea.ingest.base`, `siderea.ingest.schema` | Canonical photometry table, broker protocol, aliases, validation, deterministic ordering |
+| Local ingestion | `siderea.ingest.csv` | Parse and hash one byte snapshot, preserve string identifiers, normalize JD/MJD and common schemas, and validate content-bound broker sidecars |
+| Broker adapter | `siderea.ingest.alerce` | Lazily query bounded ALeRCE candidates plus detections/non-detections through the common contract with an explicit `ztf`/`lsst` namespace on every request; the CLI emits a digest-bound snapshot sidecar |
+| Local orchestration | `siderea.pipeline` | Emit immutable `siderea.local_analysis.v4` runs with normalized data, v4 features, v2 rankings, evidence, snapshot, terminal manifest, ledger state, and a separate scientific fingerprint |
+| Photometry | `siderea.features.photometry` | Emit `siderea.photometry.v4` features inside survey/passband channels from magnitudes and supplied forced/difference flux, including survey/uncertainty missingness and separate band/channel prior non-detection counts |
+| Baseline score | `siderea.scoring.heuristic` | Emit `siderea.heuristic_priority.v2`, a bounded relative priority with visible inputs, basis selection, components, and warnings |
+| Supervised baseline | `siderea.ml.baseline` | Fit a logistic baseline on an early time block, optionally calibrate on a later block, evaluate on the latest block, and require entity purging or an explicit unique-entity assertion |
+| Service execution | `siderea.clients.base` | Retry remote operations and preserve error/match/clear provenance |
+| Catalogue adapters | `siderea.clients.catalogs` | Lazy SkyBoT, SIMBAD, and VSX searches |
+| TNS search | `siderea.clients.tns` | Read-only two-stage duplicate search by internal name and sky cone; aggregate both responses and reject malformed successful response shapes |
+| Catalogue policy | `siderea.validation.catalog_policy` | Treat known stellar/variable counterparts as vetoes; route ambiguous host context to review |
+| Evidence binding | `siderea.validation.binding` | Bind completed clearance to candidate identity/position, radius, every required SkyBoT epoch, and TTL policy; hash the exact preflight inputs |
+| External gate | `siderea.validation.gates` | Require fresh, auditable clearance from every mandatory service after orchestration applies binding |
+| Verification coordinator | `siderea.validation.suite` | Run configured checks, aggregate all required SkyBoT epochs, attach expiries, bind results to the request, and return a structured gate decision |
+| Review/outcomes | `siderea.ledger` | Maintain the current candidate view plus append-only first-seen version snapshots and exact-version reviews, catalogue-context adjudications, and downstream outcomes in SQLite |
+| Reporting preflight | `siderea.reporting.preflight` | Rebind and hash-check reviewed evidence, verify the published run/candidate artifact, then require independent approval of the current candidate version; exposed read-only as `siderea preflight` |
+| Dossier | `siderea.review.dossier` | Write portable JSON and HTML evidence views for one candidate |
+| Review-set assembly | `siderea.review.assembly` | Atomically bind exact ranking/candidate snapshots to a finite queue, selected dossiers, and an `siderea.review_set.v1` manifest containing artifact hashes |
+| Local review UI | `siderea.review.server` | Serve a loopback candidate queue and append exact-version reason-coded review/adjudication events; no report/follow-up endpoint |
+| Reproducibility | `siderea.manifest`, `siderea.data.snapshot` | Hash artifacts and datasets; record config, Git state when available, checkout or installed-package code digest, runtime, labels, split policy, and terminal interruption state |
+| Evaluation | `siderea.evaluation` | Chronological splits and finite-budget ranking/calibration metrics |
+| Review queue | `siderea.ranking` | Allocate reproducible finite capacity with explicit, de-duplicated priority, anomaly, and seeded random-audit routes plus audit propensity |
+| Host association | `siderea.host` | Rank possible hosts by geometry and Poisson chance coincidence; withhold ambiguous associations |
+| Representation learning | `siderea.ml.*` | Tokenize irregular light curves under a hashed per-curve contract, reject incompatible batches, train/evaluate TS-JEPA, checkpoint, and extract embeddings |
+| Retrieval/anomaly | `siderea.similarity`, `siderea.anomaly` | Deterministically tied cosine retrieval with provenance-required persisted indexes, plus robust anomaly scores and optional Isolation Forest |
+| Follow-up | `siderea.followup` | Combine reality, novelty, value, urgency, observability, information gain, and anomaly route |
+| Advisory campaign sketches | `siderea.campaigns` | Suggest research targets, review budgets, and services without activating or overriding operational TOML policy |
 
 The package now includes strict local ingestion and immutable local analysis with
 a deterministic scientific-input fingerprint, plus CLI entry points, atomic
@@ -82,7 +82,7 @@ completed boundary.
 
 `general.campaign` is currently a versioned label carried through operational
 artifacts; the actual enforced settings come from the selected TOML sections.
-`iris.campaigns` contains advisory experiment-design sketches only. Calling
+`siderea.campaigns` contains advisory experiment-design sketches only. Calling
 `get_campaign()` does not activate a profile, change a threshold, or add a
 mandatory service, including recommendations for integrations that do not yet
 exist. This deliberate boundary prevents planning metadata from masquerading as
@@ -100,7 +100,7 @@ silently interpret absent evidence as a physical measurement.
 
 Magnitudes in different passbands have different effective wavelengths and may
 have different zero points, and two surveys can use the same passband name with
-different instruments/calibration. `iris.photometry.v4` therefore computes
+different instruments/calibration. `siderea.photometry.v4` therefore computes
 summaries inside a survey/passband channel whenever the input carries survey
 identity. A missing survey value becomes an explicit `unspecified` channel and is
 reported in `survey_missing_fraction`; it is not pooled with a named survey.
@@ -169,7 +169,7 @@ the pipeline, the aggregate must cover every distinct usable detection MJD in th
 normalized candidate data. Invalid clearance is downgraded to `error`; positive
 `match` evidence remains a conservative veto.
 
-Verification imports require the top-level `iris.verification.v1` schema, a valid
+Verification imports require the top-level `siderea.verification.v1` schema, a valid
 candidate ID and checks array, and a boolean `manual_review_required`. Every
 imported check must provide the complete exact provenance shape; missing or
 unknown fields are rejected rather than having timestamps, attempts, or versions
@@ -266,7 +266,7 @@ separate authorization review.
 The nightly queue has three non-overlapping routes: seeded random audit, primary
 priority, and an anomaly reserve with unused capacity flowing back to priority.
 Audit selection uses a platform-independent SHA-256 ordering over the complete
-eligible population. `iris.nightly_queue.v2` records the seed, population,
+eligible population. `siderea.nightly_queue.v2` records the seed, population,
 requested/used audit slots, uniform without-replacement inclusion probability,
 selection policy, and per-audit-entry propensity. The CLI generates and records a
 seed when audit slots are requested without one; a library caller must supply it.
@@ -278,9 +278,9 @@ quality vetoes. `gate-clear` admits only an automated `reportable` decision or a
 candidate routed to catalogue-context adjudication. Unknown gate states fail
 closed under either policy.
 
-`review-set` reads each input once, requires `iris.candidates.v1`, verifies exact
+`review-set` reads each input once, requires `siderea.candidates.v1`, verifies exact
 candidate-ID and candidate-version agreement between the ranking and evidence,
-and atomically creates a new directory. `iris.review_set.v1` contains the queue,
+and atomically creates a new directory. `siderea.review_set.v1` contains the queue,
 input hashes, selected versions, artifact inventory, exact input snapshots, and
 one dossier per selection. It refuses overwrite and explicitly states that the
 bundle is triage support, not reporting authorization.
@@ -377,8 +377,8 @@ substitute fresh but different evidence after reviewers approve.
 - the command and effective configuration;
 - a stable configuration digest;
 - Git revision and dirty state when available, plus a SHA-256 over checkout
-  `src/iris`, `configs`, and `pyproject.toml` contents; when those paths are absent,
-  the digest falls back to the actual installed `iris` package tree and refuses
+  `src/siderea`, `configs`, and `pyproject.toml` contents; when those paths are absent,
+  the digest falls back to the actual installed `siderea` package tree and refuses
   to emit an empty code identity;
 - Python, platform, and selected dependency versions;
 - output artifact paths, sizes, roles, and SHA-256 digests;
@@ -393,7 +393,7 @@ terminal manifest is written. For a direct local CSV, the source is hashed in
 ingestion provenance and the exact already-parsed bytes are archived as a
 `source-input-snapshot` artifact. The pipeline does not reopen the mutable source
 path to create that artifact.
-`broker-fetch` instead emits an adjacent `iris.broker_snapshot.v1` sidecar whose
+`broker-fetch` instead emits an adjacent `siderea.broker_snapshot.v1` sidecar whose
 photometry SHA-256 is verified before ingestion; its broker query/source/retrieval
 metadata and sidecar/photometry digests are retained in the run's ingestion
 provenance. ALeRCE requests always carry an explicit survey. ZTF uses the legacy
@@ -408,7 +408,7 @@ coverage where they become production orchestration boundaries.
 ### Persisted similarity indexes
 
 The in-memory cosine index accepts provenance as caller-supplied metadata. Saving
-an index is stricter: `iris.embedding_index.v2` requires 64-hex SHA-256 identifiers
+an index is stricter: `siderea.embedding_index.v2` requires 64-hex SHA-256 identifiers
 for the encoder, token contract, and dataset snapshot, and loading rejects legacy,
 malformed, or incomplete provenance. A provenance-bearing index refuses queries
 without matching encoder and token-contract digests. Equal similarity scores use
@@ -422,7 +422,7 @@ The baseline CLI cannot train without an explicit physical-entity policy. Normal
 use supplies `--entity COLUMN`, allowing rows from a repeated entity to be purged
 across time-blocked train/calibration/test boundaries. The alternative
 `--assert-unique-entities` records the caller's assertion that every row is a
-different physical entity; IRIS cannot verify that claim. Model metadata includes
+different physical entity; SIDEREA cannot verify that claim. Model metadata includes
 the entity policy, whether purging occurred, a dataset digest that covers entity
 IDs, and the exact split digest.
 
@@ -437,7 +437,7 @@ The JEPA token schema is:
 5. detection indicator; and
 6. value-present indicator.
 
-Each tokenized curve records a canonical `iris.light_curve_tokens.v3` contract
+Each tokenized curve records a canonical `siderea.light_curve_tokens.v3` contract
 and its SHA-256. The contract covers these ordered fields, value kind/direction,
 the complete band-to-ID vocabulary and unknown-band policy, missing-error
 sentinel, maximum length/truncation, equal-time ordering, and normalization scope.
@@ -528,5 +528,5 @@ The following are not yet complete production services:
 - TNS submission transport; and
 - continuously exercised backup and disaster recovery.
 
-Until those boundaries are implemented and validated, operate IRIS as local
+Until those boundaries are implemented and validated, operate SIDEREA as local
 research decision support with independent human verification.

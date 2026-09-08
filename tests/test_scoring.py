@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from iris.scoring import HeuristicScoreConfig, score_photometry_candidate
+from siderea.scoring import HeuristicScoreConfig, score_photometry_candidate
 
 
 def _features(**overrides: object) -> dict[str, object]:

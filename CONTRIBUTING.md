@@ -1,6 +1,6 @@
-# Contributing to IRIS
+# Contributing to SIDEREA
 
-IRIS treats scientific claims, failure semantics, and reproducibility metadata as
+SIDEREA treats scientific claims, failure semantics, and reproducibility metadata as
 part of the public API. A change is complete only when the code, tests, schemas,
 documentation, and stated evidence boundary agree.
 
@@ -10,14 +10,14 @@ documentation, and stated evidence boundary agree.
 python3.11 -m venv .venv
 .venv/bin/python -m pip install --upgrade pip
 .venv/bin/python -m pip install -e '.[all,dev]'
-.venv/bin/python -m iris doctor --strict
+.venv/bin/python -m siderea doctor --strict
 make check PYTHON=.venv/bin/python
 ```
 
 Run a focused test while iterating, then run `make check` before handing off. A
 release candidate must additionally pass `python -m build`, install the wheel into
 a fresh virtual environment, expose `default.toml` and `py.typed`, and run
-`iris doctor --json` plus `iris config-show` from outside the checkout.
+`siderea doctor --json` plus `siderea config-show` from outside the checkout.
 
 ## Change discipline
 

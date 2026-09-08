@@ -1,0 +1,270 @@
+\begin{thebibliography}{36}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[{Astropy Collaboration} et~al.(2013){Astropy Collaboration},
+  Robitaille, Tollerud, et~al.]{astropy2013}
+{Astropy Collaboration}, Thomas~P. Robitaille, Erik~J. Tollerud, et~al.
+\newblock Astropy: A community python package for astronomy.
+\newblock \emph{Astronomy \& Astrophysics}, 558:\penalty0 A33, 2013.
+\newblock \doi{10.1051/0004-6361/201322068}.
+
+\bibitem[{Astropy Collaboration} et~al.(2018){Astropy Collaboration},
+  Price-Whelan, Sip\H{o}cz, et~al.]{astropy2018}
+{Astropy Collaboration}, Adrian~M. Price-Whelan, Brigitta~M. Sip\H{o}cz, et~al.
+\newblock The astropy project: Building an open-science project and status of
+  the v2.0 core package.
+\newblock \emph{The Astronomical Journal}, 156\penalty0 (3):\penalty0 123,
+  2018.
+\newblock \doi{10.3847/1538-3881/aabc4f}.
+
+\bibitem[Bazin et~al.(2009)]{bazin2009}
+G.~Bazin et~al.
+\newblock The core-collapse rate from the supernova legacy survey.
+\newblock \emph{Astronomy and Astrophysics}, 499:\penalty0 653--660, 2009.
+\newblock URL
+  \url{https://www.aanda.org/articles/aa/pdf/2009/21/aa11847-09.pdf}.
+
+\bibitem[Bellm et~al.(2019)Bellm, Kulkarni, Graham, et~al.]{bellm2019}
+Eric~C. Bellm, Shrinivas~R. Kulkarni, Matthew~J. Graham, et~al.
+\newblock The zwicky transient facility: System overview, performance, and
+  first results.
+\newblock \emph{Publications of the Astronomical Society of the Pacific},
+  131\penalty0 (995):\penalty0 018002, 2019.
+\newblock \doi{10.1088/1538-3873/aaecbe}.
+
+\bibitem[Berthier et~al.(2006)Berthier, Vachier, Thuillot,
+  et~al.]{berthier2006}
+J.~Berthier, F.~Vachier, W.~Thuillot, et~al.
+\newblock Skybot, a new vo service to identify solar system objects.
+\newblock In \emph{Astronomical Data Analysis Software and Systems XV}, volume
+  351 of \emph{Astronomical Society of the Pacific Conference Series}, page
+  367, 2006.
+
+\bibitem[Budav\'ari and Szalay(2008)]{budavari2008}
+Tam\'as Budav\'ari and Alexander~S. Szalay.
+\newblock Probabilistic cross-identification of astronomical sources.
+\newblock \emph{The Astrophysical Journal}, 679:\penalty0 301--309, 2008.
+\newblock \doi{10.1086/587156}.
+
+\bibitem[Carrasco-Davis et~al.(2021)Carrasco-Davis, Reyes, Valenzuela,
+  et~al.]{carrascodavis2021}
+Rodrigo Carrasco-Davis, Esteban Reyes, Camilo Valenzuela, et~al.
+\newblock Alert classification for the alerce broker system: The real-time
+  stamp classifier.
+\newblock \emph{The Astronomical Journal}, 162\penalty0 (6):\penalty0 231,
+  2021.
+\newblock \doi{10.3847/1538-3881/ac0ef1}.
+
+\bibitem[Duev et~al.(2019)Duev, Mahabal, Masci, et~al.]{duev2019}
+Dmitry~A. Duev, Ashish Mahabal, Frank~J. Masci, et~al.
+\newblock Real-bogus classification for the zwicky transient facility using
+  deep learning.
+\newblock \emph{Monthly Notices of the Royal Astronomical Society},
+  489\penalty0 (3):\penalty0 3582--3590, 2019.
+\newblock \doi{10.1093/mnras/stz2357}.
+
+\bibitem[F\"orster et~al.(2016)F\"orster, Maureira, San~Mart\'in,
+  et~al.]{forster2016}
+Francisco F\"orster, Juan~C. Maureira, Jaime San~Mart\'in, et~al.
+\newblock The high cadence transient survey (hits). i. survey design and
+  supernova shock breakout constraints.
+\newblock \emph{The Astrophysical Journal}, 832\penalty0 (2):\penalty0 155,
+  2016.
+\newblock \doi{10.3847/0004-637X/832/2/155}.
+
+\bibitem[F\"orster et~al.(2021)F\"orster, Cabrera-Vives, Castillo-Navarrete,
+  et~al.]{forster2021}
+Francisco F\"orster, Guillermo Cabrera-Vives, Esteban Castillo-Navarrete,
+  et~al.
+\newblock The automatic learning for the rapid classification of events
+  (alerce) alert broker.
+\newblock \emph{The Astronomical Journal}, 161\penalty0 (5):\penalty0 242,
+  2021.
+\newblock \doi{10.3847/1538-3881/abe9bc}.
+
+\bibitem[Fremling et~al.(2020)Fremling, Miller, Sharma, et~al.]{fremling2020}
+U.~C. Fremling, A.~A. Miller, Y.~Sharma, et~al.
+\newblock The zwicky transient facility bright transient survey. i.
+  spectroscopic classification and the redshift completeness of local galaxy
+  catalogs.
+\newblock \emph{The Astrophysical Journal}, 895\penalty0 (1):\penalty0 32,
+  2020.
+
+\bibitem[Ginsburg et~al.(2019)Ginsburg, Sip\H{o}cz, Brasseur,
+  et~al.]{ginsburg2019}
+Adam Ginsburg, Brigitta~M. Sip\H{o}cz, C.~E. Brasseur, et~al.
+\newblock astroquery: An astronomical web-querying package in python.
+\newblock \emph{The Astronomical Journal}, 157\penalty0 (3):\penalty0 98, 2019.
+\newblock \doi{10.3847/1538-3881/aafc33}.
+
+\bibitem[Graham et~al.(2019)Graham, Kulkarni, Bellm, et~al.]{graham2019}
+Matthew~J. Graham, S.~R. Kulkarni, Eric~C. Bellm, et~al.
+\newblock The zwicky transient facility: Science objectives.
+\newblock \emph{Publications of the Astronomical Society of the Pacific},
+  131\penalty0 (1001):\penalty0 078001, 2019.
+\newblock \doi{10.1088/1538-3873/ab006c}.
+
+\bibitem[Harris et~al.(2020)Harris, Millman, van~der Walt, et~al.]{harris2020}
+Charles~R. Harris, K.~Jarrod Millman, St\'efan~J. van~der Walt, et~al.
+\newblock Array programming with numpy.
+\newblock \emph{Nature}, 585:\penalty0 357--362, 2020.
+\newblock \doi{10.1038/s41586-020-2649-2}.
+
+\bibitem[Hunter(2007)]{hunter2007}
+John~D. Hunter.
+\newblock Matplotlib: A 2d graphics environment.
+\newblock \emph{Computing in Science \& Engineering}, 9\penalty0 (3):\penalty0
+  90--95, 2007.
+\newblock \doi{10.1109/MCSE.2007.55}.
+
+\bibitem[Iskandarli et~al.(2026)Iskandarli, Lintott, Croft, Stevance, and
+  Weston]{iskandarli2026}
+Leyla Iskandarli, Chris~J. Lintott, Steve Croft, Heloise Stevance, and Joshua
+  Weston.
+\newblock Anomaly hunter for alerts (aha): Anomaly detection in the ztf
+  transient alert stream, 2026.
+
+\bibitem[Leoni et~al.(2022)Leoni, Ishida, Peloton, and M\"oller]{leoni2022}
+Marco Leoni, Emille E.~O. Ishida, Julien Peloton, and Anais M\"oller.
+\newblock Fink: Early supernovae ia classification using active learning.
+\newblock \emph{Astronomy \& Astrophysics}, 663:\penalty0 A13, 2022.
+\newblock \doi{10.1051/0004-6361/202142715}.
+
+\bibitem[Li et~al.(2026)Li, Chen, Rehemtulla, Shah, Kim, Wu, Lin, Miller, and
+  Liu]{li2026}
+Weijian Li, Hong-Yu Chen, Nabeel Rehemtulla, Ved~G. Shah, Dongho Kim, Dennis
+  Wu, Qinjie Lin, Adam~A. Miller, and Han Liu.
+\newblock Starembed: Benchmarking time series foundation models on astronomical
+  observations of variable stars, 2026.
+\newblock Accepted at ICML 2026.
+
+\bibitem[Majumder et~al.(2026)Majumder, Malanchev, and Ishida]{majumder2026}
+Torsha Majumder, Konstantin Malanchev, and Emille E.~O. Ishida.
+\newblock Multi-scale contrastive attention for light-curve representation
+  learning, 2026.
+
+\bibitem[Masci et~al.(2019)Masci, Laher, Rusholme, et~al.]{masci2019}
+Frank~J. Masci, Russ~R. Laher, Ben Rusholme, et~al.
+\newblock The zwicky transient facility: Data processing, products, and
+  archive.
+\newblock \emph{Publications of the Astronomical Society of the Pacific},
+  131\penalty0 (995):\penalty0 018003, 2019.
+\newblock \doi{10.1088/1538-3873/aae8ac}.
+
+\bibitem[Matheson et~al.(2021)Matheson, Stubens, Wolf, et~al.]{matheson2021}
+Thomas Matheson, Carl Stubens, Nicholas Wolf, et~al.
+\newblock The antares astronomical time-domain event broker.
+\newblock \emph{The Astronomical Journal}, 161\penalty0 (3):\penalty0 107,
+  2021.
+\newblock \doi{10.3847/1538-3881/abd703}.
+
+\bibitem[McKinney(2010)]{mckinney2010}
+Wes McKinney.
+\newblock Data structures for statistical computing in python.
+\newblock In \emph{Proceedings of the 9th Python in Science Conference}, pages
+  56--61, 2010.
+\newblock \doi{10.25080/Majora-92bf1922-00a}.
+
+\bibitem[Miles et~al.(2020)Miles, Coughlin, and Nixon]{miles2020}
+Patrick~R. Miles, Eric~R. Coughlin, and C.~J. Nixon.
+\newblock Fallback rates from partial tidal disruption events.
+\newblock \emph{The Astrophysical Journal}, 2020.
+\newblock \doi{10.3847/1538-4357/ab9c9f}.
+
+\bibitem[M\"oller et~al.(2021)M\"oller, Peloton, Ishida, et~al.]{moller2021}
+Anais M\"oller, Julien Peloton, Emille E.~O. Ishida, et~al.
+\newblock Fink, a new generation of broker for the lsst community.
+\newblock \emph{Monthly Notices of the Royal Astronomical Society},
+  501\penalty0 (3):\penalty0 3272--3288, 2021.
+\newblock \doi{10.1093/mnras/staa3602}.
+
+\bibitem[Nordin et~al.(2019)Nordin, Brinnel, van Santen, et~al.]{nordin2019}
+J.~Nordin, V.~Brinnel, J.~van Santen, et~al.
+\newblock Transient processing and analysis using ampel: Alert management,
+  photometry and evaluation of lightcurves.
+\newblock \emph{Astronomy \& Astrophysics}, 631:\penalty0 A147, 2019.
+\newblock \doi{10.1051/0004-6361/201935634}.
+
+\bibitem[Ochsenbein et~al.(2000)Ochsenbein, Bauer, and Marcout]{ochsenbein2000}
+Fran\c{c}ois Ochsenbein, Patricia Bauer, and James Marcout.
+\newblock The vizier database of astronomical catalogues.
+\newblock \emph{Astronomy and Astrophysics Supplement Series}, 143:\penalty0
+  23--32, 2000.
+\newblock \doi{10.1051/aas:2000169}.
+
+\bibitem[Patterson et~al.(2019)Patterson, Bellm, Rusholme,
+  et~al.]{patterson2019}
+Maria~T. Patterson, Eric~C. Bellm, Ben Rusholme, et~al.
+\newblock The zwicky transient facility alert distribution system.
+\newblock \emph{Publications of the Astronomical Society of the Pacific},
+  131\penalty0 (995):\penalty0 018001, 2019.
+\newblock \doi{10.1088/1538-3873/aae904}.
+
+\bibitem[Perley et~al.(2020)Perley, Fremling, Sollerman, et~al.]{perley2020}
+Daniel~A. Perley, Christoffer Fremling, Jesper Sollerman, et~al.
+\newblock The zwicky transient facility bright transient survey. ii. a public
+  statistical sample for exploring supernova demographics.
+\newblock \emph{The Astrophysical Journal}, 904\penalty0 (1):\penalty0 35,
+  2020.
+
+\bibitem[Rehemtulla et~al.(2025)Rehemtulla, Coughlin, Miller, and Jegou~du
+  Laz]{rehemtulla2025}
+Nabeel Rehemtulla, Michael~W. Coughlin, Adam~A. Miller, and Theophile Jegou~du
+  Laz.
+\newblock The automation of optical transient discovery and classification in
+  rubin-era time-domain astronomy, 2025.
+
+\bibitem[S\'anchez-S\'aez et~al.(2021)S\'anchez-S\'aez, Reyes, Valenzuela,
+  et~al.]{sanchezsaez2021}
+P.~S\'anchez-S\'aez, I.~Reyes, C.~Valenzuela, et~al.
+\newblock Alert classification for the alerce broker system: The light curve
+  classifier.
+\newblock \emph{The Astronomical Journal}, 161\penalty0 (3):\penalty0 141,
+  2021.
+\newblock \doi{10.3847/1538-3881/abd5c1}.
+
+\bibitem[Smith et~al.(2019)Smith, Williams, Young, et~al.]{smith2019}
+K.~W. Smith, R.~D. Williams, D.~R. Young, et~al.
+\newblock Lasair: The transient alert broker for lsst:uk.
+\newblock \emph{Research Notes of the AAS}, 3\penalty0 (1):\penalty0 26, 2019.
+\newblock \doi{10.3847/2515-5172/ab020f}.
+
+\bibitem[Street et~al.(2018)Street, Bowman, Saunders, and Boroson]{street2018}
+R.~A. Street, M.~Bowman, E.~S. Saunders, and T.~Boroson.
+\newblock General-purpose software for managing astronomical observing programs
+  in the lsst era.
+\newblock \emph{Proceedings of the SPIE}, 10707:\penalty0 1070711, 2018.
+
+\bibitem[Tan et~al.(2025)Tan, Protopapas, C\'adiz-Leyton, Cabrera-Vives,
+  Donoso-Oliva, and Becker]{tan2025}
+Antony Tan, Pavlos Protopapas, Martina C\'adiz-Leyton, Guillermo Cabrera-Vives,
+  Cristobal Donoso-Oliva, and Ignacio Becker.
+\newblock Astroco: Self-supervised conformer-style transformers for light-curve
+  embeddings, 2025.
+
+\bibitem[VanderPlas(2018)]{vanderplas2018}
+Jacob~T. VanderPlas.
+\newblock Understanding the lomb--scargle periodogram.
+\newblock \emph{The Astrophysical Journal Supplement Series}, 236\penalty0
+  (1):\penalty0 16, 2018.
+\newblock \doi{10.3847/1538-4365/aab766}.
+
+\bibitem[Watson(2006)]{watson2006}
+Christopher~L. Watson.
+\newblock The international variable star index (vsx).
+\newblock In \emph{The Society for Astronomical Sciences 25th Annual Symposium
+  on Telescope Science}, volume~25, page~47, 2006.
+
+\bibitem[Wenger et~al.(2000)Wenger, Ochsenbein, Egret, et~al.]{wenger2000}
+Marc Wenger, Fran\c{c}ois Ochsenbein, Daniel Egret, et~al.
+\newblock The simbad astronomical database: The cds reference database for
+  astronomical objects.
+\newblock \emph{Astronomy and Astrophysics Supplement Series}, 143:\penalty0
+  9--22, 2000.
+\newblock \doi{10.1051/aas:2000332}.
+
+\end{thebibliography}

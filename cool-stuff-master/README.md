@@ -1,10 +1,10 @@
 # Archived historical duplicate
 
 This directory is an archived duplicate of the original root-level I SPY
-workflow. It is retained for provenance and comparison during the IRIS migration.
+workflow. It is retained for provenance and comparison during the SIDEREA migration.
 
 Do not develop or run new production work from this directory. The canonical new
-platform is `../src/iris/`; the canonical retained legacy scripts are at the
+platform is `../src/siderea/`; the canonical retained legacy scripts are at the
 repository root. The executable `build_tns_report.py` copy is a fail-closed
 tombstone: it always exits without reading inputs, contacting services, or writing
 report material. Its historical source is preserved as non-executable Markdown in

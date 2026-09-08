@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Fail-closed tombstone for the retired legacy TNS report builder.
 
-IRIS deliberately provides no report-construction or TNS submission transport
+SIDEREA deliberately provides no report-construction or TNS submission transport
 through this script. Historical source is retained as non-executable Markdown
 in ``legacy_build_tns_report_historical.md``.
 """
@@ -15,12 +15,12 @@ EXIT_REPORTING_DISABLED = 78
 DISABLED_MESSAGE = """\
 ERROR: legacy TNS report generation is disabled.
 
-This script predates version-bound IRIS evidence, independent review, and the
+This script predates version-bound SIDEREA evidence, independent review, and the
 current reporting_preflight. It will not read candidate data, contact services,
 create output directories, or emit Markdown/JSON report material.
 
-Use the canonical `iris` workflow to verify and review an exact candidate
-version. IRIS currently provides no TNS report builder or submission endpoint.
+Use the canonical `siderea` workflow to verify and review an exact candidate
+version. SIDEREA currently provides no TNS report builder or submission endpoint.
 """
 
 

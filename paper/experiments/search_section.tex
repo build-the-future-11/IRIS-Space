@@ -1,0 +1,85 @@
+\section{Synthetic Transient-Search Diagnostic}
+\label{sec:synthetic-search}
+
+The operational audit motivated a shadow-only detection experiment: can evidence
+spread across irregular flux measurements improve excess detection relative to a
+single-epoch statistic while accounting for unknown peak time? We implemented four
+nonnegative, unit-peak shapes: Gaussian, asymmetric exponential, Bazin
+\citep{bazin2009}, and a Gaussian rise joined to a $(1+\Delta t/w)^{-5/3}$ tail.
+The Bazin and exponential shapes fix the fall-to-rise timescale ratio at three.
+These are phenomenological morphology templates, not explosion simulations or
+unique physical-class identifiers. Debris fallback need not trace optical luminosity,
+and partial disruptions can show different asymptotic behavior \citep{miles2020}.
+Timescales are in the observer frame.
+
+For flux $y$, template $h$, background $b$, amplitude $A\geq0$, and declared
+covariance $C=LL^\top$, the model is $y=b\mathbf{1}+Ah+\epsilon$ with
+$\epsilon\sim\mathcal{N}(0,C)$. Writing $u=L^{-1}\mathbf{1}$ and
+$q=(I-uu^\top/(u^\top u))L^{-1}h$, the profiled statistic is
+\begin{equation}
+z_h=\frac{q^\top L^{-1}y}{\sqrt{q^\top q}},\qquad
+T=\max_{h\in\mathcal H}\max(0,z_h).
+\end{equation}
+The local likelihood improvement is $\Delta\chi^2=\max(0,z_h)^2$; it does not
+provide a chi-square calibration for the bank maximum. Each null simulation
+repeats the entire search, giving the finite Monte Carlo p-value
+\begin{equation}
+\widehat p(T)=\frac{1+\sum_{j=1}^{N_0}\mathbf{1}[T_j^{(0)}\geq T]}{N_0+1}.
+\end{equation}
+Passbands remain separate, with conservative within-object Bonferroni correction.
+This does not control all survey objects or repeated monitoring decisions.
+Invalid covariance, censored limits masquerading as flux, and ill-conditioned
+designs are rejected; insufficient-epoch channels remain explicitly unevaluated.
+
+The local design fixes 64 irregular epochs over 60 days, heterogeneous marginal
+errors, 21 searched centers, three widths (1, 3 and 10 days) and four families:
+252 templates. Each method uses 4,095 calibration curves for a nominal 1\%
+per-curve rule and 1,000 evaluation curves per scenario. Injected centers range
+from 10 to 50 days and widths are log-uniform from 1 to 10 days, allowing grid
+mismatch. The comparator is the maximum positive standardized residual after a
+fitted constant, separately calibrated on the same null distribution. Calibration
+and evaluation use separate random streams. Methods and amplitudes share test
+noise; row-wise Wilson intervals are conditional Monte Carlo intervals, not
+independent population confidence statements or a formal superiority test.
+
+\input{experiments/search_results_table.tex}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{experiments/transient-search-final/search_diagnostic.png}
+\caption{Synthetic recovery and false-alarm diagnostic. Solid curves use the
+template bank; dashed curves use the separately calibrated single-epoch comparator.
+The right panel deliberately violates independent Gaussian calibration. Counts,
+marginal intervals and per-trial statistics are archived. These are not survey
+completeness measurements.}
+\label{fig:synthetic-search}
+\end{figure}
+
+The correlated-noise failure motivated an adaptive follow-up with a new seed and
+an explicitly supplied AR(1) correlation, $R_{ij}=0.7^{|i-j|}$, used in both
+whitening and calibration. This is an oracle-covariance diagnostic, not a survey
+noise estimate. The original failure is retained. Isolated outliers remain a
+serious limitation, and unknown covariance, seasonal sampling, calibration
+systematics and artifacts require representative data and independent image review.
+The CLI also offers a declared exponential time-covariance with 80\% correlated
+and 20\% independent variance; these hyperparameters are not fitted on the target.
+Neither experiment changes heuristic ranking, catalog gates or human approvals.
+
+Protocols, source snapshots, per-trial statistics and plotting code are archived
+under \texttt{paper/experiments}. Each design was recorded locally before its run;
+the covariance follow-up was designed after the initial failure, not externally
+preregistered. Historical campaign counts are unchanged by these simulations.
+
+A second adaptive stress design uses the declared exponential covariance
+(six-day timescale, 80\% correlated variance), independent calibration/evaluation
+streams, and 1,000 null trials per row. The matched Gaussian case produces
+11 false alarms; multiplying the actual standard deviations by 1.5 while retaining
+the quoted errors produces 337. Unit-variance Student-$t_3$ innovations propagated
+through the correlation factor produce 104, and doubling the variance after day 30
+produces 118. A seasonal gap with correctly matched calibration produces 10;
+true correlation timescales of one and 20 days, while assuming six days, produce
+129 and two, respectively. All seven rows, their marginal Wilson intervals and
+trial statistics are retained in \texttt{noise-stress-final}. These results show
+that a supplied covariance is insufficient when noise assumptions are wrong;
+they neither estimate real survey false-alarm rates nor measure recovery across
+these stress conditions. No threshold was retuned using these outcomes.

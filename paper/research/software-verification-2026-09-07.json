@@ -1,0 +1,55 @@
+{
+  "audit_date": "2026-09-07",
+  "python": "3.11, 3.13, and 3.14",
+  "static_analysis": {
+    "command": "ruff check paper/figures/make_figures.py src tests",
+    "result": "pass"
+  },
+  "repairs": [
+    "Validated binary labels before enforcing entity-ID policy in the supervised baseline.",
+    "Bound every SkyBoT epoch response before aggregation so returned coordinates cannot be overwritten by requested coordinates.",
+    "Restored a peak-significance assertion to its defining test.",
+    "Made a fixed-time candidate-state test explicit about creation and update timestamps.",
+    "Resolved static import and line-format violations.",
+    "Normalized the broker-fetch path assertion across the macOS /tmp and /private/tmp alias."
+  ],
+  "test_suite": {
+    "command": "python3.11/python3.13/python3.14 -m pytest -q",
+    "tests_passed": 320,
+    "subtests_passed": 96,
+    "failures": 0,
+    "temporary_directory": "/Volumes/PRO-BLADE/IRIS-Project/.test-tmp",
+    "environment_note": "The macOS system temporary volume produced SQLite disk I/O errors; rerunning the unchanged suite on the workspace volume passed."
+  },
+  "deterministic_replay": {
+    "input": "examples/photometry.csv",
+    "executions": 2,
+    "candidates_per_execution": 2,
+    "reportable_per_execution": 0,
+    "blocked_per_execution": 2,
+    "scientific_fingerprint": "analysis-d19729fbf526152c",
+    "byte_identical_artifacts": [
+      "photometry.normalized.csv",
+      "features.csv",
+      "ranked_candidates.csv"
+    ],
+    "candidate_versions_identical": true,
+    "execution_envelopes_identical": false,
+    "execution_difference_reason": "Run identifiers and pending-check timestamps are execution provenance and are intentionally excluded from scientific identity."
+  },
+  "dependency_inventory": {
+    "available": [
+      "numpy",
+      "pandas",
+      "scikit-learn",
+      "torch",
+      "matplotlib"
+    ],
+    "unavailable_in_audit_runtime": [
+      "astropy",
+      "astroquery",
+      "alerce"
+    ],
+    "interpretation": "Local deterministic analysis was verified; live broker and catalogue integration was not exercised in this audit runtime."
+  }
+}

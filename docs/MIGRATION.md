@@ -1,4 +1,4 @@
-# Migrating the legacy I SPY scripts to IRIS
+# Migrating the legacy I SPY scripts to SIDEREA
 
 ## Goal
 
@@ -7,7 +7,7 @@ testable package while keeping the original workflow available for audit. It is 
 parallel validation and handover, not a bulk rename and not permission to discard
 past evidence.
 
-The canonical development target is `src/iris/`. Root-level Python scripts are
+The canonical development target is `src/siderea/`. Root-level Python scripts are
 legacy reference implementations. `cool-stuff-master/` is a historical duplicate,
 not a second source tree to maintain.
 
@@ -25,30 +25,30 @@ and reporting concerns. That makes it difficult to answer basic audit questions:
 - Who independently approved the result?
 - Can the exact input population and outcome denominator be reconstructed?
 
-IRIS addresses those questions with typed records, explicit statuses, strict
+SIDEREA addresses those questions with typed records, explicit statuses, strict
 configuration, hashes/manifests, a ledger, and independent gates.
 
-## Legacy-to-IRIS map
+## Legacy-to-SIDEREA map
 
-| Legacy file or responsibility | IRIS destination | Migration status |
+| Legacy file or responsibility | SIDEREA destination | Migration status |
 |---|---|---|
-| `run_1000_candidate_hunt.py` orchestration | `iris.pipeline` local analysis and run manifest; future live coordinator | Local path implemented; live integration work |
-| `ai_candidate_hunter.py` broker intake | `iris.ingest.alerce` behind the shared ingestion contract | Bounded adapter with explicit `ztf`/`lsst` survey binding and a content-bound snapshot sidecar implemented; durable operations pending |
-| `ai_candidate_hunter.py` feature calculation | `iris.features.photometry` | v4 survey/passband-channel magnitude and supplied forced/difference-flux extraction implemented; scientific parity must be measured |
-| Legacy transient score | `iris.scoring.heuristic` | v2 magnitude/forced-flux basis selection implemented as a new explainable priority; intentionally not numerically compatible |
-| `fetch_alerce_detections.py` | `iris.ingest.alerce` and future durable raw cache | Adapter implemented; durable cache/replay pending |
-| `optical_transient_pipeline.py` | `iris.features.photometry` plus future period/image and survey-side acquisition components | Survey/passband-channel magnitude and supplied forced-flux extraction implemented; acquisition/calibration pending |
-| `catalog_validation_engine.py` | `iris.clients.catalogs`, `iris.validation.catalog_policy` | Core adapters/policy implemented; live qualification pending |
-| `verify_candidates.py` | `iris.validation.suite`, read-only `iris.clients.tns` | Core coordinator implemented; broker parity and live qualification pending |
-| `final_candidate_filter.py` | `iris.validation.gates`, `iris.reporting.preflight` | Safety gates implemented |
-| `build_tns_report.py` | `iris.review.dossier`, preflight, future report exporter | Dossier/preflight implemented; no new submission transport |
-| Ad hoc output folders | `iris.pipeline`, `iris.manifest`, `iris.data.snapshot`, `iris.review.assembly`, configured storage | Local pipeline and atomic review-set bundle integrated; other entry points pending |
-| Manual notes and decisions | `iris.ledger`, `iris.review.server` | Schema-v4 exact-version reviews, catalogue-context adjudications/outcomes, append-only candidate-version reconstruction, and orphan guards implemented locally; identity/access control pending |
-| Nearest examples and novelty | `iris.similarity`, `iris.anomaly`, `iris.ranking` | Deterministic retrieval and provenance-required persisted indexes implemented; population validation pending |
-| Host context | `iris.host` | Geometric chance-coincidence ranking implemented; catalogue/population validation pending |
-| Supervised baseline | `iris.ml.baseline` | Chronological logistic baseline with a required entity policy and optional held-out calibration implemented; training data/validation pending |
-| Representation learning | `iris.ml.*` | TS-JEPA with versioned per-curve token contracts, incompatible-batch rejection, enforced/default chronological splitting, deterministic training controls, and repeated-mask evaluation implemented in the shadow boundary |
-| Follow-up ordering | `iris.followup`, `iris.campaigns` | Utility primitive and advisory-only research sketches implemented; no campaign sketch activates operational policy, and observatory integration is pending |
+| `run_1000_candidate_hunt.py` orchestration | `siderea.pipeline` local analysis and run manifest; future live coordinator | Local path implemented; live integration work |
+| `ai_candidate_hunter.py` broker intake | `siderea.ingest.alerce` behind the shared ingestion contract | Bounded adapter with explicit `ztf`/`lsst` survey binding and a content-bound snapshot sidecar implemented; durable operations pending |
+| `ai_candidate_hunter.py` feature calculation | `siderea.features.photometry` | v4 survey/passband-channel magnitude and supplied forced/difference-flux extraction implemented; scientific parity must be measured |
+| Legacy transient score | `siderea.scoring.heuristic` | v2 magnitude/forced-flux basis selection implemented as a new explainable priority; intentionally not numerically compatible |
+| `fetch_alerce_detections.py` | `siderea.ingest.alerce` and future durable raw cache | Adapter implemented; durable cache/replay pending |
+| `optical_transient_pipeline.py` | `siderea.features.photometry` plus future period/image and survey-side acquisition components | Survey/passband-channel magnitude and supplied forced-flux extraction implemented; acquisition/calibration pending |
+| `catalog_validation_engine.py` | `siderea.clients.catalogs`, `siderea.validation.catalog_policy` | Core adapters/policy implemented; live qualification pending |
+| `verify_candidates.py` | `siderea.validation.suite`, read-only `siderea.clients.tns` | Core coordinator implemented; broker parity and live qualification pending |
+| `final_candidate_filter.py` | `siderea.validation.gates`, `siderea.reporting.preflight` | Safety gates implemented |
+| `build_tns_report.py` | `siderea.review.dossier`, preflight, future report exporter | Dossier/preflight implemented; no new submission transport |
+| Ad hoc output folders | `siderea.pipeline`, `siderea.manifest`, `siderea.data.snapshot`, `siderea.review.assembly`, configured storage | Local pipeline and atomic review-set bundle integrated; other entry points pending |
+| Manual notes and decisions | `siderea.ledger`, `siderea.review.server` | Schema-v4 exact-version reviews, catalogue-context adjudications/outcomes, append-only candidate-version reconstruction, and orphan guards implemented locally; identity/access control pending |
+| Nearest examples and novelty | `siderea.similarity`, `siderea.anomaly`, `siderea.ranking` | Deterministic retrieval and provenance-required persisted indexes implemented; population validation pending |
+| Host context | `siderea.host` | Geometric chance-coincidence ranking implemented; catalogue/population validation pending |
+| Supervised baseline | `siderea.ml.baseline` | Chronological logistic baseline with a required entity policy and optional held-out calibration implemented; training data/validation pending |
+| Representation learning | `siderea.ml.*` | TS-JEPA with versioned per-curve token contracts, incompatible-batch rejection, enforced/default chronological splitting, deterministic training controls, and repeated-mask evaluation implemented in the shadow boundary |
+| Follow-up ordering | `siderea.followup`, `siderea.campaigns` | Utility primitive and advisory-only research sketches implemented; no campaign sketch activates operational policy, and observatory integration is pending |
 
 “Implemented” means code exists with a defined API. It does not mean parity,
 performance, or prospective scientific validity has been established.
@@ -72,16 +72,16 @@ The CSV adapter hashes the same immutable byte buffer that it parses. A direct
 local CSV retains its path, digest, size, modification time, row count, and column
 mapping in ingestion provenance; the exact parsed bytes—not a later reopening of
 the path—are archived as a `source-input-snapshot` artifact. `broker-fetch` writes
-an adjacent `iris.broker_snapshot.v1` sidecar containing the emitted photometry SHA-256 plus
+an adjacent `siderea.broker_snapshot.v1` sidecar containing the emitted photometry SHA-256 plus
 broker query/source/retrieval metadata. Later ingestion rejects a missing-schema,
 mismatched, or malformed sidecar instead of combining provenance from another
 CSV.
 
 Local run manifests record artifact digests, the effective configuration, Git
-revision/dirty state when available, and a content digest over `src/iris`,
+revision/dirty state when available, and a content digest over `src/siderea`,
 `configs`, and `pyproject.toml` even when the checkout has no usable Git metadata.
 When no checkout tree is available, that digest falls back to the actual installed
-`iris` package files and refuses to emit an empty code identity. Local analysis
+`siderea` package files and refuses to emit an empty code identity. Local analysis
 closes a terminal manifest after run creation on completion, caught processing
 failure, and user interruption;
 failure/interruption manifests best-effort inventory already-finalized partial
@@ -91,7 +91,7 @@ without claiming that hashes authenticate an upstream producer.
 
 ### Review allocation is a versioned artifact
 
-The legacy shortlist is replaced by `iris.nightly_queue.v2`. The default
+The legacy shortlist is replaced by `siderea.nightly_queue.v2`. The default
 `triage` policy admits quality-passing candidates whose external evidence remains
 incomplete while excluding known-object and quality vetoes; `gate-clear` is the
 narrower post-verification policy. Separate primary, anomaly, and seeded
@@ -100,17 +100,17 @@ eligible population, seed, uniform without-replacement inclusion probability, an
 per-entry propensity. Audit slots default to zero and must be enabled by an
 explicit campaign policy.
 
-`iris review-set` reads and archives the exact `ranked_candidates.csv` and
-`iris.candidates.v1` bytes, verifies identical candidate ID/version sets, and
-atomically creates a new `iris.review_set.v1` directory with the queue, artifact
+`siderea review-set` reads and archives the exact `ranked_candidates.csv` and
+`siderea.candidates.v1` bytes, verifies identical candidate ID/version sets, and
+atomically creates a new `siderea.review_set.v1` directory with the queue, artifact
 hashes, and one dossier per selected candidate. It refuses overwrite. This is a
 portable review denominator, not external-clearance evidence or reporting
 authorization.
 
 ### Feature values are not drop-in compatible
 
-IRIS does not pool raw `g`, `r`, and `i` magnitudes. In
-`iris.photometry.v4`, amplitudes, slopes, flux summaries, and prior-nondetection
+SIDEREA does not pool raw `g`, `r`, and `i` magnitudes. In
+`siderea.photometry.v4`, amplitudes, slopes, flux summaries, and prior-nondetection
 pairs are computed within survey/passband channels whenever survey identity is
 present. Thus, `g` observations from two facilities cannot fabricate one light
 curve. Missing survey values are isolated in an explicit `unspecified` channel and
@@ -122,7 +122,7 @@ rejection rates are explicit. The local quality gate fails if every detection
 uncertainty is missing or invalid; partial missingness remains visible and
 penalizes the heuristic quality component but does not alone fail that gate.
 
-`iris.photometry.v4` also accepts forced/difference-flux values already present in
+`siderea.photometry.v4` also accepts forced/difference-flux values already present in
 the input. Flux features stay per channel; their aggregate excursion and rate terms
 are normalized by a robust within-channel scale so a positive rescaling of flux
 units does not change them. That fractional excursion is not a physical flux ratio.
@@ -131,10 +131,10 @@ declare a non-missing detection status on every row, and useful significance
 features require supplied positive uncertainties. Exact duplicate observations are
 rejected, as is reuse of a non-empty observation ID within one source/survey. A
 survey-specific revision/version and near-duplicate policy still needs
-qualification. IRIS does not yet obtain forced photometry, calibrate it, or
+qualification. SIDEREA does not yet obtain forced photometry, calibrate it, or
 certify its image provenance.
 
-`iris.heuristic_priority.v2` prefers magnitude evidence for amplitude and temporal
+`siderea.heuristic_priority.v2` prefers magnitude evidence for amplitude and temporal
 shape, then records an explicit forced-flux fallback basis when magnitude evidence
 is absent. This is a schema and scoring-version boundary: do not concatenate v2/v3
 feature records or v1/v2 score columns without version-aware migration.
@@ -145,7 +145,7 @@ identical numbers from scientifically different definitions.
 
 ### The priority score is not a probability
 
-The IRIS heuristic is a decomposed relative-priority index. Never map an old
+The SIDEREA heuristic is a decomposed relative-priority index. Never map an old
 `transient_score` field into a column named `probability_real`, and never present
 the new priority as a confidence. A future probability field requires a labelled,
 chronologically evaluated, calibrated model and model-version metadata.
@@ -167,7 +167,7 @@ an externally audited split. Flux records require explicit detection arrays.
 Training uses seeded deterministic algorithms by default, with an explicit
 `--allow-nondeterministic` opt-out, and held-out loss is computed across at least
 two seeded masks (`--evaluation-masks`, default five) with dispersion reported.
-Every newly tokenized curve carries a hashed `iris.light_curve_tokens.v3`
+Every newly tokenized curve carries a hashed `siderea.light_curve_tokens.v3`
 interpretation contract. Collation rejects different contracts, partial
 known/missing provenance, and digest mismatches; an entirely legacy batch remains
 loadable but is not silently upgraded to v3 provenance. The v3 token adds an
@@ -181,7 +181,7 @@ digest in checkpoint metadata and the training summary.
 These controls do not promote JEPA beyond shadow research or guarantee identical
 floating-point output across every hardware/software stack.
 
-Persisted `iris.embedding_index.v2` similarity indexes require SHA-256 identifiers
+Persisted `siderea.embedding_index.v2` similarity indexes require SHA-256 identifiers
 for the encoder, token contract, and dataset snapshot. Loading rejects legacy or
 incomplete provenance. The digests bind the matrix to declared artifacts but do
 not establish their trustworthiness or scientific validity.
@@ -203,7 +203,7 @@ fields and verifies a digest over the full checks, quality/manual flags,
 mandatory-service set, and binding policy.
 
 Verification artifacts imported by `analyze` must declare
-`iris.verification.v1`, a valid candidate ID/checks array, and a boolean manual
+`siderea.verification.v1`, a valid candidate ID/checks array, and a boolean manual
 review flag. Every check must contain the complete exact provenance shape;
 missing/unknown fields are rejected rather than receiving synthesized timestamps,
 attempts, or service metadata. A TNS `clear` additionally requires
@@ -230,7 +230,7 @@ candidate history for an older ledger's current rows, but legacy unbound reviews
 remain unbound and never become approvals by inference.
 
 ```bash
-iris review-add CANDIDATE_ID --candidate-version CANDIDATE_VERSION \
+siderea review-add CANDIDATE_ID --candidate-version CANDIDATE_VERSION \
   --reviewer REVIEWER --role reviewer --verdict approve \
   --reason "Independent evidence review complete"
 ```
@@ -240,7 +240,7 @@ separately governed reporting step. Exit code `3` means blocked and must not be
 converted to success:
 
 ```bash
-iris preflight CANDIDATE_ID --candidate-version CANDIDATE_VERSION
+siderea preflight CANDIDATE_ID --candidate-version CANDIDATE_VERSION
 ```
 
 This command is read-only and creates no registry payload.
@@ -250,7 +250,7 @@ not clear it. A separate CLI event records scientific adjudication against the
 exact current version:
 
 ```bash
-iris adjudication-add CANDIDATE_ID --candidate-version CANDIDATE_VERSION \
+siderea adjudication-add CANDIDATE_ID --candidate-version CANDIDATE_VERSION \
   --adjudicator ADJUDICATOR --verdict clear_context \
   --reason "Reviewed the catalogue association and resolved the ambiguity"
 ```
@@ -267,21 +267,21 @@ Mature downstream outcomes have the same stale-version guard and carry a taxonom
 version plus a digest of the optional evidence object:
 
 ```bash
-iris outcome-add CANDIDATE_ID --candidate-version CANDIDATE_VERSION \
-  --outcome confirmed_transient --taxonomy-version iris.outcome.v1 \
+siderea outcome-add CANDIDATE_ID --candidate-version CANDIDATE_VERSION \
+  --outcome confirmed_transient --taxonomy-version siderea.outcome.v1 \
   --evidence-json outcome-evidence.json
 ```
 
 ### TNS is read-only in the new package
 
-`iris.clients.tns` searches for duplicates. It validates the application-level
+`siderea.clients.tns` searches for duplicates. It validates the application-level
 success code and accepted result-array shapes, so a missing or malformed result is
 an error rather than an empty clearance. A clear result aggregates both its
 internal-name and sky-cone subchecks into one auditable digest and declares the
 binding contract described above; a generic legacy cone-only clear is not
 accepted. It does not submit. Continue to treat any report construction/transport
-as an explicit human-controlled step governed by the current I SPY submission
-protocol and live TNS policy.
+as an explicit human-controlled step governed by the archived historical
+submission protocol and the current live TNS policy.
 
 ## Migration phases
 
@@ -303,21 +303,21 @@ non-secret scientific provenance.
 ```bash
 python3 -m venv .venv
 .venv/bin/python -m pip install -e '.[all,dev]'
-.venv/bin/python -m iris doctor --strict
+.venv/bin/python -m siderea doctor --strict
 .venv/bin/python -m pytest
 ```
 
 Review the effective profile:
 
 ```bash
-.venv/bin/python -m iris config-show --config configs/default.toml
+.venv/bin/python -m siderea config-show --config configs/default.toml
 ```
 
 Exercise the local migration path on a copied input artifact before any live
 handover:
 
 ```bash
-.venv/bin/python -m iris analyze historical-photometry.csv \
+.venv/bin/python -m siderea analyze historical-photometry.csv \
   --config configs/default.toml
 ```
 
@@ -330,16 +330,16 @@ artifacts. Use an explicit preserved audit seed for a preregistered campaign, or
 omit it once and retain the seed generated in the bundle:
 
 ```bash
-.venv/bin/python -m iris review-set \
-  var/iris/runs/RUN_ID/ranked_candidates.csv \
-  var/iris/runs/RUN_ID/candidates.json \
-  var/iris/review-sets/NIGHT_ID \
+.venv/bin/python -m siderea review-set \
+  var/siderea/runs/RUN_ID/ranked_candidates.csv \
+  var/siderea/runs/RUN_ID/candidates.json \
+  var/siderea/review-sets/NIGHT_ID \
   --audit-slots 2 --audit-seed CAMPAIGN_NIGHT_SEED
 ```
 
-The repository default profile resolves storage to `var/iris/` in this checkout.
+The repository default profile resolves storage to `var/siderea/` in this checkout.
 An installed package used without the repository profile falls back to the
-bundled configuration and `~/.iris`. Before live use, select the profile
+bundled configuration and `~/.siderea`. Before live use, select the profile
 explicitly and define backup, access, retention, and secret-handling policy for
 its resolved storage location.
 
@@ -379,11 +379,11 @@ and decision cutoff. Compare:
 
 Investigate disagreements candidate-by-candidate. Classify each as a legacy bug,
 new bug, intentional policy change, upstream-data difference, or unresolved.
-Publish the full disagreement table, not only examples that favor IRIS.
+Publish the full disagreement table, not only examples that favor SIDEREA.
 
 ### Phase 4 — Live shadow operation
 
-Run IRIS beside the established human workflow without changing what reviewers
+Run SIDEREA beside the established human workflow without changing what reviewers
 see initially. Capture the complete pre-ranking denominator and reserve random
 audit slots with the implemented seeded queue route so the missed-positive rate
 can be estimated. Preserve the queue's population, inclusion probability,
@@ -422,7 +422,7 @@ deleting them. Before retirement:
 - external service failure drills pass with zero fail-open outcomes;
 - reviewer independence is demonstrated end to end;
 - a rollback rehearsal succeeds; and
-- the final legacy run and first canonical IRIS run are recorded.
+- the final legacy run and first canonical SIDEREA run are recorded.
 
 Tag or archive the legacy tree read-only and keep enough environment information
 to interpret historical results.

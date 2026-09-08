@@ -5,9 +5,9 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from iris.ledger import OutcomeLedger
-from iris.review.dossier import write_candidate_dossier
-from iris.review.server import (
+from siderea.ledger import OutcomeLedger
+from siderea.review.dossier import write_candidate_dossier
+from siderea.review.server import (
     _candidate_page,
     _loopback_host_header,
     _parse_form,
@@ -181,7 +181,7 @@ class ReviewServerTests(unittest.TestCase):
             )
             payload = json.loads((first.parent / "dossier.json").read_text(encoding="utf-8"))
 
-            self.assertEqual(payload["schema"], "iris.review_dossier.v2")
+            self.assertEqual(payload["schema"], "siderea.review_dossier.v2")
             self.assertEqual(payload["candidate_version"], "a" * 64)
             self.assertEqual(len(payload["dossier_digest"]), 64)
             with self.assertRaisesRegex(FileExistsError, "will not be overwritten"):

@@ -1,0 +1,11 @@
+{
+  "scope": "active src/siderea only; AST empty bodies, not a proof of scientific completeness",
+  "findings": [
+    {
+      "path": "src/siderea/anomaly.py",
+      "line": 21,
+      "name": "score_samples",
+      "classification": "interface or intentionally empty hook; inspected separately"
+    }
+  ]
+}

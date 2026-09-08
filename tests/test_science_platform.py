@@ -5,10 +5,10 @@ from datetime import UTC, datetime
 
 import numpy as np
 
-from iris.anomaly import RobustAnomalyDetector
-from iris.campaigns import CampaignProfile, get_campaign
-from iris.evaluation import chronological_indices, ranking_metrics
-from iris.followup import (
+from siderea.anomaly import RobustAnomalyDetector
+from siderea.campaigns import CampaignProfile, get_campaign
+from siderea.evaluation import chronological_indices, ranking_metrics
+from siderea.followup import (
     FollowupFactors,
     explain_followup_priority,
     followup_priority,

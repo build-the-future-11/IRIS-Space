@@ -8,20 +8,20 @@ from pathlib import Path
 
 import numpy as np
 
-from iris.clients.base import ResilientExecutor
-from iris.integrity import (
+from siderea.clients.base import ResilientExecutor
+from siderea.integrity import (
     candidate_observations_digest,
     candidate_record_digest,
     candidate_run_binding_digest,
     candidate_version_basis,
 )
-from iris.ledger import OutcomeLedger
-from iris.manifest import RUN_MANIFEST_SCHEMA
-from iris.provenance import CheckProvenance, CheckStatus, digest_file, digest_value
-from iris.reporting.preflight import reporting_preflight
-from iris.similarity import EmbeddingIndex
-from iris.validation import EvidenceBindingContext, preflight_digest
-from iris.validation.gates import GateDecision, evaluate_reportability
+from siderea.ledger import OutcomeLedger
+from siderea.manifest import RUN_MANIFEST_SCHEMA
+from siderea.provenance import CheckProvenance, CheckStatus, digest_file, digest_value
+from siderea.reporting.preflight import reporting_preflight
+from siderea.similarity import EmbeddingIndex
+from siderea.validation import EvidenceBindingContext, preflight_digest
+from siderea.validation.gates import GateDecision, evaluate_reportability
 
 
 class SafetyGateTests(unittest.TestCase):
@@ -94,7 +94,7 @@ class SafetyGateTests(unittest.TestCase):
             "matched_services": [],
         }
         basis = candidate_version_basis(
-            pipeline_version="iris.local_analysis.v3",
+            pipeline_version="siderea.local_analysis.v3",
             candidate_id="ZTF-test",
             campaign="ispy",
             observations_digest=observation_digest,
@@ -117,7 +117,7 @@ class SafetyGateTests(unittest.TestCase):
             "run_id": run_id,
             "scientific_fingerprint": fingerprint,
             "candidate_id": "ZTF-test",
-            "pipeline_version": "iris.local_analysis.v3",
+            "pipeline_version": "siderea.local_analysis.v3",
             "candidate_version": version,
             "observations_digest": observation_digest,
             "observations": observations,
@@ -141,10 +141,10 @@ class SafetyGateTests(unittest.TestCase):
         candidate_path.write_text(
             json.dumps(
                 {
-                    "schema": "iris.candidates.v1",
+                    "schema": "siderea.candidates.v1",
                     "run_id": run_id,
                     "scientific_fingerprint": fingerprint,
-                    "pipeline_version": "iris.local_analysis.v3",
+                    "pipeline_version": "siderea.local_analysis.v3",
                     "candidates": [payload],
                 },
                 sort_keys=True,
@@ -152,7 +152,7 @@ class SafetyGateTests(unittest.TestCase):
             encoding="utf-8",
         )
         configuration = {
-            "pipeline_version": "iris.local_analysis.v3",
+            "pipeline_version": "siderea.local_analysis.v3",
             "scientific_fingerprint": fingerprint,
         }
         manifest_path = ledger.path.parent / "safety-fixture.manifest.json"
@@ -179,7 +179,7 @@ class SafetyGateTests(unittest.TestCase):
             encoding="utf-8",
         )
         payload["publication"] = {
-            "schema": "iris.run_publication.v1",
+            "schema": "siderea.run_publication.v1",
             "run_id": run_id,
             "manifest_path": str(manifest_path),
             "manifest_sha256": digest_file(manifest_path),

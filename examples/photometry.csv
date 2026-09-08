@@ -1,8 +1,8 @@
 source_id,ra_deg,dec_deg,mjd,band,magnitude,magnitude_error,is_detection,limiting_magnitude,survey
-IRIS-DEMO-A,150.1000,2.3000,61000.0,g,,,false,20.8,demo
-IRIS-DEMO-A,150.1000,2.3000,61001.0,g,20.1,0.12,true,,demo
-IRIS-DEMO-A,150.1000,2.3000,61002.0,g,18.7,0.08,true,,demo
-IRIS-DEMO-A,150.1000,2.3000,61003.0,g,19.0,0.09,true,,demo
-IRIS-DEMO-B,42.2000,-12.5000,61000.5,r,19.8,0.10,true,,demo
-IRIS-DEMO-B,42.2000,-12.5000,61001.5,r,19.7,0.10,true,,demo
-IRIS-DEMO-B,42.2000,-12.5000,61002.5,r,19.8,0.11,true,,demo
+SIDEREA-DEMO-A,150.1000,2.3000,61000.0,g,,,false,20.8,demo
+SIDEREA-DEMO-A,150.1000,2.3000,61001.0,g,20.1,0.12,true,,demo
+SIDEREA-DEMO-A,150.1000,2.3000,61002.0,g,18.7,0.08,true,,demo
+SIDEREA-DEMO-A,150.1000,2.3000,61003.0,g,19.0,0.09,true,,demo
+SIDEREA-DEMO-B,42.2000,-12.5000,61000.5,r,19.8,0.10,true,,demo
+SIDEREA-DEMO-B,42.2000,-12.5000,61001.5,r,19.7,0.10,true,,demo
+SIDEREA-DEMO-B,42.2000,-12.5000,61002.5,r,19.8,0.11,true,,demo

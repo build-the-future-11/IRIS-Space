@@ -8,13 +8,13 @@ from pathlib import Path
 
 import numpy as np
 
-from iris.host import (
+from siderea.host import (
     HostCandidate,
     angular_separation_arcsec,
     associate_hosts,
     chance_coincidence_association,
 )
-from iris.ml.baseline import (
+from siderea.ml.baseline import (
     SKLEARN_AVAILABLE,
     BaselineConfig,
     chronological_split,
@@ -22,7 +22,7 @@ from iris.ml.baseline import (
     load_baseline_bundle,
     save_baseline_bundle,
 )
-from iris.ranking import QueueCandidate, build_nightly_queue
+from siderea.ranking import QueueCandidate, build_nightly_queue
 
 
 class ChronologicalSplitTests(unittest.TestCase):
@@ -326,7 +326,7 @@ class NightlyQueueTests(unittest.TestCase):
 
         self.assertEqual(first, replay)
         self.assertEqual(len(first.entries), 4)
-        self.assertEqual(first.schema, "iris.nightly_queue.v2")
+        self.assertEqual(first.schema, "siderea.nightly_queue.v2")
         self.assertEqual(first.audit_population, 6)
         self.assertEqual(first.used_audit_slots, 1)
         self.assertAlmostEqual(first.audit_selection_probability or 0.0, 1.0 / 6.0)

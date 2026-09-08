@@ -2,7 +2,7 @@
 
 This file preserves the retired implementation for provenance and migration
 review. It is intentionally Markdown, not an executable Python module. The
-implementation predates current-version IRIS candidate binding, independent
+implementation predates current-version SIDEREA candidate binding, independent
 review enforcement, and `reporting_preflight`; it must not be restored or used
 to prepare a report.
 

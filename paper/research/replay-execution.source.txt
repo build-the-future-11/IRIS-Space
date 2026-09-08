@@ -1,0 +1,18 @@
+import json
+from pathlib import Path
+from siderea.config import load_config
+from siderea.pipeline import analyze_csv
+from siderea.provenance import digest_file
+root = Path('.test-tmp/replay-execution')
+records = []
+for label in ('a', 'b'):
+    result = analyze_csv(Path('examples/photometry.csv'), load_config(), output_dir=root/label, ledger_path=root/(label+'.sqlite'))
+    records.append(result)
+print(records)
+a, b = records
+artifacts = {name: digest_file(a.run_dir/name) == digest_file(b.run_dir/name) for name in ('photometry.normalized.csv','features.csv','ranked_candidates.csv')}
+ca, cb = [json.loads(r.candidates_path.read_text())['candidates'] for r in records]
+versions = [{c['candidate_id']:c['candidate_version'] for c in cs} for cs in (ca, cb)]
+report = {'fingerprint_a':a.scientific_fingerprint,'fingerprint_b':b.scientific_fingerprint,'artifacts_identical':artifacts,'versions_identical':versions[0]==versions[1],'candidates_per_run':len(ca),'reportable_per_run':sum(c.get('reportable',False) for c in ca),'input_sha256':digest_file(Path('examples/photometry.csv')),'scope':'synthetic deterministic safety replay; no live services','command':'PYTHONPATH=src python .test-tmp/finish-validation/replay_execution.py'}
+assert report['fingerprint_a']==report['fingerprint_b'] and all(artifacts.values()) and report['versions_identical']
+Path('paper/research/replay-execution.json').write_text(json.dumps(report,indent=2)+'\n')

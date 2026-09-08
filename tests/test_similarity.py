@@ -6,7 +6,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from iris.similarity import EmbeddingIndex
+from siderea.similarity import EmbeddingIndex
 
 
 def _tied_neighbor_ids(candidate_ids: list[str], *, exclude_id: str = "") -> list[str]:

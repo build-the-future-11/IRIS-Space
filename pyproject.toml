@@ -3,9 +3,9 @@ requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "iris-astronomy"
-version = "0.2.0"
-description = "IRIS: reproducible, human-supervised astronomical transient discovery"
+name = "siderea-astronomy"
+version = "0.3.0"
+description = "SIDEREA: reproducible, human-supervised astronomical transient discovery"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "LicenseRef-Proprietary"
@@ -59,7 +59,7 @@ dev = [
 ]
 
 [project.scripts]
-iris = "iris.cli:main"
+siderea = "siderea.cli:main"
 
 [tool.setuptools]
 package-dir = { "" = "src" }
@@ -68,7 +68,7 @@ package-dir = { "" = "src" }
 where = ["src"]
 
 [tool.setuptools.package-data]
-iris = ["default.toml", "py.typed"]
+siderea = ["default.toml", "py.typed"]
 
 [tool.pytest.ini_options]
 addopts = "-ra --strict-config --strict-markers"
@@ -78,7 +78,7 @@ xfail_strict = true
 
 [tool.coverage.run]
 branch = true
-source = ["iris"]
+source = ["siderea"]
 
 [tool.coverage.report]
 fail_under = 70
@@ -107,7 +107,7 @@ select = ["E", "F", "I", "UP", "B", "SIM"]
 [tool.mypy]
 python_version = "3.11"
 strict = true
-packages = ["iris"]
+packages = ["siderea"]
 
 [[tool.mypy.overrides]]
 module = [

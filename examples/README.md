@@ -1,17 +1,17 @@
-# IRIS examples
+# SIDEREA examples
 
 `photometry.csv` exercises local, offline analysis:
 
 ```bash
-PYTHONPATH=src python -m iris analyze examples/photometry.csv
+PYTHONPATH=src python -m siderea analyze examples/photometry.csv
 ```
 
 `baseline_training.csv` is a tiny synthetic CLI fixture—not scientific training
 data—for exercising the chronological supervised-baseline command:
 
 ```bash
-PYTHONPATH=src python -m iris baseline-train \
-  examples/baseline_training.csv /tmp/iris-baseline-smoke \
+PYTHONPATH=src python -m siderea baseline-train \
+  examples/baseline_training.csv /tmp/siderea-baseline-smoke \
   --label is_target --time decision_mjd --entity object_id \
   --features amplitude significance missing_fraction \
   --train-fraction 0.60 --calibration-fraction 0.20 --review-budget 2
@@ -28,9 +28,9 @@ experiments. Their entity IDs are disjoint and their validation times follow the
 training times, so they satisfy the default chronological split contract.
 
 ```bash
-PYTHONPATH=src python -m iris jepa-train --config configs/jepa.toml \
+PYTHONPATH=src python -m siderea jepa-train --config configs/jepa.toml \
   examples/jepa_train.jsonl examples/jepa_validation.jsonl \
-  /tmp/iris-jepa-smoke --epochs 1 --batch-size 2 \
+  /tmp/siderea-jepa-smoke --epochs 1 --batch-size 2 \
   --evaluation-masks 2 --device cpu
 ```
 

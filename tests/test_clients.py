@@ -5,10 +5,10 @@ import types
 import unittest
 from unittest.mock import patch
 
-from iris.clients.base import ResilientExecutor, ServiceResult
-from iris.clients.catalogs import SimbadClient, SkyBotClient, VSXClient
-from iris.clients.tns import TNSClient, TNSCredentials, _validate_response
-from iris.provenance import CheckProvenance, CheckStatus, digest_value
+from siderea.clients.base import ResilientExecutor, ServiceResult
+from siderea.clients.catalogs import SimbadClient, SkyBotClient, VSXClient
+from siderea.clients.tns import TNSClient, TNSCredentials, _validate_response
+from siderea.provenance import CheckProvenance, CheckStatus, digest_value
 
 
 class _Unit:
@@ -120,7 +120,7 @@ class CatalogClientTests(unittest.TestCase):
         _validate_response({"id_code": 200, "data": []})
 
     def test_tns_endpoint_must_be_https(self):
-        credentials = TNSCredentials("secret", "1", "iris-test")
+        credentials = TNSCredentials("secret", "1", "siderea-test")
         for endpoint in ("", "file:///etc/passwd", "http://example.test/search"):
             with self.subTest(endpoint=endpoint), self.assertRaisesRegex(ValueError, "HTTPS"):
                 TNSClient(credentials, endpoint=endpoint)
@@ -130,12 +130,12 @@ class CatalogClientTests(unittest.TestCase):
 
     def test_tns_credentials_and_timeout_are_strictly_typed(self):
         with self.assertRaisesRegex(TypeError, "credentials must be strings"):
-            TNSCredentials(123, "1", "iris-test").validate()  # type: ignore[arg-type]
+            TNSCredentials(123, "1", "siderea-test").validate()  # type: ignore[arg-type]
         with self.assertRaisesRegex(TypeError, "timeout_seconds must be a number"):
-            TNSClient(TNSCredentials("secret", "1", "iris-test"), timeout_seconds=True)
+            TNSClient(TNSCredentials("secret", "1", "siderea-test"), timeout_seconds=True)
 
     def test_tns_search_rejects_boolean_coordinates_and_non_string_identity(self):
-        client = TNSClient(TNSCredentials("secret", "1", "iris-test"))
+        client = TNSClient(TNSCredentials("secret", "1", "siderea-test"))
         with self.assertRaisesRegex(TypeError, "internal_name must be a string"):
             client.search(internal_name=123, ra=10.0, dec=20.0)  # type: ignore[arg-type]
         with self.assertRaisesRegex(TypeError, "ra must be a number"):
@@ -154,7 +154,7 @@ class CatalogClientTests(unittest.TestCase):
         executor = ResilientExecutor(attempts=1)
         policy = {
             "timeout_seconds": 4.25,
-            "user_agent": "iris-observatory/contact@example.test",
+            "user_agent": "siderea-observatory/contact@example.test",
         }
         clients_and_queries = (
             (SkyBotClient(executor, **policy), {"ra": 1, "dec": 2, "mjd": 60000}),
@@ -173,7 +173,7 @@ class CatalogClientTests(unittest.TestCase):
                 self.assertEqual(observed["request_timeout"], 4.25)
                 self.assertEqual(
                     observed["user_agent"],
-                    "astroquery/test iris-observatory/contact@example.test",
+                    "astroquery/test siderea-observatory/contact@example.test",
                 )
         for result in results:
             self.assertEqual(result.provenance.query["network_policy"], policy)
@@ -197,10 +197,10 @@ class CatalogClientTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "finite and positive"):
             SkyBotClient(timeout_seconds=float("inf"))
         with self.assertRaisesRegex(ValueError, "line breaks"):
-            SimbadClient(user_agent="iris-good\r\nInjected: bad")
+            SimbadClient(user_agent="siderea-good\r\nInjected: bad")
 
     def test_tns_clear_attests_both_name_and_cone_responses(self):
-        client = TNSClient(TNSCredentials("secret", "1", "iris-test"))
+        client = TNSClient(TNSCredentials("secret", "1", "siderea-test"))
         by_name = ServiceResult(
             provenance=CheckProvenance(
                 service="tns",

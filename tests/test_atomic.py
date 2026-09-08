@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from iris.atomic import atomic_create_binary, atomic_write_bytes, atomic_write_text
+from siderea.atomic import atomic_create_binary, atomic_write_bytes, atomic_write_text
 
 
 class AtomicWriteTests(unittest.TestCase):
@@ -19,7 +19,7 @@ class AtomicWriteTests(unittest.TestCase):
             predictable.symlink_to(victim)
 
             with patch(
-                "iris.atomic.secrets.token_hex",
+                "siderea.atomic.secrets.token_hex",
                 side_effect=("predictable", "exclusive"),
             ):
                 atomic_write_text(destination, '{"ok": true}\n')
@@ -36,8 +36,8 @@ class AtomicWriteTests(unittest.TestCase):
             temporary = root / ".result.bin.exclusive.tmp"
 
             with (
-                patch("iris.atomic.secrets.token_hex", return_value="exclusive"),
-                patch("iris.atomic.os.replace", side_effect=OSError("injected failure")),
+                patch("siderea.atomic.secrets.token_hex", return_value="exclusive"),
+                patch("siderea.atomic.os.replace", side_effect=OSError("injected failure")),
                 self.assertRaisesRegex(OSError, "injected failure"),
             ):
                 atomic_write_bytes(destination, b"new")

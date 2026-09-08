@@ -9,6 +9,9 @@ __pycache__/
 .ruff_cache/
 .mypy_cache/
 .test-tmp/
+.coverage
+.coverage.*
+htmlcov/
 build/
 dist/
 *.egg-info/
@@ -19,6 +22,7 @@ runs/
 outputs/
 output/
 tmp/
+siderea-audit.*/
 iris-audit.*/
 torchinductor_*/
 checkpoints/

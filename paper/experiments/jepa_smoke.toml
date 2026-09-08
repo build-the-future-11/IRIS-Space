@@ -1,0 +1,13 @@
+[general]
+name = "SIDEREA"
+campaign = "synthetic_jepa_smoke"
+environment = "research"
+
+[jepa]
+enabled = true
+shadow_mode = true
+embedding_dim = 32
+encoder_layers = 2
+attention_heads = 4
+batch_size = 2
+seed = 2026

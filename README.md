@@ -1,6 +1,14 @@
-# IRIS — human-supervised astronomical discovery
+# SIDEREA — human-supervised astronomical discovery
 
-IRIS is a reproducible candidate-discovery platform being built from the original
+**SIDEREA** expands to **System for Irregular-lightcurve Discovery,
+Evidence-bound Ranking, and Expert Assessment**. The name also evokes
+*sidereal*: of or measured relative to the stars. SIDEREA is the software;
+IRIS is the conference for which the accompanying paper is prepared.
+
+For an offline walkthrough with expected outputs and no credentials, start with
+[the first-run guide](docs/FIRST_RUN.md).
+
+SIDEREA is a reproducible candidate-discovery platform built from the original
 **I SPY** optical-transient scripts. It provides typed candidate records,
 survey- and filter-aware light-curve features, explainable prioritization, fail-closed
 catalogue checks, review and outcome ledgers, reproducibility records, and an
@@ -12,10 +20,15 @@ as a clear catalogue search, and this repository contains no unattended TNS
 submission path.
 
 > **Maturity:** research software under active migration. The package components
-> under `src/iris/` are covered by unit-level tests, but the full live
+> under `src/siderea/` are covered by unit-level tests, but the full live
 > broker-to-report workflow has not yet completed a prospective validation
-> campaign. Do not describe IRIS scores as discovery probabilities or use them as
+> campaign. Do not describe SIDEREA scores as discovery probabilities or use them as
 > sole evidence for an astronomical claim.
+
+The public research-alpha scope is local CSV analysis, immutable evidence and
+human review, and explicitly shadow-only synthetic/model experiments. Sustained
+live polling, hosted multi-user sessions and physical classification remain
+unqualified or unimplemented. External report submission is deliberately absent.
 
 ## What is implemented
 
@@ -28,19 +41,19 @@ submission path.
   broker snapshot sidecar is accepted only when its photometry digest matches
   the exact CSV bytes being parsed; those same immutable bytes are archived in
   the run rather than reopening a possibly replaced source path.
-- An immutable `iris.local_analysis.v4` pipeline with a deterministic scientific
+- An immutable `siderea.local_analysis.v4` pipeline with a deterministic scientific
   fingerprint that writes normalized photometry, features, rankings, consolidated
   candidate evidence, a dataset snapshot, a run manifest, and ledger state. Each
   candidate also receives an immutable scientific-evidence digest; missing external
   checks are materialized as pending without making repeated local runs appear to
   have new evidence. The manifest hashes artifacts and effective configuration,
-  records Git state when available, and always records a digest of the IRIS code
-  used: the source/config tree in a checkout or the installed `iris` package tree
+  records Git state when available, and always records a digest of the SIDEREA code
+  used: the source/config tree in a checkout or the installed `siderea` package tree
   when no checkout is available. Once a run directory is created, normal
   completion, caught processing failure, and user interruption close a terminal
   manifest; failure/interruption manifests inventory finalized partial artifacts
   when possible.
-- A lazy `iris.ingest.alerce.v4` broker adapter behind the common ingestion
+- A lazy `siderea.ingest.alerce.v4` broker adapter behind the common ingestion
   protocol, with an explicit `ztf` or `lsst` survey namespace on every broker
   call. ZTF and Rubin/LSST use separate object-query, photometry, and quality
   contracts; the accepted contract and bounded network policy are retained in
@@ -49,7 +62,7 @@ submission path.
   canonical CSV/provenance pair whose identity and content digest are verified
   on later ingestion.
 - Immutable candidate, observation, evidence, and lifecycle records.
-- Versioned `iris.photometry.v4` features for magnitudes and supplied
+- Versioned `siderea.photometry.v4` features for magnitudes and supplied
   forced/difference fluxes. When survey identity is present, statistics and prior
   non-detection pairing stay inside a survey/passband channel, so equally named
   filters from different facilities are never pooled. The flux path exposes
@@ -77,7 +90,7 @@ submission path.
   the evidence reviewers saw. Ambiguous catalogue context can be resolved only by
   a reason-coded adjudication bound to that same version, and downstream outcomes
   are likewise bound to the exact current candidate version and hashed evidence.
-  The v4 ledger retains an append-only first-seen snapshot for every candidate
+  The v6 ledger retains an append-only first-seen snapshot for every candidate
   version, exposes version-history lookup, and rejects orphan version references,
   so an older review/outcome remains reconstructable after the current candidate
   advances.
@@ -89,7 +102,9 @@ submission path.
   token-contract digests.
 - A loopback-only local review queue with bounded form input, per-process CSRF
   protection, reason-coded decisions, and no reporting endpoint. It is a research
-  UI, not an authenticated multi-user service.
+  UI with optional signed-principal sessions and immutable trusted-key review
+  policy, not a multi-user identity provider. Queue filtering, pagination and
+  channel-local light-curve previews support evidence inspection.
 - A leakage-aware logistic-regression baseline with time-blocked
   train/calibration/test partitions, a required entity-ID purging policy or an
   explicit unique-entity assertion, held-out sigmoid calibration, and explicit
@@ -110,7 +125,7 @@ submission path.
   asserted predefined splits, deterministic algorithms by default, repeated-mask
   held-out evaluation, and representation-collapse diagnostics. Flux-token
   records require explicit detection flags. Each tokenized curve carries the
-  versioned `iris.light_curve_tokens.v3` contract and its SHA-256; batching rejects
+  versioned `siderea.light_curve_tokens.v3` contract and its SHA-256; batching rejects
   mixed, incomplete, or internally inconsistent known token contracts (while
   retaining support for an entirely legacy/unprovenanced batch). Training,
   repeated-mask evaluation, and embedding extraction propagate one run-level
@@ -119,19 +134,26 @@ submission path.
   checkpoint and summary. It is shadow research only.
 
 The implemented forced-flux path is **extraction from measurements already present
-in an input table**. IRIS does not yet request forced photometry from a survey,
+in an input table**. SIDEREA does not yet request forced photometry from a survey,
 calibrate it, or independently validate its image-level provenance. Those
 acquisition and qualification steps remain future operational work.
 
 The operational gaps and evidence needed before scientific deployment are tracked
 in [`docs/ROADMAP.md`](docs/ROADMAP.md) and
 [`docs/SCIENTIFIC_VALIDATION.md`](docs/SCIENTIFIC_VALIDATION.md). The complete
-0.2.0 implementation and adversarial audit is recorded in
+0.3.0 implementation and adversarial audit is recorded in
 [`docs/AUDIT_2026-09-06.md`](docs/AUDIT_2026-09-06.md); the final executed
 verification and prioritized handoff are in
 [`docs/PROJECT_EXECUTION_REPORT.md`](docs/PROJECT_EXECUTION_REPORT.md).
 Development and disclosure procedures are in [`CONTRIBUTING.md`](CONTRIBUTING.md)
 and [`SECURITY.md`](SECURITY.md).
+
+The current implementation assessment is
+[`docs/PROJECT_STATUS_2026-09-08.md`](docs/PROJECT_STATUS_2026-09-08.md).
+The executed work and specific problem/solution/acceptance backlog are maintained in
+[`PROJECT_FINISH_CHECKLIST.md`](PROJECT_FINISH_CHECKLIST.md). New authentication,
+cohort, recovery and packaging procedures are in
+[`docs/LOCAL_OPERATIONS.md`](docs/LOCAL_OPERATIONS.md).
 
 ## Install
 
@@ -153,19 +175,19 @@ legacy-ZTF/multi-survey session and LSST query contracts used by adapter v4.
 Scikit-learn is needed for the supervised baseline and optional Isolation Forest.
 PyTorch is needed for TS-JEPA training or embedding extraction. For
 accelerator-specific PyTorch builds, use the installation method appropriate to
-that machine. The rest of IRIS remains importable without the ML extra.
+that machine. The rest of SIDEREA remains importable without the ML extra.
 
 ## Local checks
 
 ```bash
 # Works from a source checkout without installation.
-PYTHONPATH=src python3 -m iris doctor
-PYTHONPATH=src python3 -m iris config-show
+PYTHONPATH=src python3 -m siderea doctor
+PYTHONPATH=src python3 -m siderea config-show
 
 # With the editable development install.
 .venv/bin/python -m pytest
 .venv/bin/ruff check src tests
-.venv/bin/python -m mypy src/iris
+.venv/bin/python -m mypy src/siderea
 
 # Equivalent release-oriented local gate.
 make check PYTHON=.venv/bin/python
@@ -179,7 +201,7 @@ signal, not permission to weaken a validation gate.
 
 ## Command surface
 
-Run `iris COMMAND --help` for all arguments.
+Run `siderea COMMAND --help` for all arguments.
 
 | Command | Purpose | Important boundary |
 |---|---|---|
@@ -214,7 +236,7 @@ output JSON prints a new immutable run directory and its deterministic scientifi
 fingerprint:
 
 ```bash
-iris analyze photometry.csv --config configs/default.toml
+siderea analyze photometry.csv --config configs/default.toml
 ```
 
 The fingerprint identifies scientific content and policy. The manifest separately
@@ -235,13 +257,13 @@ atomically package the exact ranking and candidate evidence with every selected
 dossier:
 
 ```bash
-iris queue var/iris/runs/RUN_ID/ranked_candidates.csv \
+siderea queue var/siderea/runs/RUN_ID/ranked_candidates.csv \
   --audit-slots 2 --audit-seed CAMPAIGN_NIGHT_SEED \
-  --output var/iris/review-queues/NIGHT_ID.json
+  --output var/siderea/review-queues/NIGHT_ID.json
 
-iris review-set var/iris/runs/RUN_ID/ranked_candidates.csv \
-  var/iris/runs/RUN_ID/candidates.json \
-  var/iris/review-sets/NIGHT_ID \
+siderea review-set var/siderea/runs/RUN_ID/ranked_candidates.csv \
+  var/siderea/runs/RUN_ID/candidates.json \
+  var/siderea/review-sets/NIGHT_ID \
   --audit-slots 2 --audit-seed CAMPAIGN_NIGHT_SEED
 ```
 
@@ -257,7 +279,7 @@ After inspecting the photometry and images, run live validation. Supply
 `--quality-passed` only when the upstream quality review actually passed:
 
 ```bash
-iris verify CANDIDATE_ID RA_DEG DEC_DEG PEAK_MJD \
+siderea verify CANDIDATE_ID RA_DEG DEC_DEG PEAK_MJD \
   --skybot-mjd OTHER_DETECTION_MJD \
   --skybot-mjd ANOTHER_DETECTION_MJD \
   --quality-passed \
@@ -269,7 +291,7 @@ every other distinct detection epoch that must be cleared. SkyBoT is queried onc
 per epoch; the aggregate is clear only if every query is clear. A match at any
 epoch vetoes, while an error, disabled, stale, or pending component blocks. When
 verification JSON is imported, the local pipeline requires the top-level
-`iris.verification.v1` schema, a valid candidate ID/checks array, a boolean manual
+`siderea.verification.v1` schema, a valid candidate ID/checks array, a boolean manual
 review flag, and complete, exactly shaped provenance fields; it does not
 synthesize missing timestamps, attempts, or service metadata. It also
 independently requires coverage of every distinct usable detection MJD in that
@@ -277,7 +299,7 @@ candidate's normalized photometry.
 
 TNS duplicate search requires all three runtime variables: `TNS_API_KEY`,
 `TNS_BOT_ID`, and `TNS_BOT_NAME`. With none configured, or with
-`--disable-network`, IRIS writes explicit disabled evidence and blocks the gate.
+`--disable-network`, SIDEREA writes explicit disabled evidence and blocks the gate.
 An HTTP-level success with a missing, differently shaped, or non-object TNS result
 array is recorded as an error and also blocks. Imported TNS clearance is accepted
 only with service version `tns-two-stage-search.v1`, the ordered internal-name and
@@ -295,7 +317,7 @@ Checks that are matched, failed, disabled, malformed, unbound, or expired remain
 blocked:
 
 ```bash
-iris analyze photometry.csv --checks-json verification.json
+siderea analyze photometry.csv --checks-json verification.json
 ```
 
 If the resulting candidate has `manual_review_required: true`, catalogue context
@@ -304,7 +326,7 @@ after a scientific reviewer has actually resolved the ambiguity; `reject` remain
 blocking, and without an active `clear_context` the ambiguity remains unresolved:
 
 ```bash
-iris adjudication-add CANDIDATE_ID --candidate-version CANDIDATE_VERSION \
+siderea adjudication-add CANDIDATE_ID --candidate-version CANDIDATE_VERSION \
   --adjudicator ADJUDICATOR_NAME --verdict clear_context \
   --reason "Inspected catalogue association and resolved the host context"
 ```
@@ -314,7 +336,9 @@ The latest decision from each normalized adjudicator is active. Any active
 manual flag. This event resolves only the catalogue-context gate—it cannot waive
 a known-object match, failed quality, missing service evidence, or independent
 approval. Like reviewer names in the loopback UI, the CLI adjudicator name is an
-audit label, not authenticated identity.
+audit label, not authenticated identity. For authenticated policies, use the
+signed-principal options described in [local operations](docs/LOCAL_OPERATIONS.md);
+typed identities cannot satisfy those policies.
 
 Then record a screener and the configured number of reviewer approvals, including
 at least one reviewer different from the screener, against that exact version, or
@@ -323,15 +347,15 @@ changing photometry, evidence, or scientific policy creates a new version for
 which old reviews and adjudications do not count:
 
 ```bash
-iris review-add CANDIDATE_ID --candidate-version CANDIDATE_VERSION \
+siderea review-add CANDIDATE_ID --candidate-version CANDIDATE_VERSION \
   --reviewer SCREEN_NAME --role screener --verdict approve \
   --reason "Reviewed light curve and image sequence"
 
-iris review-add CANDIDATE_ID --candidate-version CANDIDATE_VERSION \
+siderea review-add CANDIDATE_ID --candidate-version CANDIDATE_VERSION \
   --reviewer REVIEW_NAME --role reviewer --verdict approve \
   --reason "Independent evidence review complete"
 
-iris review-serve
+siderea review-serve
 ```
 
 Finally, run the read-only preflight against the same immutable version. It
@@ -341,7 +365,7 @@ valid approvals for that version. A blocked result is emitted as structured JSON
 with exit code `3`; no report material is created:
 
 ```bash
-iris preflight CANDIDATE_ID --candidate-version CANDIDATE_VERSION
+siderea preflight CANDIDATE_ID --candidate-version CANDIDATE_VERSION
 ```
 
 `review-add` and `adjudication-add` append ledger evidence; neither rewrites an
@@ -351,12 +375,12 @@ execution ID. The candidate version remains the same because neither the executi
 ID nor the later workflow state changes the underlying scientific evidence:
 
 ```bash
-iris analyze photometry.csv --checks-json verification.json \
+siderea analyze photometry.csv --checks-json verification.json \
   --run-id approved-CANDIDATE_ID
 ```
 
 This can update local workflow/reportability state only. The separate `preflight`
-command is the authoritative readiness check at execution time. IRIS still has no
+command is the authoritative readiness check at execution time. SIDEREA still has no
 production report transport or unattended submission path.
 
 When a downstream outcome has genuinely matured, bind the taxonomy and optional
@@ -364,8 +388,8 @@ evidence object to the exact current candidate version. The ledger hashes that
 evidence and rejects stale versions:
 
 ```bash
-iris outcome-add CANDIDATE_ID --candidate-version CANDIDATE_VERSION \
-  --outcome confirmed_transient --taxonomy-version iris.outcome.v1 \
+siderea outcome-add CANDIDATE_ID --candidate-version CANDIDATE_VERSION \
+  --outcome confirmed_transient --taxonomy-version siderea.outcome.v1 \
   --evidence-json outcome-evidence.json
 ```
 
@@ -379,17 +403,17 @@ created by that invocation. Consequently a visible CSV cannot precede its comple
 sidecar; an uncatchable process/filesystem failure can at worst leave a sidecar-only
 residue that makes the next invocation fail closed. The CSV carries a snapshot
 identity marker, and the sidecar binds that identity to the CSV SHA-256 and broker
-metadata. `iris analyze` rejects a missing, mixed, malformed, or altered pair.
+metadata. `siderea analyze` rejects a missing, mixed, malformed, or altered pair.
 Direct local CSV inputs are also hashed and registered as source artifacts in the
 local run manifest. Broker query/retrieval metadata is retained in ingestion
 provenance and therefore in the run record:
 
 ```bash
-iris broker-fetch broker-snapshot.csv --config configs/hunt.toml
+siderea broker-fetch broker-snapshot.csv --config configs/hunt.toml
 
 # Qualified Rubin/LSST profile: SN, stamp_classifier_rubin_beta 2.0.1.
-# IRIS aborts if the broker returns a different classifier contract.
-iris broker-fetch rubin-snapshot.csv --config configs/hunt.toml --survey lsst
+# SIDEREA aborts if the broker returns a different classifier contract.
+siderea broker-fetch rubin-snapshot.csv --config configs/hunt.toml --survey lsst
 ```
 
 The LSST default is deliberately narrower than the ZTF hunt configuration: it
@@ -421,7 +445,7 @@ validates; no independent per-row non-detection quality flag is supplied. This
 does not establish artifact purity, and adapter v4 deliberately applies no
 unqualified `rb`/`drb` threshold.
 
-For the internally created ALeRCE client, IRIS requires the expected survey client
+For the internally created ALeRCE client, SIDEREA requires the expected survey client
 session, appends the configured user agent, applies the configured per-request
 timeout, and retries each broker operation at most `max_retries + 1` times with
 bounded exponential backoff. An injected test/deployment client may lack that
@@ -432,14 +456,14 @@ feature columns plus exactly one entity policy. Prefer `--entity COLUMN`, which
 purges repeated physical sources across chronological partitions:
 
 ```bash
-iris baseline-train labelled-features.csv var/iris/models/baseline-v1 \
+siderea baseline-train labelled-features.csv var/siderea/models/baseline-v1 \
   --label is_target --time decision_mjd --entity object_id \
   --features amplitude cadence significance missing_fraction
 ```
 
 Use `--assert-unique-entities` only when every row is independently known to be a
 different physical entity. It is a strong caller assertion, not an identity check
-performed by IRIS. Baseline metadata records the chosen policy, dataset and exact
+performed by SIDEREA. Baseline metadata records the chosen policy, dataset and exact
 split digests, and whether entity purging was applied.
 
 JEPA consumes one JSON object per line with `object_id`, `times`, `values`,
@@ -453,7 +477,7 @@ the unmasked context only for each masked example, so hidden target values canno
 set the context's normalization:
 
 ```bash
-iris jepa-train train.jsonl validation.jsonl var/iris/models/jepa-v1 \
+siderea jepa-train train.jsonl validation.jsonl var/siderea/models/jepa-v1 \
   --config configs/jepa.toml --epochs 10 \
   --split-policy chronological --evaluation-masks 5
 ```
@@ -481,14 +505,14 @@ larger candidate hunt, external-validation settings, and the JEPA research path:
 - [`configs/validation.toml`](configs/validation.toml)
 - [`configs/jepa.toml`](configs/jepa.toml)
 
-Pass an explicit file with `--config`, or set `IRIS_CONFIG`. The checkout profiles
-resolve runtime data to `var/iris/` in the repository. An installed package used
+Pass an explicit file with `--config`, or set `SIDEREA_CONFIG`. The checkout profiles
+resolve runtime data to `var/siderea/` in the repository. An installed package used
 outside a checkout falls back to its bundled profile, whose storage root is
-`~/.iris`; run manifests in that mode hash the installed `iris` package tree so
+`~/.siderea`; run manifests in that mode hash the installed `siderea` package tree so
 code provenance does not collapse to an empty digest. `doctor` and `config-show`
 reveal the selected file and resolved paths.
 The `general.campaign` value is an artifact label; enforced thresholds and
-services come from the rest of that TOML file. `iris.campaigns` exposes only
+services come from the rest of that TOML file. `siderea.campaigns` exposes only
 advisory research sketches and does not activate or override operational policy.
 Keep credentials outside configuration files and generated artifacts.
 
@@ -520,11 +544,11 @@ and lowers the heuristic quality component but does not alone fail this local ga
 A production campaign must still define a calibrated uncertainty/significance
 policy and require explicit difference/reference-image review before external
 reporting; `verify --quality-passed` is a human/upstream assertion, not an
-image-analysis result computed by IRIS.
+image-analysis result computed by SIDEREA.
 
 ## TS-JEPA: research and shadow mode only
 
-IRIS includes a joint-embedding predictive architecture for irregular light
+SIDEREA includes a joint-embedding predictive architecture for irregular light
 curves. It learns to predict representations of hidden contiguous time windows
 from the remaining observations. The supplied configuration keeps it disabled by
 default; the research profile enables it with `shadow_mode = true`. For each mask,
@@ -534,7 +558,7 @@ sentinel rather than imputed from the hidden window. Flux inputs require explici
 detection flags. The training command enforces chronological separation by default,
 uses deterministic algorithms unless explicitly opted out, and evaluates multiple
 seeded masks rather than treating one random mask as a stable estimate. Tokenized
-curves declare `iris.light_curve_tokens.v3`, the ordered token fields, band
+curves declare `siderea.light_curve_tokens.v3`, the ordered token fields, band
 vocabulary/policy, value kind/direction, normalization, truncation, ordering, and
 missing-value/error semantics in a hashed per-curve contract. An explicit
 `value_present` token field distinguishes a measured zero or finite non-detection
@@ -555,7 +579,7 @@ a prospective campaign as defined in the scientific validation plan.
 
 | Path | Purpose |
 |---|---|
-| `src/iris/` | New modular platform; canonical target for development |
+| `src/siderea/` | New modular platform; canonical target for development |
 | `configs/` | Validated TOML run profiles |
 | `tests/` | Unit and safety-regression tests |
 | `docs/` | Architecture, validation, migration, and roadmap |
@@ -579,16 +603,16 @@ reproduced where their upstream services still permit it:
 | Final gate | `final_candidate_filter.py` | Legacy reportability filter |
 | Draft package | `build_tns_report.py` | Retired, fail-closed tombstone; never constructs report material |
 
-These scripts are not the canonical IRIS architecture and should not be mixed
+These scripts are not the canonical SIDEREA architecture and should not be mixed
 stage-by-stage with new package outputs without an explicit schema adapter. In
 particular, legacy scores are not interchangeable with the new heuristic priority.
 Follow [`docs/MIGRATION.md`](docs/MIGRATION.md) for a safe transition.
 
 The root and archived-duplicate `build_tns_report.py` entry points are deliberately
 disabled. Every invocation exits before reading candidate data, making network calls,
-or writing files. The pre-IRIS implementation is retained only as non-executable
+or writing files. The pre-SIDEREA implementation is retained only as non-executable
 provenance in [`legacy_build_tns_report_historical.md`](legacy_build_tns_report_historical.md);
-it predates exact candidate-version binding and the current reporting preflight. IRIS
+it predates exact candidate-version binding and the current reporting preflight. SIDEREA
 does not currently expose a TNS report builder or submission transport.
 
 The historical operating procedures remain useful context:
@@ -619,4 +643,12 @@ the new `TNSClient` implements search only, not submission.
 - [`docs/MIGRATION.md`](docs/MIGRATION.md) — staged migration from the root scripts.
 - [`docs/ROADMAP.md`](docs/ROADMAP.md) — prioritized work from platform foundation
   to prospective operation and beyond.
-# IRIS-Space
+# SIDEREA-Space
+
+### Experimental transient morphology search
+
+`siderea transient-search` now offers an unknown-location, background-profiled
+search over four light-curve families with simulation-calibrated search statistics
+and optional declared correlated noise. It is **shadow-only**. See
+[the model, input contract and experiment limitations](docs/TRANSIENT_SEARCH.md).
+The paper preserves correlated-noise and outlier failures alongside recovery results.

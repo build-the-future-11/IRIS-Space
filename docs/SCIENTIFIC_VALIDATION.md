@@ -2,14 +2,14 @@
 
 ## Status and claim boundary
 
-IRIS has a scientific-software foundation, not a completed scientific validation.
+SIDEREA has a scientific-software foundation, not a completed scientific validation.
 Unit tests can show that code follows its stated rules; they cannot show that a
 ranking improves discovery yield, that an embedding captures astrophysical
 phenomena, or that a candidate is new.
 
 The acceptable claim today is:
 
-> IRIS implements testable, provenance-rich components for human-supervised
+> SIDEREA implements testable, provenance-rich components for human-supervised
 > candidate triage and an experimental irregular-time representation model.
 
 Claims about sensitivity, purity, probability calibration, discovery rate, or
@@ -31,7 +31,7 @@ Validation answers five separate questions. Passing one does not imply the other
    calibrated for the population, epoch, and survey where it is used?
 4. **Operational safety:** Do external outages, schema changes, stale data, and
    partial runs block reporting instead of producing false clearance?
-5. **Human-system utility:** Does IRIS improve reviewer yield or time without
+5. **Human-system utility:** Does SIDEREA improve reviewer yield or time without
    reducing safety, diversity, or independent judgment?
 
 TS-JEPA has an additional question: does self-supervised latent prediction add
@@ -92,12 +92,12 @@ policy, and split policy with every training or backtest result. Input files use
 by a released run must be immutable; corrections create a new snapshot.
 
 The implemented local CSV path hashes the same byte snapshot that it parses.
-`broker-fetch` writes an `iris.broker_snapshot.v1` sidecar containing the emitted
+`broker-fetch` writes an `siderea.broker_snapshot.v1` sidecar containing the emitted
 photometry SHA-256 plus source/query/retrieval metadata, and later ingestion rejects
 a sidecar whose schema or digest does not match the CSV. Local analysis manifests
 record the effective ingestion provenance, artifact/config digests, Git state when
-available, and a content digest of the local IRIS source/config tree even without
-Git. Outside a checkout, the code digest falls back to the installed `iris`
+available, and a content digest of the local SIDEREA source/config tree even without
+Git. Outside a checkout, the code digest falls back to the installed `siderea`
 package tree and refuses an empty code identity. After its run directory is
 created, local analysis also emits a terminal manifest after a caught processing
 failure or user interruption and inventories
@@ -175,7 +175,7 @@ alias, sky-position/time clusters, and source file hashes.
 
 ### Current extraction boundary
 
-`iris.photometry.v4` can extract survey/passband-channel features from magnitude,
+`siderea.photometry.v4` can extract survey/passband-channel features from magnitude,
 limiting-magnitude, and supplied forced/difference-flux columns. If survey identity
 is present, equally named filters from different surveys are kept separate and
 prior non-detections are paired only within the same survey/passband channel.
@@ -188,14 +188,14 @@ those provenance records and the validation study must independently inspect
 them.
 
 The extractor reports missing flux and magnitude uncertainties, and
-`iris.heuristic_priority.v2` penalizes them through its data-quality component.
+`siderea.heuristic_priority.v2` penalizes them through its data-quality component.
 The current automated local quality gate fails when every detection measurement
 uncertainty is missing or invalid. Partial missingness remains visible and
 penalized but does not alone fail the gate, and the gate does not impose a minimum
 detection significance. In particular, a feature may still have incomplete
 comparison-error support when only some uncertainties are present. A prospective
 protocol must define conservative eligibility and significance rules explicitly
-and must not treat `quality_passed` as evidence that IRIS inspected
+and must not treat `quality_passed` as evidence that SIDEREA inspected
 difference/reference images.
 
 Before any model comparison, establish invariants with synthetic and curated light
@@ -242,7 +242,7 @@ The current logistic baseline is not permitted to silently assume row
 independence. Its CLI requires a physical-entity column for chronological purging
 or an explicit assertion that every row is a different entity. The latter is
 appropriate only after an independent identity audit; it is not evidence that
-IRIS discovered aliases automatically.
+SIDEREA discovered aliases automatically.
 
 Every learned model must be compared with all applicable low-complexity baselines:
 
@@ -250,7 +250,7 @@ Every learned model must be compared with all applicable low-complexity baseline
 2. broker-provided ranking or class probability, frozen as observed at decision
    time;
 3. the legacy I SPY ordering, where its inputs can be reproduced;
-4. the IRIS explainable heuristic;
+4. the SIDEREA explainable heuristic;
 5. a regularized supervised linear/logistic model on frozen engineered features;
 6. a tree/boosting baseline with missingness indicators; and
 7. for JEPA, the same downstream head with no JEPA embeddings.
@@ -260,7 +260,7 @@ run once per preregistered candidate model.
 
 ### Primary operational metrics
 
-IRIS works under a finite nightly review budget, so threshold-independent accuracy
+SIDEREA works under a finite nightly review budget, so threshold-independent accuracy
 is not enough. The implemented evaluation module supports:
 
 - precision at review budget `K`;
@@ -330,7 +330,7 @@ normalization. Supplied errors must be strictly positive, and normalized error `
 is therefore an explicit missing-error sentinel rather than an imputation from the
 masked target window. Flux is the default value kind and requires explicit
 detection flags; only magnitude inputs may infer detection from finite values.
-Each curve now records the canonical `iris.light_curve_tokens.v3` contract and a
+Each curve now records the canonical `siderea.light_curve_tokens.v3` contract and a
 SHA-256 over its token fields, value semantics, band vocabulary/policy,
 normalization, truncation, ordering, and missing-value/error behavior. The sixth
 `value_present` field keeps a measured zero or finite non-detection distinct from
@@ -421,7 +421,7 @@ targets:
 
 Report the full eligible denominator. Interesting nearest neighbors are qualitative
 examples, not a substitute for retrieval metrics and blinded expert assessment.
-When an analogue index is persisted, the implemented `iris.embedding_index.v2`
+When an analogue index is persisted, the implemented `siderea.embedding_index.v2`
 format requires SHA-256 identifiers for the encoder, token contract, and dataset
 snapshot, rejects missing/legacy provenance on load, and requires matching encoder
 and token-contract digests for each query. Validation must still
@@ -462,7 +462,7 @@ campaign must capture the denominator before ranking:
 8. publish the complete flow diagram from eligible objects to mature labels.
 
 The random-audit sample is essential for estimating missed-positive rate and
-selection bias. The implemented `iris.nightly_queue.v2` can reserve that route
+selection bias. The implemented `siderea.nightly_queue.v2` can reserve that route
 from the complete eligible population using a recorded seed and uniform
 without-replacement sampling. It logs the eligibility policy, audit population,
 requested/used slots, inclusion probability, and the same propensity on every
@@ -473,9 +473,9 @@ assisted phase follows, randomize nights or candidate slots between control and
 assisted ranking where operationally safe. Analyze by assigned arm and report
 crossovers.
 
-`iris review-set` packages the exact ranking and `iris.candidates.v1` bytes, the
+`siderea review-set` packages the exact ranking and `siderea.candidates.v1` bytes, the
 selected queue, per-candidate versions/dossiers, and artifact hashes in an atomic
-`iris.review_set.v1` directory. This makes a nightly review denominator portable,
+`siderea.review_set.v1` directory. This makes a nightly review denominator portable,
 but it does not establish that upstream eligibility captured the full broker
 stream; the campaign still needs an immutable pre-ranking intake log.
 
@@ -536,7 +536,7 @@ is clear; a match at any epoch vetoes and any error, disabled, stale, or pending
 component blocks. On import, the local pipeline independently requires coverage of
 every distinct usable detection MJD in normalized photometry. Malformed TNS
 success payloads become errors. Imported evidence requires the top-level
-`iris.verification.v1` schema, valid candidate/checks fields, a boolean manual
+`siderea.verification.v1` schema, valid candidate/checks fields, a boolean manual
 review flag, and the complete exact check-provenance shape; no timestamp, attempt
 count, or service version is synthesized. Imported TNS clear
 evidence additionally requires `tns-two-stage-search.v1`, the ordered internal-name
@@ -625,6 +625,6 @@ Every component promoted beyond shadow mode needs a signed review record contain
 - reviewer names and independent approval; and
 - effective date and rollback version.
 
-Until this record exists, IRIS remains an experimental prioritization aid. A
+Until this record exists, SIDEREA remains an experimental prioritization aid. A
 candidate-specific evidence package and human scientific judgment are always
 required for an external claim.

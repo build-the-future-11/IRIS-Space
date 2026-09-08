@@ -1,0 +1,45 @@
+{
+  "schema": "siderea.synthetic_search_protocol.v1",
+  "scope": "synthetic software diagnostic, not astronomical completeness or classification",
+  "master_seed": 20260909,
+  "epochs": 64,
+  "duration_days": 60,
+  "center_count": 21,
+  "widths_days": [
+    1.0,
+    3.0,
+    10.0
+  ],
+  "families": [
+    "gaussian",
+    "exponential",
+    "bazin",
+    "fallback"
+  ],
+  "calibration_trials": 4095,
+  "evaluation_trials": 1000,
+  "amplitudes_sigma": [
+    2.0,
+    4.0,
+    8.0
+  ],
+  "alpha": 0.01,
+  "confidence": 0.95,
+  "null_stress_tests": [
+    "independent_gaussian",
+    "ar1_rho_0.7",
+    "single_positive_8sigma_outlier"
+  ],
+  "baseline": "maximum positive standardized residual after fitting a constant",
+  "signal_centers_days": [
+    10.0,
+    50.0
+  ],
+  "signal_widths_days": [
+    1.0,
+    10.0
+  ],
+  "endpoint": "recovery and false alarms at separately calibrated 1-percent per-curve null threshold",
+  "development_note": "Follow-up diagnostic designed after observing the IID-calibrated AR1 failure. New seed and separate calibration/test data; not independent external preregistration. Known covariance is supplied, not estimated from test curves.",
+  "calibration_correlation_rho": 0.7
+}

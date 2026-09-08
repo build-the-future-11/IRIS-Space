@@ -1,0 +1,362 @@
+{
+  "scope": "synthetic execution smoke tests only; not astrophysical validation",
+  "baseline": {
+    "bundle": "/Volumes/PRO-BLADE/IRIS-Project/.test-tmp/final-baseline",
+    "metadata": {
+      "calibration_applied": false,
+      "calibration_method": "sigmoid",
+      "calibration_reason": "not applied: the held-out calibration partition needs at least 5 examples of each class",
+      "calibration_requested": true,
+      "calibration_rows": 3,
+      "calibration_time_range": [
+        60015.0,
+        60017.0
+      ],
+      "dataset_sha256": "719b1f73c1258221f00698168c24d385217987e24b1b710326ce44e4324e2ae0",
+      "entity_policy": "purged_by_entity_id",
+      "entity_purging_applied": true,
+      "feature_names": [
+        "amplitude",
+        "significance",
+        "missing_fraction"
+      ],
+      "model_family": "median-imputed-standard-logistic-regression",
+      "purged_rows": 0,
+      "random_state": 2026,
+      "schema_version": 3,
+      "score_semantics": "uncalibrated_model_score",
+      "sklearn_version": "1.9.0",
+      "split_sha256": "5d39899027ccde0832f9a7cbaf43de832f7a4c890fed2e20e1842cd283ce1eec",
+      "test_diagnostics": {
+        "average_precision": 1.0,
+        "boundary_tie_policy": "expected_uniform_within_equal_score_cutoff",
+        "positives": 2,
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reviewed": 2
+      },
+      "test_rows": 3,
+      "test_time_range": [
+        60018.0,
+        60020.0
+      ],
+      "train_class_counts": {
+        "negative": 7,
+        "positive": 7
+      },
+      "train_rows": 14,
+      "train_time_range": [
+        60001.0,
+        60014.0
+      ],
+      "trained_at_utc": "2026-09-08T05:11:59.914650+00:00",
+      "training_config": {
+        "calibration": "sigmoid",
+        "calibration_fraction": 0.15,
+        "evaluation_review_budget": 2,
+        "max_iterations": 2000,
+        "min_calibration_per_class": 5,
+        "random_state": 2026,
+        "regularization_c": 1.0,
+        "train_fraction": 0.7
+      }
+    }
+  },
+  "jepa": {
+    "checkpoint": "/Volumes/PRO-BLADE/IRIS-Project/.test-tmp/final-jepa/checkpoint.pt",
+    "checkpoint_sha256": "6738bde3ea2811043fe3c399fa5adf7fa0c27f2092d0c78decc6694579439923",
+    "metadata": {
+      "created_at_utc": "2026-09-08T05:11:47.610942+00:00",
+      "format_version": 3,
+      "model_class": "TSJEPA",
+      "model_config": {
+        "d_model": 32,
+        "dropout": 0.1,
+        "ema_momentum": 0.996,
+        "ff_multiplier": 4,
+        "n_heads": 4,
+        "num_bands": 7,
+        "num_layers": 2,
+        "predictor_hidden": 64,
+        "token_dim": 6
+      },
+      "token_contract_bound": true,
+      "token_contract_sha256": "f3f594178f9fdbb5d7a0e307a0fec55b6db3e2407d2d56497fd410f45afc1c8b",
+      "torch_version": "2.14.0",
+      "user_metadata": {
+        "band_to_id": {
+          "g": 1,
+          "i": 3,
+          "r": 2,
+          "u": 0,
+          "unknown": 6,
+          "y": 5,
+          "z": 4
+        },
+        "band_vocabulary_sha256": "ff26c4da7faa70bb65cde873340192f27f2d2d11b9328112c8171c7318b347ce",
+        "deterministic_algorithms": true,
+        "entity_group_disjoint": true,
+        "mode": "shadow_research",
+        "normalization_scope": "full_curve_then_context_rebased_during_masking",
+        "split_policy": "chronological",
+        "token_contract": {
+          "band_to_id": {
+            "g": 1,
+            "i": 3,
+            "r": 2,
+            "u": 0,
+            "unknown": 6,
+            "y": 5,
+            "z": 4
+          },
+          "detection_policy": "flux_requires_explicit; magnitude_may_infer_from_finite_value",
+          "equal_time_ordering": "time_band_detection_value_error",
+          "error_presence_policy": "errors_without_measured_values_are_ignored",
+          "format": "siderea.light_curve_tokens.v3",
+          "max_length": null,
+          "missing_error_sentinel": 0.0,
+          "normalization_scope": "full_curve_then_context_rebased_during_masking",
+          "token_fields": [
+            "delta_time",
+            "normalized_value",
+            "normalized_error",
+            "band_id",
+            "detected",
+            "value_present"
+          ],
+          "truncation_policy": "keep_latest",
+          "unknown_band_policy": "map_to_unknown",
+          "value_direction": "brighter_is_positive",
+          "value_kind": "flux",
+          "value_presence_policy": "explicit_token_field; missing_values_and_errors_are_zeroed"
+        },
+        "token_contract_sha256": "f3f594178f9fdbb5d7a0e307a0fec55b6db3e2407d2d56497fd410f45afc1c8b",
+        "token_fields": [
+          "delta_time",
+          "normalized_value",
+          "normalized_error",
+          "band_id",
+          "detected",
+          "value_present"
+        ],
+        "tokenization_contract_version": "siderea.light_curve_tokens.v3",
+        "train_dataset_sha256": "0576e7d3564038e58914f8a0e33478243f85915050e3143dbfa61474186a81ba",
+        "train_time_extent": [
+          1.0,
+          10.0
+        ],
+        "validation": {
+          "batches": 5,
+          "collapsed_batch_fraction": 0.0,
+          "collapsed_batch_fraction_is_batch_dependent": true,
+          "loss": 0.44441317915916445,
+          "loss_ci95_half_width": 0.03751271504115116,
+          "loss_ci95_method": "student_t_over_mask_repeats",
+          "loss_ci95_scope": "mask_sampling_only_conditional_on_fixed_model_and_dataset",
+          "loss_standard_error_across_masks": 0.01351322587937722,
+          "loss_std_across_masks": 0.03021649166159684,
+          "mask_repeats": 5,
+          "mask_seeds": [
+            2027,
+            2028,
+            2029,
+            2030,
+            2031
+          ],
+          "mean_loss_across_masks": 0.44441317915916445,
+          "mean_target_feature_std": 0.7516345118110994,
+          "repeat_losses": [
+            0.4559859037399292,
+            0.46026524901390076,
+            0.4559859037399292,
+            0.4593571126461029,
+            0.3904717266559601
+          ],
+          "representation_diagnostic_scope": "all_target_tokens_across_all_mask_repeats",
+          "seed": 2027,
+          "target_fraction": 0.5,
+          "target_representation_diagnostics": {
+            "collapsed_feature_fraction": 0.0,
+            "effective_rank": 2.938309311189585,
+            "effective_rank_fraction": 0.15464785848366236,
+            "is_collapsed": false,
+            "maximum_resolvable_rank": 19,
+            "mean_feature_std": 0.7516345118110994,
+            "minimum_feature_std": 0.27624169972430224,
+            "num_vectors": 20,
+            "representation_rms": 0.9999950311364211
+          },
+          "target_tokens": 20,
+          "target_tokens_per_repeat": [
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "token_contract_sha256": "f3f594178f9fdbb5d7a0e307a0fec55b6db3e2407d2d56497fd410f45afc1c8b"
+        },
+        "validation_dataset_sha256": "4ecf47407a06e3d3d4744aa46f37920b8831cd50d287d67736cb0e19bd94141a",
+        "validation_time_extent": [
+          11.0,
+          22.0
+        ]
+      }
+    },
+    "operational_status": "shadow_only; never a reporting gate",
+    "schema": "siderea.jepa_training.v2",
+    "training": {
+      "data_loader": {
+        "source": "siderea_constructed_dataloader",
+        "training_config_loader_fields_applied": true
+      },
+      "epochs": [
+        {
+          "collapsed_step_fraction": 0.0,
+          "collapsed_step_fraction_is_batch_dependent": true,
+          "epoch": 1,
+          "loss": 0.458073228597641,
+          "mean_target_feature_std": 0.6224650473981259,
+          "representation_diagnostic_scope": "all_target_tokens_in_epoch",
+          "steps": 1,
+          "target_representation_diagnostics": {
+            "collapsed_feature_fraction": 0.0,
+            "effective_rank": 1.9617849776448018,
+            "effective_rank_fraction": 0.6539283258816005,
+            "is_collapsed": false,
+            "maximum_resolvable_rank": 3,
+            "mean_feature_std": 0.6224650473981259,
+            "minimum_feature_std": 0.0671243233340301,
+            "num_vectors": 4,
+            "representation_rms": 0.9999950460810352
+          },
+          "target_tokens": 4
+        },
+        {
+          "collapsed_step_fraction": 0.0,
+          "collapsed_step_fraction_is_batch_dependent": true,
+          "epoch": 2,
+          "loss": 0.42392468452453613,
+          "mean_target_feature_std": 0.46216609130072983,
+          "representation_diagnostic_scope": "all_target_tokens_in_epoch",
+          "steps": 1,
+          "target_representation_diagnostics": {
+            "collapsed_feature_fraction": 0.0,
+            "effective_rank": 1.2012491015605886,
+            "effective_rank_fraction": 0.40041636718686285,
+            "is_collapsed": false,
+            "maximum_resolvable_rank": 3,
+            "mean_feature_std": 0.46216609130072983,
+            "minimum_feature_std": 0.09379595565672029,
+            "num_vectors": 4,
+            "representation_rms": 0.9999950528615221
+          },
+          "target_tokens": 4
+        },
+        {
+          "collapsed_step_fraction": 0.0,
+          "collapsed_step_fraction_is_batch_dependent": true,
+          "epoch": 3,
+          "loss": 0.45804011821746826,
+          "mean_target_feature_std": 0.42173744596352125,
+          "representation_diagnostic_scope": "all_target_tokens_in_epoch",
+          "steps": 1,
+          "target_representation_diagnostics": {
+            "collapsed_feature_fraction": 0.0,
+            "effective_rank": 1.8605121129884772,
+            "effective_rank_fraction": 0.6201707043294924,
+            "is_collapsed": false,
+            "maximum_resolvable_rank": 3,
+            "mean_feature_std": 0.42173744596352125,
+            "minimum_feature_std": 0.12757032570763482,
+            "num_vectors": 4,
+            "representation_rms": 0.9999950575067943
+          },
+          "target_tokens": 4
+        }
+      ],
+      "format_version": 1,
+      "model_config": {
+        "d_model": 32,
+        "dropout": 0.1,
+        "ema_momentum": 0.996,
+        "ff_multiplier": 4,
+        "n_heads": 4,
+        "num_bands": 7,
+        "num_layers": 2,
+        "predictor_hidden": 64,
+        "token_dim": 6
+      },
+      "optimizer_class": "torch.optim.adamw.AdamW",
+      "optimizer_supplied_by_caller": false,
+      "token_contract_sha256": "f3f594178f9fdbb5d7a0e307a0fec55b6db3e2407d2d56497fd410f45afc1c8b",
+      "total_steps": 3,
+      "training_config": {
+        "batch_size": 2,
+        "deterministic_algorithms": true,
+        "device": "cpu",
+        "ema_momentum": null,
+        "epochs": 3,
+        "grad_clip": 1.0,
+        "learning_rate": 0.0003,
+        "min_target": 1,
+        "num_workers": 0,
+        "seed": 2026,
+        "shuffle": true,
+        "target_fraction": 0.5,
+        "weight_decay": 0.0001
+      }
+    },
+    "validation": {
+      "batches": 5,
+      "collapsed_batch_fraction": 0.0,
+      "collapsed_batch_fraction_is_batch_dependent": true,
+      "loss": 0.44441317915916445,
+      "loss_ci95_half_width": 0.03751271504115116,
+      "loss_ci95_method": "student_t_over_mask_repeats",
+      "loss_ci95_scope": "mask_sampling_only_conditional_on_fixed_model_and_dataset",
+      "loss_standard_error_across_masks": 0.01351322587937722,
+      "loss_std_across_masks": 0.03021649166159684,
+      "mask_repeats": 5,
+      "mask_seeds": [
+        2027,
+        2028,
+        2029,
+        2030,
+        2031
+      ],
+      "mean_loss_across_masks": 0.44441317915916445,
+      "mean_target_feature_std": 0.7516345118110994,
+      "repeat_losses": [
+        0.4559859037399292,
+        0.46026524901390076,
+        0.4559859037399292,
+        0.4593571126461029,
+        0.3904717266559601
+      ],
+      "representation_diagnostic_scope": "all_target_tokens_across_all_mask_repeats",
+      "seed": 2027,
+      "target_fraction": 0.5,
+      "target_representation_diagnostics": {
+        "collapsed_feature_fraction": 0.0,
+        "effective_rank": 2.938309311189585,
+        "effective_rank_fraction": 0.15464785848366236,
+        "is_collapsed": false,
+        "maximum_resolvable_rank": 19,
+        "mean_feature_std": 0.7516345118110994,
+        "minimum_feature_std": 0.27624169972430224,
+        "num_vectors": 20,
+        "representation_rms": 0.9999950311364211
+      },
+      "target_tokens": 20,
+      "target_tokens_per_repeat": [
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "token_contract_sha256": "f3f594178f9fdbb5d7a0e307a0fec55b6db3e2407d2d56497fd410f45afc1c8b"
+    }
+  }
+}

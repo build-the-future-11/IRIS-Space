@@ -1,0 +1,9 @@
+{
+  "pages": 29,
+  "command": "tectonic --keep-intermediates paper/siderea_transient_triage.tex",
+  "exit_code": 0,
+  "portable_fonts": "TeX Gyre Termes, Heros, Cursor by TeX filenames",
+  "inspection": "all pages at overview; verification, results and appendix tables at reading size",
+  "remaining_warnings": "underfull boxes; no undefined citations or clipping found",
+  "pdf_sha256": "6347b5e71b0f86c810482f77d0539b6c1177f933def93caa34fedf508d5a305d"
+}

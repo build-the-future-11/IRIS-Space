@@ -6,24 +6,24 @@ from datetime import UTC, datetime, timedelta
 import pandas as pd
 import pytest
 
-from iris.clients.base import ServiceResult
-from iris.evidence_context import canonical_verification_context, format_skybot_epochs
-from iris.ingest import AlerceAdapter, BrokerQuery, IngestionError, ingest_csv
-from iris.ingest.schema import normalize_photometry_frame, resolve_columns
-from iris.integrity import (
+from siderea.clients.base import ServiceResult
+from siderea.evidence_context import canonical_verification_context, format_skybot_epochs
+from siderea.ingest import AlerceAdapter, BrokerQuery, IngestionError, ingest_csv
+from siderea.ingest.schema import normalize_photometry_frame, resolve_columns
+from siderea.integrity import (
     candidate_record_digest,
     candidate_run_binding_digest,
     verify_candidate_run_binding,
 )
-from iris.provenance import CheckProvenance, CheckStatus, digest_value
-from iris.validation import (
+from siderea.provenance import CheckProvenance, CheckStatus, digest_value
+from siderea.validation import (
     EvidenceBindingContext,
     VerificationSuite,
     bind_completed_check,
     preflight_digest,
 )
-from iris.validation.catalog_policy import interpret_simbad
-from iris.validation.gates import GateDecision
+from siderea.validation.catalog_policy import interpret_simbad
+from siderea.validation.gates import GateDecision
 
 
 def _clear_check(service: str, query: dict[str, object]) -> CheckProvenance:
@@ -286,7 +286,7 @@ def test_alerce_binds_explicit_survey_to_every_query_and_provenance() -> None:
             "survey": "lsst",
         }
     ]
-    assert batch.provenance["adapter"] == "iris.ingest.alerce.v4"
+    assert batch.provenance["adapter"] == "siderea.ingest.alerce.v4"
     assert batch.provenance["survey"] == "lsst"
     assert batch.provenance["classifier_version"] == "2.0.1"
     assert batch.provenance["observed_classifier_versions"] == ["2.0.1"]
@@ -583,7 +583,7 @@ def test_alerce_applies_timeout_user_agent_and_bounded_retries() -> None:
     adapter = AlerceAdapter(
         client,
         timeout_seconds=4.5,
-        user_agent="iris-test/contact",
+        user_agent="siderea-test/contact",
         max_retries=2,
         backoff_seconds=0.25,
         sleeper=delays.append,
@@ -593,13 +593,13 @@ def test_alerce_applies_timeout_user_agent_and_bounded_retries() -> None:
     client.legacy_ztf_client.session.request("GET", "https://example.test")
     assert client.legacy_ztf_client.session.timeouts == [4.5]
     assert client.legacy_ztf_client.session.headers["User-Agent"] == (
-        "alerce-client iris-test/contact"
+        "alerce-client siderea-test/contact"
     )
     assert client.object_attempts == 3
     assert delays == [0.25, 0.5]
     assert batch.provenance["network_policy"] == {
         "timeout_seconds": 4.5,
-        "user_agent": "iris-test/contact",
+        "user_agent": "siderea-test/contact",
         "max_retries": 2,
         "backoff_seconds": 0.25,
         "session_policy_enforced": True,
@@ -611,7 +611,7 @@ def test_alerce_applies_timeout_user_agent_and_bounded_retries() -> None:
     (
         ("timeout_seconds", True),
         ("timeout_seconds", float("inf")),
-        ("user_agent", "iris\r\ninjected"),
+        ("user_agent", "siderea\r\ninjected"),
         ("max_retries", True),
         ("max_retries", -1),
         ("backoff_seconds", float("nan")),

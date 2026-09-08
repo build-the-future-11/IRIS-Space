@@ -5,7 +5,7 @@ import unittest
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from iris.config import (
+from siderea.config import (
     ConfigError,
     GeneralConfig,
     HuntConfig,
@@ -17,7 +17,7 @@ from iris.config import (
     config_to_dict,
     load_config,
 )
-from iris.domain import (
+from siderea.domain import (
     Candidate,
     CandidateState,
     CheckStatus,
@@ -25,7 +25,7 @@ from iris.domain import (
     EvidenceKind,
     Observation,
 )
-from iris.state import (
+from siderea.state import (
     ReportabilityError,
     TransitionError,
     assess_reportability,
@@ -36,11 +36,17 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 class ConfigTests(unittest.TestCase):
+    def test_default_identity_is_siderea_novel_transients(self) -> None:
+        config = load_config(PROJECT_ROOT / "configs" / "default.toml")
+
+        self.assertEqual(config.general.name, "SIDEREA")
+        self.assertEqual(config.general.campaign, "novel_transients")
+
     def test_all_repository_configs_load(self) -> None:
         for path in sorted((PROJECT_ROOT / "configs").glob("*.toml")):
             with self.subTest(path=path.name):
                 config = load_config(path)
-                self.assertEqual(config.general.name, "IRIS")
+                self.assertEqual(config.general.name, "SIDEREA")
                 self.assertTrue(config.validation.fail_closed)
                 self.assertTrue(config.review.require_human_approval)
                 self.assertTrue(config.storage.root.is_absolute())

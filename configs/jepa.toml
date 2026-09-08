@@ -1,16 +1,16 @@
 [general]
-name = "IRIS"
+name = "SIDEREA"
 campaign = "jepa_research"
 environment = "research"
 
 [storage]
-root = "../var/iris"
-datasets_dir = "../var/iris/datasets"
+root = "../var/siderea"
+datasets_dir = "../var/siderea/datasets"
 
 [jepa]
 enabled = true
 shadow_mode = true
-dataset_path = "../var/iris/datasets/jepa"
+dataset_path = "../var/siderea/datasets/jepa"
 embedding_dim = 256
 encoder_layers = 6
 attention_heads = 8

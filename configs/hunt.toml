@@ -1,10 +1,10 @@
 [general]
-name = "IRIS"
-campaign = "ispy"
+name = "SIDEREA"
+campaign = "novel_transients"
 environment = "development"
 
 [storage]
-root = "../var/iris"
+root = "../var/siderea"
 
 [hunt]
 broker = "alerce"

@@ -3,7 +3,7 @@ PYTHON ?= python3
 .PHONY: doctor format format-check lint typecheck test coverage compile build check
 
 doctor:
-	PYTHONPATH=src $(PYTHON) -m iris doctor
+	PYTHONPATH=src $(PYTHON) -m siderea doctor
 
 format:
 	$(PYTHON) -m ruff format src tests
@@ -16,13 +16,13 @@ lint:
 	$(PYTHON) -m ruff check src tests
 
 typecheck:
-	$(PYTHON) -m mypy src/iris
+	$(PYTHON) -m mypy src/siderea
 
 test:
 	$(PYTHON) -m pytest -q
 
 coverage:
-	$(PYTHON) -m pytest -q --cov=iris --cov-report=term-missing
+	$(PYTHON) -m pytest -q --cov=siderea --cov-report=term-missing
 
 compile:
 	$(PYTHON) -m compileall -q src tests

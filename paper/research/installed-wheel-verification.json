@@ -1,0 +1,45 @@
+{
+  "scope": "fresh core-only installed wheel; initial CLI commands executed from /private/tmp; imports asserted to resolve from site-packages",
+  "package": "/Volumes/PRO-BLADE/IRIS-Project/.test-tmp/execution-wheel-env/lib/python3.11/site-packages/siderea/__init__.py",
+  "commands_passed": [
+    "doctor (non-strict; optional dependencies absent)",
+    "config-show",
+    "analyze",
+    "review-set",
+    "verify_review_set",
+    "outcome-summary",
+    "evidence-backup",
+    "evidence-backup-verify",
+    "transient-search"
+  ],
+  "negative_checks": [
+    "search output collision: exit 2",
+    "backup destination inside artifact root: rejected; smoke harness corrected to use an external archive destination"
+  ],
+  "shadow_objects": [
+    {
+      "channel_count": 1,
+      "evaluated_channels": 1,
+      "minimum_resolvable_object_pvalue": 0.001,
+      "object_pvalue": 0.311,
+      "shadow_excess": false,
+      "source_id": "SYNTHETIC-CONSTANT",
+      "status": "evaluated",
+      "threshold_resolvable": true
+    },
+    {
+      "channel_count": 1,
+      "evaluated_channels": 1,
+      "minimum_resolvable_object_pvalue": 0.001,
+      "object_pvalue": 0.001,
+      "shadow_excess": true,
+      "source_id": "SYNTHETIC-PULSE",
+      "status": "evaluated",
+      "threshold_resolvable": true
+    }
+  ],
+  "reportable_example_candidates": 0,
+  "wheel_sha256": "5cef176cf4c1a7cac4746952aad7cbabc2b319fc47d281fe4036429219428c38",
+  "final_wheel_sha256": "d430eb41888b20591ef324097dc5fe4d6ccad67253b3b7f3ccfe79ae2de804b0",
+  "final_wheel_package_files_byte_identical": 76
+}

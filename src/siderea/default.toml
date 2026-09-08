@@ -1,0 +1,58 @@
+# Packaged fallback. Repository deployments normally use configs/default.toml.
+[general]
+name = "SIDEREA"
+campaign = "novel_transients"
+environment = "development"
+schema_version = 1
+
+[storage]
+root = "~/.siderea"
+
+[hunt]
+broker = "alerce"
+object_limit = 350
+discovered_within_days = 30.0
+min_detections = 3
+broker_classes = ["SN", "SNIa", "SNIbc", "SNII"]
+
+[validation]
+required_checks = ["skybot", "tns", "simbad", "vsx"]
+evidence_ttl_hours = 24.0
+skybot_radius_arcsec = 10.0
+tns_radius_arcsec = 5.0
+catalog_radius_arcsec = 3.0
+fail_closed = true
+
+[network]
+timeout_seconds = 30.0
+max_retries = 3
+backoff_seconds = 1.0
+user_agent = "siderea-astronomy/0.3"
+
+[review]
+nightly_budget = 10
+required_reviewers = 1
+require_human_approval = true
+allow_self_approval = false
+
+[ranking]
+amplitude_weight = 0.24
+significance_weight = 0.22
+temporal_weight = 0.15
+nondetection_weight = 0.12
+sampling_weight = 0.12
+quality_weight = 0.15
+anomaly_slots = 2
+audit_slots = 0
+
+[jepa]
+enabled = false
+shadow_mode = true
+dataset_path = "~/.siderea/datasets/jepa"
+embedding_dim = 256
+encoder_layers = 6
+attention_heads = 8
+mask_fraction = 0.50
+learning_rate = 0.0003
+batch_size = 128
+seed = 2026

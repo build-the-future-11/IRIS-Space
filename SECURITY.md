@@ -1,15 +1,15 @@
 # Security policy
 
-IRIS 0.2 is a local, human-supervised research platform. It is not a hardened
+SIDEREA 0.3 is a local, human-supervised research platform. It is not a hardened
 multi-user service and contains no unattended Transient Name Server submission
 path. Security reports should describe the affected version, the smallest safe
 reproduction, and the expected impact. Send them privately to
 `ryangomez.hs@gmail.com` and `aadinair310@gmail.com`; do not include live API keys,
 private observations, or other third-party secrets.
 
-Only the latest 0.2.x release receives security fixes. The historical root scripts
+Only the latest 0.3.x release receives security fixes. The historical root scripts
 and `cool-stuff-master/` are retained for migration comparison and are outside the
-supported runtime boundary. The maintained code is `src/iris/`, with packaging and
+supported runtime boundary. The maintained code is `src/siderea/`, with packaging and
 dependency policy in `pyproject.toml`.
 
 ## Security boundaries

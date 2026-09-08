@@ -1,0 +1,13 @@
+{
+  "fingerprint_a": "analysis-7d203c8f40012eb4",
+  "fingerprint_b": "analysis-7d203c8f40012eb4",
+  "artifacts_identical": {
+    "photometry.normalized.csv": true,
+    "features.csv": true,
+    "ranked_candidates.csv": true
+  },
+  "versions_identical": true,
+  "reportable_per_run": 0,
+  "candidates_per_run": 2,
+  "scope": "synthetic deterministic safety replay, no live services"
+}

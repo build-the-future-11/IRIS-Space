@@ -7,16 +7,16 @@ from copy import deepcopy
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from iris.integrity import (
+from siderea.integrity import (
     candidate_observations_digest,
     candidate_record_digest,
     candidate_run_binding_digest,
     candidate_version_basis,
 )
-from iris.provenance import CheckProvenance, CheckStatus, digest_value
-from iris.review import assemble_review_set, load_queue_candidates
-from iris.validation.binding import EvidenceBindingContext, preflight_digest
-from iris.validation.gates import GateDecision, evaluate_reportability
+from siderea.provenance import CheckProvenance, CheckStatus, digest_value
+from siderea.review import assemble_review_set, load_queue_candidates
+from siderea.validation.binding import EvidenceBindingContext, preflight_digest
+from siderea.validation.gates import GateDecision, evaluate_reportability
 
 
 class ReviewAssemblyTests(unittest.TestCase):
@@ -119,7 +119,7 @@ class ReviewAssemblyTests(unittest.TestCase):
             verification_context=verification_context,
         )
         basis = candidate_version_basis(
-            pipeline_version="iris.local_analysis.v3",
+            pipeline_version="siderea.local_analysis.v3",
             candidate_id=candidate_id,
             campaign="ispy",
             observations_digest=observations_digest,
@@ -139,7 +139,7 @@ class ReviewAssemblyTests(unittest.TestCase):
             "run_id": "source-run",
             "scientific_fingerprint": "science-fingerprint",
             "candidate_id": candidate_id,
-            "pipeline_version": "iris.local_analysis.v3",
+            "pipeline_version": "siderea.local_analysis.v3",
             "candidate_version": digest_value(basis),
             "preflight_digest": preflight,
             "observations_digest": observations_digest,
@@ -188,7 +188,7 @@ class ReviewAssemblyTests(unittest.TestCase):
                 ",".join(
                     [
                         "science-fingerprint",
-                        "iris.local_analysis.v3",
+                        "siderea.local_analysis.v3",
                         "ispy",
                         candidate_id,
                         str(record["candidate_version"]),
@@ -205,10 +205,10 @@ class ReviewAssemblyTests(unittest.TestCase):
         candidates.write_text(
             json.dumps(
                 {
-                    "schema": "iris.candidates.v1",
+                    "schema": "siderea.candidates.v1",
                     "run_id": "source-run",
                     "scientific_fingerprint": "science-fingerprint",
-                    "pipeline_version": "iris.local_analysis.v3",
+                    "pipeline_version": "siderea.local_analysis.v3",
                     "candidates": records,
                 }
             ),
@@ -242,7 +242,7 @@ class ReviewAssemblyTests(unittest.TestCase):
                 candidates.read_bytes(),
             )
             queue = json.loads(result.queue_path.read_text(encoding="utf-8"))
-            self.assertEqual(queue["schema"], "iris.nightly_queue.v2")
+            self.assertEqual(queue["schema"], "siderea.nightly_queue.v2")
             self.assertEqual(queue["audit_seed"], "night-seed")
             self.assertEqual(queue["audit_population"], 2)
             audit = [item for item in queue["entries"] if item["selection_route"] == "random_audit"]
@@ -252,7 +252,7 @@ class ReviewAssemblyTests(unittest.TestCase):
             self.assertTrue(all(path.is_file() for path in result.dossier_paths))
 
             manifest = json.loads(result.manifest_path.read_text(encoding="utf-8"))
-            self.assertEqual(manifest["schema"], "iris.review_set.v1")
+            self.assertEqual(manifest["schema"], "siderea.review_set.v1")
             self.assertEqual(manifest["source_run_id"], "source-run")
             self.assertEqual(set(manifest["selected_candidate_ids"]), {"pending", "ready"})
             self.assertIn("reporting preflight", manifest["safety_boundary"])

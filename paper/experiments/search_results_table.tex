@@ -1,0 +1,19 @@
+\begin{table}[ht]
+\centering
+\caption{Measured synthetic detections per 1,000 evaluation curves. Pulse rows are recovery; null and outlier rows are false alarms. The last row uses a new seed and supplied covariance.}
+\label{tab:search-diagnostic}
+\begin{tabular}{p{0.47\linewidth}rr}
+\toprule
+Scenario & Bank & Single epoch \\
+\midrule
+Gaussian pulse, 2-sigma peak & 707 & 136 \\
+Exponential pulse, 2-sigma peak & 336 & 60 \\
+Bazin pulse, 2-sigma peak & 621 & 101 \\
+Fallback pulse, 2-sigma peak & 552 & 87 \\
+Independent Gaussian null & 13 & 6 \\
+AR(1), diagonal calibration & 454 & 4 \\
+One positive 8-sigma outlier & 710 & 1000 \\
+AR(1), known-covariance calibration & 11 & 3 \\
+\bottomrule
+\end{tabular}
+\end{table}

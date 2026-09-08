@@ -7,8 +7,8 @@ from hashlib import sha256
 from pathlib import Path
 from unittest.mock import patch
 
-from iris.data import create_snapshot
-from iris.manifest import RUN_MANIFEST_SCHEMA, RunManifest, _source_digest
+from siderea.data import create_snapshot
+from siderea.manifest import RUN_MANIFEST_SCHEMA, RunManifest, _source_digest
 
 
 class ReproducibilityTests(unittest.TestCase):
@@ -34,7 +34,7 @@ class ReproducibilityTests(unittest.TestCase):
     def test_source_digest_ignores_runtime_bytecode_caches(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            package = root / "src" / "iris"
+            package = root / "src" / "siderea"
             package.mkdir(parents=True)
             (package / "module.py").write_text("VALUE = 1\n", encoding="utf-8")
             before = _source_digest(root)
@@ -47,7 +47,7 @@ class ReproducibilityTests(unittest.TestCase):
     def test_source_digest_falls_back_to_an_installed_package_tree(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            package = root / "installed" / "iris"
+            package = root / "installed" / "siderea"
             package.mkdir(parents=True)
             module = package / "module.py"
             module.write_text("VALUE = 1\n", encoding="utf-8")
@@ -62,11 +62,11 @@ class ReproducibilityTests(unittest.TestCase):
     def test_installed_source_digest_ignores_an_unrelated_lookalike_checkout(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            active_package = root / "installed" / "iris"
+            active_package = root / "installed" / "siderea"
             active_package.mkdir(parents=True)
             active_module = active_package / "module.py"
             active_module.write_text("ACTIVE = 1\n", encoding="utf-8")
-            lookalike = root / "working" / "src" / "iris"
+            lookalike = root / "working" / "src" / "siderea"
             lookalike.mkdir(parents=True)
             lookalike_module = lookalike / "module.py"
             lookalike_module.write_text("UNRELATED = 1\n", encoding="utf-8")
@@ -83,16 +83,16 @@ class ReproducibilityTests(unittest.TestCase):
                 _source_digest(root / "working", package_root=active_package),
             )
 
-    def test_manifest_records_the_iris_distribution_version_slot(self) -> None:
+    def test_manifest_records_the_siderea_distribution_version_slot(self) -> None:
         manifest = RunManifest.create({"test": True})
-        self.assertIn("iris-astronomy", manifest.environment)
+        self.assertIn("siderea-astronomy", manifest.environment)
 
     def test_manifest_has_a_versioned_schema_and_fsyncs_publication(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / "manifest.json"
             manifest = RunManifest.create({"test": True})
             manifest.finish(status="completed")
-            with patch("iris.atomic.os.fsync") as fsync:
+            with patch("siderea.atomic.os.fsync") as fsync:
                 manifest.write(path)
 
             self.assertGreaterEqual(fsync.call_count, 2)

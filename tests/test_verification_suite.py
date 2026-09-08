@@ -4,10 +4,10 @@ import unittest
 from datetime import UTC, datetime, timedelta
 from typing import Any
 
-from iris.clients.base import ServiceResult
-from iris.provenance import CheckProvenance, CheckStatus, digest_value
-from iris.validation import GateDecision, VerificationSuite
-from iris.validation.catalog_policy import interpret_simbad
+from siderea.clients.base import ServiceResult
+from siderea.provenance import CheckProvenance, CheckStatus, digest_value
+from siderea.validation import GateDecision, VerificationSuite
+from siderea.validation.catalog_policy import interpret_simbad
 
 
 class _Catalog:

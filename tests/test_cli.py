@@ -11,9 +11,9 @@ from unittest.mock import patch
 
 import pandas as pd
 
-from iris.cli import _load_candidate, main
-from iris.ingest import BrokerQuery, IngestionBatch, ingest_csv
-from iris.ledger import OutcomeLedger
+from siderea.cli import _load_candidate, main
+from siderea.ingest import BrokerQuery, IngestionBatch, ingest_csv
+from siderea.ledger import OutcomeLedger
 
 
 def _config(path: Path) -> Path:
@@ -65,7 +65,7 @@ def _broker_batch() -> IngestionBatch:
         source="broker:alerce",
         retrieved_at="2026-09-06T00:00:00+00:00",
         provenance={
-            "adapter": "iris.ingest.alerce.v3",
+            "adapter": "siderea.ingest.alerce.v3",
             "row_count": 1,
             "query": {"classes": ["SN"]},
         },
@@ -94,7 +94,7 @@ class CLITests(unittest.TestCase):
     def test_analyze_creates_auditable_run(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            config = _config(root / "iris.toml")
+            config = _config(root / "siderea.toml")
             source = root / "photometry.csv"
             source.write_text(
                 "source_id,ra_deg,dec_deg,mjd,band,magnitude,magnitude_error\n"
@@ -119,13 +119,13 @@ class CLITests(unittest.TestCase):
             self.assertTrue(Path(result["manifest_path"]).is_file())
             candidates = json.loads(Path(result["candidates_path"]).read_text(encoding="utf-8"))
             self.assertEqual(
-                candidates["candidates"][0]["pipeline_version"], "iris.local_analysis.v4"
+                candidates["candidates"][0]["pipeline_version"], "siderea.local_analysis.v4"
             )
 
     def test_preflight_reports_a_pending_candidate_without_drafting_output(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            config = _config(root / "iris.toml")
+            config = _config(root / "siderea.toml")
             source = root / "photometry.csv"
             source.write_text(
                 "source_id,ra_deg,dec_deg,mjd,band,magnitude,magnitude_error\n"
@@ -181,10 +181,10 @@ class CLITests(unittest.TestCase):
     def test_broker_fetch_publishes_a_bound_pair_that_round_trips(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            config = _config(root / "iris.toml")
+            config = _config(root / "siderea.toml")
             destination = root / "broker.csv"
 
-            with patch("iris.ingest.AlerceAdapter.fetch", return_value=_broker_batch()):
+            with patch("siderea.ingest.AlerceAdapter.fetch", return_value=_broker_batch()):
                 code, stdout, stderr = self.run_cli(
                     ["broker-fetch", str(destination), "--config", str(config)]
                 )
@@ -195,7 +195,7 @@ class CLITests(unittest.TestCase):
             self.assertEqual(Path(payload["photometry"]).resolve(), destination.resolve())
             self.assertTrue(destination.is_file())
             self.assertTrue(sidecar.is_file())
-            self.assertIn("_iris_broker_snapshot_id", destination.read_text(encoding="utf-8"))
+            self.assertIn("_siderea_broker_snapshot_id", destination.read_text(encoding="utf-8"))
             restored = ingest_csv(destination)
             self.assertEqual(restored.source, "broker:alerce")
             self.assertEqual(restored.provenance["row_count"], 1)
@@ -203,7 +203,7 @@ class CLITests(unittest.TestCase):
     def test_broker_fetch_durably_orders_sidecar_before_csv_commit(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            config = _config(root / "iris.toml")
+            config = _config(root / "siderea.toml")
             destination = root / "broker.csv"
             sidecar = destination.with_suffix(".csv.provenance.json")
             events: list[tuple[str, str]] = []
@@ -217,9 +217,9 @@ class CLITests(unittest.TestCase):
                 events.append(("fsync", path.name))
 
             with (
-                patch("iris.ingest.AlerceAdapter.fetch", return_value=_broker_batch()),
-                patch("iris.cli.os.link", side_effect=recording_link),
-                patch("iris.cli.fsync_directory", side_effect=recording_fsync),
+                patch("siderea.ingest.AlerceAdapter.fetch", return_value=_broker_batch()),
+                patch("siderea.cli.os.link", side_effect=recording_link),
+                patch("siderea.cli.fsync_directory", side_effect=recording_fsync),
             ):
                 code, _, stderr = self.run_cli(
                     ["broker-fetch", str(destination), "--config", str(config)]
@@ -239,7 +239,7 @@ class CLITests(unittest.TestCase):
     def test_broker_fetch_passes_the_explicit_survey_to_alerce(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            config = _config(root / "iris.toml")
+            config = _config(root / "siderea.toml")
             config.write_text(
                 config.read_text(encoding="utf-8")
                 + """
@@ -248,13 +248,13 @@ class CLITests(unittest.TestCase):
 timeout_seconds = 7.5
 max_retries = 1
 backoff_seconds = 0.25
-user_agent = "iris-broker-policy/test-contact"
+user_agent = "siderea-broker-policy/test-contact"
 """,
                 encoding="utf-8",
             )
             destination = root / "broker.csv"
 
-            with patch("iris.ingest.AlerceAdapter") as adapter:
+            with patch("siderea.ingest.AlerceAdapter") as adapter:
                 adapter.return_value.fetch.return_value = _broker_batch()
                 code, _, stderr = self.run_cli(
                     [
@@ -277,7 +277,7 @@ user_agent = "iris-broker-policy/test-contact"
                     classifier_version="2026.09",
                     survey="lsst",
                     timeout_seconds=7.5,
-                    user_agent="iris-broker-policy/test-contact",
+                    user_agent="siderea-broker-policy/test-contact",
                     max_retries=1,
                     backoff_seconds=0.25,
                 )
@@ -291,7 +291,7 @@ user_agent = "iris-broker-policy/test-contact"
     def test_broker_fetch_removes_sidecar_when_csv_publication_fails(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            config = _config(root / "iris.toml")
+            config = _config(root / "siderea.toml")
             destination = root / "broker.csv"
             sidecar = destination.with_suffix(".csv.provenance.json")
             real_link = os.link
@@ -305,8 +305,8 @@ user_agent = "iris-broker-policy/test-contact"
                 real_link(source, target)
 
             with (
-                patch("iris.ingest.AlerceAdapter.fetch", return_value=_broker_batch()),
-                patch("iris.cli.os.link", side_effect=fail_csv_link),
+                patch("siderea.ingest.AlerceAdapter.fetch", return_value=_broker_batch()),
+                patch("siderea.cli.os.link", side_effect=fail_csv_link),
             ):
                 code, _, stderr = self.run_cli(
                     ["broker-fetch", str(destination), "--config", str(config)]
@@ -321,13 +321,13 @@ user_agent = "iris-broker-policy/test-contact"
     def test_broker_fetch_cleans_committed_pair_on_keyboard_interrupt(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            config = _config(root / "iris.toml")
+            config = _config(root / "siderea.toml")
             destination = root / "broker.csv"
             sidecar = destination.with_suffix(".csv.provenance.json")
 
             with (
-                patch("iris.ingest.AlerceAdapter.fetch", return_value=_broker_batch()),
-                patch("iris.cli._emit_json", side_effect=KeyboardInterrupt),
+                patch("siderea.ingest.AlerceAdapter.fetch", return_value=_broker_batch()),
+                patch("siderea.cli._emit_json", side_effect=KeyboardInterrupt),
                 self.assertRaises(KeyboardInterrupt),
             ):
                 main(["broker-fetch", str(destination), "--config", str(config)])
@@ -339,7 +339,7 @@ user_agent = "iris-broker-policy/test-contact"
     def test_analyze_rejects_unknown_or_incomplete_verification_serialization(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            config = _config(root / "iris.toml")
+            config = _config(root / "siderea.toml")
             source = root / "photometry.csv"
             source.write_text(
                 "source_id,ra_deg,dec_deg,mjd,band,magnitude,magnitude_error\n"
@@ -351,7 +351,7 @@ user_agent = "iris-broker-policy/test-contact"
             invalid_schema.write_text(
                 json.dumps(
                     {
-                        "schema": "iris.verification.v999",
+                        "schema": "siderea.verification.v999",
                         "candidate_id": "A",
                         "manual_review_required": False,
                         "checks": [],
@@ -376,7 +376,7 @@ user_agent = "iris-broker-policy/test-contact"
             incomplete.write_text(
                 json.dumps(
                     {
-                        "schema": "iris.verification.v1",
+                        "schema": "siderea.verification.v1",
                         "candidate_id": "A",
                         "manual_review_required": False,
                         "checks": [
@@ -415,7 +415,7 @@ user_agent = "iris-broker-policy/test-contact"
             malformed_context.write_text(
                 json.dumps(
                     {
-                        "schema": "iris.verification.v1",
+                        "schema": "siderea.verification.v1",
                         "candidate_id": "A",
                         "manual_review_required": False,
                         "context": {"simbad": "not-an-array", "skybot_epochs": []},
@@ -440,7 +440,7 @@ user_agent = "iris-broker-policy/test-contact"
     def test_offline_verification_is_explicitly_blocked(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            config = _config(root / "iris.toml")
+            config = _config(root / "siderea.toml")
             output = root / "verification.json"
             code, _, stderr = self.run_cli(
                 [
@@ -463,11 +463,11 @@ user_agent = "iris-broker-policy/test-contact"
             self.assertTrue(all(check["status"] == "disabled" for check in payload["checks"]))
 
     def test_verify_wires_configured_network_policy_to_every_catalog_client(self) -> None:
-        from iris.clients.catalogs import SimbadClient, SkyBotClient, VSXClient
+        from siderea.clients.catalogs import SimbadClient, SkyBotClient, VSXClient
 
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            config = _config(root / "iris.toml")
+            config = _config(root / "siderea.toml")
             config.write_text(
                 config.read_text(encoding="utf-8")
                 + """
@@ -476,7 +476,7 @@ user_agent = "iris-broker-policy/test-contact"
 timeout_seconds = 7.5
 max_retries = 0
 backoff_seconds = 0.0
-user_agent = "iris-cli-policy/test-contact"
+user_agent = "siderea-cli-policy/test-contact"
 """,
                 encoding="utf-8",
             )
@@ -491,15 +491,15 @@ user_agent = "iris-cli-policy/test-contact"
 
             with (
                 patch(
-                    "iris.clients.catalogs.SkyBotClient",
+                    "siderea.clients.catalogs.SkyBotClient",
                     side_effect=factory("skybot", SkyBotClient),
                 ),
                 patch(
-                    "iris.clients.catalogs.SimbadClient",
+                    "siderea.clients.catalogs.SimbadClient",
                     side_effect=factory("simbad", SimbadClient),
                 ),
                 patch(
-                    "iris.clients.catalogs.VSXClient",
+                    "siderea.clients.catalogs.VSXClient",
                     side_effect=factory("vsx", VSXClient),
                 ),
             ):
@@ -523,12 +523,12 @@ user_agent = "iris-cli-policy/test-contact"
                 with self.subTest(service=service):
                     self.assertFalse(call["enabled"])
                     self.assertEqual(call["timeout_seconds"], 7.5)
-                    self.assertEqual(call["user_agent"], "iris-cli-policy/test-contact")
+                    self.assertEqual(call["user_agent"], "siderea-cli-policy/test-contact")
 
     def test_queue_distinguishes_triage_from_reportability_and_records_audit_seed(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            config = _config(root / "iris.toml")
+            config = _config(root / "siderea.toml")
             ranking = root / "ranked.csv"
             ranking.write_text(
                 "candidate_id,priority_score,quality_passed,gate_decision,review_queue_eligible\n"
@@ -581,7 +581,7 @@ user_agent = "iris-cli-policy/test-contact"
     def test_review_set_command_packages_a_pending_offline_candidate_for_triage(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            config = _config(root / "iris.toml")
+            config = _config(root / "siderea.toml")
             source = root / "photometry.csv"
             source.write_text(
                 "source_id,ra_deg,dec_deg,mjd,band,magnitude,magnitude_error\n"
@@ -631,7 +631,7 @@ user_agent = "iris-cli-policy/test-contact"
     def test_review_add_rejects_unknown_candidate_then_records_known_one(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            config = _config(root / "iris.toml")
+            config = _config(root / "siderea.toml")
             ledger_path = root / "ledger.sqlite"
             candidate_version = "reviewed-evidence-v1"
             arguments = [

@@ -3,8 +3,8 @@ from __future__ import annotations
 import unittest
 from datetime import UTC, datetime, timedelta
 
-from iris.provenance import CheckProvenance, CheckStatus, digest_value
-from iris.validation import EvidenceBindingContext, bind_completed_check
+from siderea.provenance import CheckProvenance, CheckStatus, digest_value
+from siderea.validation import EvidenceBindingContext, bind_completed_check
 
 
 class EvidenceBindingTests(unittest.TestCase):

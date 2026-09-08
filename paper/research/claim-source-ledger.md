@@ -17,9 +17,25 @@
 | ZTF BTS combined a simple filter with human scanning and later removed variables/AGN using point-source coincidence and long-term history. | Fremling et al., *ZTF Bright Transient Survey I* | 2020 | https://arxiv.org/abs/1910.12973 | High; primary survey paper. |
 | A magnitude-limited BTS statistical sample reported 97%, 93%, and 75% spectroscopic completeness at <18, <18.5, and <19 mag. | Perley et al., *ZTF Bright Transient Survey II* | 2020 | https://arxiv.org/abs/2009.01242 | High; demonstrates what a controlled completeness claim requires. |
 | HiTS estimated recovery by injecting supernova light curves using empirical limiting-magnitude distributions. | Förster et al., *The High Cadence Transient Survey I* | 2016 | https://arxiv.org/abs/1609.03567 | High; primary injection/recovery example. |
-| AHA routes ZTF alert anomalies through metadata-, feature-, and representation-based views and evaluates a fixed top-10 review budget. | Stein et al., *Anomaly Hunter for Alerts* | 2026 | https://arxiv.org/abs/2602.12955 | High; primary methods preprint, used to motivate route-specific finite-budget evaluation rather than a performance claim for IRIS. |
+| AHA routes ZTF alert anomalies through metadata-, feature-, and representation-based views and evaluates a fixed top-10 review budget. | Stein et al., *Anomaly Hunter for Alerts* | 2026 | https://arxiv.org/abs/2602.12955 | High; primary methods preprint, used to motivate route-specific finite-budget evaluation rather than a performance claim for SIDEREA. |
 | Astra-CLR studies multi-scale contrastive attention for astronomical light-curve representations. | Majumder et al., *Multi-Scale Contrastive Attention for Light-Curve Representation Learning* | 2026 | https://arxiv.org/abs/2606.31627 | High; primary methods preprint, cited as related representation-learning work. |
 | AstroCo studies self-supervised Conformer-style encoders for light-curve embeddings. | Tan et al., *ASTROCO* | 2025 | https://arxiv.org/abs/2509.24134 | High; primary methods preprint, cited as related representation-learning work. |
-| StarEmbed benchmarks time-series foundation models on variable-star observations and was accepted at ICML 2026. | Li et al., *StarEmbed* | 2026 | https://arxiv.org/abs/2510.06200 | High; primary current arXiv record checked on 2026-09-06. No benchmark result is transferred to IRIS. |
-| Rubin-era transient discovery increasingly requires automation while preserving scientifically meaningful validation and classification boundaries. | Rehemtulla et al., *The Automation of Optical Transient Discovery and Classification in Rubin-era Time-domain Astronomy* | 2025 | https://arxiv.org/abs/2512.11959 | High; primary review/preprint used for field context, not evidence of IRIS performance. |
+| StarEmbed benchmarks time-series foundation models on variable-star observations and was accepted at ICML 2026. | Li et al., *StarEmbed* | 2026 | https://arxiv.org/abs/2510.06200 | High; primary current arXiv record checked on 2026-09-06. No benchmark result is transferred to SIDEREA. |
+| Rubin-era transient discovery increasingly requires automation while preserving scientifically meaningful validation and classification boundaries. | Rehemtulla et al., *The Automation of Optical Transient Discovery and Classification in Rubin-era Time-domain Astronomy* | 2025 | https://arxiv.org/abs/2512.11959 | High; primary review/preprint used for field context, not evidence of SIDEREA performance. |
 | The I SPY campaign counts, thresholds, object outcomes, and missing provenance are as recorded locally. | `PIPELINE_OPERATIONS_RECORD.md`, source code, protocol | 2026 | local workspace | High for repository state; historical artifacts are incomplete, so claims are bounded accordingly. |
+
+## Current local implementation and synthetic evidence
+
+- Software counts/coverage/type scope: `software-verification.json` and its bound
+  `software-verification-execution.txt`, Python 3.11.15, September 8. Historical
+  multi-interpreter results remain in `software-verification-2026-09-07.json`.
+- Two identical scientific replays and zero reportable synthetic candidates:
+  `replay-execution.json`, with runner snapshot and input digest.
+- Transient recovery and original noise/outlier failures:
+  `../experiments/transient-search-final/results.json`; adaptive oracle covariance
+  follow-up: `../experiments/covariance-search-final/results.json`.
+- Seven prespecified null stresses: `../experiments/noise-stress-final/results.json`.
+  These measure conditional simulated false alarms, not real survey performance.
+- Exact reproduction of all 30 IID rows and trial digest:
+  `experiment-reconstruction.json`. Tiny learning smoke tests:
+  `../experiments/learning-smoke-results.json`; no representation-usefulness claim.

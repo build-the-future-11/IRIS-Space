@@ -1,4 +1,4 @@
-"""CPU-small tests for the optional IRIS irregular-time TS-JEPA path."""
+"""CPU-small tests for the optional SIDEREA irregular-time TS-JEPA path."""
 
 from __future__ import annotations
 
@@ -17,8 +17,8 @@ except ImportError:  # pragma: no cover - makes the base test suite dependency-s
     torch = None
 
 if torch is not None:
-    from iris.cli import main as iris_main
-    from iris.ml.dataset import (
+    from siderea.cli import main as siderea_main
+    from siderea.ml.dataset import (
         BAND_INDEX,
         DEFAULT_BAND_TO_ID,
         DELTA_TIME_INDEX,
@@ -33,12 +33,12 @@ if torch is not None:
         pad_light_curves,
         tokenize_light_curve,
     )
-    from iris.ml.evaluate import evaluate_jepa, extract_embeddings
-    from iris.ml.jepa import TSJEPA, make_contiguous_target_mask, representation_diagnostics
-    from iris.ml.train import TrainingConfig, load_checkpoint, save_checkpoint, train_jepa
+    from siderea.ml.evaluate import evaluate_jepa, extract_embeddings
+    from siderea.ml.jepa import TSJEPA, make_contiguous_target_mask, representation_diagnostics
+    from siderea.ml.train import TrainingConfig, load_checkpoint, save_checkpoint, train_jepa
 
 
-@unittest.skipIf(torch is None, "PyTorch is an optional IRIS dependency")
+@unittest.skipIf(torch is None, "PyTorch is an optional SIDEREA dependency")
 class DatasetTests(unittest.TestCase):
     def test_tokenization_preserves_irregular_time_band_and_detection_state(self) -> None:
         curve = tokenize_light_curve(
@@ -278,7 +278,7 @@ class DatasetTests(unittest.TestCase):
         self.assertEqual(float(curve.tokens[0, VALUE_PRESENT_INDEX]), 0.0)
 
 
-@unittest.skipIf(torch is None, "PyTorch is an optional IRIS dependency")
+@unittest.skipIf(torch is None, "PyTorch is an optional SIDEREA dependency")
 class MaskAndModelTests(unittest.TestCase):
     @staticmethod
     def _batch():
@@ -526,7 +526,7 @@ class MaskAndModelTests(unittest.TestCase):
             representation_diagnostics(torch.ones(2, 3), torch.ones(2))
 
 
-@unittest.skipIf(torch is None, "PyTorch is an optional IRIS dependency")
+@unittest.skipIf(torch is None, "PyTorch is an optional SIDEREA dependency")
 class TrainingAndCheckpointTests(unittest.TestCase):
     @staticmethod
     def _dataset() -> LightCurveDataset:
@@ -682,7 +682,7 @@ class TrainingAndCheckpointTests(unittest.TestCase):
     def test_checkpoint_loader_never_falls_back_to_unrestricted_pickle(self) -> None:
         with (
             patch(
-                "iris.ml.train.torch.load",
+                "siderea.ml.train.torch.load",
                 side_effect=TypeError("weights_only unsupported"),
             ) as mocked_load,
             self.assertRaisesRegex(TypeError, "weights_only"),
@@ -743,7 +743,7 @@ class TrainingAndCheckpointTests(unittest.TestCase):
     def test_cli_rejects_different_train_and_validation_token_contracts(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:
             root = Path(temporary_directory)
-            config = root / "iris.toml"
+            config = root / "siderea.toml"
             config.write_text(
                 """
 [general]
@@ -795,7 +795,7 @@ batch_size = 1
             )
             stderr = io.StringIO()
             with contextlib.redirect_stderr(stderr):
-                code = iris_main(
+                code = siderea_main(
                     [
                         "jepa-train",
                         str(train_path),

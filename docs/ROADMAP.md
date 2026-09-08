@@ -1,8 +1,13 @@
-# IRIS roadmap
+# SIDEREA roadmap
+
+Current execution status and detailed acceptance criteria are maintained in
+[PROJECT_FINISH_CHECKLIST.md](../PROJECT_FINISH_CHECKLIST.md) and
+[the September 8 assessment](PROJECT_STATUS_2026-09-08.md). The milestone descriptions
+below retain historical context; consult those records for this session's additions.
 
 ## North star
 
-IRIS should be a scientifically credible, failure-aware discovery workbench that
+SIDEREA should be a scientifically credible, failure-aware discovery workbench that
 helps a small human team find and follow unusual astronomical events without
 confusing model confidence, catalogue availability, or workflow completion with
 scientific truth.
@@ -12,7 +17,7 @@ are falsifiable, whose inputs and decisions are reproducible, whose failure mode
 are visible, and whose performance is re-measured as surveys and populations
 change.
 
-Status date: **2026-09-06**.
+Status date: **2026-09-07**.
 
 ## Status key
 
@@ -34,10 +39,10 @@ validated or operational.
 | Candidate/observation/evidence domain model | Implemented | Exercise complete live lifecycle and persistence/replay |
 | Canonical schema and local CSV ingestion | Implemented with exact-duplicate and reused non-empty observation-ID rejection | Qualify additional legacy/survey schemas plus revision/version and near-duplicate policy |
 | Bounded lazy ALeRCE ingestion adapter | Implemented with explicit `ztf`/`lsst` request provenance, survey-specific detection filters, a fail-closed qualified Rubin classifier/photometry contract, bounded retries/timeouts, and a content-bound snapshot sidecar | Add durable watermarking, raw replay, recorded live fixtures, schema monitoring, end-to-end deadlines, and recurring qualification |
-| Immutable local analysis pipeline (`iris.local_analysis.v4`) and CLI | Integrated locally with source/config/code and candidate-evidence digests plus terminal completion/caught-failure/interruption manifests after run creation | Verify in clean supported environments and extend terminal-manifest coverage to pre-run validation and other production entry points |
+| Immutable local analysis pipeline (`siderea.local_analysis.v4`) and CLI | Integrated locally with source/config/code and candidate-evidence digests plus terminal completion/caught-failure/interruption manifests after run creation | Verify in clean supported environments and extend terminal-manifest coverage to pre-run validation and other production entry points |
 | Lifecycle and reportability policy | Implemented | Property tests over every transition and end-to-end fault qualification |
-| Survey/passband-aware magnitude and supplied forced-flux features (`iris.photometry.v4`) | Implemented with cross-survey channel separation, explicit survey-less metadata, exact significant-measurement unions, and separate band/channel prior non-detection counts | Independently verify calibration assumptions, numerical behavior, and survey-stratified performance |
-| Explainable magnitude/forced-flux heuristic (`iris.heuristic_priority.v2`) | Implemented | Retrospective and prospective finite-budget comparison |
+| Survey/passband-aware magnitude and supplied forced-flux features (`siderea.photometry.v4`) | Implemented with cross-survey channel separation, explicit survey-less metadata, exact significant-measurement unions, and separate band/channel prior non-detection counts | Independently verify calibration assumptions, numerical behavior, and survey-stratified performance |
+| Explainable magnitude/forced-flux heuristic (`siderea.heuristic_priority.v2`) | Implemented | Retrospective and prospective finite-budget comparison |
 | SkyBoT/SIMBAD/VSX adapters | Implemented | Recorded fixtures, schema monitoring, rate-limit behavior, live qualification |
 | Read-only TNS duplicate search | Implemented with strict result-shape failure and imported-clear binding to the versioned two-stage name/cone contract | Recorded/live API fixture suite, schema monitoring, policy verification, credential integration |
 | Fail-closed verification and evidence binding | Integrated locally, including all-distinct-detection-epoch SkyBoT aggregation and coverage binding | Zero-fail-open fault campaign, recorded/live fixtures, and operational qualification |
@@ -53,7 +58,7 @@ validated or operational.
 | Source-control ignore policy | Implemented | Keep new runtime artifact types covered and audit tracked files before release |
 | Robust anomaly and cosine similarity | Implemented as primitives; persisted indexes require encoder/token/dataset provenance | Reference-population curation, duplicate audit, scientific enrichment study |
 | Follow-up utility and advisory campaign sketches | Implemented as non-operational primitives | Validate utility factors, wire only an approved TOML policy, then add visibility/facility constraints and runbook integration |
-| Irregular-time TS-JEPA | Implemented as shadow research code with context-only normalization, explicit flux detections, split enforcement, deterministic defaults, repeated masks, explicit value-presence/missing-error sentinels, and hashed `iris.light_curve_tokens.v3` contracts enforced across collation/training/evaluation/extraction and persisted by the CLI | Reproducible training corpus, ablations, calibration of any downstream predictor, shadow campaign, model governance |
+| Irregular-time TS-JEPA | Implemented as shadow research code with context-only normalization, explicit flux detections, split enforcement, deterministic defaults, repeated masks, explicit value-presence/missing-error sentinels, and hashed `siderea.light_curve_tokens.v3` contracts enforced across collation/training/evaluation/extraction and persisted by the CLI | Reproducible training corpus, ablations, calibration of any downstream predictor, shadow campaign, model governance |
 
 ## Priority sequence
 
@@ -66,7 +71,7 @@ so later milestones can be evaluated rather than merely demonstrated.
 
 Delivered in the current tree:
 
-- `src/iris/` package structure and console entry point;
+- `src/siderea/` package structure and console entry point;
 - strict TOML profiles;
 - canonical schema, local CSV and bounded ALeRCE ingestion adapters, including a
   content-bound broker snapshot sidecar and duplicate/observation-ID rejection;
@@ -84,7 +89,7 @@ Delivered in the current tree:
   append-only candidate-version reconstruction, and evidence-bound preflight,
   plus dossier, manifests, and dataset snapshots;
 - loopback-only, CSRF-protected local review queue with no report endpoint;
-- atomic `iris.review_set.v1` bundles with exact input/version binding, artifact
+- atomic `siderea.review_set.v1` bundles with exact input/version binding, artifact
   hashes, and a dossier for every selected candidate;
 - evaluation, anomaly, retrieval, follow-up, and explicitly advisory campaign sketches;
 - chronological supervised baseline with an explicit entity policy,
@@ -106,7 +111,7 @@ runtime artifacts is now present.
 
 **Objective:** a canonical offline path turns a validated local observation file
 into a ranked, auditable review set. This is implemented as two explicit immutable
-steps: `analyze` creates one `iris.local_analysis.v4` run, and `review-set`
+steps: `analyze` creates one `siderea.local_analysis.v4` run, and `review-set`
 atomically packages that run's exact ranking/candidate snapshots, finite queue,
 manifest, and selected dossiers. Local analysis now closes interruption manifests
 instead of leaving an apparently running execution.
@@ -211,7 +216,7 @@ explicit detection flags; the CLI also enforces disjoint entity groups,
 chronological separation by default, deterministic algorithms unless explicitly
 opted out, and repeated-mask held-out evaluation with dispersion. It remains
 uncalibrated, scientifically unvalidated, and shadow-only. Tokenized curves carry
-the hashed `iris.light_curve_tokens.v3` interpretation contract, and batching
+the hashed `siderea.light_curve_tokens.v3` interpretation contract, and batching
 rejects mixed, partial, or mismatched known contracts (with an all-legacy
 compatibility path). Training/evaluation/extraction enforce one run-level digest;
 the CLI matches train/validation contracts and persists it. These leakage,
@@ -296,7 +301,7 @@ Exit criteria:
   recoverable; and
 - a runbook and incident/withdrawal procedure are rehearsed.
 
-## M7 — Beyond the initial IRIS level
+## M7 — Beyond the initial SIDEREA level
 
 These are high-value research extensions after M1–M6 are stable:
 
@@ -369,7 +374,7 @@ Every milestone includes:
    including strict verification-import and two-stage TNS-contract failures.
 3. Define and import a small, reviewed historical outcome dataset without treating
    unknowns as negatives.
-4. Run the legacy-versus-IRIS disagreement study on a frozen snapshot.
+4. Run the legacy-versus-SIDEREA disagreement study on a frozen snapshot.
 5. Add terminal manifests/snapshots to every command that becomes a production
    orchestration boundary and to pre-run validation; created local-analysis runs
    already cover completion, caught processing failure, and interruption.

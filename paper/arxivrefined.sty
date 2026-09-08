@@ -18,21 +18,13 @@
 \else
   \RequirePackage{fontspec}
   \defaultfontfeatures{Ligatures=TeX}
-  \IfFontExistsTF{TeX Gyre Termes}
-    {\setmainfont{TeX Gyre Termes}}
-    {\IfFontExistsTF{Times New Roman}
-       {\setmainfont{Times New Roman}}
-       {}}
-  \IfFontExistsTF{TeX Gyre Heros}
-    {\setsansfont{TeX Gyre Heros}}
-    {\IfFontExistsTF{Helvetica}
-       {\setsansfont{Helvetica}}
-       {}}
-  \IfFontExistsTF{Latin Modern Mono}
-    {\setmonofont{Latin Modern Mono}}
-    {\IfFontExistsTF{Menlo}
-       {\setmonofont{Menlo}}
-       {}}
+  % Resolve distributed TeX fonts by filename, never host-specific fonts.
+  \setmainfont{texgyretermes}[Extension=.otf,UprightFont=*-regular,
+    BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic]
+  \setsansfont{texgyreheros}[Extension=.otf,UprightFont=*-regular,
+    BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic]
+  \setmonofont{texgyrecursor}[Extension=.otf,UprightFont=*-regular,
+    BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic]
 \fi
 
 % --------------------------------------------------

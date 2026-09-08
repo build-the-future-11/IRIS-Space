@@ -1,0 +1,17 @@
+{
+  "fingerprint_a": "analysis-7d203c8f40012eb4",
+  "fingerprint_b": "analysis-7d203c8f40012eb4",
+  "artifacts_identical": {
+    "photometry.normalized.csv": true,
+    "features.csv": true,
+    "ranked_candidates.csv": true
+  },
+  "versions_identical": true,
+  "candidates_per_run": 2,
+  "reportable_per_run": 0,
+  "input_sha256": "e1f077b0ee2988eb97839e1ea783bc03d16a92322e04bc27e9b6b5da61e38a9b",
+  "scope": "synthetic deterministic safety replay; no live services",
+  "command": "PYTHONPATH=src python .test-tmp/finish-validation/replay_execution.py",
+  "runner_snapshot": "paper/research/replay-execution.source.txt",
+  "runner_sha256": "621388ca1c1b0c5cbe22d8dd92a08e640460e4eb567201816c4552f22513e0cc"
+}

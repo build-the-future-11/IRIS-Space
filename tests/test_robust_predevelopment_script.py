@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 import subprocess
 import sys
-from pathlib import Path
 
 
 SCRIPT = Path("paper/experiments/verify_robust_search_predevelopment.py")

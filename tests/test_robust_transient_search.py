@@ -18,7 +18,10 @@ def test_stability_rejects_single_epoch_outlier():
     assert result["raw_max_local_z"] > 0
     assert result["statistic"] == pytest.approx(0, abs=1e-10)
     assert result["most_influential_row"] == 10
-    assert result["score_semantics"] == "empirical_search_statistic_not_sigma_probability_or_chi_square"
+    assert (
+        result["score_semantics"]
+        == "empirical_search_statistic_not_sigma_probability_or_chi_square"
+    )
     assert result["changes_v1_detection_rule"] is False
     assert result["qualifies_reportability"] is False
 

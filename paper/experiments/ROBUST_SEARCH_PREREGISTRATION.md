@@ -5,8 +5,9 @@ Authoritative machine-readable artifacts, in order:
 1. `robust_search_protocol.v2.json`
 2. `robust_search_amendment.v2.0.1.json`
 3. `robust_search_amendment.v2.0.2.json`
+4. `robust_search_amendment.v2.0.3.json`
 
-This Markdown file is a human-readable index of that frozen design. It does not override the machine-readable artifacts. Earlier versions remain in Git history. Both amendments were written before any v2 candidate-development, calibration, locked-evaluation, or generalization-probe performance statistic was generated.
+This Markdown file is a human-readable index of that frozen design. It does not override the machine-readable artifacts. Earlier versions remain in Git history. All three amendments were written before any v2 candidate-development, calibration, locked-evaluation, or generalization-probe performance statistic was generated.
 
 ## Claim boundary
 
@@ -107,7 +108,7 @@ The study uses 20 ordinary irregular cadences and 5 seasonal-gap cadences, each 
 
 `5abfdaa328f5793e92bed7aa6dcfaade44ac1a54a1996b8c310e51112dc72451`.
 
-The exact manifest still needs to be materialized as `robust_search_cadences.v2.json` before performance execution. The generator and digest are already frozen.
+The frozen generator names the exact rows `irregular_01` through `irregular_20` and `seasonal_gap_01` through `seasonal_gap_05`. V2.0.3 records those identifiers explicitly because v2.0.2 used inconsistent prose aliases. V2.0.3 is identifier-only: it changes no generated time, sample size, allocation, weighting, statistic, threshold, or gate. The exact manifest still needs to be materialized as `robust_search_cadences.v2.json` before performance execution; its generator and digest are already frozen.
 
 Each cadence also has one fixed 64-element reported-error vector generated from the reserved child streams 25 through 49, with values drawn from `Uniform(0.7,1.3)`. The deterministic complete error manifest is bound by `robust_search_reported_errors.v2.json` to SHA-256
 
@@ -149,7 +150,7 @@ The eventual runner must enforce the following state progression:
 
 `siderea.research.robust_phase_receipts` now provides fail-closed immutable receipts for that sequence. Every receipt binds exact artifact SHA-256 digests; every phase after development must bind the immediately preceding verified receipt. Mutated artifacts, overwritten receipts, skipped phases, duplicate artifact paths, cycles, and paths outside the study root fail closed.
 
-The researcher-facing `verify_robust_search_predevelopment.py` entrypoint now verifies the base protocol, v2.0.1 amendment, v2.0.2 amendment, and reported-error lock together. A subprocess regression test executes that entrypoint directly so stale CLI/script wiring cannot escape coverage merely because its helper function passes unit tests.
+The researcher-facing `verify_robust_search_predevelopment.py` entrypoint now verifies the base protocol, v2.0.1 amendment, v2.0.2 amendment, v2.0.3 identifier erratum, and reported-error lock together. A subprocess regression test executes that entrypoint directly so stale CLI/script wiring cannot escape coverage merely because its helper function passes unit tests.
 
 No phase-control artifact computes a candidate statistic, threshold, false-alarm count, or recovery value.
 
@@ -157,7 +158,7 @@ No phase-control artifact computes a candidate statistic, threshold, false-alarm
 
 Before locked evaluation, retain at minimum:
 
-- base protocol and both amendments with exact digests;
+- base protocol and all three amendments with exact digests;
 - exact cadence manifest and reported-error lock;
 - exact selected implementation source and digest;
 - environment and dependency inventory;
@@ -187,11 +188,12 @@ No failed stress case may be removed from the final artifact set.
 - [x] Prior v1 failures preserved explicitly as prior information.
 - [x] V2.0.1 fixes the same-sample feasibility flaw and removes the under-specified Huber candidate.
 - [x] V2.0.2 freezes signal/cadence allocation, weighting, bank centers, comparator calibration, bootstrap mechanics, generalization allocation, and secondary family-wise safety reporting.
+- [x] V2.0.3 binds the inconsistent cadence-allocation prose to the exact identifiers already frozen by the generator without changing the numeric design.
 - [x] Deterministic cadence generator and canonical manifest digest frozen.
 - [x] Deterministic reported-error generator and canonical manifest digest frozen.
 - [x] Selected-template leave-one-out statistic implemented in the research namespace without changing v1 semantics.
 - [x] Research statistic tests cover one-point outlier collapse, supported multi-epoch signal, covariance use, constant curves, and validation behavior.
-- [x] Predevelopment verifier checks both amendments and the reported-error lock.
+- [x] Predevelopment verifier checks the complete amendment chain and the reported-error lock.
 - [x] Researcher-facing verifier entrypoint is exercised by an end-to-end subprocess regression test.
 - [x] Fail-closed phase receipt chain implemented and tested.
 
@@ -199,7 +201,6 @@ No failed stress case may be removed from the final artifact set.
 
 - [ ] Exact-head CI must pass after the latest integrity changes.
 - [ ] Materialize and commit `robust_search_cadences.v2.json`; its bytes must reproduce the frozen SHA-256.
-- [ ] Reconcile any cadence-identifier wording with the canonical generated manifest before a runner depends on string IDs; never silently reinterpret a frozen text field after seeing results.
 - [ ] Implement the v2 runner with explicit development/calibration/locked/generalization modes, exact allocation checks, disjoint seed namespaces, source snapshots, per-trial output, and mandatory phase receipts.
 - [ ] Add tests for exact null allocations, locked width assignment, pairing, comparator calibration, seed disjointness, and refused phase skipping.
 

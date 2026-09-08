@@ -153,13 +153,9 @@ def build_reported_error_manifest(
         "amendment": "robust_search_amendment.v2.0.1.json",
         "cadence_seed": cadence_seed,
         "generator": {
-            "numpy_rng": (
-                "default_rng(SeedSequence(cadence_seed).spawn(50)[25 + cadence_index])"
-            ),
+            "numpy_rng": ("default_rng(SeedSequence(cadence_seed).spawn(50)[25 + cadence_index])"),
             "distribution": "Uniform(0.7,1.3), size=64",
-            "mapping": (
-                "children 25..49 correspond one-to-one to frozen cadence indices 0..24"
-            ),
+            "mapping": ("children 25..49 correspond one-to-one to frozen cadence indices 0..24"),
             "note": (
                 "Frozen before any v2 candidate development evaluation and reused across "
                 "development, calibration, and locked evaluation."
@@ -173,9 +169,7 @@ def reported_error_manifest_bytes(
     protocol: dict[str, Any],
     amendment: dict[str, Any],
 ) -> bytes:
-    return (stable_json(build_reported_error_manifest(protocol, amendment)) + "\n").encode(
-        "utf-8"
-    )
+    return (stable_json(build_reported_error_manifest(protocol, amendment)) + "\n").encode("utf-8")
 
 
 def verify_reported_error_manifest(
@@ -218,9 +212,7 @@ def verify_predevelopment_inputs(
     """Verify every predevelopment input lock without producing a scientific result."""
 
     protocol, amendment = verify_frozen_amendment(amendment_path, protocol_path)
-    errors_sha256 = verify_materialized_reported_errors(
-        reported_errors_path, protocol, amendment
-    )
+    errors_sha256 = verify_materialized_reported_errors(reported_errors_path, protocol, amendment)
     return {
         "status": "PASS_PREDEVELOPMENT_INPUT_LOCKS_NO_PERFORMANCE_STATISTICS",
         "protocol_git_blob_sha1": FROZEN_PROTOCOL_GIT_BLOB_SHA1,

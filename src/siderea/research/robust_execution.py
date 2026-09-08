@@ -11,8 +11,7 @@ module closes the remaining execution-contract gap:
 * the effective candidate set and development split must match that amendment;
 * one heteroskedastic reported-error vector is deterministically frozen for each
   of the 25 already-frozen cadence realizations; and
-* a committed materialization of those vectors must match the deterministic
-  bytes exactly.
+* the committed lock must bind the complete generated vector manifest by SHA-256.
 
 No outcome, search statistic, threshold, recovery value, or false-alarm count is
 computed here.
@@ -113,13 +112,7 @@ def build_reported_error_manifest(
     protocol: dict[str, Any],
     amendment: dict[str, Any],
 ) -> dict[str, Any]:
-    """Build the exact amendment-mandated heteroskedastic error vectors.
-
-    SeedSequence child indices 0..24 are reserved by the cadence lock. The
-    amendment assigns children 25..49 to the 25 reported-error vectors. Using
-    one child per cadence prevents any phase or candidate from advancing a
-    shared RNG stream and thereby changing another cadence's errors.
-    """
+    """Build the exact amendment-mandated heteroskedastic error vectors."""
 
     design = protocol["design"]
     cadence_rows = build_cadence_manifest(protocol)["cadences"]
@@ -153,9 +146,9 @@ def build_reported_error_manifest(
         "amendment": "robust_search_amendment.v2.0.1.json",
         "cadence_seed": cadence_seed,
         "generator": {
-            "numpy_rng": ("default_rng(SeedSequence(cadence_seed).spawn(50)[25 + cadence_index])"),
+            "numpy_rng": "default_rng(SeedSequence(cadence_seed).spawn(50)[25 + cadence_index])",
             "distribution": "Uniform(0.7,1.3), size=64",
-            "mapping": ("children 25..49 correspond one-to-one to frozen cadence indices 0..24"),
+            "mapping": "children 25..49 correspond one-to-one to frozen cadence indices 0..24",
             "note": (
                 "Frozen before any v2 candidate development evaluation and reused across "
                 "development, calibration, and locked evaluation."
@@ -188,31 +181,45 @@ def verify_reported_error_manifest(
     return encoded
 
 
-def verify_materialized_reported_errors(
+def verify_reported_error_lock(
     path: Path,
     protocol: dict[str, Any],
     amendment: dict[str, Any],
 ) -> str:
-    """Fail closed unless the committed input artifact is byte-identical to the lock."""
+    """Verify that the committed pre-result lock binds the generated vectors."""
 
-    expected = verify_reported_error_manifest(protocol, amendment)
-    actual = path.read_bytes()
-    if actual != expected:
-        raise RuntimeError(
-            "materialized robust-search reported-error vectors differ from the frozen manifest"
-        )
-    return hashlib.sha256(actual).hexdigest()
+    generated = verify_reported_error_manifest(protocol, amendment)
+    generated_sha256 = hashlib.sha256(generated).hexdigest()
+    lock = json.loads(path.read_text(encoding="utf-8"))
+    expected_fields: dict[str, Any] = {
+        "schema": "siderea.robust_search_reported_errors_lock.v2",
+        "status": "frozen_before_any_v2_candidate_development_evaluation",
+        "protocol": "robust_search_protocol.v2.json",
+        "amendment": "robust_search_amendment.v2.0.1.json",
+        "cadence_seed": 2026091120,
+        "vector_count": 25,
+        "epochs_per_vector": 64,
+        "distribution": "Uniform(0.7,1.3)",
+        "seed_spawn_indices": [25, 49],
+        "canonical_generated_manifest_sha256": FROZEN_REPORTED_ERRORS_MANIFEST_SHA256,
+    }
+    for key, expected in expected_fields.items():
+        if lock.get(key) != expected:
+            raise RuntimeError(f"reported-error precommitment field {key!r} drifted")
+    if lock["canonical_generated_manifest_sha256"] != generated_sha256:
+        raise RuntimeError("reported-error lock does not bind the deterministic generated manifest")
+    return generated_sha256
 
 
 def verify_predevelopment_inputs(
     protocol_path: Path,
     amendment_path: Path,
-    reported_errors_path: Path,
+    reported_error_lock_path: Path,
 ) -> dict[str, Any]:
     """Verify every predevelopment input lock without producing a scientific result."""
 
     protocol, amendment = verify_frozen_amendment(amendment_path, protocol_path)
-    errors_sha256 = verify_materialized_reported_errors(reported_errors_path, protocol, amendment)
+    errors_sha256 = verify_reported_error_lock(reported_error_lock_path, protocol, amendment)
     return {
         "status": "PASS_PREDEVELOPMENT_INPUT_LOCKS_NO_PERFORMANCE_STATISTICS",
         "protocol_git_blob_sha1": FROZEN_PROTOCOL_GIT_BLOB_SHA1,
@@ -233,7 +240,7 @@ __all__ = [
     "build_reported_error_manifest",
     "reported_error_manifest_bytes",
     "verify_frozen_amendment",
-    "verify_materialized_reported_errors",
     "verify_predevelopment_inputs",
+    "verify_reported_error_lock",
     "verify_reported_error_manifest",
 ]

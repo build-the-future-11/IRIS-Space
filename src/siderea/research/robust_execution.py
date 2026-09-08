@@ -1,16 +1,17 @@
 """Fail-closed predevelopment execution locks for robust transient-search v2.
 
 This module deliberately generates no candidate-performance statistic. It binds
-the v2.0.1 scientific amendment, the v2.0.2 execution/analysis contract, and the
-amendment-mandated reported-error vectors before a development runner is allowed
-to exist.
+the v2.0.1 scientific amendment, the v2.0.2 execution/analysis contract, the
+v2.0.3 cadence-identifier erratum, and the amendment-mandated reported-error
+vectors before a development runner is allowed to exist.
 
 The base protocol and cadence times are locked in :mod:`robust_protocol`. This
 module closes the remaining execution-contract gaps:
 
-* the exact v2.0.1 and v2.0.2 amendment bytes must match their pre-result artifacts;
+* exact v2.0.1, v2.0.2, and v2.0.3 amendment bytes must match pre-result artifacts;
 * the effective candidate set and development split must match v2.0.1;
 * signal/cadence allocation and bootstrap mechanics must match v2.0.2;
+* canonical cadence identifiers must match the already-frozen generator via v2.0.3;
 * one heteroskedastic reported-error vector is deterministically frozen for each
   of the 25 already-frozen cadence realizations; and
 * the committed lock must bind the complete generated vector manifest by SHA-256.
@@ -37,6 +38,7 @@ from siderea.research.robust_protocol import (
 
 FROZEN_AMENDMENT_GIT_BLOB_SHA1 = "8262ffb14b95ea7c67164935b694ff41df31fa7b"
 FROZEN_EXECUTION_AMENDMENT_GIT_BLOB_SHA1 = "52fdce6a876e189450beb87d08326597a8473f67"
+FROZEN_IDENTIFIER_ERRATUM_GIT_BLOB_SHA1 = "dee0cb3b256e4823e784466e8b5df6041482c3b5"
 FROZEN_REPORTED_ERRORS_MANIFEST_SHA256 = (
     "c047f7c56138ba562ad41e960d8ee52b8c773d199c9347e64e0db39bde857bd7"
 )
@@ -49,6 +51,20 @@ EFFECTIVE_CANDIDATES = (
 def _git_blob_sha1(data: bytes) -> str:
     header = f"blob {len(data)}\0".encode("ascii")
     return hashlib.sha1(header + data).hexdigest()  # noqa: S324 - Git object identity
+
+
+def _verify_pre_result_observed(payload: dict[str, Any], *, label: str) -> None:
+    observed = payload.get("observed_before_amendment")
+    if not isinstance(observed, dict):
+        raise ValueError(f"{label} is missing observed-before state")
+    forbidden_observed = (
+        "v2_candidate_development_statistics",
+        "v2_calibration_statistics",
+        "v2_locked_evaluation_statistics",
+        "v2_generalization_probe_statistics",
+    )
+    if any(observed.get(name) is not False for name in forbidden_observed):
+        raise ValueError(f"{label} must remain explicitly pre-result for every v2 phase")
 
 
 def verify_frozen_amendment(
@@ -74,18 +90,7 @@ def verify_frozen_amendment(
         raise ValueError("robust-search amendment is not marked frozen before development")
     if amendment.get("base_protocol_git_blob_sha1") != FROZEN_PROTOCOL_GIT_BLOB_SHA1:
         raise ValueError("robust-search amendment is not bound to the frozen base protocol")
-
-    observed = amendment.get("observed_before_amendment")
-    if not isinstance(observed, dict):
-        raise ValueError("robust-search amendment is missing observed-before state")
-    forbidden_observed = (
-        "v2_candidate_development_statistics",
-        "v2_calibration_statistics",
-        "v2_locked_evaluation_statistics",
-        "v2_generalization_probe_statistics",
-    )
-    if any(observed.get(name) is not False for name in forbidden_observed):
-        raise ValueError("amendment must remain explicitly pre-result for every v2 phase")
+    _verify_pre_result_observed(amendment, label="robust-search amendment")
 
     changes = amendment.get("changes")
     if not isinstance(changes, dict):
@@ -142,18 +147,7 @@ def verify_frozen_execution_amendment(
         FROZEN_AMENDMENT_GIT_BLOB_SHA1
     ):
         raise ValueError("execution amendment is not bound to the frozen v2.0.1 amendment")
-
-    observed = execution_amendment.get("observed_before_amendment")
-    if not isinstance(observed, dict):
-        raise ValueError("execution amendment is missing observed-before state")
-    forbidden_observed = (
-        "v2_candidate_development_statistics",
-        "v2_calibration_statistics",
-        "v2_locked_evaluation_statistics",
-        "v2_generalization_probe_statistics",
-    )
-    if any(observed.get(name) is not False for name in forbidden_observed):
-        raise ValueError("execution amendment must remain pre-result for every v2 phase")
+    _verify_pre_result_observed(execution_amendment, label="execution amendment")
 
     changes = execution_amendment.get("changes")
     if not isinstance(changes, dict):
@@ -190,6 +184,71 @@ def verify_frozen_execution_amendment(
         raise ValueError("generalization-probe allocation drifted from the frozen contract")
 
     return protocol, amendment, execution_amendment
+
+
+def verify_frozen_identifier_erratum(
+    identifier_erratum_path: Path,
+    execution_amendment_path: Path,
+    amendment_path: Path,
+    protocol_path: Path,
+) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any]]:
+    """Verify the pre-result v2.0.3 canonical cadence-identifier correction."""
+
+    protocol, amendment, execution = verify_frozen_execution_amendment(
+        execution_amendment_path,
+        amendment_path,
+        protocol_path,
+    )
+    raw = identifier_erratum_path.read_bytes()
+    actual = _git_blob_sha1(raw)
+    if actual != FROZEN_IDENTIFIER_ERRATUM_GIT_BLOB_SHA1:
+        raise RuntimeError(
+            "robust-search v2.0.3 identifier erratum differs from the frozen "
+            f"predevelopment artifact: expected git blob "
+            f"{FROZEN_IDENTIFIER_ERRATUM_GIT_BLOB_SHA1}, got {actual}; create a new "
+            "versioned amendment before generating any result"
+        )
+
+    erratum = json.loads(raw)
+    if erratum.get("schema") != "siderea.robust_search_protocol_amendment.v2.0.3":
+        raise ValueError("unexpected robust-search identifier-erratum schema")
+    if erratum.get("status") != "frozen_before_any_v2_candidate_development_evaluation":
+        raise ValueError("identifier erratum is not marked frozen before development")
+    if erratum.get("base_protocol_git_blob_sha1") != FROZEN_PROTOCOL_GIT_BLOB_SHA1:
+        raise ValueError("identifier erratum is not bound to the frozen base protocol")
+    if erratum.get("previous_amendment_git_blob_sha1") != (
+        FROZEN_EXECUTION_AMENDMENT_GIT_BLOB_SHA1
+    ):
+        raise ValueError("identifier erratum is not bound to the frozen v2.0.2 amendment")
+    _verify_pre_result_observed(erratum, label="identifier erratum")
+
+    changes = erratum.get("changes")
+    if not isinstance(changes, dict):
+        raise ValueError("identifier erratum is missing changes")
+    identifiers = changes.get("cadence_identifier_erratum")
+    if not isinstance(identifiers, dict):
+        raise ValueError("identifier erratum is missing canonical cadence identifiers")
+
+    expected_ordinary = tuple(f"irregular_{index:02d}" for index in range(1, 21))
+    expected_gap = tuple(f"seasonal_gap_{index:02d}" for index in range(1, 6))
+    if identifiers.get("canonical_ordinary_kind") != "irregular":
+        raise ValueError("canonical ordinary cadence kind drifted")
+    if identifiers.get("canonical_seasonal_gap_kind") != "seasonal_gap":
+        raise ValueError("canonical seasonal-gap cadence kind drifted")
+    if tuple(identifiers.get("canonical_ordinary_ids", ())) != expected_ordinary:
+        raise ValueError("canonical ordinary cadence identifiers drifted")
+    if tuple(identifiers.get("canonical_seasonal_gap_ids", ())) != expected_gap:
+        raise ValueError("canonical seasonal-gap cadence identifiers drifted")
+    if identifiers.get("numeric_design_change") is not False:
+        raise ValueError("v2.0.3 must remain an identifier-only erratum")
+
+    cadence_rows = build_cadence_manifest(protocol)["cadences"]
+    generated_ordinary = tuple(row["id"] for row in cadence_rows if row["kind"] == "irregular")
+    generated_gap = tuple(row["id"] for row in cadence_rows if row["kind"] == "seasonal_gap")
+    if generated_ordinary != expected_ordinary or generated_gap != expected_gap:
+        raise RuntimeError("frozen cadence generator disagrees with canonical v2.0.3 identifiers")
+
+    return protocol, amendment, execution, erratum
 
 
 def build_reported_error_manifest(
@@ -299,11 +358,13 @@ def verify_predevelopment_inputs(
     protocol_path: Path,
     amendment_path: Path,
     execution_amendment_path: Path,
+    identifier_erratum_path: Path,
     reported_error_lock_path: Path,
 ) -> dict[str, Any]:
     """Verify every predevelopment input lock without producing a scientific result."""
 
-    protocol, amendment, _ = verify_frozen_execution_amendment(
+    protocol, amendment, _, _ = verify_frozen_identifier_erratum(
+        identifier_erratum_path,
         execution_amendment_path,
         amendment_path,
         protocol_path,
@@ -314,6 +375,7 @@ def verify_predevelopment_inputs(
         "protocol_git_blob_sha1": FROZEN_PROTOCOL_GIT_BLOB_SHA1,
         "amendment_git_blob_sha1": FROZEN_AMENDMENT_GIT_BLOB_SHA1,
         "execution_amendment_git_blob_sha1": FROZEN_EXECUTION_AMENDMENT_GIT_BLOB_SHA1,
+        "identifier_erratum_git_blob_sha1": FROZEN_IDENTIFIER_ERRATUM_GIT_BLOB_SHA1,
         "reported_errors_sha256": errors_sha256,
         "effective_candidates": list(EFFECTIVE_CANDIDATES),
         "development_null_split": {
@@ -327,11 +389,13 @@ __all__ = [
     "EFFECTIVE_CANDIDATES",
     "FROZEN_AMENDMENT_GIT_BLOB_SHA1",
     "FROZEN_EXECUTION_AMENDMENT_GIT_BLOB_SHA1",
+    "FROZEN_IDENTIFIER_ERRATUM_GIT_BLOB_SHA1",
     "FROZEN_REPORTED_ERRORS_MANIFEST_SHA256",
     "build_reported_error_manifest",
     "reported_error_manifest_bytes",
     "verify_frozen_amendment",
     "verify_frozen_execution_amendment",
+    "verify_frozen_identifier_erratum",
     "verify_predevelopment_inputs",
     "verify_reported_error_lock",
     "verify_reported_error_manifest",

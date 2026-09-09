@@ -99,6 +99,7 @@ def test_research_bundle_builder_is_deterministic_allowlisted_and_self_describin
             assert "paper/research/claim-source-ledger.md" in names
             assert "src/siderea/__init__.py" in names
             assert "tests/test_research_bundle.py" in names
+            assert "tools/build_research_bundle.py" in names
 
             forbidden_parts = {".git", "__pycache__", ".mypy_cache", ".pytest_cache", ".ruff_cache"}
             assert ".coverage" not in names
@@ -112,3 +113,4 @@ def test_research_bundle_builder_is_deterministic_allowlisted_and_self_describin
             manifest_paths = {entry["path"] for entry in manifest["files"]}
             assert "paper/siderea_transient_triage.tex" in manifest_paths
             assert "paper/references.bib" in manifest_paths
+            assert "tools/build_research_bundle.py" in manifest_paths

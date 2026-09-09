@@ -19,7 +19,7 @@ ROOT_FILES = (
     "pyproject.toml",
     "requirements.txt",
 )
-ROOT_DIRS = ("configs", "docs", "examples", "src", "tests", "paper")
+ROOT_DIRS = ("configs", "docs", "examples", "src", "tests", "paper", "tools")
 EXCLUDED_NAMES = {".DS_Store", ".coverage"}
 EXCLUDED_PARTS = {".git", "__pycache__", ".mypy_cache", ".pytest_cache", ".ruff_cache"}
 MANIFEST_NAME = "RESEARCH_BUNDLE_MANIFEST.json"

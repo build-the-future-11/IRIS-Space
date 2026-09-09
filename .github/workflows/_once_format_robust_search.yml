@@ -1,0 +1,50 @@
+name: One-shot robust-search formatter
+
+on:
+  push:
+    branches:
+      - research/robust-cadence-materialization-fix-20260909
+
+permissions:
+  contents: write
+
+jobs:
+  format-and-self-delete:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: research/robust-cadence-materialization-fix-20260909
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+      - name: Format only the files identified by exact-head CI
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check "ruff>=0.6"
+          python -m ruff format \
+            src/siderea/research/robust_authorized_plan.py \
+            src/siderea/research/robust_trial_plan.py \
+            src/siderea/research/robust_trial_rng.py \
+            tests/test_robust_authorized_plan.py \
+            tests/test_robust_gate_audit.py \
+            tests/test_robust_predevelopment.py \
+            tests/test_robust_trial_rng.py
+      - name: Commit formatting and remove this one-shot workflow
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/_once_format_robust_search.yml
+          git add \
+            src/siderea/research/robust_authorized_plan.py \
+            src/siderea/research/robust_trial_plan.py \
+            src/siderea/research/robust_trial_rng.py \
+            tests/test_robust_authorized_plan.py \
+            tests/test_robust_gate_audit.py \
+            tests/test_robust_predevelopment.py \
+            tests/test_robust_trial_rng.py
+          git commit -m "style: format robust-search predevelopment files"
+          git push origin HEAD:research/robust-cadence-materialization-fix-20260909

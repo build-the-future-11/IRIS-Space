@@ -39,7 +39,10 @@ def test_public_bundle_metadata_and_manuscript_inputs_are_consistent() -> None:
     }
 
     paper = (ROOT / "paper" / "siderea_transient_triage.tex").read_text(encoding="utf-8")
-    assert r"\title{\siderea: Evidence-Bound and Human-Supervised Triage of Optical Transient Alerts}" in paper
+    assert (
+        r"\title{\siderea: Evidence-Bound and Human-Supervised Triage of Optical Transient Alerts}"
+        in paper
+    )
     for name, email in authors:
         assert name in paper
         assert email in paper
@@ -63,7 +66,9 @@ def test_public_bundle_metadata_and_manuscript_inputs_are_consistent() -> None:
     assert "copyright owners' explicit license decision" in release_scope
 
 
-def test_research_bundle_builder_is_deterministic_allowlisted_and_self_describing(tmp_path: Path) -> None:
+def test_research_bundle_builder_is_deterministic_allowlisted_and_self_describing(
+    tmp_path: Path,
+) -> None:
     module = _load_bundle_module()
     first = tmp_path / "bundle-a.tar.gz"
     second = tmp_path / "bundle-b.tar.gz"

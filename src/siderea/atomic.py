@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import errno
 import os
 import secrets
 from collections.abc import Callable
@@ -76,6 +77,13 @@ def atomic_create_binary(path: str | Path, writer: Callable[[BinaryIO], object])
     """Publish a newly created binary file without overwriting an existing name."""
 
     destination = Path(path)
+    # Reject existing names before running an expensive or stateful writer.
+    # lexists also catches dangling symlinks; the link below remains the atomic
+    # authority when another process publishes after this advisory check.
+    if os.path.lexists(destination):
+        raise FileExistsError(
+            errno.EEXIST, "output already exists; choose a new path", str(destination)
+        )
     destination.parent.mkdir(parents=True, exist_ok=True)
     descriptor, temporary = _open_unique_temporary(destination)
     descriptor_open = True
@@ -85,7 +93,12 @@ def atomic_create_binary(path: str | Path, writer: Callable[[BinaryIO], object])
             writer(handle)
             handle.flush()
             os.fsync(handle.fileno())
-        os.link(temporary, destination)
+        try:
+            os.link(temporary, destination)
+        except FileExistsError:
+            raise FileExistsError(
+                errno.EEXIST, "output already exists; choose a new path", str(destination)
+            ) from None
         fsync_directory(destination.parent)
     except BaseException:
         if descriptor_open:

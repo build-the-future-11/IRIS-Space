@@ -103,6 +103,27 @@ def _fake_astronomy_modules(
 
 
 class CatalogClientTests(unittest.TestCase):
+    def test_retry_jitter_respects_maximum_and_long_retries_do_not_overflow(self):
+        delays = []
+
+        def fail():
+            raise OSError("service unavailable")
+
+        executor = ResilientExecutor(
+            attempts=1100,
+            base_delay_seconds=1,
+            max_delay_seconds=2,
+            jitter_fraction=0.5,
+            sleeper=delays.append,
+        )
+        with patch("siderea.clients.base.random.random", return_value=1.0):
+            result = executor.run(service="test", query={}, operation=fail, has_match=bool)
+        self.assertEqual(result.provenance.status, CheckStatus.ERROR)
+        self.assertEqual(result.provenance.attempts, 1100)
+        self.assertEqual(len(delays), 1099)
+        self.assertEqual(delays[0], 1.5)
+        self.assertTrue(all(delay <= 2 for delay in delays))
+
     def test_disabled_is_not_clear(self):
         result = SkyBotClient(enabled=False).check(ra=1, dec=2, mjd=60000)
         self.assertEqual(result.provenance.status, CheckStatus.DISABLED)

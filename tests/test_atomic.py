@@ -9,6 +9,32 @@ from siderea.atomic import atomic_create_binary, atomic_write_bytes, atomic_writ
 
 
 class AtomicWriteTests(unittest.TestCase):
+    def test_existing_dangling_symlink_does_not_execute_writer(self) -> None:
+        with tempfile.TemporaryDirectory() as folder:
+            destination = Path(folder) / "model.bin"
+            destination.symlink_to(Path(folder) / "missing")
+            called = []
+            with self.assertRaises(FileExistsError) as caught:
+                atomic_create_binary(destination, lambda handle: called.append(True))
+            self.assertEqual(called, [])
+            self.assertEqual(caught.exception.filename, str(destination))
+            self.assertTrue(destination.is_symlink())
+
+    def test_competing_publication_preserves_winner_and_cleans_temporary(self) -> None:
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            destination = root / "model.bin"
+
+            def competing_writer(handle):
+                handle.write(b"loser")
+                destination.write_bytes(b"winner")
+
+            with self.assertRaises(FileExistsError) as caught:
+                atomic_create_binary(destination, competing_writer)
+            self.assertEqual(caught.exception.filename, str(destination))
+            self.assertEqual(destination.read_bytes(), b"winner")
+            self.assertEqual(list(root.iterdir()), [destination])
+
     def test_precreated_symlink_temp_is_never_followed(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)

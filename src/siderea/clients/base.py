@@ -63,6 +63,7 @@ class ResilientExecutor:
         started = time.monotonic()
         last_error: Exception | None = None
         used_attempts = 0
+        delay = min(self.base_delay_seconds, self.max_delay_seconds)
         for attempt in range(1, self.attempts + 1):
             used_attempts = attempt
             try:
@@ -85,12 +86,9 @@ class ResilientExecutor:
                 should_retry = retry_if(exc) if retry_if else True
                 if attempt >= self.attempts or not should_retry:
                     break
-                delay = min(
-                    self.max_delay_seconds,
-                    self.base_delay_seconds * (2 ** (attempt - 1)),
-                )
                 jitter = delay * self.jitter_fraction * random.random()
-                self.sleeper(delay + jitter)
+                self.sleeper(min(self.max_delay_seconds, delay + jitter))
+                delay = min(self.max_delay_seconds, delay * 2)
 
         elapsed = (time.monotonic() - started) * 1000.0
         provenance = CheckProvenance(

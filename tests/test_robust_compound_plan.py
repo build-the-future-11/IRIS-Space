@@ -76,7 +76,10 @@ def test_duplicate_compound_key_fails_closed() -> None:
 def test_extension_byte_mutation_fails_closed(tmp_path: Path) -> None:
     mutated = tmp_path / EXTENSION.name
     mutated.write_bytes(
-        EXTENSION.read_bytes().replace(b'"extension_seed": 2026091105', b'"extension_seed": 2026091106')
+        EXTENSION.read_bytes().replace(
+            b'"extension_seed": 2026091105',
+            b'"extension_seed": 2026091106',
+        )
     )
     with pytest.raises(RuntimeError, match="frozen pre-outcome artifact"):
         verify_frozen_compound_extension(mutated)
@@ -85,6 +88,11 @@ def test_extension_byte_mutation_fails_closed(tmp_path: Path) -> None:
 def test_plan_lock_byte_mutation_fails_closed(tmp_path: Path) -> None:
     extension = verify_frozen_compound_extension(EXTENSION)
     mutated = tmp_path / PLAN_LOCK.name
-    mutated.write_bytes(PLAN_LOCK.read_bytes().replace(b'"extension_seed": 2026091105', b'"extension_seed": 2026091106'))
+    mutated.write_bytes(
+        PLAN_LOCK.read_bytes().replace(
+            b'"extension_seed": 2026091105',
+            b'"extension_seed": 2026091106',
+        )
+    )
     with pytest.raises(RuntimeError, match="frozen pre-outcome artifact"):
         verify_frozen_compound_plan_lock(mutated, extension)

@@ -4,10 +4,10 @@ import gzip
 import hashlib
 import importlib.util
 import json
-from pathlib import Path
 import re
 import tarfile
 import tomllib
+from pathlib import Path
 
 import pytest
 

@@ -87,9 +87,10 @@ def test_research_bundle_builder_is_deterministic_allowlisted_and_self_describin
         == "blocked_pending_explicit_copyright_owner_license_decision"
     )
 
-    with gzip.open(first, "rb") as compressed, tarfile.open(
-        fileobj=compressed, mode="r:"
-    ) as archive:
+    with (
+        gzip.open(first, "rb") as compressed,
+        tarfile.open(fileobj=compressed, mode="r:") as archive,
+    ):
         names = archive.getnames()
         assert len(names) == len(set(names))
         assert "RESEARCH_BUNDLE_MANIFEST.json" in names
@@ -135,9 +136,10 @@ def test_research_bundle_excludes_preexisting_output_from_its_input_set(
     manifest = module.build_bundle(root, output, "0" * 40)
 
     assert {entry["path"] for entry in manifest["files"]} == {"README.md"}
-    with gzip.open(output, "rb") as compressed, tarfile.open(
-        fileobj=compressed, mode="r:"
-    ) as archive:
+    with (
+        gzip.open(output, "rb") as compressed,
+        tarfile.open(fileobj=compressed, mode="r:") as archive,
+    ):
         assert "README.md" in archive.getnames()
         assert "tools/bundle.tar.gz" not in archive.getnames()
 

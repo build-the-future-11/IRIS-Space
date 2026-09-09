@@ -54,7 +54,10 @@ def verify_frozen_trial_rng_amendment(path: Path) -> dict[str, Any]:
             f"{FROZEN_TRIAL_RNG_AMENDMENT_GIT_BLOB_SHA1}, got {actual}; create a "
             "new versioned amendment before generating any result"
         )
-    amendment = json.loads(raw)
+    loaded = json.loads(raw)
+    if not isinstance(loaded, dict):
+        raise ValueError("robust-search trial-RNG amendment must be a JSON object")
+    amendment: dict[str, Any] = loaded
     if amendment.get("schema") != "siderea.robust_search_protocol_amendment.v2.0.4":
         raise ValueError("unexpected robust-search trial-RNG amendment schema")
     if amendment.get("status") != "frozen_before_any_v2_candidate_development_evaluation":
@@ -190,7 +193,12 @@ def trial_seed_words(phase_seed: int, canonical_key_json: str) -> tuple[int, int
     _validate_canonical_trial_key(canonical_key_json)
 
     digest = hashlib.sha256(f"{phase_seed}\n{canonical_key_json}".encode()).digest()
-    return tuple(int.from_bytes(digest[offset : offset + 4], "big") for offset in range(0, 16, 4))
+    return (
+        int.from_bytes(digest[0:4], "big"),
+        int.from_bytes(digest[4:8], "big"),
+        int.from_bytes(digest[8:12], "big"),
+        int.from_bytes(digest[12:16], "big"),
+    )
 
 
 def trial_rng(phase_seed: int, canonical_key_json: str) -> np.random.Generator:

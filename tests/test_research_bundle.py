@@ -6,10 +6,10 @@ import importlib.util
 import json
 import re
 import tarfile
+import tomllib
 from pathlib import Path
 
 import pytest
-import tomllib
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -87,34 +87,35 @@ def test_research_bundle_builder_is_deterministic_allowlisted_and_self_describin
         == "blocked_pending_explicit_copyright_owner_license_decision"
     )
 
-    with gzip.open(first, "rb") as compressed:
-        with tarfile.open(fileobj=compressed, mode="r:") as archive:
-            names = archive.getnames()
-            assert len(names) == len(set(names))
-            assert "RESEARCH_BUNDLE_MANIFEST.json" in names
-            assert "paper/siderea_transient_triage.tex" in names
-            assert "paper/references.bib" in names
-            assert "paper/siderea_transient_triage.bbl" in names
-            assert "paper/figures/make_figures.py" in names
-            assert "paper/research/experiment-reconstruction.json" in names
-            assert "paper/research/claim-source-ledger.md" in names
-            assert "src/siderea/__init__.py" in names
-            assert "tests/test_research_bundle.py" in names
-            assert "tools/build_research_bundle.py" in names
+    with gzip.open(first, "rb") as compressed, tarfile.open(
+        fileobj=compressed, mode="r:"
+    ) as archive:
+        names = archive.getnames()
+        assert len(names) == len(set(names))
+        assert "RESEARCH_BUNDLE_MANIFEST.json" in names
+        assert "paper/siderea_transient_triage.tex" in names
+        assert "paper/references.bib" in names
+        assert "paper/siderea_transient_triage.bbl" in names
+        assert "paper/figures/make_figures.py" in names
+        assert "paper/research/experiment-reconstruction.json" in names
+        assert "paper/research/claim-source-ledger.md" in names
+        assert "src/siderea/__init__.py" in names
+        assert "tests/test_research_bundle.py" in names
+        assert "tools/build_research_bundle.py" in names
 
-            forbidden_parts = {".git", "__pycache__", ".mypy_cache", ".pytest_cache", ".ruff_cache"}
-            assert ".coverage" not in names
-            assert all(not forbidden_parts.intersection(Path(name).parts) for name in names)
+        forbidden_parts = {".git", "__pycache__", ".mypy_cache", ".pytest_cache", ".ruff_cache"}
+        assert ".coverage" not in names
+        assert all(not forbidden_parts.intersection(Path(name).parts) for name in names)
 
-            manifest_member = archive.extractfile("RESEARCH_BUNDLE_MANIFEST.json")
-            assert manifest_member is not None
-            manifest = json.loads(manifest_member.read())
-            assert manifest["source_revision"] == source_revision
-            assert manifest["license_status"] == "LicenseRef-Proprietary"
-            manifest_paths = {entry["path"] for entry in manifest["files"]}
-            assert "paper/siderea_transient_triage.tex" in manifest_paths
-            assert "paper/references.bib" in manifest_paths
-            assert "tools/build_research_bundle.py" in manifest_paths
+        manifest_member = archive.extractfile("RESEARCH_BUNDLE_MANIFEST.json")
+        assert manifest_member is not None
+        manifest = json.loads(manifest_member.read())
+        assert manifest["source_revision"] == source_revision
+        assert manifest["license_status"] == "LicenseRef-Proprietary"
+        manifest_paths = {entry["path"] for entry in manifest["files"]}
+        assert "paper/siderea_transient_triage.tex" in manifest_paths
+        assert "paper/references.bib" in manifest_paths
+        assert "tools/build_research_bundle.py" in manifest_paths
 
 
 def test_research_bundle_excludes_preexisting_output_from_its_input_set(
@@ -134,10 +135,11 @@ def test_research_bundle_excludes_preexisting_output_from_its_input_set(
     manifest = module.build_bundle(root, output, "0" * 40)
 
     assert {entry["path"] for entry in manifest["files"]} == {"README.md"}
-    with gzip.open(output, "rb") as compressed:
-        with tarfile.open(fileobj=compressed, mode="r:") as archive:
-            assert "README.md" in archive.getnames()
-            assert "tools/bundle.tar.gz" not in archive.getnames()
+    with gzip.open(output, "rb") as compressed, tarfile.open(
+        fileobj=compressed, mode="r:"
+    ) as archive:
+        assert "README.md" in archive.getnames()
+        assert "tools/bundle.tar.gz" not in archive.getnames()
 
 
 def test_research_bundle_rejects_movable_or_malformed_revision_names(tmp_path: Path) -> None:

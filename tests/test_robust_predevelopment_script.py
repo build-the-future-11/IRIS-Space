@@ -8,7 +8,6 @@ from pathlib import Path
 from siderea.research.robust_protocol import FROZEN_CADENCE_MANIFEST_SHA256
 from siderea.research.robust_trial_rng import FROZEN_TRIAL_RNG_AMENDMENT_GIT_BLOB_SHA1
 
-
 SCRIPT = Path("paper/experiments/verify_robust_search_predevelopment.py")
 
 

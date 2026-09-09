@@ -189,7 +189,7 @@ def trial_seed_words(phase_seed: int, canonical_key_json: str) -> tuple[int, int
         raise ValueError("phase_seed must be a nonnegative integer")
     _validate_canonical_trial_key(canonical_key_json)
 
-    digest = hashlib.sha256(f"{phase_seed}\n{canonical_key_json}".encode("utf-8")).digest()
+    digest = hashlib.sha256(f"{phase_seed}\n{canonical_key_json}".encode()).digest()
     return tuple(int.from_bytes(digest[offset : offset + 4], "big") for offset in range(0, 16, 4))
 
 

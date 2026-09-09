@@ -117,6 +117,29 @@ def test_research_bundle_builder_is_deterministic_allowlisted_and_self_describin
             assert "tools/build_research_bundle.py" in manifest_paths
 
 
+def test_research_bundle_excludes_preexisting_output_from_its_input_set(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    module = _load_bundle_module()
+    root = tmp_path / "repo"
+    source = root / "README.md"
+    output = root / "tools" / "bundle.tar.gz"
+    source.parent.mkdir(parents=True)
+    output.parent.mkdir(parents=True)
+    source.write_text("source\n", encoding="utf-8")
+    output.write_bytes(b"stale archive that must not be re-ingested")
+    monkeypatch.setattr(module, "iter_bundle_files", lambda _root: [source, output])
+
+    manifest = module.build_bundle(root, output, "0" * 40)
+
+    assert {entry["path"] for entry in manifest["files"]} == {"README.md"}
+    with gzip.open(output, "rb") as compressed:
+        with tarfile.open(fileobj=compressed, mode="r:") as archive:
+            assert "README.md" in archive.getnames()
+            assert "tools/bundle.tar.gz" not in archive.getnames()
+
+
 def test_research_bundle_rejects_movable_or_malformed_revision_names(tmp_path: Path) -> None:
     module = _load_bundle_module()
     output = tmp_path / "bundle.tar.gz"

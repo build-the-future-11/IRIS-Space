@@ -64,7 +64,10 @@ def verify_frozen_trial_plan_amendment(path: Path) -> dict[str, Any]:
             f"predevelopment artifact: expected git blob "
             f"{FROZEN_TRIAL_PLAN_AMENDMENT_GIT_BLOB_SHA1}, got {actual}"
         )
-    amendment = json.loads(raw)
+    loaded = json.loads(raw)
+    if not isinstance(loaded, dict):
+        raise ValueError("robust-search trial-plan amendment must be a JSON object")
+    amendment: dict[str, Any] = loaded
     if amendment.get("schema") != TRIAL_PLAN_AMENDMENT_SCHEMA:
         raise ValueError("unexpected robust-search trial-plan amendment schema")
     if amendment.get("status") != "frozen_before_any_v2_candidate_development_evaluation":
@@ -323,7 +326,10 @@ def verify_frozen_trial_plan_lock(path: Path, protocol: dict[str, Any]) -> dict[
             "robust-search trial-plan lock differs from the frozen predevelopment artifact: "
             f"expected git blob {FROZEN_TRIAL_PLAN_LOCK_GIT_BLOB_SHA1}, got {actual}"
         )
-    lock = json.loads(raw)
+    loaded = json.loads(raw)
+    if not isinstance(loaded, dict):
+        raise ValueError("robust-search trial-plan lock must be a JSON object")
+    lock: dict[str, Any] = loaded
     if lock.get("schema") != TRIAL_PLAN_LOCK_SCHEMA:
         raise ValueError("unexpected robust-search trial-plan lock schema")
     if lock.get("status") != "frozen_before_any_v2_candidate_development_evaluation":

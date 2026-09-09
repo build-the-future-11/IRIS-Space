@@ -61,10 +61,7 @@ def verify_frozen_trial_rng_amendment(path: Path) -> dict[str, Any]:
         raise ValueError("trial-RNG amendment is not marked frozen before development")
     if amendment.get("base_protocol_git_blob_sha1") != FROZEN_PROTOCOL_GIT_BLOB_SHA1:
         raise ValueError("trial-RNG amendment is not bound to the frozen base protocol")
-    if (
-        amendment.get("previous_amendment_git_blob_sha1")
-        != FROZEN_IDENTIFIER_ERRATUM_GIT_BLOB_SHA1
-    ):
+    if amendment.get("previous_amendment_git_blob_sha1") != FROZEN_IDENTIFIER_ERRATUM_GIT_BLOB_SHA1:
         raise ValueError("trial-RNG amendment is not bound to the frozen v2.0.3 erratum")
 
     observed = amendment.get("observed_before_amendment")
@@ -193,9 +190,7 @@ def trial_seed_words(phase_seed: int, canonical_key_json: str) -> tuple[int, int
     _validate_canonical_trial_key(canonical_key_json)
 
     digest = hashlib.sha256(f"{phase_seed}\n{canonical_key_json}".encode("utf-8")).digest()
-    return tuple(
-        int.from_bytes(digest[offset : offset + 4], "big") for offset in range(0, 16, 4)
-    )
+    return tuple(int.from_bytes(digest[offset : offset + 4], "big") for offset in range(0, 16, 4))
 
 
 def trial_rng(phase_seed: int, canonical_key_json: str) -> np.random.Generator:

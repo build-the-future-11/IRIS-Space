@@ -82,8 +82,7 @@ class AuthorizedTrialSubset:
         expected_count = EXPECTED_ROLE_COUNTS[role]
         if len(keys) != expected_count:
             raise ValueError(
-                f"authorized subset {phase}/{role} has {len(keys)} keys; "
-                f"expected {expected_count}"
+                f"authorized subset {phase}/{role} has {len(keys)} keys; expected {expected_count}"
             )
         return cls(
             phase=phase,

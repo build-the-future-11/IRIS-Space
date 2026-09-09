@@ -95,9 +95,7 @@ def verify_frozen_trial_plan_amendment(path: Path) -> dict[str, Any]:
     rows = changes.get("role_vocabulary_and_counts")
     if not isinstance(rows, list):
         raise ValueError("trial-plan role vocabulary is missing")
-    observed_counts = {
-        row.get("role"): row.get("count") for row in rows if isinstance(row, dict)
-    }
+    observed_counts = {row.get("role"): row.get("count") for row in rows if isinstance(row, dict)}
     if observed_counts != EXPECTED_ROLE_COUNTS:
         raise ValueError("trial-plan role counts drifted")
     return amendment

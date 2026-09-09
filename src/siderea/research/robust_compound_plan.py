@@ -17,7 +17,9 @@ from typing import Any
 
 from siderea.provenance import stable_json
 
-FROZEN_COMPOUND_EXTENSION_GIT_BLOB_SHA1 = "5fef19f439d5b581f317f30f5292bf5df6900e76"
+FROZEN_COMPOUND_EXTENSION_GIT_BLOB_SHA1 = (
+    "5fef19f439d5b581f317f30f5292bf5df6900e76"
+)
 FROZEN_COMPOUND_PLAN_LOCK_GIT_BLOB_SHA1 = "f37868143fd9fa9df0b3c02622043a4a878f3e5f"
 COMPOUND_EXTENSION_SCHEMA = "siderea.robust_search_compound_nuisance_extension.v2"
 COMPOUND_PLAN_LOCK_SCHEMA = "siderea.robust_search_compound_trial_plan_lock.v2"
@@ -60,7 +62,11 @@ def canonical_compound_trial_key(
         raise ValueError("probe_id must be a non-empty string")
     if not isinstance(cadence_id, str) or not cadence_id:
         raise ValueError("cadence_id must be a non-empty string")
-    if isinstance(trial_index, bool) or not isinstance(trial_index, int) or trial_index < 0:
+    if (
+        isinstance(trial_index, bool)
+        or not isinstance(trial_index, int)
+        or trial_index < 0
+    ):
         raise ValueError("trial_index must be a nonnegative integer")
     return stable_json(
         {
@@ -85,11 +91,16 @@ def verify_frozen_compound_extension(path: Path) -> dict[str, Any]:
     extension = json.loads(raw)
     if extension.get("schema") != COMPOUND_EXTENSION_SCHEMA:
         raise ValueError("unexpected compound-nuisance extension schema")
-    if extension.get("status") != "frozen_pre_outcome_secondary_extension_no_v2_protocol_change":
+    if (
+        extension.get("status")
+        != "frozen_pre_outcome_secondary_extension_no_v2_protocol_change"
+    ):
         raise ValueError("compound-nuisance extension is not frozen pre-outcome")
 
     observed = extension.get("outcome_access_before_freeze")
-    if not isinstance(observed, dict) or any(value is not False for value in observed.values()):
+    if not isinstance(observed, dict) or any(
+        value is not False for value in observed.values()
+    ):
         raise ValueError("compound-nuisance extension must remain explicitly pre-outcome")
 
     rng = extension.get("rng_contract")
@@ -115,7 +126,9 @@ def verify_frozen_compound_extension(path: Path) -> dict[str, Any]:
         cadence_ids = _cadence_ids(probe.get("cadences"))
         trials_per_cadence = probe.get("trials_per_cadence")
         total_trials = probe.get("total_trials")
-        if isinstance(trials_per_cadence, bool) or not isinstance(trials_per_cadence, int):
+        if isinstance(trials_per_cadence, bool) or not isinstance(
+            trials_per_cadence, int
+        ):
             raise ValueError("compound trials_per_cadence must be an integer")
         expected_total = len(cadence_ids) * trials_per_cadence
         if total_trials != expected_total:
@@ -174,7 +187,9 @@ def summarize_compound_trial_plan(extension: dict[str, Any]) -> dict[str, Any]:
 
     digest, total, duplicates = compound_plan_digest(keys)
     if dict(probe_counts) != EXPECTED_PROBE_COUNTS:
-        raise ValueError(f"compound trial-plan probe counts drifted: {dict(probe_counts)}")
+        raise ValueError(
+            f"compound trial-plan probe counts drifted: {dict(probe_counts)}"
+        )
     if total != EXPECTED_TOTAL_TRIALS:
         raise ValueError(f"compound trial-plan total drifted: {total}")
     if digest != EXPECTED_PLAN_SHA256:
@@ -208,7 +223,10 @@ def verify_frozen_compound_plan_lock(
         raise ValueError("compound trial-plan lock is not frozen pre-outcome")
     if lock.get("observed_scientific_results") is not False:
         raise ValueError("compound trial-plan lock must not contain scientific outcomes")
-    if lock.get("bound_extension_git_blob_sha1") != FROZEN_COMPOUND_EXTENSION_GIT_BLOB_SHA1:
+    if (
+        lock.get("bound_extension_git_blob_sha1")
+        != FROZEN_COMPOUND_EXTENSION_GIT_BLOB_SHA1
+    ):
         raise ValueError("compound trial-plan lock is not bound to the frozen extension")
     if lock.get("extension_seed") != EXPECTED_EXTENSION_SEED:
         raise ValueError("compound trial-plan lock seed drifted")
@@ -223,7 +241,9 @@ def verify_frozen_compound_plan_lock(
         "duplicate_canonical_trial_keys",
     ):
         if lock.get(field) != summary[field]:
-            raise ValueError(f"compound trial-plan lock field {field!r} does not reproduce")
+            raise ValueError(
+                f"compound trial-plan lock field {field!r} does not reproduce"
+            )
     digest = lock.get("digest")
     if not isinstance(digest, dict) or digest.get("sha256") != summary["sha256"]:
         raise ValueError("compound trial-plan lock digest does not reproduce")

@@ -7,8 +7,8 @@ import io
 import json
 import re
 import tarfile
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Iterable
 
 ROOT_FILES = (
     "README.md",
@@ -120,7 +120,9 @@ def build_bundle(root: Path, output: Path, source_revision: str) -> dict[str, ob
     if COMMIT_SHA_RE.fullmatch(source_revision) is None:
         raise ValueError("source_revision must be an exact lowercase 40-hex Git commit SHA")
 
-    files = iter_bundle_files(root)
+    root = root.resolve()
+    output = output.resolve()
+    files = [path for path in iter_bundle_files(root) if path.resolve() != output]
     manifest = build_manifest(root, source_revision, files)
     manifest_bytes = (
         json.dumps(manifest, indent=2, sort_keys=True, ensure_ascii=True).encode("utf-8") + b"\n"

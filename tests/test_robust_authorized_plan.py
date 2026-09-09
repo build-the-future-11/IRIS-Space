@@ -29,7 +29,10 @@ def authorized_plan():
 def test_authorized_plan_reconstructs_exact_frozen_counts(authorized_plan) -> None:
     assert authorized_plan.full_plan_sha256 == EXPECTED_PLAN_SHA256
     assert authorized_plan.total_keys == EXPECTED_TOTAL_TRIALS
-    assert sum(len(subset.keys) for subset in authorized_plan.subsets) == EXPECTED_TOTAL_TRIALS
+    assert (
+        sum(len(subset.keys) for subset in authorized_plan.subsets)
+        == EXPECTED_TOTAL_TRIALS
+    )
     assert {subset.role: len(subset.keys) for subset in authorized_plan.subsets} == (
         EXPECTED_ROLE_COUNTS
     )
@@ -44,7 +47,9 @@ def test_every_frozen_role_has_exactly_one_phase(authorized_plan) -> None:
         assert len(subset.digest_sha256) == 64
 
 
-def test_execution_layer_rejects_structurally_valid_but_unfrozen_role(authorized_plan) -> None:
+def test_execution_layer_rejects_structurally_valid_but_unfrozen_role(
+    authorized_plan,
+) -> None:
     unauthorized = canonical_trial_key(
         phase="development",
         role="null_threshold",
@@ -62,7 +67,9 @@ def test_execution_layer_rejects_structurally_valid_but_unfrozen_role(authorized
         authorized_plan.require_key(unauthorized)
 
 
-def test_execution_layer_rejects_extra_key_inside_valid_phase_and_role(authorized_plan) -> None:
+def test_execution_layer_rejects_extra_key_inside_valid_phase_and_role(
+    authorized_plan,
+) -> None:
     unauthorized = canonical_trial_key(
         phase="development",
         role="development_threshold_null",

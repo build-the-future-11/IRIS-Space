@@ -1,0 +1,52 @@
+name: One-shot robust-search lint diagnosis
+
+on:
+  push:
+    branches:
+      - research/robust-cadence-materialization-fix-20260909
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  diagnose-and-self-delete:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: research/robust-cadence-materialization-fix-20260909
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+      - name: Capture exact Ruff diagnostics
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check "ruff>=0.6"
+          set +e
+          python -m ruff check src tests --output-format concise > /tmp/ruff.txt 2>&1
+          code=$?
+          set -e
+          {
+            echo 'Exact Ruff lint diagnostics for the formatted robust-search repair:'
+            echo
+            echo '```text'
+            cat /tmp/ruff.txt
+            echo '```'
+            echo
+            echo "ruff_exit_code=${code}"
+          } > /tmp/comment.md
+          gh api "repos/${GITHUB_REPOSITORY}/issues/9/comments" -f body="$(cat /tmp/comment.md)"
+      - name: Remove this one-shot workflow
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/_once_lint_diagnose_robust_search.yml
+          git commit -m "ci: remove one-shot lint diagnosis workflow"
+          git push origin HEAD:research/robust-cadence-materialization-fix-20260909

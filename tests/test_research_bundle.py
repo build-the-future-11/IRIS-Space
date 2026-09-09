@@ -8,6 +8,7 @@ import re
 import tarfile
 from pathlib import Path
 
+import pytest
 import tomllib
 
 
@@ -114,3 +115,12 @@ def test_research_bundle_builder_is_deterministic_allowlisted_and_self_describin
             assert "paper/siderea_transient_triage.tex" in manifest_paths
             assert "paper/references.bib" in manifest_paths
             assert "tools/build_research_bundle.py" in manifest_paths
+
+
+def test_research_bundle_rejects_movable_or_malformed_revision_names(tmp_path: Path) -> None:
+    module = _load_bundle_module()
+    output = tmp_path / "bundle.tar.gz"
+
+    for revision in ("", "main", "HEAD", "A" * 40, "deadbeef"):
+        with pytest.raises(ValueError, match="exact lowercase 40-hex Git commit SHA"):
+            module.build_bundle(ROOT, output, revision)

@@ -5,6 +5,7 @@ import gzip
 import hashlib
 import io
 import json
+import re
 import tarfile
 from pathlib import Path
 from typing import Iterable
@@ -23,6 +24,7 @@ ROOT_DIRS = ("configs", "docs", "examples", "src", "tests", "paper", "tools")
 EXCLUDED_NAMES = {".DS_Store", ".coverage"}
 EXCLUDED_PARTS = {".git", "__pycache__", ".mypy_cache", ".pytest_cache", ".ruff_cache"}
 MANIFEST_NAME = "RESEARCH_BUNDLE_MANIFEST.json"
+COMMIT_SHA_RE = re.compile(r"[0-9a-f]{40}")
 
 
 def _sha256(data: bytes) -> str:
@@ -115,8 +117,8 @@ def _tar_bytes(root: Path, files: Iterable[Path], manifest_bytes: bytes) -> byte
 
 
 def build_bundle(root: Path, output: Path, source_revision: str) -> dict[str, object]:
-    if not source_revision.strip():
-        raise ValueError("source_revision must be non-empty")
+    if COMMIT_SHA_RE.fullmatch(source_revision) is None:
+        raise ValueError("source_revision must be an exact lowercase 40-hex Git commit SHA")
 
     files = iter_bundle_files(root)
     manifest = build_manifest(root, source_revision, files)

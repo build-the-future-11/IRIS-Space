@@ -6,10 +6,10 @@ import importlib.util
 import json
 import re
 import tarfile
-import tomllib
 from pathlib import Path
 
 import pytest
+import tomllib
 
 
 ROOT = Path(__file__).resolve().parents[1]

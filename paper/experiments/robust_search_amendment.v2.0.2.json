@@ -1,0 +1,119 @@
+{
+  "schema": "siderea.robust_search_protocol_amendment.v2.0.2",
+  "base_protocol": "robust_search_protocol.v2.json",
+  "base_protocol_git_blob_sha1": "9ab09a2ad2702649fe31ab19eb8b73d45fc7d60b",
+  "previous_amendment": "robust_search_amendment.v2.0.1.json",
+  "previous_amendment_git_blob_sha1": "8262ffb14b95ea7c67164935b694ff41df31fa7b",
+  "status": "frozen_before_any_v2_candidate_development_evaluation",
+  "observed_before_amendment": {
+    "v2_candidate_development_statistics": false,
+    "v2_calibration_statistics": false,
+    "v2_locked_evaluation_statistics": false,
+    "v2_generalization_probe_statistics": false,
+    "allowed_prior_information": "Only the v1 synthetic failures recorded in the base protocol, source inspection, non-performance unit/integrity tests, and CI status."
+  },
+  "reason": [
+    "The locked-signal sample-size field is indexed by family, amplitude, and noise regime while signal width is also a prespecified factor. Without an explicit allocation and aggregation rule, equally reasonable runners could give widths different weights or silently triple the intended sample size.",
+    "The protocol freezes counts of cadence realizations but not the exact mapping of per-regime trials to ordinary versus seasonal-gap cadences. This can change both effective weighting and uncertainty.",
+    "The template bank freezes a center count but not the center-placement rule. The existing v1 implementation places centers from the observed cadence minimum to maximum; v2 must not choose a different convention after candidate performance is visible.",
+    "The paired-bootstrap resampling unit is frozen at cadence level, but replicate count, RNG, interval convention, and within-cadence aggregation were not explicit.",
+    "The utility and non-inferiority comparators name statistics but do not fully freeze their calibration semantics on the v2 cadences. Comparable false-alarm operating points must be specified before recovery is evaluated.",
+    "The primary Wilson intervals are marginal per-regime intervals. A conference-facing report should also include a simultaneous family-wise safety diagnostic without changing the preregistered promotion gate."
+  ],
+  "changes": {
+    "authority": {
+      "execution_order": [
+        "robust_search_protocol.v2.json",
+        "robust_search_amendment.v2.0.1.json",
+        "robust_search_amendment.v2.0.2.json"
+      ],
+      "rule": "The base protocol remains immutable. Later amendments supersede only the fields they explicitly resolve. Narrative documentation may summarize the design but must not override these machine-readable artifacts."
+    },
+    "template_bank_construction": {
+      "center_placement": "For each frozen cadence, centers = numpy.linspace(min(times_days), max(times_days), 21), matching the existing v1 runner.",
+      "widths_days": [1.0, 3.0, 10.0],
+      "families": ["gaussian", "exponential", "bazin", "fallback"],
+      "reported_errors": "Use the one frozen reported-error vector bound to that cadence by robust_search_reported_errors.v2.json."
+    },
+    "null_trial_allocation": {
+      "ordinary_cadences": "ordinary-00 through ordinary-19",
+      "seasonal_gap_cadences": "seasonal-gap-00 through seasonal-gap-04",
+      "ordinary_null_regimes": "Every base calibration-envelope null regime except seasonal_gap_with_matched_gaussian_noise uses only the 20 ordinary cadences.",
+      "seasonal_gap_null_regime": "seasonal_gap_with_matched_gaussian_noise uses only the 5 seasonal-gap cadences.",
+      "development_threshold_construction": {
+        "ordinary_trials_per_cadence_per_regime": 50,
+        "seasonal_gap_trials_per_cadence": 200
+      },
+      "development_independent_feasibility": {
+        "ordinary_trials_per_cadence_per_regime": 50,
+        "seasonal_gap_trials_per_cadence": 200
+      },
+      "calibration": {
+        "ordinary_trials_per_cadence_per_regime": 500,
+        "seasonal_gap_trials_per_cadence": 2000
+      },
+      "locked_evaluation": {
+        "ordinary_trials_per_cadence_per_regime": 250,
+        "seasonal_gap_trials_per_cadence": 1000
+      },
+      "weighting_rule": "Within a regime every eligible cadence contributes exactly the same number of trials; no cadence weights may be selected from outcomes."
+    },
+    "locked_signal_design": {
+      "sample_size_interpretation": "The base value locked_signal_trials_per_family_amplitude_noise_regime=1000 means 1000 total paired trials for each family x amplitude x signal-noise-regime cell, with width treated as a prespecified within-cell factor rather than multiplying the base sample size.",
+      "cadence_allocation": "Use all 25 frozen cadences with exactly 40 paired draws per cadence for every family x amplitude x signal-noise-regime cell.",
+      "width_assignment": "Within a family x amplitude x signal-noise cell, enumerate global_trial_index = 40*cadence_index + within_cadence_index for cadence_index 0..24 and within_cadence_index 0..39. Let cell_index = ((family_index*3 + amplitude_index)*4 + noise_index) using the base-protocol order. Assign width_index=(global_trial_index+cell_index) mod 3 and select widths [1,3,10] days in that order. Thus every cell contains 334/333/333 trials across widths, with the single extra trial rotating deterministically across cells.",
+      "center_distribution": "Independent Uniform(0,60) days, preserving the v2.0.1 rule that edge and seasonal-gap misses remain part of end-to-end recovery.",
+      "amplitude_definition": "Positive unit-peak template multiplied by amplitude_sigma times the median reported error of the selected cadence.",
+      "pairing": "The selected statistic, single-epoch comparator, v1 raw-bank comparator when applicable, and oracle reference receive the identical cadence, reported-error vector, noise draw, signal family, width, center, and amplitude for a paired trial."
+    },
+    "primary_utility_aggregation": {
+      "primary_amplitude_sigma": 4.0,
+      "within_cadence": "For each cadence, compute recovery separately for every family x width x signal-noise-regime cell, then take the unweighted arithmetic mean across the 4*3*4=48 cell recoveries. This gives families, widths, and noise regimes equal weight despite the unavoidable 334/333/333 width count imbalance.",
+      "across_cadences": "Take the unweighted arithmetic mean of the 25 cadence-level recovery values.",
+      "paired_effect": "Selected-statistic macro recovery minus single-epoch-comparator macro recovery using the same trials and aggregation at every level."
+    },
+    "single_epoch_comparator_calibration": {
+      "statistic": "Maximum positive standardized residual after fitting the constant baseline, matching the v1 implementation.",
+      "calibration_data": "Use the same independent v2 calibration curves and cadence allocation as the selected statistic, while computing the single-epoch statistic on those curves.",
+      "threshold_rule": "Compute each null regime's 0.995 higher empirical quantile and use the maximum regime threshold as one envelope-calibrated single-epoch threshold.",
+      "detection_rule": "Count a detection when the single-epoch statistic is >= its frozen comparator threshold.",
+      "rationale": "The primary utility comparison is therefore made at the same prespecified robustness-calibration principle rather than against a deliberately more liberal IID-only comparator."
+    },
+    "v1_raw_bank_noninferiority_comparator": {
+      "scope": "Used only for the matched-IID 4-sigma non-inferiority gate and descriptive matched-IID comparisons; it is not the primary utility comparator.",
+      "bank": "Use the existing raw TransientBank with the v1 center-placement, family, and width conventions on each frozen cadence.",
+      "calibration": "For each cadence, reproduce transient_protocol.json v1 IID calibration semantics with 4095 independent IID Gaussian calibration curves using that cadence's frozen reported-error vector. These comparator-calibration streams must be disjoint children of the calibration seed namespace and disjoint from v2 envelope-calibration curves.",
+      "detection": "Use the existing v1 empirical-p rule p=(1+N-searchsorted(sorted_reference, statistic, side='left'))/(N+1) with N=4095 and count p<=0.01 as detected."
+    },
+    "paired_bootstrap": {
+      "resampling_unit": "cadence_id",
+      "cadence_count": 25,
+      "replicates": 10000,
+      "rng": "numpy.random.default_rng(2026091104)",
+      "pairing": "For each replicate, draw 25 cadence indices with replacement once and apply that identical multiset to both compared methods before differencing.",
+      "point_estimate": "Use the frozen equal-weight macro-average from primary_utility_aggregation.",
+      "interval": "Two-sided percentile interval using the 2.5th and 97.5th percentiles of the 10000 paired bootstrap effects."
+    },
+    "generalization_probe_allocation": {
+      "trials_per_probe": 5000,
+      "cadences": "Use the 20 ordinary frozen cadences only, exactly 250 trials per cadence for each probe.",
+      "threshold": "Apply the already locked selected-statistic calibration threshold unchanged. Generalization probes cannot alter candidate selection, calibration, promotion thresholds, or primary endpoint definitions."
+    },
+    "conference_safety_diagnostic": {
+      "status": "secondary_only_does_not_change_v2_promotion_gate",
+      "required_report": "In addition to the preregistered marginal two-sided 95% Wilson intervals, report one-sided exact binomial upper confidence bounds for each of the 14 primary null regimes using Bonferroni family-wise alpha=0.05/14. Label these simultaneous-family diagnostics explicitly as secondary.",
+      "interpretation": "Do not claim joint 95% coverage from the 14 marginal Wilson intervals. The original point-estimate and Wilson promotion gates remain unchanged."
+    }
+  },
+  "unchanged": [
+    "finite synthetic scientific question and claim boundary",
+    "v2.0.1 effective candidate set and development null split",
+    "base null-envelope regimes and locked generalization-probe definitions",
+    "development, calibration, and locked-evaluation top-level seed separation",
+    "base top-level sample sizes and promotion gates",
+    "calibration quantile and threshold-comparison convention from v2.0.1",
+    "requirement to preserve and publish negative results",
+    "requirement for a later complete prospective real-data cohort before stronger scientific claims"
+  ],
+  "execution_rule": "Any development, calibration, or locked-evaluation runner must verify the exact bytes of the base protocol, v2.0.1 amendment, this v2.0.2 amendment, cadence lock, and reported-error lock before generating any candidate-performance statistic."
+}

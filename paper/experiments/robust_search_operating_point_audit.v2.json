@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "artifact": "robust_search_operating_point_audit.v2",
+  "status": "frozen_pre_outcome_secondary_diagnostic",
+  "purpose": "Prevent the locked recovery comparison from being over-interpreted as an equal-realized-FPR sensitivity comparison when the selected statistic and frozen single-epoch comparator use independently calibrated thresholds.",
+  "scientific_issue": {
+    "problem": "Independent envelope calibration does not guarantee equal realized false-alarm rates on the locked null panel. A recovery difference can therefore reflect both method sensitivity and operating-point differences.",
+    "implication": "The primary recovery delta is a comparison of two method-plus-calibration systems at independently calibrated operating points. It must not be described as a pure equal-FPR sensitivity gain unless the locked null evidence supports that characterization."
+  },
+  "diagnostic_scope": {
+    "reuse_only_existing_locked_null_trials": true,
+    "additional_trials": 0,
+    "locked_null_trials_per_regime": 5000,
+    "per_regime_fields": [
+      "selected_false_alarm_count",
+      "selected_fpr",
+      "comparator_false_alarm_count",
+      "comparator_fpr",
+      "fpr_gap_selected_minus_comparator"
+    ],
+    "aggregate_fields": [
+      "max_absolute_fpr_gap",
+      "mean_absolute_fpr_gap"
+    ]
+  },
+  "constraints": {
+    "selected_threshold_unchanged": true,
+    "comparator_threshold_unchanged": true,
+    "no_threshold_scanning": true,
+    "no_matched_fpr_retuning_on_locked_data": true,
+    "no_change_to_primary_promotion_gates": true,
+    "no_candidate_reselection": true,
+    "no_new_seed_or_trial_allocation": true,
+    "no_locked_outcome_access_before_authorized_phase": true
+  },
+  "interpretation_rules": [
+    "Always report selected and comparator locked-null false-alarm counts and rates by regime alongside the recovery comparison.",
+    "Describe the primary recovery delta as a comparison at independently calibrated operating points.",
+    "Do not claim equal-FPR sensitivity unless the realized locked-null evidence supports that statement.",
+    "If the comparator is more conservative on locked null data, explicitly state that some recovery difference may be attributable to operating-point conservatism rather than the leave-one-out statistic alone.",
+    "If the comparator exceeds the study's 1 percent point-FPR level in any locked null regime, do not describe the comparator as satisfying the selected method's safety gate; preserve the protocol-defined recovery comparison without retroactive threshold changes.",
+    "Report every regime and every diagnostic regardless of whether it favors the selected statistic or comparator."
+  ],
+  "protocol_effect": "none_secondary_reporting_only",
+  "outcome_access_required_to_freeze_this_artifact": false,
+  "provenance": {
+    "repository": "build-the-future-11/IRIS-Space",
+    "pull_request": 2,
+    "branch": "research/robust-search-prereg-20260908",
+    "pre_artifact_head_observed": "a04cfd8c094228df6e9c5054270b995820af90e8"
+  }
+}

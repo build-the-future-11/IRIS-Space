@@ -1,0 +1,59 @@
+{
+  "schema": "siderea.robust_search_protocol_amendment.v2.0.4",
+  "base_protocol": "robust_search_protocol.v2.json",
+  "base_protocol_git_blob_sha1": "9ab09a2ad2702649fe31ab19eb8b73d45fc7d60b",
+  "previous_amendment": "robust_search_amendment.v2.0.3.json",
+  "previous_amendment_git_blob_sha1": "dee0cb3b256e4823e784466e8b5df6041482c3b5",
+  "status": "frozen_before_any_v2_candidate_development_evaluation",
+  "observed_before_amendment": {
+    "v2_candidate_development_statistics": false,
+    "v2_calibration_statistics": false,
+    "v2_locked_evaluation_statistics": false,
+    "v2_generalization_probe_statistics": false,
+    "allowed_prior_information": "Only preserved v1 results, the frozen v2 protocol/amendment/input chain, source inspection, non-performance integrity tests, and CI status."
+  },
+  "reason": [
+    "The base protocol freezes one seed per scientific phase, but a phase seed alone does not define which random stream belongs to a particular trial when a future runner contains nested loops.",
+    "If one implementation iterates regimes, cadences, candidates, or signal cells in a different order from another implementation, sequential consumption of one phase RNG can produce different synthetic curves while both implementations claim the same preregistered phase seed.",
+    "Before any v2 candidate-performance statistic exists, stochastic trial identity is therefore made order-independent: every trial receives its own deterministic RNG stream derived only from its frozen phase seed and a canonical semantic trial key."
+  ],
+  "changes": {
+    "deterministic_trial_rng": {
+      "scope": "All stochastic development, calibration, locked-evaluation, v1-comparator-calibration, and generalization-probe trial generation. Cadence generation, reported-error generation, and the separately frozen paired-bootstrap RNG are unchanged.",
+      "phase_seed_source": "Use the applicable frozen base-protocol phase seed. v1 raw-bank comparator calibration belongs to the calibration phase and generalization probes belong to the locked-evaluation seed namespace with role=generalization_probe so their keys remain disjoint from primary locked evaluation.",
+      "canonical_key_schema": "siderea.robust_search_trial_rng.v2",
+      "canonical_key_fields": [
+        "phase",
+        "role",
+        "cadence_id",
+        "null_regime",
+        "candidate_id",
+        "signal_family",
+        "signal_width_days",
+        "amplitude_sigma",
+        "noise_regime",
+        "probe_id",
+        "trial_index"
+      ],
+      "unused_field_rule": "Fields that do not apply to a trial are encoded as JSON null; they may not be omitted. trial_index is zero-based within the exact semantic cell named by the other fields.",
+      "canonicalization": "stable_json over an object containing schema plus every canonical_key_field in the listed contract; object key order is irrelevant because stable_json sorts keys.",
+      "seed_derivation": "payload = UTF8(str(phase_seed) + '\\n' + canonical_key_json); digest = SHA256(payload); seed_words are the first 16 digest bytes interpreted as four unsigned big-endian 32-bit integers.",
+      "numpy_bit_generator": "numpy.random.Generator(numpy.random.PCG64(numpy.random.SeedSequence(seed_words)))",
+      "invariance_requirement": "Reordering loops, batching trials, adding another candidate, or refactoring runner control flow must not change the random draw sequence assigned to any existing semantic trial key.",
+      "collision_rule": "A runner must reject duplicate canonical trial keys within one phase/role execution plan before generating outcomes.",
+      "phase_separation_rule": "The phase string, role string, and frozen phase seed are part of RNG identity. Development, calibration, locked evaluation, comparator calibration, and generalization keys may not alias one another.",
+      "pairing_rule": "Methods compared on one paired signal trial consume the same generated curve. Method identity must therefore not be used to generate separate noise or signal draws for paired methods; candidate_id is null for shared data-generation keys and may be used only for genuinely candidate-specific stochastic operations, of which v2 currently prespecifies none."
+    }
+  },
+  "unchanged": [
+    "all phase seed numeric values",
+    "all cadence and reported-error inputs",
+    "all null and signal trial counts and allocations",
+    "all noise-regime and signal-generation semantics",
+    "candidate set and candidate-selection rule",
+    "calibration, comparator, bootstrap, and uncertainty semantics",
+    "all promotion gates and claim boundaries",
+    "negative-result preservation requirement"
+  ],
+  "execution_rule": "Every performance runner must verify this amendment before generating stochastic trial data and must construct each trial RNG from the canonical semantic key rather than consuming one mutable phase-global RNG stream."
+}

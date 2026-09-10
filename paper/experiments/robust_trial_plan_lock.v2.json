@@ -1,0 +1,46 @@
+{
+  "schema": "siderea.robust_search_trial_plan_lock.v2",
+  "status": "frozen_before_any_v2_candidate_development_evaluation",
+  "bound_protocol_git_blob_sha1": "9ab09a2ad2702649fe31ab19eb8b73d45fc7d60b",
+  "bound_trial_rng_amendment_git_blob_sha1": "139c6832004bd5a945c9a96c5c30e4b006154880",
+  "bound_trial_plan_amendment_git_blob_sha1": "918c853ec8ffc7f9c34720f5fd91c291355179c5",
+  "observed_scientific_results": false,
+  "role_counts": {
+    "development_threshold_null": 14000,
+    "development_feasibility_null": 14000,
+    "development_signal": 12000,
+    "calibration_null": 140000,
+    "v1_raw_bank_comparator_calibration": 102375,
+    "locked_null": 70000,
+    "locked_signal": 48000,
+    "generalization_probe": 15000
+  },
+  "phase_counts": {
+    "development": 40000,
+    "calibration": 242375,
+    "locked_evaluation": 133000
+  },
+  "total_canonical_trial_keys": 415375,
+  "unique_canonical_trial_keys": 415375,
+  "duplicate_canonical_trial_keys": 0,
+  "digest": {
+    "algorithm": "sha256",
+    "canonicalization": "Each row is canonical_trial_key JSON under siderea.robust_search_trial_rng.v2. Sort all canonical key strings lexicographically, append one newline byte after every key including the final key, concatenate as UTF-8, then SHA-256.",
+    "sha256": "09228f6174e44c49154900ca8329bf8f3a89bea3adc695e0626498cf87530911"
+  },
+  "locked_signal_allocation_checks": {
+    "family_amplitude_noise_cells": 48,
+    "width_specific_global_cells": 144,
+    "global_width_counts": {
+      "cells_with_334_trials": 48,
+      "cells_with_333_trials": 96
+    },
+    "final_semantic_cells": 3600,
+    "local_trial_index_cell_counts": {
+      "cells_with_14_trials": 1200,
+      "cells_with_13_trials": 2400
+    },
+    "candidate_id": null
+  },
+  "interpretation": "This lock contains stochastic identities only, not generated noise, injected signals, search statistics, thresholds, detections, candidate rankings, calibration outcomes, locked outcomes, or generalization outcomes. A future runner must reproduce this digest and all counts before it is allowed to generate the first development curve."
+}

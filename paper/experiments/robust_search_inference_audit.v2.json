@@ -1,0 +1,64 @@
+{
+  "schema_version": "siderea.robust_search_inference_audit.v2",
+  "status": "pre-outcome_claim_boundary_audit",
+  "protocol": "paper/experiments/robust_search_protocol.v2.json",
+  "scope": "This artifact records inferential limits of the frozen v2 synthetic qualification protocol before candidate development, calibration, locked evaluation, or generalization outcomes are inspected.",
+  "outcome_access": {
+    "candidate_development_outcomes_inspected": false,
+    "calibration_outcomes_inspected": false,
+    "locked_evaluation_outcomes_inspected": false,
+    "generalization_probe_outcomes_inspected": false
+  },
+  "frozen_cadence_panel": {
+    "n_cadences": 25,
+    "composition": {
+      "irregular": 20,
+      "seasonal_gap": 5
+    },
+    "finding": "Development, calibration, and locked evaluation reuse the same frozen cadence geometries. Independent phase seeds create independent stochastic trial streams, but they do not create an independent sample of cadence geometries.",
+    "estimand_boundary": "Primary v2 qualification is therefore conditional on the frozen 25-cadence synthetic panel and the prespecified nuisance envelope. It is not an estimate of performance averaged over an arbitrary survey-cadence population.",
+    "prohibited_extrapolations": [
+      "Do not describe a successful v2 qualification as real-sky completeness.",
+      "Do not describe it as population-level generalization over arbitrary survey cadence distributions.",
+      "Do not treat phase-independent noise or signal streams as independent cadence sampling.",
+      "Do not convert a synthetic-panel result into an operational survey claim without a separately specified external-cadence validation study."
+    ]
+  },
+  "paired_cadence_bootstrap": {
+    "interpretation": "The prespecified paired bootstrap over the 25 frozen cadence realizations is useful for sensitivity/variability across this panel. Because the cadence panel is frozen from a synthetic generator rather than defined here as an iid probability sample from a target survey-cadence population, the interval must not be presented as a population confidence interval for arbitrary real survey cadences.",
+    "protocol_integrity": "This audit does not alter the frozen bootstrap rule, threshold, promotion criterion, seed, cadence, or trial count. It only constrains the scientific claim attached to that statistic."
+  },
+  "confidence_gate_audit": {
+    "finding": "With 5000 locked null trials per regime, the prespecified point-FPR cap of 1% implies at most 50 false alarms. At that count the prespecified Wilson 95% upper bound is below 1.5%, so the Wilson gate is non-binding whenever the stricter point-FPR gate passes.",
+    "interpretation": "Retain both frozen gates for protocol integrity, but do not describe the Wilson condition as an independent rejection barrier in the v2 study.",
+    "future_protocol_rule": "If a future study intends a confidence-bound gate to add independent protection, jointly choose trial count, point cap, and confidence-bound threshold so that the confidence gate can bind in a nonempty region."
+  },
+  "conference_claim_boundary": {
+    "allowed_if_supported_by_frozen_results": [
+      "Synthetic qualification under the prespecified finite nuisance envelope.",
+      "Conditional performance across the frozen 25-cadence panel.",
+      "Failure or success against the exact preregistered promotion gates.",
+      "Negative or mixed results without post-hoc gate revision."
+    ],
+    "not_established_by_v2_alone": [
+      "Real-sky completeness or purity.",
+      "Robustness to nuisance processes outside the prespecified envelope.",
+      "Generalization to arbitrary or target-survey cadence distributions.",
+      "Operational discovery yield on a named survey.",
+      "Population-level uncertainty over real survey cadence geometries."
+    ]
+  },
+  "strongest_defensible_extension_after_v2": {
+    "name": "external_cadence_validation",
+    "timing": "separate preregistration after the frozen v2 study is completed; do not append it post hoc to v2",
+    "design_requirements": [
+      "Define a target cadence population before outcomes are inspected.",
+      "Use an independent set of cadence geometries not reused in v2 development or calibration.",
+      "Prefer actual survey cadence traces when the scientific target is a named survey; otherwise specify a generative cadence distribution whose parameters are justified independently of v2 outcomes.",
+      "Freeze the sampling frame, inclusion/exclusion rules, sample size, seeds, and primary estimand before evaluation.",
+      "Carry the v2-selected method and threshold forward without retuning on the external cadence set unless a new study explicitly defines and separates a calibration subset.",
+      "Report conditional v2 qualification and external-cadence validation as distinct evidence layers."
+    ]
+  },
+  "non_modification_statement": "No scientific parameter, candidate, threshold, seed, cadence, trial identity, trial count, promotion criterion, or frozen outcome-access rule is modified by this audit."
+}

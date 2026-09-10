@@ -80,11 +80,18 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          grep -Fq '\\author{\\IEEEauthorblockN{Anonymous Authors}}' paper/siderea_conference_short.tex
+          grep -Fq '\author{\IEEEauthorblockN{Anonymous Authors}}' paper/siderea_conference_short.tex
           pdfinfo paper/siderea_conference_short.pdf | tee paper/conference-pdfinfo.txt
           pages="$(awk -F: '/^Pages:/ {gsub(/^[[:space:]]+/, "", $2); print $2}' paper/conference-pdfinfo.txt)"
           test -n "$pages"
           test "$pages" -gt 0
+          if pdffonts paper/siderea_conference_short.pdf | tail -n +3 | awk 'NF && $6 != "yes" {bad=1} END {exit bad}'; then
+            :
+          else
+            echo 'At least one PDF font is not embedded.' >&2
+            pdffonts paper/siderea_conference_short.pdf >&2
+            exit 1
+          fi
 
       - name: Record source-bound build receipt
         shell: bash

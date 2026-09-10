@@ -13,7 +13,7 @@ import json
 from collections import Counter
 from collections.abc import Iterable, Iterator
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 from siderea.provenance import stable_json
 
@@ -82,7 +82,10 @@ def verify_frozen_compound_extension(path: Path) -> dict[str, Any]:
             "compound-nuisance extension differs from the frozen pre-outcome artifact: "
             f"expected git blob {FROZEN_COMPOUND_EXTENSION_GIT_BLOB_SHA1}, got {actual}"
         )
-    extension = json.loads(raw)
+    loaded = json.loads(raw)
+    if not isinstance(loaded, dict):
+        raise ValueError("compound-nuisance extension must be an object")
+    extension = cast(dict[str, Any], loaded)
     if extension.get("schema") != COMPOUND_EXTENSION_SCHEMA:
         raise ValueError("unexpected compound-nuisance extension schema")
     if extension.get("status") != "frozen_pre_outcome_secondary_extension_no_v2_protocol_change":
@@ -112,7 +115,10 @@ def verify_frozen_compound_extension(path: Path) -> dict[str, Any]:
         probe_id = probe.get("id")
         if not isinstance(probe_id, str) or not probe_id:
             raise ValueError("compound probe is missing id")
-        cadence_ids = _cadence_ids(probe.get("cadences"))
+        cadence_spec = probe.get("cadences")
+        if not isinstance(cadence_spec, str):
+            raise ValueError("compound probe cadences must be a string")
+        cadence_ids = _cadence_ids(cadence_spec)
         trials_per_cadence = probe.get("trials_per_cadence")
         total_trials = probe.get("total_trials")
         if isinstance(trials_per_cadence, bool) or not isinstance(trials_per_cadence, int):
@@ -201,7 +207,10 @@ def verify_frozen_compound_plan_lock(
             "compound trial-plan lock differs from the frozen pre-outcome artifact: "
             f"expected git blob {FROZEN_COMPOUND_PLAN_LOCK_GIT_BLOB_SHA1}, got {actual}"
         )
-    lock = json.loads(raw)
+    loaded = json.loads(raw)
+    if not isinstance(loaded, dict):
+        raise ValueError("compound trial-plan lock must be an object")
+    lock = cast(dict[str, Any], loaded)
     if lock.get("schema") != COMPOUND_PLAN_LOCK_SCHEMA:
         raise ValueError("unexpected compound trial-plan lock schema")
     if lock.get("status") != "frozen_pre_outcome_secondary_extension_execution_lock":

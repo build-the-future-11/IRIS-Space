@@ -1,0 +1,121 @@
+name: Conference paper PDF
+
+on:
+  pull_request:
+    paths:
+      - paper/siderea_conference_short.tex
+      - paper/references.bib
+      - .github/workflows/conference-paper.yml
+  push:
+    paths:
+      - paper/siderea_conference_short.tex
+      - paper/references.bib
+      - .github/workflows/conference-paper.yml
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Assert exact source binding
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="${{ github.event.pull_request.head.sha || github.sha }}"
+          actual="$(git rev-parse HEAD)"
+          printf 'expected=%s\nactual=%s\n' "$expected" "$actual"
+          test "$actual" = "$expected"
+
+      - name: Install minimal LaTeX and PDF tooling
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            latexmk \
+            lmodern \
+            poppler-utils \
+            texlive-bibtex-extra \
+            texlive-fonts-recommended \
+            texlive-latex-base \
+            texlive-latex-extra \
+            texlive-latex-recommended \
+            texlive-publishers
+
+      - name: Build conference PDF from clean auxiliaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd paper
+          rm -f siderea_conference_short.{aux,bbl,blg,fdb_latexmk,fls,log,out,pdf}
+          latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error siderea_conference_short.tex
+          test -s siderea_conference_short.pdf
+
+      - name: Fail closed on unresolved references and layout overflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          log=paper/siderea_conference_short.log
+          test -s "$log"
+          if grep -Eiq 'Citation .* undefined|Reference .* undefined|There were undefined references|There were undefined citations' "$log"; then
+            echo 'Unresolved citation/reference detected.' >&2
+            grep -Ei 'Citation .* undefined|Reference .* undefined|There were undefined references|There were undefined citations' "$log" >&2 || true
+            exit 1
+          fi
+          if grep -Eq 'Overfull \\[hv]box' "$log"; then
+            echo 'Overfull TeX box detected; layout must be reviewed before release.' >&2
+            grep -E 'Overfull \\[hv]box' "$log" >&2 || true
+            exit 1
+          fi
+
+      - name: Verify anonymous manuscript boundary and PDF metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq '\author{\IEEEauthorblockN{Anonymous Authors}}' paper/siderea_conference_short.tex
+          pdfinfo paper/siderea_conference_short.pdf | tee paper/conference-pdfinfo.txt
+          pages="$(awk -F: '/^Pages:/ {gsub(/^[[:space:]]+/, "", $2); print $2}' paper/conference-pdfinfo.txt)"
+          test -n "$pages"
+          test "$pages" -gt 0
+          if pdffonts paper/siderea_conference_short.pdf | tail -n +3 | awk 'NF && $6 != "yes" {bad=1} END {exit bad}'; then
+            :
+          else
+            echo 'At least one PDF font is not embedded.' >&2
+            pdffonts paper/siderea_conference_short.pdf >&2
+            exit 1
+          fi
+
+      - name: Record source-bound build receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            printf 'source_sha=%s\n' "$(git rev-parse HEAD)"
+            printf 'built_utc=%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            sha256sum paper/siderea_conference_short.tex
+            sha256sum paper/references.bib
+            sha256sum paper/siderea_conference_short.pdf
+            cat paper/conference-pdfinfo.txt
+          } | tee paper/conference-build-receipt.txt
+
+      - name: Retain conference build evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: siderea-conference-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            paper/siderea_conference_short.pdf
+            paper/siderea_conference_short.log
+            paper/siderea_conference_short.bbl
+            paper/siderea_conference_short.blg
+            paper/conference-pdfinfo.txt
+            paper/conference-build-receipt.txt
+          if-no-files-found: warn

@@ -5,6 +5,7 @@ from pathlib import Path
 import pytest
 
 from siderea.research.robust_predevelopment import (
+    load_predevelopment_authority,
     verify_all_predevelopment_inputs,
     verify_materialized_cadence_manifest,
 )
@@ -14,10 +15,13 @@ from siderea.research.robust_protocol import (
 )
 from siderea.research.robust_trial_plan import (
     EXPECTED_PLAN_SHA256,
+    EXPECTED_TOTAL_TRIALS,
     FROZEN_TRIAL_PLAN_AMENDMENT_GIT_BLOB_SHA1,
     FROZEN_TRIAL_PLAN_LOCK_GIT_BLOB_SHA1,
 )
-from siderea.research.robust_trial_rng import FROZEN_TRIAL_RNG_AMENDMENT_GIT_BLOB_SHA1
+from siderea.research.robust_trial_rng import (
+    FROZEN_TRIAL_RNG_AMENDMENT_GIT_BLOB_SHA1,
+)
 
 PROTOCOL = Path("paper/experiments/robust_search_protocol.v2.json")
 CADENCES = Path("paper/experiments/robust_search_cadences.v2.json")
@@ -69,3 +73,35 @@ def test_canonical_predevelopment_gate_binds_all_pre_result_identity() -> None:
     assert "threshold" not in receipt
     assert "false_alarm" not in receipt
     assert "recovery" not in receipt
+
+
+def test_predevelopment_authority_couples_receipt_to_exact_authorized_plan() -> None:
+    authority = load_predevelopment_authority(
+        PROTOCOL,
+        CADENCES,
+        AMENDMENT,
+        EXECUTION_AMENDMENT,
+        IDENTIFIER_ERRATUM,
+        TRIAL_RNG_AMENDMENT,
+        TRIAL_PLAN_AMENDMENT,
+        TRIAL_PLAN_LOCK,
+        REPORTED_ERROR_LOCK,
+    )
+
+    assert authority.full_plan_sha256 == EXPECTED_PLAN_SHA256
+    assert authority.total_keys == EXPECTED_TOTAL_TRIALS
+    assert authority.receipt["trial_plan_sha256"] == authority.full_plan_sha256
+
+    subset = authority.trial_plan.subset(
+        phase="development",
+        role="development_threshold_null",
+    )
+    assert authority.trial_plan.require_key(subset.keys[0]) == subset.keys[0]
+
+    with pytest.raises(ValueError, match="not authorized"):
+        authority.trial_plan.require_key(
+            '{"phase":"development","role":"development_threshold_null","trial_index":999999}'
+        )
+
+    with pytest.raises(TypeError):
+        authority.receipt["trial_plan_sha256"] = "mutated"  # type: ignore[index]

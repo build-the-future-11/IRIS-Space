@@ -41,6 +41,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             latexmk \
+            lmodern \
             poppler-utils \
             texlive-bibtex-extra \
             texlive-fonts-recommended \

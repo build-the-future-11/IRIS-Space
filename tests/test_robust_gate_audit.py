@@ -26,8 +26,7 @@ def test_frozen_safety_uncertainty_gate_is_deterministically_nonbinding() -> Non
     assert payload["observed_scientific_results"] is False
     assert payload["bound_protocol_git_blob_sha1"] == FROZEN_PROTOCOL_GIT_BLOB_SHA1
     assert (
-        payload["bound_amendment_v2_0_4_git_blob_sha1"]
-        == FROZEN_TRIAL_RNG_AMENDMENT_GIT_BLOB_SHA1
+        payload["bound_amendment_v2_0_4_git_blob_sha1"] == FROZEN_TRIAL_RNG_AMENDMENT_GIT_BLOB_SHA1
     )
 
     inputs = payload["inputs"]

@@ -29,10 +29,7 @@ def authorized_plan():
 def test_authorized_plan_reconstructs_exact_frozen_counts(authorized_plan) -> None:
     assert authorized_plan.full_plan_sha256 == EXPECTED_PLAN_SHA256
     assert authorized_plan.total_keys == EXPECTED_TOTAL_TRIALS
-    assert (
-        sum(len(subset.keys) for subset in authorized_plan.subsets)
-        == EXPECTED_TOTAL_TRIALS
-    )
+    assert sum(len(subset.keys) for subset in authorized_plan.subsets) == EXPECTED_TOTAL_TRIALS
     assert {subset.role: len(subset.keys) for subset in authorized_plan.subsets} == (
         EXPECTED_ROLE_COUNTS
     )

@@ -34,12 +34,11 @@ The legacy pipeline operates downstream of ZTF alert production and ALeRCE inges
 \subsection{Fail-closed reportability}
 Let $v$ denote an immutable candidate version and let the required external and human clearances be indexed by $j=1,\ldots,m$. Each clearance has state $c_j(v)$, evidence timestamp $t_j$, expiry interval $\Delta_j$, and evidence binding $b_j(v)$. We define reportability as
 \begin{equation}
-R(v)=\bigwedge_{j=1}^{m}
-\left[c_j(v)=\mathrm{CLEAR}\right]
-\land
-\left[t_{\mathrm{now}}-t_j\le \Delta_j\right]
-\land
-\left[b_j(v)=\mathrm{VALID}\right].
+\begin{split}
+R(v)={}&\bigwedge_{j=1}^{m}\left[c_j(v)=\mathrm{CLEAR}\right] \\
+&\land\left[t_{\mathrm{now}}-t_j\le \Delta_j\right] \\
+&\land\left[b_j(v)=\mathrm{VALID}\right].
+\end{split}
 \end{equation}
 Thus ranking cannot substitute for a missing registry query, stale catalog evidence, an unbound review decision, or an unresolved image check. Service failure remains unknown rather than becoming a false non-match.
 

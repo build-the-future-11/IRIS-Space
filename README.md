@@ -30,6 +30,63 @@ human review, and explicitly shadow-only synthetic/model experiments. Sustained
 live polling, hosted multi-user sessions and physical classification remain
 unqualified or unimplemented. External report submission is deliberately absent.
 
+## Start here
+
+- **Run it locally:** follow the setup and quickstart below.
+- **Understand JEPA and detection together:** [the dedicated JEPA/pipeline README](README_JEPA_PIPELINE.md) explains the data flow, model training, current connections and missing integration.
+- **Inspect module responsibilities:** [repository layout](#repository-layout) and [architecture](docs/ARCHITECTURE.md).
+- **Read scientific boundaries:** [transient-search guide](docs/TRANSIENT_SEARCH.md) and [validation plan](docs/SCIENTIFIC_VALIDATION.md).
+
+## Setup and quickstart
+
+Run from the repository root with Python 3.11 or newer:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -e '.[ml,visualization,dev]'
+python -m siderea doctor
+```
+
+For only local analysis, `python -m pip install -e .` is sufficient. Use
+`.[all,dev]` when astronomy adapters are also needed. The examples need no credentials;
+optional astronomy warnings from `doctor` are expected without that extra.
+
+```bash
+# Canonical photometry -> features -> priority -> immutable candidate evidence.
+python -m siderea analyze examples/photometry.csv --output-dir runs/quickstart-analysis --ledger runs/quickstart.sqlite
+
+# Inspect candidates at the loopback URL printed by the server; Ctrl-C stops it.
+python -m siderea review-serve --ledger runs/quickstart.sqlite
+
+# Separate statistical search on a synthetic measured-flux fixture.
+python -m siderea transient-search examples/transient_flux.csv runs/quickstart-shadow.json --null-trials 999 --seed 20260908
+
+# Small CPU JEPA training/evaluation smoke run on separate synthetic curves.
+python -m siderea jepa-train examples/jepa_train.jsonl examples/jepa_validation.jsonl runs/quickstart-jepa --config configs/jepa-smoke.toml --epochs 1 --batch-size 2 --evaluation-masks 2 --device cpu
+```
+
+Each output must be new; change the path when repeating a command. Local analysis
+produces two candidates and zero reportable candidates because external evidence is
+missing. Shadow search writes diagnostic JSON; JEPA writes `checkpoint.pt` and
+`training.json`. These synthetic examples verify execution, not scientific efficacy.
+
+**How the parts fit:** the operational pipeline ranks and preserves evidence;
+statistical templates test explicit light-curve shapes; JEPA learns representations
+for downstream comparison. `pilot-prepare`, `shadow-assemble`, and `shadow-rank`
+now provide a strict experimental bridge: identical physical entities, frozen
+cutoffs, campaign-corrected template evidence, provenance-bound embeddings, and
+separate finite-budget selection routes. No fused score can bypass the catalogue or
+human-review gates. See the [combined guide](README_JEPA_PIPELINE.md).
+
+```bash
+make check PYTHON=python
+make paper-check PYTHON=python
+python -m build
+```
+
+The longer sections below document the command surface and safety contracts.
+
 ## What is implemented
 
 - Strict TOML configuration with unknown-key rejection and paths resolved relative
@@ -155,7 +212,7 @@ The executed work and specific problem/solution/acceptance backlog are maintaine
 cohort, recovery and packaging procedures are in
 [`docs/LOCAL_OPERATIONS.md`](docs/LOCAL_OPERATIONS.md).
 
-## Install
+## Dependency options
 
 Python 3.11 or newer is required. `pyproject.toml` is the canonical dependency and
 packaging definition for the new platform.
@@ -220,6 +277,10 @@ Run `siderea COMMAND --help` for all arguments.
 | `outcome-add ID` | Record a mature downstream outcome | Requires the exact current `--candidate-version`; does not infer or submit an outcome |
 | `baseline-train INPUT OUTPUT` | Fit, calibrate/evaluate, and save the chronological logistic baseline | Exactly one of `--entity` or `--assert-unique-entities` is required; load trusted joblib bundles only |
 | `jepa-train TRAIN VALIDATION OUTPUT` | Train/evaluate a TS-JEPA checkpoint | Enforces chronological splits by default, uses repeated masks and deterministic algorithms, and remains shadow-only |
+| `pilot-prepare INPUT OUTPUT` | Emit identity- and cutoff-bound operational, template, and JEPA data views | `--require-pipeline-view` requires coordinates; no survey or alias semantics are guessed |
+| `jepa-embed CHECKPOINT INPUT OUTPUT` | Extract provenance-bound representations | Binds checkpoint, dataset, token contract, and code identity; remains shadow-only |
+| `shadow-assemble SEARCH CANDIDATE_EMBEDDINGS REFERENCE_EMBEDDINGS OUTPUT` | Join three separately inspectable evidence channels | Exact entity sets, pipeline candidate versions, cutoffs, hashes, and disjoint references are verified |
+| `shadow-rank EVIDENCE OUTPUT` | Allocate heuristic, template, JEPA, and random-audit review routes | No fused score or reporting authority; detector reserves require campaign-corrected inference |
 
 ### Safe local analysis flow
 
@@ -580,9 +641,11 @@ a prospective campaign as defined in the scientific validation plan.
 | Path | Purpose |
 |---|---|
 | `src/siderea/` | New modular platform; canonical target for development |
-| `configs/` | Validated TOML run profiles |
+| `configs/` | Validated TOML profiles; `jepa-smoke.toml` is the tiny CPU example |
 | `tests/` | Unit and safety-regression tests |
 | `docs/` | Architecture, validation, migration, and roadmap |
+| `README_JEPA_PIPELINE.md` | Combined-system explanation, diagram and runnable JEPA workflow |
+| `examples/` | Synthetic inputs for local analysis, shadow detection and training |
 | root `*.py` scripts | Original I SPY workflow retained for comparison during migration |
 | `cool-stuff-master/` | Read-only historical duplicate; not a second implementation target |
 | `paper/` | Research-paper material, separate from executable evidence |
@@ -643,9 +706,7 @@ the new `TNSClient` implements search only, not submission.
 - [`docs/MIGRATION.md`](docs/MIGRATION.md) — staged migration from the root scripts.
 - [`docs/ROADMAP.md`](docs/ROADMAP.md) — prioritized work from platform foundation
   to prospective operation and beyond.
-# SIDEREA-Space
-
-### Experimental transient morphology search
+## Experimental transient morphology search
 
 `siderea transient-search` now offers an unknown-location, background-profiled
 search over four light-curve families with simulation-calibrated search statistics

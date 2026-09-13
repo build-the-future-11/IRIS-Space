@@ -1,0 +1,18 @@
+{
+  "canonical_entity_ids": [
+    "synthetic-train-a",
+    "synthetic-train-b"
+  ],
+  "cohort_id": "overnight-smoke-20260913-v2-reference",
+  "dataset_sha256": "155a7ca8687f7b4bfd86787fb909ebe7fa236d99de3364266a9a56d4dc399649",
+  "entity_count": 2,
+  "prediction_cutoff_extent": [
+    10.0,
+    10.0
+  ],
+  "qualifies_reportability": false,
+  "result_digest": "f51fd4383149004b6bd72da6d7202cb8d5e22d73d8eca2bc5246aa846cea3300",
+  "role": "jepa_anomaly_reference_only",
+  "schema": "siderea.jepa_reference_cohort.v1",
+  "selection_policy": "frozen training-only anomaly reference cohort"
+}

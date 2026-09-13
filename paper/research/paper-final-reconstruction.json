@@ -1,0 +1,128 @@
+{
+  "schema": "siderea.paper_reconstruction.v1",
+  "started_at": "2026-09-08T15:53:29.217795+00:00",
+  "scope": "historical_figure_and_synthetic_reconstruction_not_live_science",
+  "python": "3.11.15 (main, Mar  3 2026, 00:52:57) [Clang 17.0.0 (clang-1700.6.4.2)]",
+  "commands": [
+    {
+      "argv": [
+        "python",
+        "paper/figures/make_figures.py"
+      ],
+      "exit_code": 0,
+      "log": "historical-figures.log",
+      "log_sha256": "d1556b61f42d1391268a9eb6eedc1f155dc524555a18349301caab1bd65a7626"
+    },
+    {
+      "argv": [
+        "python",
+        "paper/experiments/run_transient_search.py",
+        "--protocol",
+        "paper/experiments/transient_protocol.json",
+        "--output",
+        "reproduced/iid"
+      ],
+      "exit_code": 0,
+      "log": "iid.log",
+      "log_sha256": "ed1d5c77c5eed2b5a887e6bb59838d76a13a08b269a420b85b8b30e30fb014ea"
+    },
+    {
+      "argv": [
+        "python",
+        "paper/experiments/run_transient_search.py",
+        "--protocol",
+        "paper/experiments/covariance_protocol.json",
+        "--output",
+        "reproduced/covariance"
+      ],
+      "exit_code": 0,
+      "log": "covariance.log",
+      "log_sha256": "7ddeeab9a3ee97cd9ff18cecf3ffba7a47c704bccdcb21332bf03c366cca3271"
+    },
+    {
+      "argv": [
+        "python",
+        "paper/experiments/run_noise_stress.py",
+        "--protocol",
+        "paper/experiments/noise_stress_protocol.json",
+        "--output",
+        "reproduced/noise"
+      ],
+      "exit_code": 0,
+      "log": "noise.log",
+      "log_sha256": "d07910af05222f92bbebf806e8a645df013c7ca9f6d45ef0b0034fe8f135e622"
+    },
+    {
+      "argv": [
+        "python",
+        "paper/experiments/make_tables.py",
+        "--output",
+        "reproduced/tables"
+      ],
+      "exit_code": 0,
+      "log": "tables.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "checks": {
+    "historical_metrics_equal": true,
+    "historical_metrics": {
+      "productive_runs": 24,
+      "nonduplicate_pulls": 23,
+      "unique_pull_detection_rows": 424223,
+      "unique_pull_clean_rows": 223938,
+      "unique_pull_clean_fraction": 0.5278780264153523,
+      "pre_runs": 10,
+      "pre_objects": 3525,
+      "pre_early_veto_fraction": 0.5452482269503546,
+      "pre_shortlist_fraction": 0.005106382978723404,
+      "post_runs": 6,
+      "post_objects": 1531,
+      "post_early_veto_fraction": 0.026779882429784456,
+      "post_shortlist_fraction": 0.13912475506205094,
+      "cluster_bootstrap_draws": 50000,
+      "pre_early_veto_cluster_ci_low": 0.31013215859030835,
+      "pre_early_veto_cluster_ci_high": 0.8374736842105264,
+      "post_early_veto_cluster_ci_low": 0.009029345372460496,
+      "post_early_veto_cluster_ci_high": 0.049207217058501916,
+      "delta_early_veto": -0.5184683445205701,
+      "delta_early_veto_cluster_ci_low": -0.8118546208574915,
+      "delta_early_veto_cluster_ci_high": -0.28246220488647,
+      "pre_shortlist_cluster_ci_low": 0.0016666666666666668,
+      "pre_shortlist_cluster_ci_high": 0.011891891891891892,
+      "post_shortlist_cluster_ci_low": 0.10451127819548872,
+      "post_shortlist_cluster_ci_high": 0.176171654432524,
+      "delta_shortlist": 0.13401837208332754,
+      "delta_shortlist_cluster_ci_low": 0.09755384185029309,
+      "delta_shortlist_cluster_ci_high": 0.17092407444837274
+    },
+    "iid": {
+      "protocol_equal": true,
+      "rows_equal": true,
+      "trials_equal": true,
+      "rows": 30,
+      "trial_sha256": "d2035d91699ec061c51718d02dfec22c6dbcf0ce0c77acf40c4eaac7b4a014e2"
+    },
+    "covariance": {
+      "protocol_equal": true,
+      "rows_equal": true,
+      "trials_equal": true,
+      "rows": 30,
+      "trial_sha256": "7f4f2ede62f023b74aa51faed242dff3fb281249f3e55fe586539d57904a16ed"
+    },
+    "noise": {
+      "protocol_equal": true,
+      "rows_equal": true,
+      "trials_equal": true,
+      "rows": 7,
+      "trial_sha256": "22e66d058266777b2864447f26e73bcce69557fa45f73eae3ce1de4726eefa6b"
+    },
+    "generated_tables_equal": true
+  },
+  "passed": true,
+  "input_manifest_sha256": "c65390c5121dec2a3a0a7d9ef4a12a4072600d62cee99093e410f17e4b7bed10",
+  "runtime_dependencies_sha256": "679c4f3f49125658bafc8910fa1cb46b3102a01afc6ff920daed2a4f42afd8d9",
+  "finished_at": "2026-09-08T15:54:50.753681+00:00",
+  "archived_log_directory": "paper-reconstruction-logs",
+  "copied_workspace_note": "Input snapshot retained locally at .test-tmp/paper-final-reconstruction-v2/workspace. It predates subsequent manuscript-only wording and float changes; the final review bundle contains the later manuscript."
+}

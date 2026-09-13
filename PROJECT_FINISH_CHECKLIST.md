@@ -279,3 +279,45 @@ Publication blocker resolved after explicit user approval. The published commit
 `44d2867` passed all seven GitHub CI jobs. A fresh local check and all synthetic
 experiment reruns passed; see `paper/research/final-check-rerun.json`. Remaining
 scientific, hosted-operation and license qualifications are unchanged.
+
+## Controlled TNS testing preparation — 2026-09-08
+
+- [x] Add isolated read-only `tns-qualify` with expected-identity checking and immutable redacted reports.
+- [x] Add simulated transport and CLI regressions; document live test procedure in `docs/TNS_TESTING.md`.
+- [ ] Execute live known-name, cone-match and clear cases: all three TNS environment credentials are absent.
+
+Detailed scope, validation and unresolved live work: `TNS_TESTING_CHECKLIST.md`.
+
+TNS preparation validation: full local checks passed with 416 tests and 96 subtests,
+78.43% coverage; isolated package build and packaged CLI help passed.
+
+## Paper execution and reconstruction — 2026-09-08
+
+- [x] Correct historical discovery attribution, software snapshot wording and injection-study scope.
+- [x] Align finite-budget queue mathematics with implemented audit sampling, anomaly threshold and priority backfill.
+- [x] Reproduce the historical bootstrap, 30 IID rows, 30 covariance rows and seven adverse null rows with exact scientific equality.
+- [x] Generate manuscript tables from the archived trial summaries and reject output drift.
+- [x] Add reconstruction failure/tampering/no-clobber regression tests and Makefile entrypoints.
+- [x] Pass full checks: 421 tests + 96 subtests, 78.42% coverage; paper-tool lint and five regression tests passed.
+- [ ] Complete venue-specific submission, author approval, independent scientific review and redistribution decisions.
+
+The detailed paper checklist preserves partial local work and external/data-dependent
+requirements separately; reconstruction does not establish real-sky detection accuracy.
+
+## 2026-09-08 — experiment evidence integrity execution
+
+- [x] P1 — Manuscript tables previously trusted summary JSON: verify report/protocol/source/trial digests, unique complete declared rows, calibrated plus-one ranks, counts, fractions and Wilson intervals before generating tables. Implemented in `src/siderea/research/archives.py`, shared by table generation and reconstruction. All 67 historical rows verify; regenerated tables remain identical.
+- [x] P1 — Unknown noise scenario names silently selected Gaussian behavior: reject unsupported/duplicate labels and invalid protocols before creating output. Also reject a changed declared fixed null suite that the search runner would otherwise ignore.
+- [x] P1 — Experiment source snapshots could describe a different detector from the imported package: both runners compare the loaded detector source with the checkout before output creation. Regression checks confirm mismatches leave no output directory.
+- [x] P2 — Seasonal-gap and variance-change times were hardcoded to a 60-day run: scale them to protocol duration. A 90-day execution regression checks the requested gap and verifies its resulting archive; original 60-day results remain identical.
+- [x] P2 — Add adversarial evidence tests, including modified summaries re-hashed by their producer. `make paper-check` passes 49 tests. Re-run historical bootstrap and IID/covariance/noise experiments, retaining all negative results and input provenance.
+- [ ] Scientific release still requires independently qualified live data, a frozen labelled evaluation, venue/author/licensing decisions and independent scientific review. These changes do not close those gates or the other open engineering work above.
+
+## 2026-09-09 — observation identity and replay protection
+
+- [x] P1 — Shadow search ignored observation IDs: reject reused source/survey/observation identities even when time, band or flux changes; retain distinct nonempty observation IDs at the same timestamp. Covered by detector and real CLI regression tests.
+- [x] P1 — Missing-ID variants bypassed ingestion duplicate checks: canonicalize them before checking duplicates. Reject equal-valued rows when any identity is missing, including a known/unknown-ID pair.
+- [x] P1 — Shadow CSV parsing coerced textual IDs: preserve source and observation IDs as strings, including `001` versus `1`.
+- [x] P2 — Survey spelling split shadow identity namespaces: normalize case and whitespace consistently with ingestion before grouping and replay checks.
+- [x] P2 — Rebuild and exercise the wheel on five identified observations; confirm a changed-value replay exits 2 and creates no result. Reconstruct the historical bootstrap and all 67 synthetic result rows without changing their protocols or results.
+- [ ] D05 extension — Qualify survey-specific exposure-ID namespaces and explicit observation/exposure mapping before accepting generic exposure IDs. Canonical `observation_id` support is complete for the documented contract; exposure identifiers are not universally interchangeable with observation identifiers.

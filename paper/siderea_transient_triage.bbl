@@ -1,4 +1,4 @@
-\begin{thebibliography}{36}
+\begin{thebibliography}{37}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -217,6 +217,11 @@ Nabeel Rehemtulla, Michael~W. Coughlin, Adam~A. Miller, and Theophile Jegou~du
   Laz.
 \newblock The automation of optical transient discovery and classification in
   rubin-era time-domain astronomy, 2025.
+
+\bibitem[Rui(2026)]{rui2026}
+Yicheng Rui.
+\newblock Domain-informed multi-view self-distillation for astronomical
+  light-curve representation learning with jepa, 2026.
 
 \bibitem[S\'anchez-S\'aez et~al.(2021)S\'anchez-S\'aez, Reyes, Valenzuela,
   et~al.]{sanchezsaez2021}

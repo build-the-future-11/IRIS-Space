@@ -3,7 +3,13 @@
   "command": "tectonic --keep-intermediates paper/siderea_transient_triage.tex",
   "exit_code": 0,
   "portable_fonts": "TeX Gyre Termes, Heros, Cursor by TeX filenames",
-  "inspection": "all pages at overview; verification, results and appendix tables at reading size",
-  "remaining_warnings": "underfull boxes; no undefined citations or clipping found",
-  "pdf_sha256": "6347b5e71b0f86c810482f77d0539b6c1177f933def93caa34fedf508d5a305d"
+  "inspection": "All 29 pages rendered and visually inspected at overview; queue equation, updated evidence tables, historical accounting and noise table checked at reading size.",
+  "remaining_warnings": "Underfull boxes; no undefined references/citations or overfull boxes in final build; no clipping or overlapping content found.",
+  "pdf_sha256": "af05d0f9fcc8f0a1fc62e7d7aa125be5b953846cb58852956f889fd6fb7cdc88",
+  "main_tex_sha256": "bdcf454657323c6fb3b53563964be7cd6a32b96e2b01bd1fa4a631be099ca37d",
+  "search_section_sha256": "3697c2627c36b03ca6d6ffc19a8da9e8acc233bf0b50e3ed17c01995431f5ea5",
+  "build_log": "paper/research/paper-finishing-build.txt",
+  "scope": "local review draft; author, venue and scientific approvals remain open",
+  "copied_bundle_build": "PASS; 29/29 pages pixel-identical at 0.75 scale; PDF container hashes differ",
+  "bundle_pdf_sha256": "3046e70886b917a16b8490119ba66dd8a4f10591b8f394846d8a8d93170f008b"
 }

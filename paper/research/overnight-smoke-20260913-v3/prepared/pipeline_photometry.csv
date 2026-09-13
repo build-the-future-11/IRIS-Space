@@ -1,0 +1,13 @@
+source_id,ra_deg,dec_deg,mjd,band,flux,flux_error,survey,observation_id,is_detection
+INTEGRATED-CONSTANT,42.2,-12.5,61000,g,10.0,1.0,synthetic,constant-001,True
+INTEGRATED-CONSTANT,42.2,-12.5,61001,g,10.1,1.0,synthetic,constant-002,True
+INTEGRATED-CONSTANT,42.2,-12.5,61002,g,9.9,1.0,synthetic,constant-003,True
+INTEGRATED-CONSTANT,42.2,-12.5,61003,g,10.0,1.0,synthetic,constant-004,True
+INTEGRATED-CONSTANT,42.2,-12.5,61004,g,10.1,1.0,synthetic,constant-005,True
+INTEGRATED-CONSTANT,42.2,-12.5,61005,g,9.9,1.0,synthetic,constant-006,True
+INTEGRATED-PULSE,150.1,2.3,61000,g,10.0,1.0,synthetic,pulse-001,True
+INTEGRATED-PULSE,150.1,2.3,61001,g,10.2,1.0,synthetic,pulse-002,True
+INTEGRATED-PULSE,150.1,2.3,61002,g,11.1,1.0,synthetic,pulse-003,True
+INTEGRATED-PULSE,150.1,2.3,61003,g,18.0,1.0,synthetic,pulse-004,True
+INTEGRATED-PULSE,150.1,2.3,61004,g,11.0,1.0,synthetic,pulse-005,True
+INTEGRATED-PULSE,150.1,2.3,61005,g,10.1,1.0,synthetic,pulse-006,True

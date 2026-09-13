@@ -171,6 +171,8 @@ def bind_benchmark(
             bootstrap_repeats=inputs["bootstrap_repeats"],
             confidence_level=inputs["confidence_level"],
             seed=inputs["seed"],
+            time_block_days=inputs.get("time_block_days"),
+            bootstrap_unit=inputs.get("bootstrap_unit", "entity_within_time_block"),
         )
     except (KeyError, TypeError, ValueError) as exc:
         raise ValueError("benchmark inputs cannot be reproduced") from exc

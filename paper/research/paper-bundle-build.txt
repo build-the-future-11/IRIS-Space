@@ -1,0 +1,25 @@
+note: Running TeX ...
+warning: siderea_transient_triage.tex:81: Underfull \vbox (badness 2393) has occurred while \output is active
+warning: siderea_transient_triage.tex:449: Underfull \vbox (badness 10000) has occurred while \output is active
+warning: siderea_transient_triage.tex:582: Underfull \hbox (badness 6125) in paragraph at lines 581--582
+warning: siderea_transient_triage.tex:584: Underfull \hbox (badness 1478) in paragraph at lines 583--584
+warning: siderea_transient_triage.tex:606: Underfull \hbox (badness 2753) in paragraph at lines 605--606
+warning: siderea_transient_triage.tex:620: Underfull \vbox (badness 10000) has occurred while \output is active
+warning: siderea_transient_triage.tex:665: Underfull \vbox (badness 7631) has occurred while \output is active
+note: Running BibTeX on siderea_transient_triage.aux ...
+note: Rerunning TeX because bibtex was run ...
+warning: siderea_transient_triage.tex:582: Underfull \hbox (badness 6125) in paragraph at lines 581--582
+warning: siderea_transient_triage.tex:584: Underfull \hbox (badness 1478) in paragraph at lines 583--584
+warning: siderea_transient_triage.tex:606: Underfull \hbox (badness 2753) in paragraph at lines 605--606
+warning: experiments/search_section.tex:28: Underfull \vbox (badness 3098) has occurred while \output is active
+note: Rerunning TeX because "siderea_transient_triage.aux" changed ...
+warning: siderea_transient_triage.tex:582: Underfull \hbox (badness 6125) in paragraph at lines 581--582
+warning: siderea_transient_triage.tex:584: Underfull \hbox (badness 1478) in paragraph at lines 583--584
+warning: siderea_transient_triage.tex:606: Underfull \hbox (badness 2753) in paragraph at lines 605--606
+warning: experiments/search_section.tex:28: Underfull \vbox (badness 3098) has occurred while \output is active
+warning: warnings were issued by the TeX engine; use --print and/or --keep-logs for details.
+note: Running xdvipdfmx ...
+note: Writing `paper/siderea_transient_triage.bbl` (11.955078125 KiB)
+note: Writing `paper/siderea_transient_triage.aux` (26.9208984375 KiB)
+note: Writing `paper/siderea_transient_triage.pdf` (1.7199859619140625 MiB)
+note: Writing `paper/siderea_transient_triage.out` (11.818359375 KiB)

@@ -25,6 +25,20 @@ Release verification and remaining work are recorded in `FINAL_TODO.md` and
 CI passed or that a commit was pushed. Journal submission and package-index
 publication are separate actions.
 
+Run the fail-closed release verifier only from the exact candidate checkout:
+
+```bash
+make research-release-check PYTHON=.venv/bin/python \
+  RELEASE_OUTPUT=/absolute/path/to/new-release-verification
+```
+
+The destination must not exist. The command requires a clean Git tree, runs formatting,
+lint, MyPy, the coverage suite, byte compilation and strict dependency checks, then
+reconstructs the paper experiments in an isolated copied workspace. It writes the Git
+revision, clean-state evidence, logs, reconstruction record, and SHA-256 identities to
+`release-verification.json`. `--allow-dirty` exists only for development audits and is
+recorded in the result; an output with `dirty: true` is not a release candidate.
+
 Package metadata retains `LicenseRef-Proprietary`. The repository has no approved
 open-source license grant; public visibility must not be described as permission
 to redistribute the project under an open-source license. A reusable public

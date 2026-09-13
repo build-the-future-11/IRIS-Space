@@ -1046,3 +1046,28 @@ class LocalPipelineTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ObservationIdentityRegressionTests(unittest.TestCase):
+    def test_missing_identity_variants_cannot_bypass_duplicate_detection(self) -> None:
+        for first, second in [(" ", "null"), ("None", "nan"), ("", "known-id")]:
+            with self.subTest(ids=(first, second)), tempfile.TemporaryDirectory() as folder:
+                path = Path(folder) / "duplicate.csv"
+                path.write_text(
+                    "source_id,ra_deg,dec_deg,mjd,band,magnitude,magnitude_error,observation_id\n"
+                    f"A,10,20,60000,g,19,0.2,{first}\n"
+                    f"A,10,20,60000,g,19,0.2,{second}\n"
+                )
+                with self.assertRaisesRegex(IngestionError, "duplicate observations"):
+                    ingest_csv(path)
+
+    def test_distinct_identifiers_preserve_same_time_exposures(self) -> None:
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "distinct.csv"
+            path.write_text(
+                "source_id,ra_deg,dec_deg,mjd,band,magnitude,magnitude_error,observation_id\n"
+                "A,10,20,60000,g,19,0.2,001\n"
+                "A,10,20,60000,g,19,0.2,1\n"
+            )
+            batch = ingest_csv(path)
+            self.assertEqual(len(batch.observations), 2)

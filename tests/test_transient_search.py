@@ -48,6 +48,44 @@ def test_null_is_reproducible_search_corrected_and_never_zero_pvalue():
         bank.simulate_null(trials=1, seed=0)
 
 
+def test_wild_residual_null_is_reproducible_and_records_assumptions():
+    times = np.arange(20.0)
+    errors = np.linspace(0.8, 1.2, 20)
+    rng = np.random.default_rng(31)
+    flux = 12 + rng.standard_t(df=4, size=20) * errors
+    bank = TransientBank(times, errors, centers=[5, 10, 15], widths=[1, 3])
+    first = bank.simulate_wild_null(flux, trials=199, seed=7, block_size=2)
+    second = bank.simulate_wild_null(flux, trials=199, seed=7, block_size=2)
+    assert np.array_equal(first, second)
+    assert np.isfinite(first).all() and (first >= 0).all()
+
+    frame = pd.DataFrame(
+        {
+            "source_id": "wild",
+            "survey": "synthetic",
+            "band": "g",
+            "mjd": times,
+            "flux": flux,
+            "flux_error": errors,
+        }
+    )
+    report = search_flux_table(
+        frame,
+        null_trials=199,
+        center_count=3,
+        widths=[2],
+        null_method="wild_residual",
+        wild_block_size=2,
+    )
+    assert report["null_method"] == "wild_residual"
+    assert report["wild_block_size"] == 2
+    assert "sign-symmetric" in report["assumptions"]
+    with pytest.raises(ValueError, match="null_method"):
+        search_flux_table(frame, null_method="unknown")
+    with pytest.raises(ValueError, match="block size"):
+        bank.simulate_wild_null(flux, trials=99, seed=1, block_size=0)
+
+
 def test_channel_correction_limits_and_missing_epochs():
     frame = pd.DataFrame(
         {
@@ -69,6 +107,37 @@ def test_channel_correction_limits_and_missing_epochs():
     with pytest.raises(ValueError, match="resolve"):
         search_flux_table(frame, null_trials=99, alpha=0.0001)
     assert search_flux_table(frame.iloc[:2])["channels"][0]["status"] == "insufficient_epochs"
+
+
+def test_campaign_correction_covers_declared_objects_and_planned_looks():
+    frame = pd.DataFrame(
+        {
+            "source_id": "a",
+            "survey": "test",
+            "band": "g",
+            "mjd": np.arange(12),
+            "flux": np.exp(-(((np.arange(12) - 6) / 2) ** 2)) * 30,
+            "flux_error": 1.0,
+        }
+    )
+    report = search_flux_table(
+        frame,
+        widths=[2],
+        center_count=3,
+        null_trials=999,
+        object_universe_size=10,
+        planned_looks=4,
+        look_index=2,
+    )
+    obj = report["objects"][0]
+    assert obj["campaign_pvalue"] == pytest.approx(min(1, obj["object_pvalue"] * 40))
+    assert report["campaign_inference"]["correction_factor"] == 40
+    assert report["campaign_inference"]["look_index"] == 2
+    assert "planned-look correction" in report["scope"]
+    with pytest.raises(ValueError, match="smaller"):
+        search_flux_table(pd.concat([frame, frame.assign(source_id="b")]), object_universe_size=1)
+    with pytest.raises(ValueError, match="requires object_universe_size"):
+        search_flux_table(frame, planned_looks=2)
 
 
 def test_search_invalid_inputs_and_numeric_bounds():
@@ -234,3 +303,86 @@ def test_outlier_influence_and_correlated_deletion_match_refitting():
     fit = bank.fit(pulse)
     assert fit["influence"]["minimum_remaining_local_z"] > fit["max_local_z"] * 0.8
     assert fit["influence"]["changes_detection_rule"] is False
+
+
+@pytest.mark.parametrize("changed", [False, True])
+def test_shadow_rejects_replayed_observation_ids(changed):
+    frame = pd.DataFrame(
+        {
+            "source_id": ["a", "a"],
+            "survey": "test",
+            "band": "g",
+            "mjd": [1.0, 2.0 if changed else 1.0],
+            "flux": [2.0, 3.0 if changed else 2.0],
+            "flux_error": 1.0,
+            "observation_id": [" exposure-1 ", "exposure-1"],
+        }
+    )
+    with pytest.raises(ValueError, match="reused observation_id"):
+        search_flux_table(frame)
+
+
+def test_shadow_keeps_distinct_same_time_observations():
+    frame = pd.DataFrame(
+        {
+            "source_id": "a",
+            "survey": "test",
+            "band": "g",
+            "mjd": [1.0, 1.0],
+            "flux": 2.0,
+            "flux_error": 1.0,
+            "observation_id": ["001", "1"],
+        }
+    )
+    assert search_flux_table(frame)["channels"][0]["rows"] == 2
+
+
+@pytest.mark.parametrize("ids", [[None, " "], ["null", "None"], ["nan", ""], [None, "known-id"]])
+def test_shadow_normalizes_missing_ids_before_duplicate_check(ids):
+    frame = pd.DataFrame(
+        {
+            "source_id": "a",
+            "survey": "test",
+            "band": "g",
+            "mjd": [1.0, 1.0],
+            "flux": 2.0,
+            "flux_error": 1.0,
+            "observation_id": ids,
+        }
+    )
+    with pytest.raises(ValueError, match="duplicate measurements"):
+        search_flux_table(frame)
+
+
+def test_shadow_csv_preserves_textual_observation_identifiers(tmp_path, capsys):
+    from siderea.cli import main
+
+    source = tmp_path / "flux.csv"
+    source.write_text(
+        "source_id,survey,band,mjd,flux,flux_error,observation_id\n"
+        "001,test,g,60000,2,1,001\n"
+        "001,test,g,60000,2,1,1\n"
+    )
+    output = tmp_path / "result.json"
+    assert main(["transient-search", str(source), str(output)]) == 0
+    import json
+
+    result = json.loads(output.read_text())
+    assert result["channels"][0]["source_id"] == "001"
+    assert result["channels"][0]["rows"] == 2
+
+
+def test_shadow_normalizes_survey_before_identity_checks():
+    frame = pd.DataFrame(
+        {
+            "source_id": "a",
+            "survey": [" Test Survey ", "test   survey"],
+            "band": "g",
+            "mjd": [1.0, 2.0],
+            "flux": [2.0, 3.0],
+            "flux_error": 1.0,
+            "observation_id": "exposure",
+        }
+    )
+    with pytest.raises(ValueError, match="reused observation_id"):
+        search_flux_table(frame)

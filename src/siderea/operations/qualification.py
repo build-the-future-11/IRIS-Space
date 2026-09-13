@@ -1,4 +1,4 @@
-"""Offline fixture execution through production service parsers, without network fallback."""
+"""Separate offline parser replay and read-only live service qualification."""
 
 from __future__ import annotations
 
@@ -78,6 +78,56 @@ def qualify_tns_fixtures(
         "unmatched_request_digests": unmatched,
         "adapter_code_sha256": digest_file(Path(tns.__file__)),
         "scope": "executed_tns_parser_cases_not_live_origin_or_other_catalogue_qualification",
+    }
+    report["report_digest"] = digest_value(report)
+    return report
+
+
+def qualify_tns_live(
+    client: tns.TNSClient,
+    *,
+    query: Mapping[str, Any],
+    expected_status: str,
+    expected_names: Sequence[str] = (),
+) -> dict[str, Any]:
+    """Run one bounded, read-only search case against a real TNS transport.
+
+    Expectations must be chosen independently before execution. A service failure
+    cannot pass qualification. This report never grants candidate clearance.
+    """
+    if client.response_loader is not None:
+        raise ValueError("live qualification cannot use an offline response loader")
+    if set(query) != {"internal_name", "ra", "dec", "radius_arcsec"}:
+        raise ValueError("TNS qualification query has missing or unknown fields")
+    if expected_status not in {"clear", "match"}:
+        raise ValueError("live expected_status must be clear or match")
+    if any(not isinstance(name, str) or not name.strip() for name in expected_names):
+        raise ValueError("expected names must be non-empty strings")
+    names = sorted(set(name.strip() for name in expected_names))
+    if (expected_status == "match") != bool(names):
+        raise ValueError("match requires expected names; clear must not specify names")
+    result = client.search(
+        internal_name=query["internal_name"],
+        ra=query["ra"],
+        dec=query["dec"],
+        radius_arcsec=query["radius_arcsec"],
+    )
+    evidence = result.provenance.to_dict()
+    # Upstream messages may echo request contents. Never persist them in a report.
+    if result.provenance.error:
+        evidence["error"] = "TNS request failed; no clearance established"
+    report = {
+        "schema": "siderea.tns_live_qualification.v1",
+        "endpoint": client.endpoint,
+        "query": dict(query),
+        "expected_status": expected_status,
+        "expected_names": names,
+        "observed_status": result.provenance.status.value,
+        "passed": result.provenance.status.value == expected_status
+        and set(names).issubset(result.provenance.matches),
+        "evidence": evidence,
+        "adapter_code_sha256": digest_file(Path(tns.__file__)),
+        "scope": "single_live_search_case_not_scientific_validation_or_submission_approval",
     }
     report["report_digest"] = digest_value(report)
     return report

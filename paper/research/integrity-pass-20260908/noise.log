@@ -1,0 +1,94 @@
+{
+  "schema": "siderea.noise_stress_results.v1",
+  "protocol_digest": "d5701841072f0b9e812cfbee4b12a351c00ddad51db5e7270aeab3a4ee503d47",
+  "python": "3.11.15",
+  "numpy": "2.4.6",
+  "source_digests": {
+    "runner.source.txt": "22d91c311ef16b0b594deafe243227fb3aebde20b94d8abc278445e3ff801b6f",
+    "interval.source.txt": "c2a5a596a94031162ca45459e8af6179ca5be66d9c649d291a5c747bd6013711",
+    "transients.source.txt": "be19f13d50130817d5300d7068e1751cacaf8287df93f9de1eae928533656c7b"
+  },
+  "trial_statistics_sha256": "22e66d058266777b2864447f26e73bcce69557fa45f73eae3ce1de4726eefa6b",
+  "results": [
+    {
+      "scenario": "matched_gaussian",
+      "trials": 1000,
+      "false_alarms": 11,
+      "fraction": 0.011,
+      "wilson_95": [
+        0.006153174098086639,
+        0.019589395700786272
+      ],
+      "bank_digest": "558bca7b0e3dc6d8ab509499fb83f32b5e39d28bb818b95fff468f61cd2b3271"
+    },
+    {
+      "scenario": "errors_underestimated_1.5",
+      "trials": 1000,
+      "false_alarms": 337,
+      "fraction": 0.337,
+      "wilson_95": [
+        0.3083764445978848,
+        0.3668710786684062
+      ],
+      "bank_digest": "558bca7b0e3dc6d8ab509499fb83f32b5e39d28bb818b95fff468f61cd2b3271"
+    },
+    {
+      "scenario": "student_t_3_unit_variance",
+      "trials": 1000,
+      "false_alarms": 104,
+      "fraction": 0.104,
+      "wilson_95": [
+        0.08657102809826808,
+        0.12445976462229155
+      ],
+      "bank_digest": "558bca7b0e3dc6d8ab509499fb83f32b5e39d28bb818b95fff468f61cd2b3271"
+    },
+    {
+      "scenario": "variance_doubles_second_half",
+      "trials": 1000,
+      "false_alarms": 118,
+      "fraction": 0.118,
+      "wilson_95": [
+        0.09945155840122327,
+        0.13947208508174083
+      ],
+      "bank_digest": "558bca7b0e3dc6d8ab509499fb83f32b5e39d28bb818b95fff468f61cd2b3271"
+    },
+    {
+      "scenario": "seasonal_gap_matched",
+      "trials": 1000,
+      "false_alarms": 10,
+      "fraction": 0.01,
+      "wilson_95": [
+        0.00544075444552925,
+        0.018309468870314767
+      ],
+      "bank_digest": "5ace15dc8b4f432dc287b14bac732b609e4b5bbc95eb14459c250166dc0b1fd4"
+    },
+    {
+      "scenario": "true_timescale_1_day",
+      "trials": 1000,
+      "false_alarms": 129,
+      "fraction": 0.129,
+      "wilson_95": [
+        0.10963544529450507,
+        0.1512040095017769
+      ],
+      "bank_digest": "558bca7b0e3dc6d8ab509499fb83f32b5e39d28bb818b95fff468f61cd2b3271"
+    },
+    {
+      "scenario": "true_timescale_20_days",
+      "trials": 1000,
+      "false_alarms": 2,
+      "fraction": 0.002,
+      "wilson_95": [
+        0.0005486435881207276,
+        0.007262807863492173
+      ],
+      "bank_digest": "558bca7b0e3dc6d8ab509499fb83f32b5e39d28bb818b95fff468f61cd2b3271"
+    }
+  ],
+  "scope": "Adaptive follow-up diagnostic planned before this run; one synthetic cadence, supplied covariance, no real-sky claim",
+  "interval_scope": "marginal Monte Carlo, conditional on this cadence and supplied model",
+  "digest": "fa6559d5fe4655b2372f360f6fecd0b70672bf14acf7f6fa8ebf019b4b5666b0"
+}

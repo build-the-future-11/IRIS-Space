@@ -1,0 +1,86 @@
+{
+  "anomaly_random_state": 17,
+  "candidate_embeddings_result_digest": "ff274deb7fb6b6c1380c202f42de183d39e1d884fdd609561adddf2107af545d",
+  "candidate_entity_count": 2,
+  "checkpoint_sha256": "a0cbcb962f23896e65199dda7ac57b6b9e6db574254ee1ffeadeba5d84c368e9",
+  "code_identity_sha256": "72c33e7bd1a4d57ec5596d4cd46154713ba029f06198b91db57371bf8297bbd1",
+  "framework_channels": {
+    "aadi_operational_heuristic": true,
+    "aadi_template_search": true,
+    "jepa_representation_novelty": true
+  },
+  "fusion_rule": null,
+  "manifest_binding": {
+    "pilot_manifest_digest": "cf2b7b8aeee4f2af940c74581d94eed911eeb34248b42305c02e18b7b2860c2f",
+    "pilot_manifest_sha256": "dd9b5bdaf3492b86d0edf0a6c028f0d9a6a475b9c9549ec6c34a5e76f37a7a21",
+    "pipeline_code_source_digest": "af49d00db88f38cdbe74872a1f48854a4179d37a4f37150e8aad5c67a63bf7e7",
+    "pipeline_configuration_digest": "6f755bd4bc781f327c7ac949afb5a0ba263342b4a76ad40bad66efc4cd524f96",
+    "pipeline_manifest_sha256": "888c4237ecc4d1e1cc505fe0d66a110c1c702794589b5f59f2878f2054ac5f9f"
+  },
+  "mode": "shadow_only",
+  "pipeline_candidates_sha256": "2ec2cab8d6d8b468811b35b78aca59acb294d3fb6a78408a8578f2ab3c0a1b35",
+  "pipeline_run_id": "overnight-smoke-20260913-v3",
+  "pipeline_scientific_fingerprint": "analysis-28b523556adaf03f",
+  "prediction_cutoff_mjd": 62010.0,
+  "qualifies_reportability": false,
+  "reference_cohort_result_digest": "8402873d039fa36697a277cbeab8762107795b2907b806e61a13e243143e8692",
+  "reference_embeddings_result_digest": "f49f901168ccec9b0642d8e25fcc526c31a0ab2ab08efce5e1fe731956bff6e9",
+  "reference_entity_count": 2,
+  "result_digest": "12a3103134d9aa62a86e3e3949ab40d49b1f63b8c0535b5ebf5a7d2bec39ee6b",
+  "rows": [
+    {
+      "detector_campaign_pvalue": 1.0,
+      "detector_campaign_shadow_excess": false,
+      "detector_object_pvalue": 1.0,
+      "detector_shadow_excess": false,
+      "detector_status": "evaluated",
+      "entity_id": "INTEGRATED-CONSTANT",
+      "jepa_anomaly_score": 0.55,
+      "jepa_anomaly_score_valid": true,
+      "jepa_observed_feature_fraction": 1.0,
+      "object_id": "INTEGRATED-CONSTANT",
+      "pipeline_candidate_version": "d3027852190d4a5ce71bdefe1bda0be7eaf2da1e2981193086579990f2cdf370",
+      "pipeline_gate_decision": "block_incomplete_evidence",
+      "pipeline_priority_score": 0.21158,
+      "pipeline_quality_passed": true,
+      "pipeline_review_eligible": true,
+      "pipeline_score_kind": "bounded_heuristic_priority"
+    },
+    {
+      "detector_campaign_pvalue": 0.01,
+      "detector_campaign_shadow_excess": true,
+      "detector_object_pvalue": 0.005,
+      "detector_shadow_excess": true,
+      "detector_status": "evaluated",
+      "entity_id": "INTEGRATED-PULSE",
+      "jepa_anomaly_score": 0.55,
+      "jepa_anomaly_score_valid": true,
+      "jepa_observed_feature_fraction": 1.0,
+      "object_id": "INTEGRATED-PULSE",
+      "pipeline_candidate_version": "898209bef8f5dbf871ff23864ee430ed5502f5cd73c32a83ca7bc05775acb248",
+      "pipeline_gate_decision": "block_incomplete_evidence",
+      "pipeline_priority_score": 0.600849,
+      "pipeline_quality_passed": true,
+      "pipeline_review_eligible": true,
+      "pipeline_score_kind": "bounded_heuristic_priority"
+    }
+  ],
+  "schema": "siderea.shadow_evidence.v2",
+  "score_semantics": {
+    "detector_campaign_pvalue": "bonferroni_over_declared_object_universe_and_planned_looks",
+    "detector_object_pvalue": "finite_null_rank_within_object_corrected_only",
+    "jepa_anomaly_score": "training_reference_anomaly_rank_not_probability",
+    "pipeline_priority_score": "inspectable_heuristic_priority_not_probability"
+  },
+  "token_contract_sha256": "f3f594178f9fdbb5d7a0e307a0fec55b6db3e2407d2d56497fd410f45afc1c8b",
+  "transient_campaign_inference": {
+    "correction_factor": 2,
+    "look_index": 1,
+    "method": "bonferroni_union_bound",
+    "object_universe_size": 2,
+    "planned_looks": 1,
+    "searched_object_count": 2,
+    "selection_warning": null
+  },
+  "transient_search_result_digest": "2d8d20b8214859861c6188b4a264d1627bd7260f2d995373ed2387b0f0479f6f"
+}

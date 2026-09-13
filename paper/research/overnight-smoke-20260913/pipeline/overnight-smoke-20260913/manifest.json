@@ -1,0 +1,315 @@
+{
+  "artifacts": [
+    {
+      "path": "/Volumes/PRO-BLADE/IRIS-Project/paper/research/overnight-smoke-20260913/pipeline/overnight-smoke-20260913/photometry.normalized.csv",
+      "role": "normalized-photometry",
+      "sha256": "99fb29db15a248d7d9c99e8dc4178b11d4ae1d77fb8082a06962bf9670d82981",
+      "size_bytes": 1364
+    },
+    {
+      "path": "/Volumes/PRO-BLADE/IRIS-Project/paper/research/overnight-smoke-20260913/pipeline/overnight-smoke-20260913/features.csv",
+      "role": "band-aware-features",
+      "sha256": "90397c26adebe70e21b02a1cfc7e143867e4f25d20691c7aa95518e2a360133c",
+      "size_bytes": 2807
+    },
+    {
+      "path": "/Volumes/PRO-BLADE/IRIS-Project/paper/research/overnight-smoke-20260913/pipeline/overnight-smoke-20260913/ranked_candidates.csv",
+      "role": "review-ranking",
+      "sha256": "9a2bf184ad7a2b7d293a5980d23661b9de1001fe6eab1fbb796e3cab5166b1ab",
+      "size_bytes": 2341
+    },
+    {
+      "path": "/Volumes/PRO-BLADE/IRIS-Project/paper/research/overnight-smoke-20260913/pipeline/overnight-smoke-20260913/candidates.json",
+      "role": "candidate-evidence",
+      "sha256": "4d56c41f85128800eb5f7f22bd275f6a68725008bb5b750349b81cd88182c932",
+      "size_bytes": 31985
+    },
+    {
+      "path": "/Volumes/PRO-BLADE/IRIS-Project/paper/research/overnight-smoke-20260913/pipeline/overnight-smoke-20260913/dataset.snapshot.json",
+      "role": "dataset-snapshot",
+      "sha256": "b91543ebe1b30ad5f837eedd973dfd670d7fcfedf02d56027cbc1f15859e4ebf",
+      "size_bytes": 605
+    },
+    {
+      "path": "/Volumes/PRO-BLADE/IRIS-Project/paper/research/overnight-smoke-20260913/pipeline/overnight-smoke-20260913/source.input.csv",
+      "role": "source-input-snapshot",
+      "sha256": "e0fb5d15c49a765c557aa062f2847d27c8155549b51f1fc61fd7bfb9fe897e5c",
+      "size_bytes": 953
+    }
+  ],
+  "checks": [
+    {
+      "attempts": 0,
+      "checked_at": "2026-09-13T04:46:48.779803+00:00",
+      "error": "",
+      "expires_at": "2026-09-14T04:46:48.779803+00:00",
+      "latency_ms": null,
+      "matches": [],
+      "query": {
+        "candidate_id": "INTEGRATED-CONSTANT",
+        "dec_deg": -12.5,
+        "ra_deg": 42.199999999999996
+      },
+      "response_digest": "",
+      "service": "skybot",
+      "service_version": "",
+      "status": "pending"
+    },
+    {
+      "attempts": 0,
+      "checked_at": "2026-09-13T04:46:48.779803+00:00",
+      "error": "",
+      "expires_at": "2026-09-14T04:46:48.779803+00:00",
+      "latency_ms": null,
+      "matches": [],
+      "query": {
+        "candidate_id": "INTEGRATED-CONSTANT",
+        "dec_deg": -12.5,
+        "ra_deg": 42.199999999999996
+      },
+      "response_digest": "",
+      "service": "tns",
+      "service_version": "",
+      "status": "pending"
+    },
+    {
+      "attempts": 0,
+      "checked_at": "2026-09-13T04:46:48.779803+00:00",
+      "error": "",
+      "expires_at": "2026-09-14T04:46:48.779803+00:00",
+      "latency_ms": null,
+      "matches": [],
+      "query": {
+        "candidate_id": "INTEGRATED-CONSTANT",
+        "dec_deg": -12.5,
+        "ra_deg": 42.199999999999996
+      },
+      "response_digest": "",
+      "service": "simbad",
+      "service_version": "",
+      "status": "pending"
+    },
+    {
+      "attempts": 0,
+      "checked_at": "2026-09-13T04:46:48.779803+00:00",
+      "error": "",
+      "expires_at": "2026-09-14T04:46:48.779803+00:00",
+      "latency_ms": null,
+      "matches": [],
+      "query": {
+        "candidate_id": "INTEGRATED-CONSTANT",
+        "dec_deg": -12.5,
+        "ra_deg": 42.199999999999996
+      },
+      "response_digest": "",
+      "service": "vsx",
+      "service_version": "",
+      "status": "pending"
+    },
+    {
+      "attempts": 0,
+      "checked_at": "2026-09-13T04:46:48.779803+00:00",
+      "error": "",
+      "expires_at": "2026-09-14T04:46:48.779803+00:00",
+      "latency_ms": null,
+      "matches": [],
+      "query": {
+        "candidate_id": "INTEGRATED-PULSE",
+        "dec_deg": 2.3,
+        "ra_deg": 150.1
+      },
+      "response_digest": "",
+      "service": "skybot",
+      "service_version": "",
+      "status": "pending"
+    },
+    {
+      "attempts": 0,
+      "checked_at": "2026-09-13T04:46:48.779803+00:00",
+      "error": "",
+      "expires_at": "2026-09-14T04:46:48.779803+00:00",
+      "latency_ms": null,
+      "matches": [],
+      "query": {
+        "candidate_id": "INTEGRATED-PULSE",
+        "dec_deg": 2.3,
+        "ra_deg": 150.1
+      },
+      "response_digest": "",
+      "service": "tns",
+      "service_version": "",
+      "status": "pending"
+    },
+    {
+      "attempts": 0,
+      "checked_at": "2026-09-13T04:46:48.779803+00:00",
+      "error": "",
+      "expires_at": "2026-09-14T04:46:48.779803+00:00",
+      "latency_ms": null,
+      "matches": [],
+      "query": {
+        "candidate_id": "INTEGRATED-PULSE",
+        "dec_deg": 2.3,
+        "ra_deg": 150.1
+      },
+      "response_digest": "",
+      "service": "simbad",
+      "service_version": "",
+      "status": "pending"
+    },
+    {
+      "attempts": 0,
+      "checked_at": "2026-09-13T04:46:48.779803+00:00",
+      "error": "",
+      "expires_at": "2026-09-14T04:46:48.779803+00:00",
+      "latency_ms": null,
+      "matches": [],
+      "query": {
+        "candidate_id": "INTEGRATED-PULSE",
+        "dec_deg": 2.3,
+        "ra_deg": 150.1
+      },
+      "response_digest": "",
+      "service": "vsx",
+      "service_version": "",
+      "status": "pending"
+    }
+  ],
+  "code_revision": "3e4451fc76809aad8bb4eb0f76defe9e2e2edabf",
+  "code_source_digest": "4f9465fab1791a001f1c18bd1760ede7c51938f9ff391cdae082d44bf354c2d3",
+  "code_worktree_dirty": true,
+  "command": [
+    "siderea",
+    "analyze",
+    "csv:/Volumes/PRO-BLADE/IRIS-Project/paper/research/overnight-smoke-20260913/prepared/pipeline_photometry.csv"
+  ],
+  "completed_at": "2026-09-13T04:46:50.069364+00:00",
+  "configuration": {
+    "gate_evaluated_at": "2026-09-13T04:46:48.826503+00:00",
+    "ingestion": {
+      "adapter": "siderea.ingest.csv.v1",
+      "column_map": {
+        "band": "band",
+        "dec_deg": "dec_deg",
+        "flux": "flux",
+        "flux_error": "flux_error",
+        "is_detection": "is_detection",
+        "mjd": "mjd",
+        "observation_id": "observation_id",
+        "ra_deg": "ra_deg",
+        "source_id": "source_id",
+        "survey": "survey"
+      },
+      "path": "/Volumes/PRO-BLADE/IRIS-Project/paper/research/overnight-smoke-20260913/prepared/pipeline_photometry.csv",
+      "row_count": 12,
+      "sha256": "e0fb5d15c49a765c557aa062f2847d27c8155549b51f1fc61fd7bfb9fe897e5c",
+      "size_bytes": 953,
+      "source_modified_at": "2026-09-13T04:46:43.314129+00:00"
+    },
+    "pipeline_version": "siderea.local_analysis.v4",
+    "scientific_fingerprint": "analysis-28b523556adaf03f",
+    "siderea": {
+      "general": {
+        "campaign": "novel_transients",
+        "environment": "development",
+        "name": "SIDEREA",
+        "schema_version": 1
+      },
+      "hunt": {
+        "broker": "alerce",
+        "broker_classes": [
+          "SN",
+          "SNIa",
+          "SNIbc",
+          "SNII"
+        ],
+        "discovered_within_days": 30.0,
+        "min_detections": 3,
+        "object_limit": 350
+      },
+      "jepa": {
+        "attention_heads": 8,
+        "batch_size": 128,
+        "dataset_path": "/Volumes/PRO-BLADE/IRIS-Project/var/siderea/datasets/jepa",
+        "embedding_dim": 256,
+        "enabled": false,
+        "encoder_layers": 6,
+        "learning_rate": 0.0003,
+        "mask_fraction": 0.5,
+        "mask_scale_jitter": 0.5,
+        "seed": 2026,
+        "shadow_mode": true
+      },
+      "network": {
+        "backoff_seconds": 1.0,
+        "max_retries": 3,
+        "timeout_seconds": 30.0,
+        "user_agent": "siderea-astronomy/0.3"
+      },
+      "ranking": {
+        "amplitude_weight": 0.24,
+        "anomaly_slots": 2,
+        "audit_slots": 0,
+        "nondetection_weight": 0.12,
+        "quality_weight": 0.15,
+        "sampling_weight": 0.12,
+        "significance_weight": 0.22,
+        "temporal_weight": 0.15
+      },
+      "review": {
+        "allow_self_approval": false,
+        "nightly_budget": 10,
+        "require_authenticated": false,
+        "require_human_approval": true,
+        "required_reviewers": 1,
+        "trusted_assertion_key_ids": []
+      },
+      "source_path": "/Volumes/PRO-BLADE/IRIS-Project/configs/default.toml",
+      "storage": {
+        "cache_dir": "/Volumes/PRO-BLADE/IRIS-Project/var/siderea/cache",
+        "datasets_dir": "/Volumes/PRO-BLADE/IRIS-Project/var/siderea/datasets",
+        "root": "/Volumes/PRO-BLADE/IRIS-Project/var/siderea",
+        "runs_dir": "/Volumes/PRO-BLADE/IRIS-Project/var/siderea/runs"
+      },
+      "validation": {
+        "catalog_radius_arcsec": 3.0,
+        "evidence_ttl_hours": 24.0,
+        "fail_closed": true,
+        "required_checks": [
+          "skybot",
+          "tns",
+          "simbad",
+          "vsx"
+        ],
+        "skybot_radius_arcsec": 10.0,
+        "tns_radius_arcsec": 5.0
+      }
+    }
+  },
+  "configuration_digest": "c1f8c547e704a44703ebf217413825ddc7d8a9c24c11db53ab7a7f43d3753868",
+  "created_at": "2026-09-13T04:46:48.827061+00:00",
+  "environment": {
+    "alerce": "unavailable",
+    "astropy": "unavailable",
+    "numpy": "2.4.6",
+    "pandas": "3.0.5",
+    "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+    "python": "3.13.1",
+    "scikit-learn": "1.9.1",
+    "siderea-astronomy": "0.3.0",
+    "torch": "2.14.0"
+  },
+  "metrics": {
+    "blocked_count": 2,
+    "candidate_count": 2,
+    "dataset_digest": "91982d928a2435f5665b5166adf94a70457bc589e1ec94ae855cc02a602a2c04",
+    "observation_count": 12,
+    "reportable_count": 0
+  },
+  "run_id": "overnight-smoke-20260913",
+  "schema": "siderea.run_manifest.v1",
+  "status": "completed",
+  "warnings": [
+    "quality_column_not_supplied"
+  ]
+}

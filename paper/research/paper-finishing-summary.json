@@ -1,0 +1,21 @@
+{
+  "scope": "local review bundle, not approved public release or submitted paper",
+  "base_commit": "54f720477c0e96dc574f1be71c99f6a26e2a73f0",
+  "working_tree_changes_included": true,
+  "files_verified": 222,
+  "archive": "output/paper/SIDEREA-review-bundle-20260908.tar.gz",
+  "archive_sha256": "acf8d36e48c852e998ea662899fadc14306b9c9ceb20d28a083b92781d080387",
+  "pdf_sha256": "af05d0f9fcc8f0a1fc62e7d7aa125be5b953846cb58852956f889fd6fb7cdc88",
+  "pdf_pages": 29,
+  "bundle_pdf_build": "pass, all pages pixel-identical at 0.75 scale; container hashes differ",
+  "local_tests": 421,
+  "subtests": 96,
+  "coverage_percent": 78.42,
+  "synthetic_rows_reproduced": {
+    "iid": 30,
+    "covariance": 30,
+    "null_stress": 7
+  },
+  "historical_bootstrap_draws": 50000,
+  "remaining": "See paper/FINAL_PAPER_CHECKLIST.md; no new live-service or real-sky qualification"
+}

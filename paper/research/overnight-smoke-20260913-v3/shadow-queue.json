@@ -1,0 +1,43 @@
+{
+  "audit_seed": "20260913",
+  "audit_selection_probability": 1.0,
+  "budget": 2,
+  "eligible_entities": 2,
+  "entries": [
+    {
+      "detector_campaign_pvalue": 0.01,
+      "entity_id": "INTEGRATED-PULSE",
+      "jepa_anomaly_score": 0.55,
+      "pipeline_priority_score": 0.600849,
+      "rank": 1,
+      "selection_propensity": 1.0,
+      "selection_route": "random_audit"
+    },
+    {
+      "detector_campaign_pvalue": 1.0,
+      "entity_id": "INTEGRATED-CONSTANT",
+      "jepa_anomaly_score": 0.55,
+      "pipeline_priority_score": 0.21158,
+      "rank": 2,
+      "selection_propensity": 1.0,
+      "selection_route": "random_audit"
+    }
+  ],
+  "evidence_result_digest": "12a3103134d9aa62a86e3e3949ab40d49b1f63b8c0535b5ebf5a7d2bec39ee6b",
+  "excluded_entities": 0,
+  "fusion_rule": null,
+  "jepa_threshold": 0.8,
+  "mode": "shadow_only",
+  "qualifies_reportability": false,
+  "requested_audit_slots": 2,
+  "requested_detector_slots": 0,
+  "requested_jepa_slots": 0,
+  "result_digest": "87a033a9e1dc564700280b85e72ac960953ade6a5c60d2b0daf7159d4818c57e",
+  "schema": "siderea.integrated_shadow_queue.v1",
+  "selection_policy": "separate_aadi_heuristic_template_jepa_and_random_audit_routes",
+  "unused_slots": 0,
+  "used_audit_slots": 2,
+  "used_detector_slots": 0,
+  "used_heuristic_slots": 0,
+  "used_jepa_slots": 0
+}

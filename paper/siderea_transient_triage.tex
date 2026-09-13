@@ -56,7 +56,7 @@
 \maketitle
 
 \begin{abstract}
-We present \siderea---the System for Irregular-lightcurve Discovery, Evidence-bound Ranking, and Expert Assessment---an evidence-bound pipeline for human-supervised triage of optical transient alerts. The system was developed from an audit of \legacycampaign, a small search program using public Zwicky Transient Facility alerts distributed through the ALeRCE broker. The historical pipeline ranked sources with interpretable light-curve features and then applied registry, catalog, moving-object, image, and report-wording checks. \siderea\ retains this division of labor while adding survey-aware measurements, content-addressed candidate versions, time-limited external evidence, version-bound review, and deterministic allocation of finite review capacity. Reporting is governed by a conjunction of required clearances rather than by ranking score; missing, stale, malformed, or incorrectly bound evidence cannot satisfy the gate. The campaign record contains 24 productive runs between 2026 April and July and 3,824 distinct broker objects. After removal of one duplicated pull, 223,938 of 424,223 detection rows passed the recorded quality cuts. An undocumented policy change on July 5 coincided with a decrease in the early-veto fraction from 54.5\% to 2.68\% and an increase in the shortlist fraction from 0.51\% to 13.9\%. Run-cluster bootstrap intervals for the corresponding changes are $[-0.812,-0.282]$ and $[0.098,0.171]$. These differences describe pipeline operation and do not identify a causal effect. Of 200 recorded registry checks, 30 found an existing TNS object; 55 of 193 catalog evaluations found a known or suspected variable. Two submitted objects received TNS designations, including ZTF26abdqbqw = AT~2026rsp. The current implementation passed 405 tests on Python 3.11, strict static typing, and deterministic local replay. The available record supports claims about workflow behavior and tested software invariants, but not completeness, purity, or comparative classifier performance.
+We present \siderea, an evidence-bound workflow for human-supervised triage of optical transient alerts. Its contribution is an explicit link between an immutable candidate version, the external evidence inspected, and the human decision permitted by that evidence. Rankings allocate review attention; missing, stale, malformed, or incorrectly bound checks cannot authorize report preparation. The design was motivated by an audit of the historical I SPY campaign, whose surviving record describes 24 productive runs and 3,824 distinct broker objects. Recorded registry and catalog evaluations identified 30 existing TNS objects among 200 checks and 55 known or suspected variables among 193 evaluations. These stage-specific counts describe operational filtering, not population purity or completeness. A documented policy discontinuity is analyzed descriptively because policy, time, and input population are confounded. Software tests and deterministic replay exercise the implemented evidence and review invariants. Separate synthetic template-search experiments demonstrate both conditional signal recovery and severe false-alarm inflation under misspecified noise. Historical outcomes, software verification, and synthetic experiments provide distinct forms of evidence; none establishes comparative detection performance on a representative sky sample. We specify the prospective cohort and independent outcome evidence needed to evaluate that stronger claim.
 \end{abstract}
 
 \keywords{time-domain astronomy \and optical transients \and astronomical data pipelines \and alert brokers \and human-in-the-loop systems \and reproducibility}
@@ -68,7 +68,7 @@ Wide-field time-domain surveys produce alert streams that cannot be inspected ex
 
 Alert brokers organize these detections into objects and provide catalog annotations, derived features, and machine-learning classifications. ALeRCE includes both stamp- and light-curve-based classifiers \citep{forster2021,carrascodavis2021,sanchezsaez2021}. Their scores are useful for prioritization, but they do not determine whether an object is previously known, whether an external query completed successfully, whether the image residual is persistent, or whether a physical classification is justified. These questions depend on different observations and have different failure modes (Figure~\ref{fig:claim-boundary}).
 
-\begin{figure}[ht]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\linewidth]{figures/claim_boundary.png}
 \caption{Evidence used at successive stages of transient triage. Broker and light-curve quantities determine priority; image data address source reality; timestamped registry and catalog queries address novelty and known-source associations; the reporting decision additionally requires policy and review clearances. Physical classification generally requires information beyond the discovery photometry.}
@@ -77,7 +77,7 @@ Alert brokers organize these detections into objects and provide catalog annotat
 
 \legacycampaign\ was an operational filter above the public ZTF/ALeRCE stream. It combined a hand-set priority score with catalog and registry queries, light-curve and image inspection, and manual preparation of TNS reports. The campaign record is incomplete at the object level, but it preserves enough run-level information to reconstruct workload and rejection summaries. An audit of that record motivated \siderea, which stores the state of each check and binds evidence and approvals to an immutable candidate version. Neither system performs unattended submission.
 
-This paper reports the historical campaign and describes the current implementation. Section~\ref{sec:related} places the work relative to alert brokers and follow-up systems. Sections~\ref{sec:data}--\ref{sec:methods} define the input data, score, decision states, and human review procedure. Section~\ref{sec:siderea} describes the current data and evidence model. Sections~\ref{sec:campaign}--\ref{sec:software-verification} report the campaign audit and local software verification. The available data do not support a completeness measurement, a false-negative rate, or a comparison with learned ranking methods; Section~\ref{sec:validation} specifies the prospective data needed for those analyses.
+The primary contribution is a reproducible decision contract linking candidate identity, evidence freshness, and version-specific human approval. This paper evaluates that contract through software tests and uses the historical campaign to explain the failure modes it addresses; it does not claim a new validated astrophysical classifier. It reports the historical campaign and describes the implemented successor. Section~\ref{sec:related} places the work relative to alert brokers and follow-up systems. Sections~\ref{sec:data}--\ref{sec:methods} define the input data, score, decision states, and human review procedure. Section~\ref{sec:siderea} describes the current data and evidence model. Sections~\ref{sec:campaign}--\ref{sec:software-verification} report the campaign audit and local software verification. The available data do not support a completeness measurement, a false-negative rate, or a comparison with learned ranking methods; Section~\ref{sec:validation} specifies the prospective data needed for those analyses.
 
 \section{Related Work}
 \label{sec:related}
@@ -89,6 +89,8 @@ This position is related to, but narrower than, several established broker frame
 Human review is not anomalous in this ecosystem. ALeRCE's SN Hunter presents classifier-selected objects to experts for TNS decisions \citep{carrascodavis2021}. The ZTF Bright Transient Survey (BTS) used a deliberately simple initial filter to reduce false negatives, followed by human scanning and later checks for point-source coincidence, long-term history, variables, and AGN \citep{fremling2020}. BTS subsequently constructed a magnitude-limited statistical sample and measured spectroscopic completeness as a function of limiting magnitude \citep{perley2020}. That last step is an important contrast: a reproducible filter plus human review can produce candidates, but population-level claims require a controlled parent sample, outcome labels, and a measured selection function.
 
 Recent work has moved beyond single supervised class scores toward complementary representations and explicit top-$K$ review. Anomaly Hunter for Alerts combines separate feature, image-cutout, and light-curve autoencoders and evaluates candidates at a fixed review rank; the limited overlap among its anomaly routes shows that distinct modalities expose different failure modes \citep{iskandarli2026}. Astra-CLR learns multi-filter ZTF representations through asymmetric temporal views \citep{majumder2026}, while AstroCo targets irregular stellar light curves with a self-supervised Conformer encoder \citep{tan2025}. In the StarEmbed benchmark, general-purpose time-series representations were useful for clustering and out-of-distribution detection without uniformly surpassing established classification baselines \citep{li2026}. These results motivate a separate anomaly reserve in a review queue, but they do not justify allowing an embedding or reconstruction loss to certify novelty.
+
+Most directly, \citet{rui2026} applies a domain-informed joint-embedding and multi-view self-distillation framework to irregular astronomical light curves, with evaluation on LEAVES, StarEmbed, and heterogeneous irregular-time-series benchmarks. The experimental JEPA route in \siderea is neither presented nor evaluated as an alternative state of the art: it is a smaller operational prototype whose distinctive role is restricted to queue allocation behind an independent reportability contract. Any future representation-learning claim will require a controlled comparison with that method and with masked-reconstruction and general-purpose time-series baselines.
 
 \siderea\ operates downstream of the broker rather than replacing broker functionality. Its main distinction is the representation of registry freshness, service failure, catalog associations, image review, and permitted report wording within a versioned candidate record. Learned representations are restricted to queue ordering and are not included in the reportability predicate. This division is consistent with the need for greater automation in Rubin-era transient astronomy while retaining separate controls on review and registry action \citep{rehemtulla2025}. The campaign results describe the operation of the legacy filter, and the software audit tests the reconstructed decision rules; neither is a throughput or classification benchmark against the broker systems above.
 
@@ -304,9 +306,9 @@ The wording gate distinguishes an unclassified optical transient from a possible
 
 Figure~\ref{fig:workflow} shows the advancement path and its three distinct terminal or blocking outcomes.
 
-\begin{figure}[ht]
+\begin{figure}[!htbp]
 \centering
-\includegraphics[width=\linewidth]{figures/pipeline_flow.png}
+\includegraphics[width=\linewidth,height=0.70\textheight,keepaspectratio]{figures/pipeline_flow.png}
 \caption{Legacy \legacycampaign\ workflow. Solid arrows show candidate advancement; dashed arrows show rejection, blocking, and registry outcomes. A negative query result is accepted only when the query completed successfully, so an unavailable required service cannot produce a false clearance.}
 \label{fig:workflow}
 \end{figure}
@@ -378,14 +380,18 @@ The proof is immediate because Equation~\ref{eq:preflight-predicate} is a produc
 
 \subsection{Finite review and non-authoritative representation learning}
 
-For an eligibility set $\mathcal{E}$, review budget $K$, and anomaly reserve $m\leq K$, the deterministic allocator constructs
+Let $\mathcal{E}$ be the eligible candidates and $K$ the review budget. If the optional audit reserve is enabled, select $r=\min(r_{\rm requested},K,|\mathcal{E}|)$ candidates by a recorded seeded hash ordering, giving $\mathcal{R}$. Otherwise $\mathcal{R}=\emptyset$. Define $\mathcal{E}'=\mathcal{E}\setminus\mathcal{R}$, $K'=K-|\mathcal{R}|$, and $m'=\min(m,K')$ for requested anomaly reserve $m$. With threshold $\tau$, the remaining allocation is
 \begin{equation}
-  \mathcal{Q}_K=operatorname{Top}_{K-m}(q_i:i\in\mathcal{E})
-  \cup
-  \operatorname{Top}_{m}(a_i:i\in\mathcal{E}\setminus\mathcal{Q}_{K-m}),
+\begin{aligned}
+\mathcal{P} &= \operatorname{Top}_{K'-m'}(q_i:i\in\mathcal{E}'),\\
+\mathcal{A} &= \operatorname{Top}_{m'}(a_i:i\in\mathcal{E}'\setminus\mathcal{P},\ a_i\geq\tau),\\
+\mathcal{F} &= \operatorname{Top}_{K'-|\mathcal{P}|-|\mathcal{A}|}
+(q_i:i\in\mathcal{E}'\setminus(\mathcal{P}\cup\mathcal{A})),\\
+\mathcal{Q}_K &= \mathcal{R}\cup\mathcal{P}\cup\mathcal{A}\cup\mathcal{F}.
+\end{aligned}
 \label{eq:queue-allocation}
 \end{equation}
-with stable identifier tie-breaking. Here $a_i$ may be an anomaly score derived from engineered features or a learned embedding. The separate reserve prevents a high anomaly score from silently replacing the primary ranking and makes its review cost explicit.
+Each $\operatorname{Top}_n$ returns at most $n$ available candidates. Priority ordering uses decreasing $q_i$, then decreasing $a_i$; anomaly ordering reverses those two keys, and both finish with a stable identifier tie-break. The fill set $\mathcal{F}$ returns unused anomaly slots to priority review. The audit sample is drawn from the full eligible population before either ranked route; its seed and inclusion probability $r/|\mathcal{E}|$ are recorded when applicable. The audit reserve is zero by default. Here $a_i$ may derive from engineered features or a learned embedding; none of these routes authorizes reporting.
 
 The experimental irregular-time joint-embedding predictive architecture masks contiguous temporal windows and predicts their latent representations from the remaining context. Its target encoder is updated by an exponential moving average, and normalization is recomputed from unmasked context so hidden target values cannot determine the context scale. This route is shadow-only: $a_i$ can affect membership in $\mathcal{Q}_K$, but it does not occur in Equation~\ref{eq:preflight-predicate}. No result in this paper establishes that these embeddings improve astrophysical discovery.
 
@@ -419,8 +425,8 @@ High-priority shortlist evaluations & 256 \\
 Fresh-shortlist evaluations & 239 \\
 Individual report packets & 3 \\
 Additional bulk-draft objects & 2 \\
-Submitted and designated objects & 2 \\
-Credited discovery with complete case record & 1 \\
+Summary-recorded designated objects & 2 \\
+Object with detailed surviving narrative & 1 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -445,7 +451,7 @@ We re-parsed the run table in the operating record with a reproducible figure sc
 \end{equation}
 where $O_r$, $D_r$, $C_r$, $S_r$, $R_r$, $E_r$, and $L_r$ are respectively query objects, detection rows, clean rows, sources, ranked sources, early vetoes, and shortlist entries. A ratio is missing rather than zero when its historical field was not recorded. Figure~\ref{fig:run-heatmap} displays these quantities without imputing absent cells.
 
-\begin{figure}[p]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.88\linewidth]{figures/run_diagnostic_heatmap.png}
 \caption{Heatmap of within-run diagnostic ratios for all 24 productive run records. The dagger identifies the documented duplicate pull, gray denotes unrecorded fields, and the red boundary marks the observed policy-regime discontinuity. Values describe pipeline behavior within each run; they are not detection efficiencies relative to the sky.}
@@ -466,7 +472,7 @@ For the ten non-duplicate pre-retune runs with both veto and shortlist fields, 1
 \end{equation}
 while the early-veto fraction decreased by a factor of $0.0491$. These contrasts quantify a policy change, not improved sensitivity: the run groups differ in date, query composition, and undocumented configuration details. Figure~\ref{fig:campaign-dynamics} shows that the discontinuity coincides with a sharp fall in recorded per-run row volume as well as a transfer of rejection burden downstream.
 
-\begin{figure}[p]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\linewidth]{figures/campaign_dynamics.png}
 \caption{Campaign dynamics across productive run records. Top: detection and clean-row workload on a logarithmic scale. Bottom: early-veto and shortlist fractions relative to query-object evaluations. The dashed boundary is descriptive and follows the recorded discontinuity; it is not a statistically estimated change point.}
@@ -475,8 +481,7 @@ while the early-veto fraction decreased by a factor of $0.0491$. These contrasts
 
 The object evaluations within a run share a query, date, configuration, and upstream service state, so a binomial interval that treats all evaluations as independent would be artificially narrow. We therefore performed a nonparametric cluster bootstrap with productive run as the resampling unit: within each regime, runs were sampled with replacement, their numerators and denominators were summed, and the pooled ratio was recomputed for 50,000 draws using a fixed seed. Figure~\ref{fig:regime-bootstrap} shows percentile intervals. The early-veto change was $-0.518$ with a 95\% run-cluster interval of $[-0.812,-0.282]$; the shortlist change was $+0.134$ with interval $[0.098,0.171]$. The wide pre-retune early-veto interval reflects real run heterogeneity. Neither interval has a causal interpretation because regime assignment is perfectly confounded with calendar time and an undocumented configuration change.
 
-\clearpage
-\begin{figure}[h!]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\linewidth]{figures/regime_bootstrap.png}
 \caption{Pooled pre- and post-retune fractions with 95\% percentile intervals from a 50,000-draw cluster bootstrap over productive runs. Resampling whole runs preserves within-run dependence. These intervals summarize recorded run-to-run heterogeneity; they are not uncertainty intervals for an astrophysical rate or an identified causal policy effect.}
@@ -526,24 +531,24 @@ These intervals are descriptive, not population confidence intervals. The IID bi
 
 \subsection{Yield definitions}
 
-Two objects were submitted and assigned TNS designations, AT~2026pcz and AT~2026rsp. Relative to 3,824 distinct screened objects, the submitted-and-designated fraction is
+The surviving operations summary records two submissions assigned TNS designations, AT~2026pcz and AT~2026rsp. The public TNS record independently verifies AT~2026rsp, including report 312644 and its ZTF26abdqbqw identity; AT~2026pcz remains summary-attributed. Relative to 3,824 distinct screened objects, the summary-attributed submitted-and-designated fraction is
 \begin{equation}
   f_{\rm designated} = \frac{2}{3824} = 5.23\times10^{-4} = 0.052\%.
 \end{equation}
-Only AT~2026rsp has a complete surviving case record in the present repository that supports a credited-discovery statement. The corresponding conservative discovery yield is
+Only AT~2026rsp has a detailed surviving narrative in the present repository. The fraction with that level of summary documentation, which is not an independently verified discovery yield, is
 \begin{equation}
-  f_{\rm discovery} = \frac{1}{3824} = 2.62\times10^{-4} = 0.026\%.
+  f_{\rm narrative} = \frac{1}{3824} = 2.62\times10^{-4} = 0.026\%.
 \end{equation}
-The Wilson intervals are 0.014--0.191\% for the submitted-and-designated fraction and 0.0046--0.148\% for the single fully preserved credited case. These are operational yields rather than estimates of an astrophysical event rate or classifier precision. The denominator was created by a changing, targeted query and is not a controlled sample of the alert stream. Moreover, ``complete surviving case record'' measures present-day provenance, not necessarily all historical scientific merit.
+The Wilson intervals are 0.014--0.191\% for the submitted-and-designated fraction and 0.0046--0.148\% for the single detailed summary case. These are operational yields rather than estimates of an astrophysical event rate or classifier precision. The denominator was created by a changing, targeted query and is not a controlled sample of the alert stream. Moreover, ``detailed surviving summary'' measures present-day provenance, not necessarily all historical scientific merit.
 
 \section{Representative Candidate Outcomes}
 \label{sec:cases}
 
 \subsection{ZTF26abdqbqw = AT 2026rsp}
 
-ZTF26abdqbqw is the campaign's complete positive case. It was first detected at 2026 June 19 10:11:12 UTC at J2000 coordinates $\alpha=22^{\mathrm h}22^{\mathrm m}35.931^{\mathrm s}$, $\delta=+04^{\circ}44'17.77''$. Twenty-three positive detections in $g$, $r$, and $i$ were recorded over 14 nights through 2026 July 3. The object had 36 pre-discovery non-detections, with a best limiting magnitude of 20.551. It brightened by approximately 1.3 mag in ten days and reached approximately $r=19.8$ near 2026 July 1--4.
+The public TNS object page independently verifies ZTF26abdqbqw as AT~2026rsp, object ID 212592, and identifies Aadi Ajeesh Nair as reporter on AT report 312644. It records discovery on 2026 June 19 10:11:11 UTC at $g=21.067\pm0.311$ AB mag. The fuller time-series narrative below remains attributed to the surviving operations summary because the original row-level cohort and submission response bytes are absent. That summary reports twenty-three positive detections in $g$, $r$, and $i$ over 14 nights through 2026 July 3, 36 pre-discovery non-detections, and a best limiting magnitude of 20.551. It reports brightening of approximately 1.3 mag in ten days and a peak near $r=19.8$ around 2026 July 1--4.
 
-The position is associated with WISEA J222235.91+044418.8, and the ALeRCE light-curve classifiers favored a Type Ia supernova interpretation. The report nevertheless used unclassified-transient language because no spectrum was available. It was submitted on 2026 July 5 and designated AT~2026rsp (TNS object identifier 212592). An AstroNote requesting spectroscopic classification was published as AstroNote 2026-210 on July 8. The TNS report predates creation of reporting group 204 on July 9 and therefore lists no reporting group; this historical attribution issue should not be propagated to future submissions.
+The position is associated with WISEA J222235.91+044418.8, and the ALeRCE light-curve classifiers favored a Type Ia supernova interpretation. The report nevertheless used unclassified-transient language because no spectrum was available. TNS verifies the designation, report identity, reporter, discovery datum, and lack of a classification report in the captured page. The AstroNote and fuller light-curve history remain summary-attributed. The summary states that the TNS report predates creation of reporting group 204 on July 9 and lists no reporting group; this historical attribution issue should not be propagated to future submissions.
 
 \subsection{ZTF26aascgfc: passed, but not submitted}
 
@@ -562,7 +567,7 @@ A bulk draft prepared on 2026 July 10 contained ZTF26abbkkey, labeled PSN with 4
 \section{Software Verification and Reproducibility}
 \label{sec:software-verification}
 
-We completed local technical verification of the current \siderea\ implementation on 2026 September 8 using Python 3.11. Table~\ref{tab:software-verification} distinguishes implementation evidence from scientific validation. The current suite completed 405 tests without failure; strict static typing covered 74 source files, and branch-aware coverage was 78.35\%. Historical multi-interpreter results describe an earlier revision and are archived separately. These checks verify implemented invariants and failure behavior, not astronomical discovery performance.
+We report the dated local verification snapshot archived in \texttt{paper/research/software-verification.json}, executed on 2026 September 8 using Python 3.11. That record binds source and test tree SHA-256 digests to the execution log; it is not a moving claim about every later repository revision. Table~\ref{tab:software-verification} distinguishes implementation evidence from scientific validation. That suite completed 405 tests without failure; strict static typing covered 74 source files, and branch-aware coverage was 78.35\%. Historical multi-interpreter results describe an earlier revision and are archived separately. These checks verify implemented invariants and failure behavior, not astronomical discovery performance.
 
 \begin{table}[ht]
 \centering
@@ -589,6 +594,23 @@ The same replay produced two candidates, both blocked and neither reportable, be
 
 Tiny synthetic execution checks also exercised the logistic baseline and JEPA training paths. The baseline retained an uncalibrated-score label because its three-row calibration partition could not supply the required five examples per class. A three-epoch JEPA run and repeated-mask evaluation exercise checkpointing and numerical execution only; they do not demonstrate useful representations or astronomical generalization. The full smoke metadata is retained in \texttt{paper/experiments/learning-smoke-results.json}.
 
+\begin{table}[ht]
+\centering
+\caption{Evidence available in this paper and the conclusion each category supports.}
+\label{tab:evidence-scope}
+\begin{tabular}{p{0.20\linewidth}p{0.33\linewidth}p{0.35\linewidth}}
+\toprule
+Category & Available evidence & Supported interpretation \\
+\midrule
+Historical campaign & Surviving run and stage summaries & Workload and recorded dispositions; incomplete object-level history. \\
+Software & Dated tests and deterministic replay & Behavior of tested invariants; no measured sky sensitivity. \\
+Synthetic search & Frozen designs and per-trial statistics & Conditional recovery and noise-model failures; no survey selection function. \\
+Live services & Offline parser and transport tests & Integration preparation; live operation remains unqualified here. \\
+Real-sky comparison & Prospective protocol only & No comparative ranking or completeness claim. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \input{experiments/search_section.tex}
 
 \section{Discussion}
@@ -596,7 +618,7 @@ Tiny synthetic execution checks also exercised the logistic baseline and JEPA tr
 
 \subsection{Interpretation of rejections}
 
-The campaign applied restrictive triage. Its surviving record contains one fully documented credited case among 3,824 screened objects. The same record contains 55 variable-star rejections and 30 pre-existing TNS matches, showing that a high-priority broker candidate was not necessarily a novel reportable event. The broker classifier and local features address whether an object resembles a transient; the downstream catalogs address known-source associations; TNS records whether the object was already reported; and stamp review addresses whether the signal was morphologically credible. These are distinct hypotheses.
+The campaign applied restrictive triage. Its surviving record contains one detailed surviving candidate narrative among 3,824 screened objects. The same record contains 55 variable-star rejections and 30 pre-existing TNS matches, showing that a high-priority broker candidate was not necessarily a novel reportable event. The broker classifier and local features address whether an object resembles a transient; the downstream catalogs address known-source associations; TNS records whether the object was already reported; and stamp review addresses whether the signal was morphologically credible. These are distinct hypotheses.
 
 The same principle applies to nuclear events. A transient coincident with a galaxy can be scientifically valuable, but an elevated AGN probability and sub-arcsecond nuclear association demand different wording from an off-nuclear supernova candidate. The pipeline's purpose is not to force every survivor into a supernova category; it is to preserve an auditable relationship between evidence and claim.
 
@@ -608,7 +630,7 @@ The catalog result directly establishes that 55 recorded evaluations were stoppe
 
 An ablation study would be required to estimate each gate's marginal contribution. For example, replaying the same frozen cohort with and without VSX could measure how many manual reviews, packets, and false reports the VSX gate changes. Replaying without the age and history vetoes could quantify whether they mostly remove known variables or also suppress real supernovae. AMPEL's comparison of more than 200 selection functions provides a precedent for this kind of alert replay \citep{nordin2019}. The present archive lacks the complete row-level cohort and negative outcomes needed to perform those ablations honestly.
 
-The apparently large difference between 3,824 distinct retrieved objects and one fully preserved credited case should therefore not be called a false-positive rate. Most retrieved objects were never asserted to be positive examples, and rejected objects lack exhaustive truth labels. Likewise, there is no false-negative rate because the project did not revisit all rejected positions after a fixed maturation period to identify missed TNS transients.
+The apparently large difference between 3,824 distinct retrieved objects and one detailed surviving candidate narrative should therefore not be called a false-positive rate. Most retrieved objects were never asserted to be positive examples, and rejected objects lack exhaustive truth labels. Likewise, there is no false-negative rate because the project did not revisit all rejected positions after a fixed maturation period to identify missed TNS transients.
 
 \subsection{Human judgment and reproducibility}
 
@@ -643,7 +665,7 @@ The operating policy also changed during the campaign. On July 5, the recorded e
 
 The legacy feature calculation pooled $g$, $r$, and $i$ magnitudes. Differences in color and filter cadence can therefore affect the estimated scatter, amplitude, significance, and periodicity. Recency was measured relative to the newest detection in the fetched batch rather than to an absolute query time, which makes the score dependent on other objects in the batch. The score coefficients were set by hand, several terms share information, and the broker probability was not recalibrated for the selected population.
 
-No injection--recovery analysis was performed, and rejected objects were not systematically re-evaluated after a fixed maturation interval. The campaign therefore provides no estimate of detection efficiency as a function of magnitude, cadence, host surface brightness, timescale, or transient class, and it does not measure the number of missed transients.
+No injection--recovery analysis was performed for the historical campaign, and rejected objects were not systematically re-evaluated after a fixed maturation interval. The separate synthetic diagnostic in Section~\ref{sec:synthetic-search} does not supply recovery estimates on real survey backgrounds. The campaign therefore provides no estimate of detection efficiency as a function of magnitude, cadence, host surface brightness, timescale, or transient class, and it does not measure the number of missed transients.
 
 \subsection{External data and human review}
 
@@ -653,104 +675,22 @@ The historical image review was performed by one operator, and independent label
 
 \subsection{Scope of the implementation audit}
 
-The band-aware feature path, content-addressed evidence, review binding, preflight gate, and shadow-model interfaces belong to \siderea\ and were not used in the historical campaign. The local audit runtime included NumPy, pandas, scikit-learn, PyTorch, and Matplotlib, but not Astropy, astroquery, or the ALeRCE client. The replay therefore verifies local deterministic behavior and blocking under missing evidence, not live broker or catalog integration. TS-JEPA, feature-space anomaly scoring, and the supervised baseline have not been compared with the heuristic on an object-grouped chronological cohort.
+The band-aware feature path, content-addressed evidence, review binding, preflight gate, and shadow-model interfaces belong to \siderea\ and were not used in the historical campaign. An earlier audit environment included NumPy, pandas, scikit-learn, PyTorch, and Matplotlib but lacked the optional astronomy clients. Later installation of those clients does not by itself qualify a live integration; the dated environment and execution inventories distinguish availability from actual service use. The replay therefore verifies local deterministic behavior and blocking under missing evidence, not live broker or catalog integration. TS-JEPA, feature-space anomaly scoring, and the supervised baseline have not been compared with the heuristic on an object-grouped chronological cohort.
 
 \section{Prospective Evaluation}
 \label{sec:validation}
 
-The next campaign should freeze a configuration in a versioned run manifest and record the code revision, query timestamps, catalog service status, model/classifier names, and every threshold. Each stage should emit an immutable row-level table keyed by object identifier and evaluation timestamp. The submission log should record the screener, reviewer, wording, TNS report identifier, final designation, and confirmation method. Automated retry and alerting should distinguish service failures from valid zero-result queries.
+The decisive next question is whether a frozen SIDEREA policy yields more independently confirmed useful candidates at a fixed review budget than the incumbent ranking. A defensible comparison requires a complete eligible object cohort, an earlier development interval, an untouched later test interval, prediction-time information limits, and independently adjudicated outcomes after a fixed maturation delay. Unreviewed and unresolved sources must remain explicit rather than becoming negative labels.
 
-\subsection{Outcome definitions}
-
-A single label such as ``good candidate'' is insufficient. The benchmark should record at least four axes: (1) real versus subtraction artifact; (2) stationary versus moving; (3) novel versus already registered at the decision timestamp; and (4) best available physical class after a fixed maturation interval. ``Reportable under the \legacycampaign\ policy'' is a derived decision label, not a physical truth class. TNS can provide novelty and later classifications, but absence from TNS is not a complete negative label.
-
-\subsection{Replay cohort and temporal split}
-
-One useful design is a time-bounded, frozen set of all broker objects satisfying the documented ALeRCE query, including those rejected before shortlisting. Outcomes should be frozen after a predetermined delay long enough for independent TNS reports and catalog updates. Threshold development should use an earlier interval and all headline metrics should be computed once on a later, untouched interval. AMPEL's alert reprocessing demonstrates the value of replay for comparing selection functions \citep{nordin2019}; ZTF BTS demonstrates how magnitude and coverage cuts can define a statistical sample with measured spectroscopic completeness \citep{perley2020}.
-
-For a binary policy target, report precision and recall,
-\begin{equation}
-  \mathrm{precision}=\frac{TP}{TP+FP}, \qquad
-  \mathrm{recall}=\frac{TP}{TP+FN},
-\end{equation}
-along with the precision--recall curve, review fraction, reports per reviewer-hour, and median decision latency. Because the science cost of missing a young transient differs from the cost of delaying a variable, metrics should also be stratified by age at first review, magnitude, number of detections, Galactic latitude, host surface brightness, and physical class. A Fink active-learning study, for example, reported both purity and efficiency on a labeled alert set rather than inferring performance from submitted-candidate yield \citep{leoni2022}.
-
-\subsection{Selection function, audit sampling, and censoring}
-
-Let $\theta$ denote a vector of physical and observational parameters---peak magnitude, timescale, color evolution, sky background, cadence, and host offset---and let $x$ denote the realized alert data. For a frozen policy $\pi$, the end-to-end reporting selection function is
-\begin{equation}
-  \epsilon_{\pi}(\theta)=
-  \int \mathrm{I}\!\left\{\pi(x)=\text{report}\right\}
-  p(x\mid\theta)\,\mathrm{d}x.
-\label{eq:selection-function}
-\end{equation}
-This integral includes upstream alert generation, broker ingestion, missing services, pipeline gates, and human review. Computing only the software-stage acceptance probability would condition away earlier losses and would not support an astrophysical rate correction.
-
-Complete outcome labeling may be too expensive for every rejected object. If object $i$ is selected for retrospective adjudication with known probability $\pi_i^{\rm audit}>0$, a design-based estimate of an outcome mean can use the H\'ajek form
-\begin{equation}
-  \widehat{\mu}_{\rm H}=
-  \frac{\sum_i A_iY_i/\pi_i^{\rm audit}}
-       {\sum_i A_i/\pi_i^{\rm audit}},
-\label{eq:hajek}
-\end{equation}
-where $A_i$ indicates completed audit and $Y_i$ is a frozen terminal outcome. This estimator requires the sampling probabilities to be logged and cannot repair convenience sampling with unknown inclusion probabilities.
-
-Decision latency is right-censored when a candidate remains blocked or unresolved at campaign close. For event times $t_k$, event counts $d_k$, and risk sets $n_k$, a nonparametric summary is the Kaplan--Meier estimator
-\begin{equation}
-  \widehat{S}_{\tau}(t)=\prod_{t_k\leq t}\left(1-\frac{d_k}{n_k}\right),
-\label{eq:kaplan-meier}
-\end{equation}
-reported separately for rejection, clearance, submission, and unresolved dependency states. Competing outcomes require cause-specific cumulative incidence rather than treating non-submission as a single failure class. The historical record lacks complete timestamps for this analysis; Equations~\ref{eq:selection-function}--\ref{eq:kaplan-meier} define the data contract for the prospective campaign.
-
-\subsection{Injection, recovery, and ablation}
-
-Injection--recovery should sample event amplitude, rise and decline time, color evolution, limiting magnitude, cadence, missing bands, pre-discovery non-detections, and host background. Light-curve-level injection can test ranking logic, but image-level injection is required to measure losses in subtraction and stamp review. HiTS provides a precedent for combining empirical limiting-magnitude distributions with injected supernova light curves to estimate recovery \citep{forster2016}.
-
-Every safety gate should also be ablated on the frozen cohort: broker-probability threshold, pooled versus per-band features, period veto, age/history vetoes, TNS, SkyBoT, VSX, SIMBAD, and human stamps. Report the incremental change in true positives, false positives, review load, and latency. This would reveal whether the 28.5\% catalog rejection fraction represents unique value from VSX/SIMBAD or contamination already predictable from upstream features.
-
-\subsection{Calibration, association, and reviewer reliability}
-
-If $Q$ is retained only for ordering, rank metrics and yield-versus-review-budget curves are sufficient. If it is ever called a probability, it must be calibrated prospectively with reliability diagrams, Brier score, and calibration error on the deployment population. Broker-class probabilities should be assessed separately from the composite score.
-
-Fixed-radius associations should be replaced or supplemented with the Bayes factor for a shared source, using positional covariances and local background density \citep{budavari2008}. Manual review should be duplicated blindly for a stratified sample, with disagreements adjudicated only after independent labels are saved. Raw agreement, class-specific agreement, and a chance-corrected statistic should be reported together with review time.
-
-\subsection{Shadow-model and top-$K$ evaluation}
-
-The learned routes should first run in shadow mode beside the heuristic without changing eligibility or reportability. For night $n$, method $m$, and a frozen review budget $K$, let $Y_{nm}(K)$ be the number of terminally useful candidates within the first $K$ reviewed objects and $T_{nm}(K)$ the reviewer minutes consumed. The primary paired contrast should be
-\begin{equation}
-  \Delta_Y(K)=\frac{1}{N}\sum_{n=1}^{N}
-  \left[Y_{n,\mathrm{new}}(K)-Y_{n,\mathrm{baseline}}(K)\right],
-\label{eq:paired-topk}
-\end{equation}
-with a corresponding time-normalized contrast and a night-block confidence interval. This aligns evaluation with the actual finite queue and avoids converting anomaly or embedding scores into pseudo-probabilities. The comparison should include the heuristic, broker score, supervised logistic baseline, feature-space anomaly model, TS-JEPA, and the same downstream head without TS-JEPA embeddings.
-
-Different anomaly routes should be evaluated both jointly and separately. For routes $r$ and $s$, report overlap $J_{rs}=|\mathcal{Q}_r\cap\mathcal{Q}_s|/|\mathcal{Q}_r\cup\mathcal{Q}_s|$, unique useful yield, and corruption rate. The low route overlap reported by AHA indicates that complementarity can be scientifically useful \citep{iskandarli2026}; it can also mean that one representation is selecting artifacts. StarEmbed, AstroCo, and Astra-CLR provide relevant representation baselines, but their published tasks and populations differ from reportable-transient triage \citep{li2026,tan2025,majumder2026}. Promotion therefore requires an object-grouped, chronological, in-domain comparison rather than citation-level analogy.
-
-\subsection{Registered change control and safety non-inferiority}
-
-Every scientific-policy edit should create a new immutable policy identifier before it receives outcomes. A shadow comparison may run policies in parallel on the same immutable input, but only the preregistered incumbent can drive action. Promotion should require both superiority on the primary top-$K$ yield endpoint and non-inferiority on safety endpoints such as duplicate escape, known-variable escape, and fraction of reportable decisions lacking fresh evidence. If $p_{\rm new}$ and $p_{\rm old}$ are safety-event rates, a one-sided requirement is
-\begin{equation}
-  \sup \mathrm{CI}_{1-\alpha}\!\left(p_{\rm new}-p_{\rm old}\right)<\delta_{\rm safe},
-\label{eq:safety-noninferiority}
-\end{equation}
-where $\delta_{\rm safe}$ is fixed before evaluation. A threshold or feature changed after examining test outcomes starts a new evaluation interval. This prevents the configuration discontinuity documented in the legacy campaign from recurring as an untraceable mixture of policies.
-
-\subsection{Outcome closure}
-
-Target follow-up should be treated as part of the state machine rather than an informal afterthought. For candidates near peak, a designation should trigger a timestamped AstroNote or direct classification request, visibility estimates, and closure of the outcome record. Every external response should be stored with query time and service version where available. Only then can the analysis distinguish an astronomical rejection from a service outage or an operator delay.
-
-\subsection{Pre-registered decision analysis}
-
-The next evaluation should pre-register the parent interval, query, thresholds, required services, outcome-maturation delay, primary metric, and exclusion rules before the test interval begins. A useful primary operational endpoint is precision among submitted reports under a fixed reviewer-hour budget; a co-primary safety endpoint is duplicate-report rate. Recall among broker-eligible, subsequently confirmed transients can be estimated only after reconstructing every eligible object in the frozen interval. Any threshold changed after inspecting test-period outcomes should define a new policy version and a new evaluation interval rather than being pooled into the original result.
-
+The planned comparison should evaluate the heuristic, broker ranking, template search, supervised baseline and shadow embeddings on the same permitted inputs. It should report yield at the review budget, missed events where ascertainable, false alerts, latency and reviewer effort, with the uncertainty unit fixed before analysis. Component ablations and signal injection into representative survey backgrounds should identify which information contributes and where noise assumptions fail. Safety gates must remain enforced for operational decisions. These studies have not been completed; Appendix~\ref{sec:validation-protocol} records the detailed proposed protocol without treating it as a result.
 
 \section{Conclusions}
 
-We have presented a run-level audit of the \legacycampaign\ campaign and the implementation of its successor, \siderea. The campaign processed 3,824 distinct ALeRCE objects in 24 productive runs. Among the recorded downstream evaluations, 30 of 200 registry checks identified an existing TNS object and 55 of 193 catalog checks identified a known or suspected variable. Two submitted sources received TNS designations; ZTF26abdqbqw = AT~2026rsp is the only case for which the repository contains a complete discovery record.
+We have presented a run-level audit of the \legacycampaign\ campaign and the implementation of its successor, \siderea. The campaign processed 3,824 distinct ALeRCE objects in 24 productive runs. Among the recorded downstream evaluations, 30 of 200 registry checks identified an existing TNS object and 55 of 193 catalog checks identified a known or suspected variable. The public TNS page independently verifies ZTF26abdqbqw = AT~2026rsp and report 312644; AT~2026pcz remains summary-attributed. Original campaign photometry, selection rows, and submission response bytes are not preserved, so neither claim is an independently reconstructed end-to-end discovery.
 
 The run summaries also show a substantial policy discontinuity on 2026 July 5. The early-veto fraction decreased from 54.5\% to 2.68\%, while the shortlist fraction increased from 0.51\% to 13.9\%. Cluster-bootstrap intervals describe the between-run variation in these quantities, but the change cannot be attributed causally because policy version, date, and query composition are confounded.
 
-\siderea\ addresses the provenance and state-management weaknesses found in the campaign record. Candidate versions are content-addressed; external results are bound to position, epoch, radius, and lifetime; review decisions apply to a specific candidate version; and report preparation requires every mandatory clearance. The current implementation passed 405 tests on Python 3.11 and reproduced the scientific outputs of the local replay fixture. A time-forward object-level cohort, complete outcomes, injection--recovery tests, and independent review labels are still required to estimate completeness or compare ranking methods.
+\siderea\ addresses the provenance and state-management weaknesses found in the campaign record. Candidate versions are content-addressed; external results are bound to position, epoch, radius, and lifetime; review decisions apply to a specific candidate version; and report preparation requires every mandatory clearance. The archived software snapshot passed 405 tests on Python 3.11 and reproduced the scientific outputs of the local replay fixture. A time-forward object-level cohort, complete outcomes, injection--recovery tests, and independent review labels are still required to estimate completeness or compare ranking methods.
 
 \section*{Acknowledgments}
 
@@ -895,6 +835,96 @@ Registry outcome & Pre-submission TNS refresh, packet hash, submission timestamp
 \end{table}
 
 \clearpage
+
+\section{Prospective Evaluation Protocol}
+\label{sec:validation-protocol}
+
+The next campaign should freeze a configuration in a versioned run manifest and record the code revision, query timestamps, catalog service status, model/classifier names, and every threshold. Each stage should emit an immutable row-level table keyed by object identifier and evaluation timestamp. The submission log should record the screener, reviewer, wording, TNS report identifier, final designation, and confirmation method. Automated retry and alerting should distinguish service failures from valid zero-result queries.
+
+\subsection{Outcome definitions}
+
+A single label such as ``good candidate'' is insufficient. The benchmark should record at least four axes: (1) real versus subtraction artifact; (2) stationary versus moving; (3) novel versus already registered at the decision timestamp; and (4) best available physical class after a fixed maturation interval. ``Reportable under the \legacycampaign\ policy'' is a derived decision label, not a physical truth class. TNS can provide novelty and later classifications, but absence from TNS is not a complete negative label.
+
+\subsection{Replay cohort and temporal split}
+
+One useful design is a time-bounded, frozen set of all broker objects satisfying the documented ALeRCE query, including those rejected before shortlisting. Outcomes should be frozen after a predetermined delay long enough for independent TNS reports and catalog updates. Threshold development should use an earlier interval and all headline metrics should be computed once on a later, untouched interval. AMPEL's alert reprocessing demonstrates the value of replay for comparing selection functions \citep{nordin2019}; ZTF BTS demonstrates how magnitude and coverage cuts can define a statistical sample with measured spectroscopic completeness \citep{perley2020}.
+
+For a binary policy target, report precision and recall,
+\begin{equation}
+  \mathrm{precision}=\frac{TP}{TP+FP}, \qquad
+  \mathrm{recall}=\frac{TP}{TP+FN},
+\end{equation}
+along with the precision--recall curve, review fraction, reports per reviewer-hour, and median decision latency. Because the science cost of missing a young transient differs from the cost of delaying a variable, metrics should also be stratified by age at first review, magnitude, number of detections, Galactic latitude, host surface brightness, and physical class. A Fink active-learning study, for example, reported both purity and efficiency on a labeled alert set rather than inferring performance from submitted-candidate yield \citep{leoni2022}.
+
+\subsection{Selection function, audit sampling, and censoring}
+
+Let $\theta$ denote a vector of physical and observational parameters---peak magnitude, timescale, color evolution, sky background, cadence, and host offset---and let $x$ denote the realized alert data. For a frozen policy $\pi$, the end-to-end reporting selection function is
+\begin{equation}
+  \epsilon_{\pi}(\theta)=
+  \int \mathrm{I}\!\left\{\pi(x)=\text{report}\right\}
+  p(x\mid\theta)\,\mathrm{d}x.
+\label{eq:selection-function}
+\end{equation}
+This integral includes upstream alert generation, broker ingestion, missing services, pipeline gates, and human review. Computing only the software-stage acceptance probability would condition away earlier losses and would not support an astrophysical rate correction.
+
+Complete outcome labeling may be too expensive for every rejected object. If object $i$ is selected for retrospective adjudication with known probability $\pi_i^{\rm audit}>0$, a design-based estimate of an outcome mean can use the H\'ajek form
+\begin{equation}
+  \widehat{\mu}_{\rm H}=
+  \frac{\sum_i A_iY_i/\pi_i^{\rm audit}}
+       {\sum_i A_i/\pi_i^{\rm audit}},
+\label{eq:hajek}
+\end{equation}
+where $A_i$ indicates completed audit and $Y_i$ is a frozen terminal outcome. This estimator requires the sampling probabilities to be logged and cannot repair convenience sampling with unknown inclusion probabilities.
+
+Decision latency is right-censored when a candidate remains blocked or unresolved at campaign close. For event times $t_k$, event counts $d_k$, and risk sets $n_k$, a nonparametric summary is the Kaplan--Meier estimator
+\begin{equation}
+  \widehat{S}_{\tau}(t)=\prod_{t_k\leq t}\left(1-\frac{d_k}{n_k}\right),
+\label{eq:kaplan-meier}
+\end{equation}
+reported separately for rejection, clearance, submission, and unresolved dependency states. Competing outcomes require cause-specific cumulative incidence rather than treating non-submission as a single failure class. The historical record lacks complete timestamps for this analysis; Equations~\ref{eq:selection-function}--\ref{eq:kaplan-meier} define the data contract for the prospective campaign.
+
+\subsection{Injection, recovery, and ablation}
+
+Injection--recovery should sample event amplitude, rise and decline time, color evolution, limiting magnitude, cadence, missing bands, pre-discovery non-detections, and host background. Light-curve-level injection can test ranking logic, but image-level injection is required to measure losses in subtraction and stamp review. HiTS provides a precedent for combining empirical limiting-magnitude distributions with injected supernova light curves to estimate recovery \citep{forster2016}.
+
+Every safety gate should also be ablated on the frozen cohort: broker-probability threshold, pooled versus per-band features, period veto, age/history vetoes, TNS, SkyBoT, VSX, SIMBAD, and human stamps. Report the incremental change in true positives, false positives, review load, and latency. This would reveal whether the 28.5\% catalog rejection fraction represents unique value from VSX/SIMBAD or contamination already predictable from upstream features.
+
+\subsection{Calibration, association, and reviewer reliability}
+
+If $Q$ is retained only for ordering, rank metrics and yield-versus-review-budget curves are sufficient. If it is ever called a probability, it must be calibrated prospectively with reliability diagrams, Brier score, and calibration error on the deployment population. Broker-class probabilities should be assessed separately from the composite score.
+
+Fixed-radius associations should be replaced or supplemented with the Bayes factor for a shared source, using positional covariances and local background density \citep{budavari2008}. Manual review should be duplicated blindly for a stratified sample, with disagreements adjudicated only after independent labels are saved. Raw agreement, class-specific agreement, and a chance-corrected statistic should be reported together with review time.
+
+\subsection{Shadow-model and top-$K$ evaluation}
+
+The learned routes should first run in shadow mode beside the heuristic without changing eligibility or reportability. For night $n$, method $m$, and a frozen review budget $K$, let $Y_{nm}(K)$ be the number of terminally useful candidates within the first $K$ reviewed objects and $T_{nm}(K)$ the reviewer minutes consumed. The primary paired contrast should be
+\begin{equation}
+  \Delta_Y(K)=\frac{1}{N}\sum_{n=1}^{N}
+  \left[Y_{n,\mathrm{new}}(K)-Y_{n,\mathrm{baseline}}(K)\right],
+\label{eq:paired-topk}
+\end{equation}
+with a corresponding time-normalized contrast and a night-block confidence interval. This aligns evaluation with the actual finite queue and avoids converting anomaly or embedding scores into pseudo-probabilities. The comparison should include the heuristic, broker score, supervised logistic baseline, feature-space anomaly model, TS-JEPA, and the same downstream head without TS-JEPA embeddings.
+
+Different anomaly routes should be evaluated both jointly and separately. For routes $r$ and $s$, report overlap $J_{rs}=|\mathcal{Q}_r\cap\mathcal{Q}_s|/|\mathcal{Q}_r\cup\mathcal{Q}_s|$, unique useful yield, and corruption rate. The low route overlap reported by AHA indicates that complementarity can be scientifically useful \citep{iskandarli2026}; it can also mean that one representation is selecting artifacts. StarEmbed, AstroCo, and Astra-CLR provide relevant representation baselines, but their published tasks and populations differ from reportable-transient triage \citep{li2026,tan2025,majumder2026}. Promotion therefore requires an object-grouped, chronological, in-domain comparison rather than citation-level analogy.
+
+\subsection{Registered change control and safety non-inferiority}
+
+Every scientific-policy edit should create a new immutable policy identifier before it receives outcomes. A shadow comparison may run policies in parallel on the same immutable input, but only the preregistered incumbent can drive action. Promotion should require both superiority on the primary top-$K$ yield endpoint and non-inferiority on safety endpoints such as duplicate escape, known-variable escape, and fraction of reportable decisions lacking fresh evidence. If $p_{\rm new}$ and $p_{\rm old}$ are safety-event rates, a one-sided requirement is
+\begin{equation}
+  \sup \mathrm{CI}_{1-\alpha}\!\left(p_{\rm new}-p_{\rm old}\right)<\delta_{\rm safe},
+\label{eq:safety-noninferiority}
+\end{equation}
+where $\delta_{\rm safe}$ is fixed before evaluation. A threshold or feature changed after examining test outcomes starts a new evaluation interval. This prevents the configuration discontinuity documented in the legacy campaign from recurring as an untraceable mixture of policies.
+
+\subsection{Outcome closure}
+
+Target follow-up should be treated as part of the state machine rather than an informal afterthought. For candidates near peak, a designation should trigger a timestamped AstroNote or direct classification request, visibility estimates, and closure of the outcome record. Every external response should be stored with query time and service version where available. Only then can the analysis distinguish an astronomical rejection from a service outage or an operator delay.
+
+\subsection{Pre-registered decision analysis}
+
+The next evaluation should pre-register the parent interval, query, thresholds, required services, outcome-maturation delay, primary metric, and exclusion rules before the test interval begins. A useful primary operational endpoint is precision among submitted reports under a fixed reviewer-hour budget; a co-primary safety endpoint is duplicate-report rate. Recall among broker-eligible, subsequently confirmed transients can be estimated only after reconstructing every eligible object in the frozen interval. Any threshold changed after inspecting test-period outcomes should define a new policy version and a new evaluation interval rather than being pooled into the original result.
+
+
 
 \bibliographystyle{plainnat}
 \bibliography{references}

@@ -1,0 +1,14 @@
+{
+  "created_at": "2026-09-13T04:49:14.135270+00:00",
+  "digest": "7d28119cfa1d261f6e03bac7abea6b10a13c6992462bc46379dfb4533e3f29ad",
+  "files": [
+    {
+      "path": "/Volumes/PRO-BLADE/IRIS-Project/paper/research/overnight-smoke-20260913-v2/pipeline/overnight-smoke-20260913-v2/photometry.normalized.csv",
+      "sha256": "99fb29db15a248d7d9c99e8dc4178b11d4ae1d77fb8082a06962bf9670d82981",
+      "size_bytes": 1364
+    }
+  ],
+  "label_policy": "unlabelled candidate photometry; outcomes live in the ledger",
+  "name": "overnight-smoke-20260913-v2-photometry",
+  "split_policy": "not-applicable-local-analysis"
+}

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import inspect
 import json
 import platform
 from pathlib import Path
@@ -15,11 +16,20 @@ import numpy as np
 from run_transient_search import interval
 
 from siderea.provenance import digest_file, digest_value, stable_json
+from siderea.research.archives import validate_experiment_protocol
 from siderea.research.transients import TransientBank
 
 
 def run(protocol: Path, output: Path) -> None:
     config = json.loads(protocol.read_text())
+    validate_experiment_protocol(config, noise=True)
+    source_path = Path(__file__).resolve().parents[2] / "src/siderea/research/transients.py"
+    runtime_source = Path(inspect.getfile(TransientBank))
+    if runtime_source.read_bytes() != source_path.read_bytes():
+        raise ValueError(
+            "Imported detector differs from checkout; run with PYTHONPATH=src "
+            "or install this checkout before recording experiment provenance"
+        )
     output.mkdir(parents=True, exist_ok=False)
     (output / "protocol.json").write_text(stable_json(config) + "\n")
     sources = {
@@ -36,7 +46,12 @@ def run(protocol: Path, output: Path) -> None:
     ordinary = np.sort(cadence_rng.uniform(0, config["duration_days"], n))
     gap = np.sort(
         np.concatenate(
-            [cadence_rng.uniform(0, 20, n // 2), cadence_rng.uniform(40, 60, n - n // 2)]
+            [
+                cadence_rng.uniform(0, config["duration_days"] / 3, n // 2),
+                cadence_rng.uniform(
+                    2 * config["duration_days"] / 3, config["duration_days"], n - n // 2
+                ),
+            ]
         )
     )
     errors = cadence_rng.uniform(0.7, 1.3, n)
@@ -79,7 +94,7 @@ def run(protocol: Path, output: Path) -> None:
         if name == "errors_underestimated_1.5":
             flux *= 1.5
         if name == "variance_doubles_second_half":
-            flux[:, times > 30] *= np.sqrt(2)
+            flux[:, times > config["duration_days"] / 2] *= np.sqrt(2)
         values = bank.statistics(flux)
         pvalues = (1 + len(reference) - np.searchsorted(reference, values, side="left")) / (
             len(reference) + 1

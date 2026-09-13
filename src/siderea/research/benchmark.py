@@ -62,6 +62,7 @@ def run_rolling_origin_benchmark(
     confidence_level: float = 0.95,
     seed: int = 0,
     time_block_days: float | None = None,
+    bootstrap_unit: str = "entity_within_time_block",
 ) -> dict[str, Any]:
     """Evaluate fixed ranking signals on every future time block.
 
@@ -88,6 +89,8 @@ def run_rolling_origin_benchmark(
     confidence = float(confidence_level)
     if not math.isfinite(confidence) or not 0.0 < confidence < 1.0:
         raise ValueError("confidence_level must be a finite number within (0, 1)")
+    if bootstrap_unit not in {"entity_within_time_block", "time_block"}:
+        raise ValueError("bootstrap_unit must be entity_within_time_block or time_block")
 
     required = {entity_column, time_column, label_column, *normalized_scores}
     if len(required) != len(normalized_scores) + 3:
@@ -171,20 +174,29 @@ def run_rolling_origin_benchmark(
             column: {metric_name: [] for metric_name in metric_names}
             for column in normalized_scores
         }
-        for indices in fold_indices:
-            sampled = rng.choice(indices, size=len(indices), replace=True)
-            for column in normalized_scores:
-                bootstrap_metric = _metric_payload(
-                    ranking_metrics(
-                        labels[sampled],
-                        score_values[column][sampled],
-                        review_budget=review_budget,
+        if bootstrap_unit == "time_block":
+            sampled_folds = rng.choice(len(folds), size=len(folds), replace=True)
+            for fold_index in sampled_folds:
+                for column in normalized_scores:
+                    for metric_name in metric_names:
+                        sampled_fold_metrics[column][metric_name].append(
+                            float(folds[int(fold_index)]["models"][column][metric_name])
+                        )
+        else:
+            for indices in fold_indices:
+                sampled = rng.choice(indices, size=len(indices), replace=True)
+                for column in normalized_scores:
+                    bootstrap_metric = _metric_payload(
+                        ranking_metrics(
+                            labels[sampled],
+                            score_values[column][sampled],
+                            review_budget=review_budget,
+                        )
                     )
-                )
-                for metric_name in metric_names:
-                    sampled_fold_metrics[column][metric_name].append(
-                        float(bootstrap_metric[metric_name])
-                    )
+                    for metric_name in metric_names:
+                        sampled_fold_metrics[column][metric_name].append(
+                            float(bootstrap_metric[metric_name])
+                        )
         for column in normalized_scores:
             for metric_name in metric_names:
                 bootstrap[column][metric_name].append(
@@ -228,6 +240,7 @@ def run_rolling_origin_benchmark(
         "confidence_level": confidence,
         "seed": seed,
         "time_block_days": time_block_days,
+        "bootstrap_unit": bootstrap_unit,
         "entity_ids": entities.tolist(),
         "times": times.tolist(),
         "labels": labels.tolist(),
@@ -243,6 +256,7 @@ def run_rolling_origin_benchmark(
         "confidence_level": confidence,
         "bootstrap_repeats": bootstrap_repeats,
         "seed": seed,
+        "bootstrap_unit": bootstrap_unit,
         "evaluation_inputs": identity,
         "evaluation_scope": "fixed_precomputed_scores_by_time_block_not_model_refitting",
         "folds": folds,

@@ -1,0 +1,84 @@
+{
+  "study_id": "DRAFT-prospective-real-sky-v1",
+  "title": "DRAFT - replace owner decisions before freezing",
+  "scientific_question": "At a fixed nightly review budget, does the locked comparison ranking improve independently adjudicated useful-candidate yield over the locked reference ranking on a later real-sky cohort?",
+  "hypotheses": [
+    "The lower confidence bound for the paired precision-at-budget improvement exceeds the prespecified minimum useful effect.",
+    "Safety-gate failures, unresolved outcomes, and review workload do not worsen beyond prespecified limits."
+  ],
+  "cohort": {
+    "opens_at": "2027-01-01T00:00:00+00:00",
+    "closes_at": "2027-03-01T00:00:00+00:00",
+    "matures_at": "2027-06-01T00:00:00+00:00",
+    "population": "Every object reaching the frozen eligibility boundary during the declared acquisition windows, including rejected, unreviewed, unresolved, and service-failure records.",
+    "inclusion_criteria": [
+      "Point-in-time input and acquisition provenance are complete.",
+      "Physical-entity alias group is assigned before splitting.",
+      "Candidate was processed by the frozen pipeline and configuration."
+    ],
+    "exclusion_criteria": [
+      "Corrupt source bytes that fail the frozen input schema.",
+      "Duplicate alias of an already enrolled physical entity under the declared estimand."
+    ]
+  },
+  "selection": {
+    "pipeline_version": "REPLACE_WITH_RELEASE_VERSION",
+    "configuration_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+    "eligibility_policy": "triage",
+    "review_budget": 10,
+    "audit_slots": 2
+  },
+  "endpoints": {
+    "primary": "Paired precision at the nightly review budget using independent mature binary outcome evidence.",
+    "secondary": [
+      "Recall at budget and average precision.",
+      "Reviewer minutes, abstention, disagreement, and stale or failed evidence blocks.",
+      "Yield by alert age, cadence, brightness, band coverage, sky region, and outcome-missingness stratum."
+    ]
+  },
+  "analysis": {
+    "reference_score": "REPLACE_WITH_LOCKED_REFERENCE_SCORE",
+    "primary_metric": "precision_at_budget",
+    "comparison": "REPLACE_WITH_LOCKED_COMPARISON_SCORE",
+    "minimum_useful_effect": 0.05,
+    "confidence_level": 0.95,
+    "bootstrap_repeats": 10000,
+    "random_seed": 20270101,
+    "subgroup_fields": [
+      "alert_age",
+      "band_coverage",
+      "brightness_bin",
+      "cadence_bin",
+      "survey"
+    ],
+    "missing_outcome_policy": "exclude_and_report",
+    "minimum_injection_recovery": 0.8,
+    "injection_amplitude_sigma": 5.0
+  },
+  "operations": {
+    "required_services": [
+      "skybot",
+      "tns",
+      "simbad",
+      "vsx"
+    ],
+    "minimum_broker_snapshots": 1,
+    "require_image_evidence": true,
+    "required_recovery_drills": 1,
+    "maximum_schema_drifts": 0
+  },
+  "governance": {
+    "protocol_owner": "REPLACE_WITH_ACCOUNTABLE_OWNER",
+    "statistics_reviewer": "REPLACE_WITH_INDEPENDENT_STATISTICIAN",
+    "independent_signoffs_required": 2,
+    "principal_policy": "authenticated_external",
+    "required_signoff_areas": [
+      "science",
+      "statistics",
+      "operations"
+    ],
+    "trusted_assertion_key_ids": [
+      "0000000000000000000000000000000000000000000000000000000000000000"
+    ]
+  }
+}

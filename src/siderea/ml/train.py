@@ -71,6 +71,7 @@ class TrainingConfig:
     learning_rate: float = 3e-4
     weight_decay: float = 1e-4
     target_fraction: float = 0.25
+    mask_scale_jitter: float = 0.0
     min_target: int = 1
     grad_clip: float = 1.0
     ema_momentum: float | None = None
@@ -115,6 +116,12 @@ class TrainingConfig:
             or not 0.0 < self.target_fraction < 1.0
         ):
             raise ValueError("target_fraction must be finite and between zero and one")
+        if (
+            isinstance(self.mask_scale_jitter, bool)
+            or not math.isfinite(self.mask_scale_jitter)
+            or not 0.0 <= self.mask_scale_jitter < 1.0
+        ):
+            raise ValueError("mask_scale_jitter must be finite and within [0, 1)")
         if isinstance(self.grad_clip, bool) or (
             self.min_target < 1
             or self.seed < 0
@@ -254,6 +261,7 @@ def train_jepa(
                 padding_mask,
                 target_fraction=config.target_fraction,
                 min_target=config.min_target,
+                scale_jitter=config.mask_scale_jitter,
                 generator=mask_generator,
             )
             if not bool(target_mask.any()):

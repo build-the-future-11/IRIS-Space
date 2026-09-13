@@ -332,6 +332,97 @@ def _build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="permit faster backend algorithms whose results may not reproduce exactly",
     )
+    jepa.add_argument(
+        "--require-prediction-cutoffs",
+        action="store_true",
+        help="require entity_id and prediction_cutoff_mjd and reject future observations",
+    )
+
+    jepa_embed = commands.add_parser(
+        "jepa-embed", help="extract provenance-bound JEPA embeddings for a shadow experiment"
+    )
+    jepa_embed.add_argument("checkpoint", type=Path)
+    jepa_embed.add_argument("input_jsonl", type=Path)
+    jepa_embed.add_argument("output", type=Path)
+    jepa_embed.add_argument("--batch-size", type=int, default=64)
+    jepa_embed.add_argument("--device", default="cpu")
+    jepa_embed.add_argument(
+        "--reference-cohort",
+        type=Path,
+        default=None,
+        help="bind embeddings to a frozen JEPA anomaly-reference cohort",
+    )
+
+    reference_freeze = commands.add_parser(
+        "jepa-reference-freeze", help="freeze the exact JEPA anomaly-reference population"
+    )
+    reference_freeze.add_argument("input_jsonl", type=Path)
+    reference_freeze.add_argument("output", type=Path)
+    reference_freeze.add_argument("--cohort-id", required=True)
+    reference_freeze.add_argument("--selection-policy", required=True)
+
+    shadow_assemble = commands.add_parser(
+        "shadow-assemble", help="assemble separate detector and JEPA anomaly evidence"
+    )
+    shadow_assemble.add_argument("transient_search", type=Path)
+    shadow_assemble.add_argument("candidate_embeddings", type=Path)
+    shadow_assemble.add_argument("reference_embeddings", type=Path)
+    shadow_assemble.add_argument("output", type=Path)
+    shadow_assemble.add_argument(
+        "--pipeline-candidates",
+        type=Path,
+        default=None,
+        help="bind immutable candidates.json from Aadi's operational analysis path",
+    )
+    shadow_assemble.add_argument("--pipeline-manifest", type=Path, default=None)
+    shadow_assemble.add_argument("--pilot-manifest", type=Path, default=None)
+    shadow_assemble.add_argument("--reference-cohort", type=Path, default=None)
+    shadow_assemble.add_argument("--random-state", type=int, default=17)
+
+    shadow_rank = commands.add_parser(
+        "shadow-rank", help="allocate separate heuristic, template, JEPA, and audit review routes"
+    )
+    shadow_rank.add_argument("evidence", type=Path)
+    shadow_rank.add_argument("output", type=Path)
+    shadow_rank.add_argument("--budget", type=int, required=True)
+    shadow_rank.add_argument("--detector-slots", type=int, required=True)
+    shadow_rank.add_argument("--jepa-slots", type=int, required=True)
+    shadow_rank.add_argument("--jepa-threshold", type=float, default=0.8)
+    shadow_rank.add_argument("--audit-slots", type=int, default=0)
+    shadow_rank.add_argument("--audit-seed", default=None)
+
+    pilot_prepare = commands.add_parser(
+        "pilot-prepare", help="prepare one cutoff-bound detector and JEPA dataset bundle"
+    )
+    pilot_prepare.add_argument("input", type=Path)
+    pilot_prepare.add_argument("output", type=Path, help="new prepared-data directory")
+    pilot_prepare.add_argument("--prediction-cutoff-mjd", type=float, required=True)
+    pilot_prepare.add_argument("--flux-unit", required=True)
+    pilot_prepare.add_argument("--calibration", required=True)
+    pilot_identity = pilot_prepare.add_mutually_exclusive_group(required=True)
+    pilot_identity.add_argument("--entity-column")
+    pilot_identity.add_argument("--assert-source-is-entity", action="store_true")
+    pilot_detection = pilot_prepare.add_mutually_exclusive_group(required=True)
+    pilot_detection.add_argument("--detection-column")
+    pilot_detection.add_argument("--assume-measured-detections", action="store_true")
+    pilot_prepare.add_argument(
+        "--require-pipeline-view",
+        action="store_true",
+        help="require ra_deg and dec_deg and emit canonical operational pipeline photometry",
+    )
+
+    transient_shard = commands.add_parser(
+        "transient-shard", help="partition measured flux without splitting physical entities"
+    )
+    transient_shard.add_argument("input", type=Path)
+    transient_shard.add_argument("output", type=Path)
+    transient_shard.add_argument("--max-channels", type=int, default=100)
+
+    transient_merge = commands.add_parser(
+        "transient-merge", help="verify and merge compatible transient-search shard outputs"
+    )
+    transient_merge.add_argument("output", type=Path)
+    transient_merge.add_argument("inputs", nargs="+", type=Path)
 
     study = commands.add_parser(
         "study-freeze", help="validate and freeze a prospective study protocol"
@@ -390,8 +481,44 @@ def _build_parser() -> argparse.ArgumentParser:
     transient.add_argument("--width-days", type=float, action="append", default=[])
     transient.add_argument("--centers", type=int, default=21)
     transient.add_argument("--null-trials", type=int, default=999)
+    transient.add_argument(
+        "--null-method",
+        choices=("gaussian", "wild_residual"),
+        default="gaussian",
+        help="parametric Gaussian or conditional wild-residual calibration",
+    )
+    transient.add_argument(
+        "--wild-block-size",
+        type=int,
+        default=1,
+        help="consecutive epochs sharing one sign in wild-residual calibration",
+    )
     transient.add_argument("--seed", type=int, default=0)
     transient.add_argument("--alpha", type=float, default=0.01)
+    transient.add_argument(
+        "--survey-object-count",
+        type=int,
+        default=None,
+        help="complete predeclared object universe for campaign-level correction",
+    )
+    transient.add_argument(
+        "--planned-looks",
+        type=int,
+        default=1,
+        help="total monitoring looks declared before inspecting results",
+    )
+    transient.add_argument(
+        "--look-index",
+        type=int,
+        default=1,
+        help="one-based index of this look within the predeclared campaign",
+    )
+    transient.add_argument(
+        "--prediction-cutoff-mjd",
+        type=float,
+        default=None,
+        help="latest observation time permitted in this point-in-time shadow run",
+    )
     transient.add_argument(
         "--noise-timescale-days",
         type=float,
@@ -413,6 +540,14 @@ def _build_parser() -> argparse.ArgumentParser:
     injection.add_argument("--width-days", type=float, default=1.0)
     injection.add_argument("--threshold-sigma", type=float, default=5.0)
     injection.add_argument("--trials", type=int, default=200)
+
+    live_tns = commands.add_parser(
+        "tns-qualify", help="run one read-only live TNS search qualification case"
+    )
+    live_tns.add_argument("query_json", type=Path)
+    live_tns.add_argument("output", type=Path)
+    live_tns.add_argument("--expected-status", choices=("clear", "match"), required=True)
+    live_tns.add_argument("--expected-name", action="append", default=[])
 
     fixture_record = commands.add_parser(
         "fixture-record", help="archive a sanitized service response for exact replay"
@@ -1339,6 +1474,47 @@ def _jepa_time_extent(records: Sequence[Mapping[str, Any]], source: Path) -> tup
     return min(values), max(values)
 
 
+def _jepa_prediction_cutoffs(
+    records: Sequence[Mapping[str, Any]],
+    source: Path,
+    *,
+    require_uniform: bool = False,
+) -> tuple[float, float]:
+    cutoffs: list[float] = []
+    entities: set[str] = set()
+    for item in records:
+        entity = item.get("entity_id")
+        if not isinstance(entity, str) or not entity.strip():
+            raise ValueError(f"every strict JEPA record needs a non-empty entity_id: {source}")
+        canonical = " ".join(entity.casefold().split())
+        if canonical in entities:
+            raise ValueError(f"duplicate strict JEPA entity_id {canonical!r} in {source}")
+        entities.add(canonical)
+        raw_cutoff = item.get("prediction_cutoff_mjd")
+        if isinstance(raw_cutoff, bool) or not isinstance(raw_cutoff, (int, float)):
+            raise ValueError(f"JEPA prediction_cutoff_mjd must be finite: {source}")
+        cutoff = float(raw_cutoff)
+        if not math.isfinite(cutoff):
+            raise ValueError(f"JEPA prediction_cutoff_mjd must be finite: {source}")
+        raw_times = item.get("times")
+        if isinstance(raw_times, (str, bytes)) or not isinstance(raw_times, Sequence):
+            raise ValueError(f"every JEPA record needs a times array: {source}")
+        try:
+            times = [float(value) for value in raw_times]
+        except (TypeError, ValueError) as exc:
+            raise ValueError(f"JEPA times must be finite numbers: {source}") from exc
+        if not times or not all(math.isfinite(value) for value in times):
+            raise ValueError(f"JEPA times must be finite numbers: {source}")
+        if max(times) > cutoff:
+            raise ValueError(
+                f"JEPA record {entity!r} contains an observation after its prediction cutoff"
+            )
+        cutoffs.append(cutoff)
+    if require_uniform and len(set(cutoffs)) != 1:
+        raise ValueError("JEPA embedding batch requires one shared prediction_cutoff_mjd")
+    return min(cutoffs), max(cutoffs)
+
+
 def _command_jepa_train(args: argparse.Namespace, config: SIDEREAConfig) -> int:
     from siderea.ml import (
         DEFAULT_BAND_TO_ID,
@@ -1375,6 +1551,10 @@ def _command_jepa_train(args: argparse.Namespace, config: SIDEREAConfig) -> int:
         raise ValueError(f"JEPA train/validation entity groups overlap: {examples}")
     train_extent = _jepa_time_extent(train_records, args.train_jsonl)
     validation_extent = _jepa_time_extent(validation_records, args.validation_jsonl)
+    train_cutoffs = validation_cutoffs = None
+    if args.require_prediction_cutoffs:
+        train_cutoffs = _jepa_prediction_cutoffs(train_records, args.train_jsonl)
+        validation_cutoffs = _jepa_prediction_cutoffs(validation_records, args.validation_jsonl)
     if args.split_policy == "chronological" and not train_extent[1] < validation_extent[0]:
         raise ValueError(
             "chronological JEPA split requires every training observation to precede "
@@ -1421,6 +1601,7 @@ def _command_jepa_train(args: argparse.Namespace, config: SIDEREAConfig) -> int:
         batch_size=selected_batch_size,
         learning_rate=config.jepa.learning_rate,
         target_fraction=config.jepa.mask_fraction,
+        mask_scale_jitter=config.jepa.mask_scale_jitter,
         seed=config.jepa.seed,
         device=args.device,
         deterministic_algorithms=deterministic,
@@ -1431,6 +1612,7 @@ def _command_jepa_train(args: argparse.Namespace, config: SIDEREAConfig) -> int:
         validation_data,
         batch_size=selected_batch_size,
         target_fraction=config.jepa.mask_fraction,
+        mask_scale_jitter=config.jepa.mask_scale_jitter,
         seed=config.jepa.seed + 1,
         mask_repeats=args.evaluation_masks,
         device=args.device,
@@ -1460,6 +1642,9 @@ def _command_jepa_train(args: argparse.Namespace, config: SIDEREAConfig) -> int:
                 "split_policy": args.split_policy,
                 "train_time_extent": train_extent,
                 "validation_time_extent": validation_extent,
+                "prediction_cutoffs_required": args.require_prediction_cutoffs,
+                "train_prediction_cutoff_extent": train_cutoffs,
+                "validation_prediction_cutoff_extent": validation_cutoffs,
                 "entity_group_disjoint": True,
                 "deterministic_algorithms": deterministic,
                 "token_fields": list(TOKEN_FIELDS),
@@ -1487,6 +1672,414 @@ def _command_jepa_train(args: argparse.Namespace, config: SIDEREAConfig) -> int:
         shutil.rmtree(temporary, ignore_errors=True)
         raise
     _emit_json(summary)
+    return 0
+
+
+def _command_jepa_embed(args: argparse.Namespace) -> int:
+    from siderea.ml import LightCurveDataset, extract_embeddings, load_checkpoint
+    from siderea.provenance import digest_file, digest_value
+    from siderea.research.pilot import JEPA_EMBEDDINGS_SCHEMA
+
+    records = _load_jsonl(args.input_jsonl)
+    _object_ids(records, args.input_jsonl)
+    cutoff_extent = _jepa_prediction_cutoffs(records, args.input_jsonl, require_uniform=True)
+    model, checkpoint = load_checkpoint(args.checkpoint, map_location=args.device)
+    extracted = extract_embeddings(
+        model,
+        LightCurveDataset(records),
+        batch_size=args.batch_size,
+        device=args.device,
+    )
+    checkpoint_digest = digest_file(args.checkpoint)
+    source_root = Path(__file__).resolve().parent
+    source_files = {
+        name: digest_file(source_root / "ml" / name)
+        for name in ("dataset.py", "evaluate.py", "jepa.py", "train.py")
+    }
+    source_files["cli.py"] = digest_file(Path(__file__))
+    object_ids = extracted["object_ids"]
+    if tuple(record["object_id"] for record in records) != tuple(object_ids):
+        raise RuntimeError("JEPA embedding output object order differs from the input dataset")
+    matrix = extracted["embeddings"]
+    rows = [
+        {
+            "entity_id": record["entity_id"].strip(),
+            "object_id": object_id,
+            "prediction_cutoff_mjd": float(record["prediction_cutoff_mjd"]),
+            "embedding": matrix[index].tolist(),
+        }
+        for index, (record, object_id) in enumerate(zip(records, object_ids, strict=True))
+    ]
+    output: dict[str, Any] = {
+        "schema": JEPA_EMBEDDINGS_SCHEMA,
+        "mode": "shadow_only",
+        "qualifies_reportability": False,
+        "checkpoint_sha256": checkpoint_digest,
+        "dataset_snapshot_sha256": digest_file(args.input_jsonl),
+        "token_contract_sha256": extracted["token_contract_sha256"],
+        "code_identity_sha256": digest_value(source_files),
+        "code_file_sha256": source_files,
+        "prediction_cutoff_mjd": cutoff_extent[0],
+        "checkpoint_metadata": checkpoint["metadata"],
+        "diagnostics": extracted["diagnostics"],
+        "rows": rows,
+    }
+    if args.reference_cohort is not None:
+        from siderea.research.overnight import verify_reference_embeddings
+
+        cohort = _load_json_mapping(args.reference_cohort, "JEPA reference cohort")
+        verified_cohort = verify_reference_embeddings(cohort, output)
+        output["embedding_role"] = "jepa_anomaly_reference"
+        output["reference_cohort_result_digest"] = verified_cohort["result_digest"]
+        output["reference_cohort_id"] = verified_cohort["cohort_id"]
+        output["reference_cohort_manifest_sha256"] = digest_file(args.reference_cohort)
+    else:
+        output["embedding_role"] = "candidate_or_unbound_reference"
+    output["result_digest"] = digest_value(output)
+    _emit_new_json(output, args.output)
+    return 0
+
+
+def _command_jepa_reference_freeze(args: argparse.Namespace) -> int:
+    from siderea.provenance import digest_file
+    from siderea.research.overnight import freeze_reference_cohort
+
+    output = freeze_reference_cohort(
+        _load_jsonl(args.input_jsonl),
+        dataset_sha256=digest_file(args.input_jsonl),
+        cohort_id=args.cohort_id,
+        selection_policy=args.selection_policy,
+    )
+    _emit_new_json(output, args.output)
+    return 0
+
+
+def _pilot_detection_value(value: Any) -> bool:
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, (int, float)) and not isinstance(value, bool) and value in {0, 1}:
+        return bool(value)
+    if isinstance(value, str):
+        normalized = value.strip().casefold()
+        if normalized in {"true", "t", "yes", "y", "detected", "detection", "1"}:
+            return True
+        if normalized in {"false", "f", "no", "n", "nondetection", "non-detection", "0"}:
+            return False
+    raise ValueError(f"unrecognized pilot detection value {value!r}")
+
+
+def _command_pilot_prepare(args: argparse.Namespace) -> int:
+    import io
+
+    import pandas as pd
+
+    from siderea.ml import LightCurveDataset
+    from siderea.provenance import digest_file, digest_value, stable_json
+
+    if not math.isfinite(args.prediction_cutoff_mjd):
+        raise ValueError("prediction cutoff MJD must be finite")
+    flux_unit = args.flux_unit.strip()
+    calibration = args.calibration.strip()
+    if not flux_unit or not calibration:
+        raise ValueError("flux unit and calibration must be non-empty")
+    input_bytes = args.input.read_bytes()
+    identifier_columns = {"source_id": "string", "observation_id": "string"}
+    if args.entity_column:
+        identifier_columns[args.entity_column] = "string"
+    frame = pd.read_csv(io.BytesIO(input_bytes), dtype=identifier_columns)
+    required = {"source_id", "survey", "band", "mjd", "flux", "flux_error"}
+    if args.entity_column:
+        required.add(args.entity_column)
+    if args.detection_column:
+        required.add(args.detection_column)
+    missing = sorted(required - set(frame.columns))
+    if missing:
+        raise ValueError(f"pilot input is missing columns: {missing}")
+    if frame.empty:
+        raise ValueError("pilot input cannot be empty")
+    has_ra, has_dec = "ra_deg" in frame, "dec_deg" in frame
+    if has_ra != has_dec:
+        raise ValueError("pilot coordinates require both ra_deg and dec_deg")
+    if args.require_pipeline_view and not (has_ra and has_dec):
+        raise ValueError("--require-pipeline-view requires ra_deg and dec_deg")
+    for column in ("mjd", "flux", "flux_error"):
+        frame[column] = pd.to_numeric(frame[column], errors="raise")
+        if not frame[column].map(math.isfinite).all():
+            raise ValueError(f"pilot {column} values must be finite")
+    if (frame["flux_error"] <= 0).any():
+        raise ValueError("pilot flux errors must be positive")
+    if has_ra and has_dec:
+        for column in ("ra_deg", "dec_deg"):
+            frame[column] = pd.to_numeric(frame[column], errors="raise")
+            if not frame[column].map(math.isfinite).all():
+                raise ValueError(f"pilot {column} values must be finite")
+        if not frame["ra_deg"].between(0.0, 360.0, inclusive="left").all():
+            raise ValueError("pilot ra_deg values must be within [0, 360)")
+        if not frame["dec_deg"].between(-90.0, 90.0).all():
+            raise ValueError("pilot dec_deg values must be within [-90, 90]")
+    if float(frame["mjd"].max()) > args.prediction_cutoff_mjd:
+        raise ValueError("pilot input contains an observation after its prediction cutoff")
+
+    source_ids = frame["source_id"].astype("string").str.strip()
+    if source_ids.isna().any() or source_ids.eq("").any():
+        raise ValueError("pilot source IDs must be present")
+    if args.entity_column:
+        entity_values = frame[args.entity_column].astype("string").str.strip()
+        if entity_values.isna().any() or entity_values.eq("").any():
+            raise ValueError("pilot physical entity IDs must be present")
+    else:
+        entity_values = source_ids
+    frame["_source_id"] = source_ids
+    frame["_entity_id"] = entity_values
+    frame["_canonical_entity"] = [
+        " ".join(str(value).casefold().split()) for value in entity_values
+    ]
+    if args.detection_column:
+        detections = [_pilot_detection_value(value) for value in frame[args.detection_column]]
+    else:
+        detections = [True] * len(frame)
+    frame["_detected"] = detections
+    normalized_surveys = [" ".join(str(value).casefold().split()) for value in frame["survey"]]
+    if any(not value for value in normalized_surveys) or len(set(normalized_surveys)) != 1:
+        raise ValueError("pilot preparation requires exactly one non-empty survey per bundle")
+    frame["survey"] = normalized_surveys
+
+    identity_columns = ["_canonical_entity", "survey"]
+    measurement_columns = [
+        "_canonical_entity",
+        "survey",
+        "band",
+        "mjd",
+        "flux",
+        "flux_error",
+    ]
+    if "observation_id" in frame:
+        observation_ids = frame["observation_id"].astype("string").str.strip()
+        missing_ids = observation_ids.isna() | observation_ids.fillna("").str.casefold().isin(
+            {"", "nan", "none", "null"}
+        )
+        frame["observation_id"] = observation_ids.mask(missing_ids, pd.NA)
+        if frame.loc[~missing_ids].duplicated(subset=[*identity_columns, "observation_id"]).any():
+            raise ValueError("pilot input reuses an observation ID within a physical entity")
+        if (frame.duplicated(subset=measurement_columns, keep=False) & missing_ids).any():
+            raise ValueError("pilot input has duplicate measurements with ambiguous identity")
+    elif frame.duplicated(subset=measurement_columns).any():
+        raise ValueError("pilot input has duplicate measurements without observation identity")
+
+    records: list[dict[str, Any]] = []
+    detector_parts: list[Any] = []
+    pipeline_parts: list[Any] = []
+    for _, group in frame.groupby("_canonical_entity", sort=True):
+        ordered = group.sort_values(["mjd", "survey", "band", "_source_id"], kind="stable")
+        entity_names = list(dict.fromkeys(str(value).strip() for value in ordered["_entity_id"]))
+        if len({" ".join(value.casefold().split()) for value in entity_names}) != 1:
+            raise RuntimeError("canonical entity grouping became inconsistent")
+        surveys = list(dict.fromkeys(str(value).strip() for value in ordered["survey"]))
+        if len(surveys) != 1:
+            raise ValueError(
+                f"pilot entity {entity_names[0]!r} spans multiple surveys; prepare them separately"
+            )
+        aliases = list(dict.fromkeys(str(value).strip() for value in ordered["_source_id"]))
+        record = {
+            "object_id": entity_names[0],
+            "entity_id": entity_names[0],
+            "source_aliases": aliases,
+            "prediction_cutoff_mjd": float(args.prediction_cutoff_mjd),
+            "times": [float(value) for value in ordered["mjd"]],
+            "values": [float(value) for value in ordered["flux"]],
+            "errors": [float(value) for value in ordered["flux_error"]],
+            "bands": [str(value).strip() for value in ordered["band"]],
+            "detections": [bool(value) for value in ordered["_detected"]],
+            "value_kind": "flux",
+            "survey": surveys[0],
+            "flux_unit": flux_unit,
+            "calibration": calibration,
+        }
+        records.append(record)
+        columns = ["survey", "band", "mjd", "flux", "flux_error"]
+        if "observation_id" in ordered:
+            columns.append("observation_id")
+        detector = ordered[columns].copy()
+        detector.insert(0, "source_id", entity_names[0])
+        detector_parts.append(detector)
+        if has_ra and has_dec:
+            pipeline_columns = [
+                "ra_deg",
+                "dec_deg",
+                "mjd",
+                "band",
+                "flux",
+                "flux_error",
+                "survey",
+            ]
+            if "observation_id" in ordered:
+                pipeline_columns.append("observation_id")
+            pipeline = ordered[pipeline_columns].copy()
+            pipeline.insert(0, "source_id", entity_names[0])
+            pipeline["is_detection"] = [bool(value) for value in ordered["_detected"]]
+            pipeline_parts.append(pipeline)
+
+    # Force complete tokenization before publishing either representation.
+    dataset = LightCurveDataset(records, allow_unknown_bands=False)
+    for index in range(len(dataset)):
+        dataset[index]
+    detector_frame = pd.concat(detector_parts, ignore_index=True)
+    pipeline_frame = None if not pipeline_parts else pd.concat(pipeline_parts, ignore_index=True)
+    destination = args.output.expanduser().resolve()
+    if destination.exists():
+        raise FileExistsError(f"pilot output already exists: {destination}")
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    temporary = destination.with_name(f".{destination.name}.{uuid4().hex}.tmp")
+    temporary.mkdir(mode=0o700)
+    try:
+        flux_path = temporary / "detector_flux.csv"
+        jepa_path = temporary / "jepa.jsonl"
+        pipeline_path = temporary / "pipeline_photometry.csv"
+        flux_path.write_text(detector_frame.to_csv(index=False, lineterminator="\n"))
+        jepa_path.write_text("".join(stable_json(record) + "\n" for record in records))
+        if pipeline_frame is not None:
+            pipeline_path.write_text(pipeline_frame.to_csv(index=False, lineterminator="\n"))
+        manifest: dict[str, Any] = {
+            "schema": "siderea.pilot_dataset.v2",
+            "mode": "shadow_only",
+            "qualifies_reportability": False,
+            "prediction_cutoff_mjd": float(args.prediction_cutoff_mjd),
+            "flux_unit": flux_unit,
+            "calibration": calibration,
+            "identity_policy": (
+                f"column:{args.entity_column}"
+                if args.entity_column
+                else "caller_asserted_source_id_is_physical_entity"
+            ),
+            "detection_policy": (
+                f"column:{args.detection_column}"
+                if args.detection_column
+                else "caller_asserted_all_rows_are_detections"
+            ),
+            "input_sha256": sha256(input_bytes).hexdigest(),
+            "detector_flux_sha256": digest_file(flux_path),
+            "jepa_dataset_sha256": digest_file(jepa_path),
+            "pipeline_view": {
+                "status": "available"
+                if pipeline_frame is not None
+                else "omitted_missing_coordinates",
+                "path": "pipeline_photometry.csv" if pipeline_frame is not None else None,
+                "sha256": digest_file(pipeline_path) if pipeline_frame is not None else None,
+            },
+            "preparation_code_sha256": digest_file(Path(__file__)),
+            "entities": len(records),
+            "observations": len(frame),
+        }
+        manifest["manifest_digest"] = digest_value(manifest)
+        (temporary / "manifest.json").write_text(_render_json(manifest))
+        temporary.replace(destination)
+    except Exception:
+        shutil.rmtree(temporary, ignore_errors=True)
+        raise
+    _emit_json({"output": destination, "manifest": manifest})
+    return 0
+
+
+def _command_shadow_assemble(args: argparse.Namespace) -> int:
+    from siderea.provenance import digest_file
+    from siderea.research.overnight import (
+        verify_integration_manifests,
+        verify_reference_embeddings,
+    )
+    from siderea.research.pilot import assemble_shadow_evidence
+
+    supplied = (
+        args.pipeline_candidates,
+        args.pipeline_manifest,
+        args.pilot_manifest,
+        args.reference_cohort,
+    )
+    if any(value is not None for value in supplied) and not all(
+        value is not None for value in supplied
+    ):
+        raise ValueError(
+            "integrated assembly requires pipeline candidates, pipeline manifest, "
+            "pilot manifest, and reference cohort together"
+        )
+    search = _load_json_mapping(args.transient_search, "transient search")
+    candidate_embeddings = _load_json_mapping(args.candidate_embeddings, "candidate embeddings")
+    reference_embeddings = _load_json_mapping(args.reference_embeddings, "reference embeddings")
+    pipeline_candidates = (
+        None
+        if args.pipeline_candidates is None
+        else _load_json_mapping(args.pipeline_candidates, "pipeline candidates")
+    )
+    manifest_binding = None
+    reference_cohort_digest = None
+    if args.pipeline_candidates is not None:
+        manifest_binding = verify_integration_manifests(
+            pilot_manifest_path=args.pilot_manifest,
+            pipeline_manifest_path=args.pipeline_manifest,
+            pipeline_candidates_path=args.pipeline_candidates,
+            transient_search=search,
+            candidate_embeddings=candidate_embeddings,
+        )
+        cohort = _load_json_mapping(args.reference_cohort, "reference cohort")
+        verified_cohort = verify_reference_embeddings(cohort, reference_embeddings)
+        reference_cohort_digest = verified_cohort["result_digest"]
+        if reference_embeddings.get("reference_cohort_result_digest") != reference_cohort_digest:
+            raise ValueError("reference embeddings are not bound to the supplied frozen cohort")
+    output = assemble_shadow_evidence(
+        search,
+        candidate_embeddings,
+        reference_embeddings,
+        pipeline_candidates=pipeline_candidates,
+        pipeline_candidates_sha256=(
+            None if args.pipeline_candidates is None else digest_file(args.pipeline_candidates)
+        ),
+        manifest_binding=manifest_binding,
+        reference_cohort_result_digest=reference_cohort_digest,
+        random_state=args.random_state,
+    )
+    _emit_new_json(output, args.output)
+    return 0
+
+
+def _command_transient_shard(args: argparse.Namespace) -> int:
+    import io
+
+    import pandas as pd
+
+    from siderea.research.overnight import shard_flux_table
+
+    frame = pd.read_csv(
+        io.BytesIO(args.input.read_bytes()),
+        dtype={"source_id": "string", "observation_id": "string"},
+    )
+    result = shard_flux_table(frame, args.output, max_channels=args.max_channels)
+    _emit_json({"output": args.output.expanduser().resolve(), "manifest": result})
+    return 0
+
+
+def _command_transient_merge(args: argparse.Namespace) -> int:
+    from siderea.research.overnight import merge_transient_searches
+
+    searches = [
+        _load_json_mapping(path, f"transient shard {index}")
+        for index, path in enumerate(args.inputs, start=1)
+    ]
+    _emit_new_json(merge_transient_searches(searches), args.output)
+    return 0
+
+
+def _command_shadow_rank(args: argparse.Namespace) -> int:
+    from siderea.research.pilot import build_integrated_shadow_queue
+
+    output = build_integrated_shadow_queue(
+        _load_json_mapping(args.evidence, "shadow evidence"),
+        budget=args.budget,
+        detector_slots=args.detector_slots,
+        jepa_slots=args.jepa_slots,
+        audit_slots=args.audit_slots,
+        jepa_threshold=args.jepa_threshold,
+        audit_seed=args.audit_seed,
+    )
+    _emit_new_json(output, args.output)
     return 0
 
 
@@ -1658,17 +2251,35 @@ def _command_transient_search(args: argparse.Namespace) -> int:
     from siderea.research.transients import search_flux_table
 
     data = args.input.read_bytes()
+    frame = pd.read_csv(io.BytesIO(data), dtype={"source_id": "string", "observation_id": "string"})
+    if args.prediction_cutoff_mjd is not None:
+        if not math.isfinite(args.prediction_cutoff_mjd):
+            raise ValueError("prediction cutoff MJD must be finite")
+        if "mjd" not in frame:
+            raise ValueError("transient-search input requires an MJD column")
+        observed_times = pd.to_numeric(frame["mjd"], errors="raise")
+        if observed_times.empty or not observed_times.map(math.isfinite).all():
+            raise ValueError("transient-search MJD values must be finite")
+        if float(observed_times.max()) > args.prediction_cutoff_mjd:
+            raise ValueError("transient search contains an observation after its prediction cutoff")
     result = search_flux_table(
-        pd.read_csv(io.BytesIO(data)),
+        frame,
         widths=args.width_days or (1.0, 3.0, 10.0),
         center_count=args.centers,
         null_trials=args.null_trials,
         seed=args.seed,
         alpha=args.alpha,
         noise_timescale_days=args.noise_timescale_days,
+        object_universe_size=args.survey_object_count,
+        planned_looks=args.planned_looks,
+        look_index=args.look_index,
+        null_method=args.null_method,
+        wild_block_size=args.wild_block_size,
     )
     result.pop("result_digest")
     result["input_sha256"] = sha256(data).hexdigest()
+    if args.prediction_cutoff_mjd is not None:
+        result["prediction_cutoff_mjd"] = args.prediction_cutoff_mjd
     result["result_digest"] = digest_value(result)
     encoded = (stable_json(result) + "\n").encode("utf-8")
     atomic_create_binary(args.output, lambda handle: handle.write(encoded))
@@ -1868,6 +2479,31 @@ def _command_operations_action(args: argparse.Namespace) -> int:
     from siderea.operations import BrokerArchive, OperationsLedger
     from siderea.operations.recovery import check_sqlite_recovery
 
+    if args.command == "tns-qualify":
+        from siderea.clients.base import ResilientExecutor
+        from siderea.clients.tns import TNSClient, TNSCredentials
+        from siderea.operations.qualification import qualify_tns_live
+        from siderea.provenance import stable_json
+
+        if args.output.exists():
+            raise ValueError("qualification output already exists; choose a new report path")
+        values = [
+            os.environ.get(key, "").strip() for key in ("TNS_API_KEY", "TNS_BOT_ID", "TNS_BOT_NAME")
+        ]
+        if not all(values):
+            raise ValueError("set TNS_API_KEY, TNS_BOT_ID, and TNS_BOT_NAME for live qualification")
+        client = TNSClient(TNSCredentials(*values), executor=ResilientExecutor(attempts=1))
+        qualification = qualify_tns_live(
+            client,
+            query=_load_json_mapping(args.query_json, "TNS qualification query"),
+            expected_status=args.expected_status,
+            expected_names=args.expected_name,
+        )
+        encoded = (stable_json(qualification) + "\n").encode()
+        atomic_create_binary(args.output, lambda handle: handle.write(encoded))
+        _emit_json(qualification)
+        return 0 if qualification["passed"] else 3
+
     if args.command == "fixture-qualify-tns":
         from siderea.operations.fixtures import load_service_fixture
         from siderea.operations.qualification import qualify_tns_fixtures
@@ -2061,6 +2697,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                     "incident-resolve",
                     "recovery-check",
                     "fixture-qualify-tns",
+                    "tns-qualify",
                     "evidence-backup",
                     "evidence-backup-verify",
                     "evidence-restore",
@@ -2070,6 +2707,13 @@ def main(argv: Sequence[str] | None = None) -> int:
             "cohort-enroll": _command_cohort_enroll,
             "cohort-export": _command_cohort_export,
             "benchmark-run": _command_benchmark_run,
+            "pilot-prepare": _command_pilot_prepare,
+            "transient-shard": _command_transient_shard,
+            "transient-merge": _command_transient_merge,
+            "jepa-embed": _command_jepa_embed,
+            "jepa-reference-freeze": _command_jepa_reference_freeze,
+            "shadow-assemble": _command_shadow_assemble,
+            "shadow-rank": _command_shadow_rank,
             "injection-run": _command_injection_run,
             "transient-search": _command_transient_search,
             "fixture-record": _command_fixture_record,

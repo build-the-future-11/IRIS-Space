@@ -1,0 +1,251 @@
+{
+  "checkpoint": "/Volumes/PRO-BLADE/IRIS-Project/paper/research/overnight-smoke-20260913-v3/jepa-model/checkpoint.pt",
+  "checkpoint_sha256": "a0cbcb962f23896e65199dda7ac57b6b9e6db574254ee1ffeadeba5d84c368e9",
+  "metadata": {
+    "created_at_utc": "2026-09-13T04:50:08.903966+00:00",
+    "format_version": 3,
+    "model_class": "TSJEPA",
+    "model_config": {
+      "d_model": 256,
+      "dropout": 0.1,
+      "ema_momentum": 0.996,
+      "ff_multiplier": 4,
+      "n_heads": 8,
+      "num_bands": 7,
+      "num_layers": 6,
+      "predictor_hidden": 512,
+      "token_dim": 6
+    },
+    "token_contract_bound": true,
+    "token_contract_sha256": "f3f594178f9fdbb5d7a0e307a0fec55b6db3e2407d2d56497fd410f45afc1c8b",
+    "torch_version": "2.14.0",
+    "user_metadata": {
+      "band_to_id": {
+        "g": 1,
+        "i": 3,
+        "r": 2,
+        "u": 0,
+        "unknown": 6,
+        "y": 5,
+        "z": 4
+      },
+      "band_vocabulary_sha256": "ff26c4da7faa70bb65cde873340192f27f2d2d11b9328112c8171c7318b347ce",
+      "deterministic_algorithms": true,
+      "entity_group_disjoint": true,
+      "mode": "shadow_research",
+      "normalization_scope": "full_curve_then_context_rebased_during_masking",
+      "prediction_cutoffs_required": true,
+      "split_policy": "chronological",
+      "token_contract": {
+        "band_to_id": {
+          "g": 1,
+          "i": 3,
+          "r": 2,
+          "u": 0,
+          "unknown": 6,
+          "y": 5,
+          "z": 4
+        },
+        "detection_policy": "flux_requires_explicit; magnitude_may_infer_from_finite_value",
+        "equal_time_ordering": "time_band_detection_value_error",
+        "error_presence_policy": "errors_without_measured_values_are_ignored",
+        "format": "siderea.light_curve_tokens.v3",
+        "max_length": null,
+        "missing_error_sentinel": 0.0,
+        "normalization_scope": "full_curve_then_context_rebased_during_masking",
+        "token_fields": [
+          "delta_time",
+          "normalized_value",
+          "normalized_error",
+          "band_id",
+          "detected",
+          "value_present"
+        ],
+        "truncation_policy": "keep_latest",
+        "unknown_band_policy": "map_to_unknown",
+        "value_direction": "brighter_is_positive",
+        "value_kind": "flux",
+        "value_presence_policy": "explicit_token_field; missing_values_and_errors_are_zeroed"
+      },
+      "token_contract_sha256": "f3f594178f9fdbb5d7a0e307a0fec55b6db3e2407d2d56497fd410f45afc1c8b",
+      "token_fields": [
+        "delta_time",
+        "normalized_value",
+        "normalized_error",
+        "band_id",
+        "detected",
+        "value_present"
+      ],
+      "tokenization_contract_version": "siderea.light_curve_tokens.v3",
+      "train_dataset_sha256": "155a7ca8687f7b4bfd86787fb909ebe7fa236d99de3364266a9a56d4dc399649",
+      "train_prediction_cutoff_extent": [
+        10.0,
+        10.0
+      ],
+      "train_time_extent": [
+        1.0,
+        10.0
+      ],
+      "validation": {
+        "batches": 2,
+        "collapsed_batch_fraction": 0.0,
+        "collapsed_batch_fraction_is_batch_dependent": true,
+        "loss": 0.4010857045650482,
+        "loss_ci95_half_width": 0.015877562165260314,
+        "loss_ci95_method": "student_t_over_mask_repeats",
+        "loss_ci95_scope": "mask_sampling_only_conditional_on_fixed_model_and_dataset",
+        "loss_standard_error_across_masks": 0.0012496113777160645,
+        "loss_std_across_masks": 0.0017672173580617868,
+        "mask_repeats": 2,
+        "mask_scale_jitter": 0.5,
+        "mask_seeds": [
+          2027,
+          2028
+        ],
+        "mean_loss_across_masks": 0.4004608988761902,
+        "mean_target_feature_std": 0.552324220795084,
+        "repeat_losses": [
+          0.3992112874984741,
+          0.40171051025390625
+        ],
+        "representation_diagnostic_scope": "all_target_tokens_across_all_mask_repeats",
+        "seed": 2027,
+        "target_count_variation_expected": true,
+        "target_fraction": 0.5,
+        "target_representation_diagnostics": {
+          "collapsed_feature_fraction": 0.0,
+          "effective_rank": 3.5231572608452346,
+          "effective_rank_fraction": 0.5033081801207479,
+          "is_collapsed": false,
+          "maximum_resolvable_rank": 7,
+          "mean_feature_std": 0.552324220795084,
+          "minimum_feature_std": 0.15434183878371252,
+          "num_vectors": 8,
+          "representation_rms": 0.9999950525554905
+        },
+        "target_tokens": 8,
+        "target_tokens_per_repeat": [
+          2,
+          6
+        ],
+        "token_contract_sha256": "f3f594178f9fdbb5d7a0e307a0fec55b6db3e2407d2d56497fd410f45afc1c8b"
+      },
+      "validation_dataset_sha256": "b5adc1ff3c7046339d16d67c929c0e40ec70a9b176c3749cb4d58dbab2282196",
+      "validation_prediction_cutoff_extent": [
+        22.0,
+        22.0
+      ],
+      "validation_time_extent": [
+        11.0,
+        22.0
+      ]
+    }
+  },
+  "operational_status": "shadow_only; never a reporting gate",
+  "schema": "siderea.jepa_training.v2",
+  "training": {
+    "data_loader": {
+      "source": "siderea_constructed_dataloader",
+      "training_config_loader_fields_applied": true
+    },
+    "epochs": [
+      {
+        "collapsed_step_fraction": 0.0,
+        "collapsed_step_fraction_is_batch_dependent": true,
+        "epoch": 1,
+        "loss": 0.44244807958602905,
+        "mean_target_feature_std": 0.28865956849858776,
+        "representation_diagnostic_scope": "all_target_tokens_in_epoch",
+        "steps": 1,
+        "target_representation_diagnostics": {
+          "collapsed_feature_fraction": 0.08984375,
+          "effective_rank": 1.0000000000000198,
+          "effective_rank_fraction": 1.0,
+          "is_collapsed": false,
+          "maximum_resolvable_rank": 1,
+          "mean_feature_std": 0.28865956849858776,
+          "minimum_feature_std": 0.0011506378650665283,
+          "num_vectors": 2,
+          "representation_rms": 0.9999950443939009
+        },
+        "target_tokens": 2
+      }
+    ],
+    "format_version": 1,
+    "model_config": {
+      "d_model": 256,
+      "dropout": 0.1,
+      "ema_momentum": 0.996,
+      "ff_multiplier": 4,
+      "n_heads": 8,
+      "num_bands": 7,
+      "num_layers": 6,
+      "predictor_hidden": 512,
+      "token_dim": 6
+    },
+    "optimizer_class": "torch.optim.adamw.AdamW",
+    "optimizer_supplied_by_caller": false,
+    "token_contract_sha256": "f3f594178f9fdbb5d7a0e307a0fec55b6db3e2407d2d56497fd410f45afc1c8b",
+    "total_steps": 1,
+    "training_config": {
+      "batch_size": 128,
+      "deterministic_algorithms": true,
+      "device": "cpu",
+      "ema_momentum": null,
+      "epochs": 1,
+      "grad_clip": 1.0,
+      "learning_rate": 0.0003,
+      "mask_scale_jitter": 0.5,
+      "min_target": 1,
+      "num_workers": 0,
+      "seed": 2026,
+      "shuffle": true,
+      "target_fraction": 0.5,
+      "weight_decay": 0.0001
+    }
+  },
+  "validation": {
+    "batches": 2,
+    "collapsed_batch_fraction": 0.0,
+    "collapsed_batch_fraction_is_batch_dependent": true,
+    "loss": 0.4010857045650482,
+    "loss_ci95_half_width": 0.015877562165260314,
+    "loss_ci95_method": "student_t_over_mask_repeats",
+    "loss_ci95_scope": "mask_sampling_only_conditional_on_fixed_model_and_dataset",
+    "loss_standard_error_across_masks": 0.0012496113777160645,
+    "loss_std_across_masks": 0.0017672173580617868,
+    "mask_repeats": 2,
+    "mask_scale_jitter": 0.5,
+    "mask_seeds": [
+      2027,
+      2028
+    ],
+    "mean_loss_across_masks": 0.4004608988761902,
+    "mean_target_feature_std": 0.552324220795084,
+    "repeat_losses": [
+      0.3992112874984741,
+      0.40171051025390625
+    ],
+    "representation_diagnostic_scope": "all_target_tokens_across_all_mask_repeats",
+    "seed": 2027,
+    "target_count_variation_expected": true,
+    "target_fraction": 0.5,
+    "target_representation_diagnostics": {
+      "collapsed_feature_fraction": 0.0,
+      "effective_rank": 3.5231572608452346,
+      "effective_rank_fraction": 0.5033081801207479,
+      "is_collapsed": false,
+      "maximum_resolvable_rank": 7,
+      "mean_feature_std": 0.552324220795084,
+      "minimum_feature_std": 0.15434183878371252,
+      "num_vectors": 8,
+      "representation_rms": 0.9999950525554905
+    },
+    "target_tokens": 8,
+    "target_tokens_per_repeat": [
+      2,
+      6
+    ],
+    "token_contract_sha256": "f3f594178f9fdbb5d7a0e307a0fec55b6db3e2407d2d56497fd410f45afc1c8b"
+  }
+}

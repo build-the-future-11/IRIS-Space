@@ -1,0 +1,10 @@
+{
+  "src/siderea/research/archives.py": "c635e6afa823be9bef14c2a9de29c189ad9e14830c19b9aa819ba2e865d6c1ea",
+  "paper/reconstruct.py": "d3da4c2477e191cf95a790e71bdc422fa2b924b4efe499161df18cf9d7e667f6",
+  "paper/experiments/make_tables.py": "56c5110c94a81911a050c47c2849427c418969845a31b4472045c35f6da97dfa",
+  "paper/experiments/run_transient_search.py": "c2a5a596a94031162ca45459e8af6179ca5be66d9c649d291a5c747bd6013711",
+  "paper/experiments/run_noise_stress.py": "22d91c311ef16b0b594deafe243227fb3aebde20b94d8abc278445e3ff801b6f",
+  "tests/test_research_archives.py": "2960c0d57050d8c3886e3b3d1be2f47a15df7d3789830839f72cc273ef63f9ba",
+  "tests/test_paper_reconstruction.py": "18339699fc9c552aa22bacd596e3eeb51e532cd6195fc4c2b5a0fb2074ff029f",
+  "Makefile": "ad9f3ccef93c226f1ae1dfdf18d0653f44daeb6dd571fefc7d848b845508dbac"
+}

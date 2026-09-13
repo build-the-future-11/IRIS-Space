@@ -171,6 +171,14 @@ Where data permit, repeat with rolling-origin evaluation across seasons. Report
 the exact cutoff times and perform an explicit overlap audit covering object ID,
 alias, sky-position/time clusters, and source file hashes.
 
+For uncertainty conditional on the observed entities within each deployment period,
+use `bootstrap_unit="entity_within_time_block"`. For uncertainty over the observed
+distribution of deployment periods, use `bootstrap_unit="time_block"`; the latter
+resamples whole folds with one paired draw shared by every compared score. Record the
+choice in the preregistered analysis narrative. Neither option includes model-training,
+label-adjudication, or acquisition-policy uncertainty unless those levels are explicitly
+added to the design.
+
 ## 2. Measurement and feature verification
 
 ### Current extraction boundary

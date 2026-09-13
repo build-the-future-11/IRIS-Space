@@ -320,6 +320,31 @@ class MaskAndModelTests(unittest.TestCase):
             self.assertEqual(indices, list(range(indices[0], indices[-1] + 1)))
         self.assertTrue(bool((padding_mask & ~targets).any(dim=1).all()))
 
+    def test_multiscale_mask_is_seeded_contiguous_and_retains_context(self) -> None:
+        padding_mask = torch.ones((12, 20), dtype=torch.bool)
+        first = make_contiguous_target_mask(
+            padding_mask,
+            target_fraction=0.5,
+            scale_jitter=0.5,
+            generator=torch.Generator().manual_seed(71),
+        )
+        second = make_contiguous_target_mask(
+            padding_mask,
+            target_fraction=0.5,
+            scale_jitter=0.5,
+            generator=torch.Generator().manual_seed(71),
+        )
+        self.assertTrue(torch.equal(first, second))
+        counts = set(first.sum(dim=1).tolist())
+        self.assertGreaterEqual(len(counts), 2)
+        self.assertTrue(counts <= {5, 10, 15})
+        self.assertTrue(bool((padding_mask & ~first).any(dim=1).all()))
+        for row in first:
+            indices = torch.nonzero(row, as_tuple=False).flatten().tolist()
+            self.assertEqual(indices, list(range(indices[0], indices[-1] + 1)))
+        with self.assertRaisesRegex(ValueError, "scale_jitter"):
+            make_contiguous_target_mask(padding_mask, scale_jitter=1.0)
+
     def test_forward_ema_and_collapse_diagnostics(self) -> None:
         torch.manual_seed(3)
         batch = self._batch()
@@ -545,7 +570,13 @@ class TrainingAndCheckpointTests(unittest.TestCase):
         return LightCurveDataset(records)
 
     def test_numeric_configuration_rejects_booleans_and_negative_seed(self) -> None:
-        for keyword in ("learning_rate", "weight_decay", "target_fraction", "ema_momentum"):
+        for keyword in (
+            "learning_rate",
+            "weight_decay",
+            "target_fraction",
+            "mask_scale_jitter",
+            "ema_momentum",
+        ):
             with self.subTest(keyword=keyword), self.assertRaises(ValueError):
                 TrainingConfig(**{keyword: True})
         with self.assertRaisesRegex(ValueError, "seed"):
@@ -595,6 +626,7 @@ class TrainingAndCheckpointTests(unittest.TestCase):
         self.assertGreater(metrics["target_tokens"], 0)
         self.assertTrue(math.isfinite(metrics["loss"]))
         self.assertEqual(metrics["mask_repeats"], 5)
+        self.assertFalse(metrics["target_count_variation_expected"])
         self.assertEqual(len(metrics["repeat_losses"]), 5)
         self.assertGreaterEqual(metrics["loss_ci95_half_width"], 0.0)
         self.assertEqual(metrics["loss_ci95_method"], "student_t_over_mask_repeats")
@@ -621,6 +653,18 @@ class TrainingAndCheckpointTests(unittest.TestCase):
             differently_batched["target_representation_diagnostics"]["effective_rank"],
             places=5,
         )
+
+        multiscale = evaluate_jepa(
+            model,
+            dataset,
+            batch_size=4,
+            target_fraction=0.4,
+            mask_scale_jitter=0.5,
+            seed=101,
+            mask_repeats=5,
+        )
+        self.assertTrue(multiscale["target_count_variation_expected"])
+        self.assertGreater(multiscale["target_tokens"], 0)
 
         shuffled_loader = torch.utils.data.DataLoader(
             dataset,

@@ -234,12 +234,13 @@ For applications and outreach:
 - 3,824 distinct ZTF objects screened across 24 productive runs, 2026-04 to 2026-07.
 - 28% of candidates reaching catalog validation were rejected as known variables;
   a further 30 were rejected as already-known TNS objects.
-- 1 confirmed discovery: **AT 2026rsp**, submitted 2026-07-05, with published
-  **AstroNote 2026-210** requesting spectroscopic classification.
+- 1 object with a detailed surviving summary: **AT 2026rsp**. The summary attributes
+  submission to 2026-07-05 and records **AstroNote 2026-210**; these statements still
+  require verification against permitted primary registry records.
 - One candidate was correctly downgraded from supernova to nuclear/AGN-like wording on a
   0.4″ host coincidence.
-- End-to-end selectivity of 0.026% — the group reports roughly one object in four
-  thousand screened.
+- Detailed-summary fraction of 0.026% (1/3,824). This is a present-day documentation
+  fraction, not an independently verified discovery rate or classifier precision.
 
 What this record does **not** support: any claim of a spectroscopic classification.
 AT 2026rsp is a designated transient candidate awaiting classification.

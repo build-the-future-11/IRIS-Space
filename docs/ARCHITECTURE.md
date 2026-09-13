@@ -489,6 +489,23 @@ or establish astronomical utility. The model remains in shadow mode until the
 promotion gates in the scientific validation plan pass. It is neither a calibrated
 probability model nor an input to reportability.
 
+## Integrated shadow experiment
+
+`pilot-prepare` derives three immutable views from one measured-flux table: canonical
+operational photometry, template-search flux, and JEPA JSONL. All views use the same
+physical entity ID and prediction cutoff. `shadow-assemble` verifies exact candidate
+coverage, candidate record/version integrity, checkpoint and token provenance, and a
+training-reference population disjoint from candidates.
+
+The combined artifact preserves three meanings rather than blending them: Aadi's
+operational heuristic is an inspectable priority, Aadi's template bank supplies
+finite-null p-values, and JEPA supplies reference-relative novelty. When a complete
+pre-filter object universe and all planned looks are declared, the template path
+also emits a conservative campaign p-value. `shadow-rank` assigns distinct heuristic,
+template-reserve, JEPA-reserve, and seeded random-audit routes within one fixed review
+budget. It refuses a detector reserve without campaign correction. None of these
+artifacts can satisfy or bypass catalogue, quality, human-review, or reporting gates.
+
 ## Dependency and failure boundaries
 
 - Core configuration and domain types use the Python standard library.

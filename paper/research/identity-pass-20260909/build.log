@@ -1,0 +1,516 @@
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - setuptools>=77
+  - wheel
+* Getting build dependencies for sdist...
+running egg_info
+writing src/siderea_astronomy.egg-info/PKG-INFO
+writing dependency_links to src/siderea_astronomy.egg-info/dependency_links.txt
+writing entry points to src/siderea_astronomy.egg-info/entry_points.txt
+writing requirements to src/siderea_astronomy.egg-info/requires.txt
+writing top-level names to src/siderea_astronomy.egg-info/top_level.txt
+reading manifest file 'src/siderea_astronomy.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+warning: no previously-included files matching '__pycache__' found under directory '*'
+warning: no previously-included files matching '*.py[cod]' found under directory '*'
+writing manifest file 'src/siderea_astronomy.egg-info/SOURCES.txt'
+* Installed build dependency versions:
+  - setuptools==84.0.0
+  - wheel==0.48.0
+* Building sdist...
+running sdist
+running egg_info
+writing src/siderea_astronomy.egg-info/PKG-INFO
+writing dependency_links to src/siderea_astronomy.egg-info/dependency_links.txt
+writing entry points to src/siderea_astronomy.egg-info/entry_points.txt
+writing requirements to src/siderea_astronomy.egg-info/requires.txt
+writing top-level names to src/siderea_astronomy.egg-info/top_level.txt
+reading manifest file 'src/siderea_astronomy.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+warning: no previously-included files matching '__pycache__' found under directory '*'
+warning: no previously-included files matching '*.py[cod]' found under directory '*'
+writing manifest file 'src/siderea_astronomy.egg-info/SOURCES.txt'
+running check
+creating siderea_astronomy-0.3.0
+creating siderea_astronomy-0.3.0/configs
+creating siderea_astronomy-0.3.0/docs
+creating siderea_astronomy-0.3.0/examples
+creating siderea_astronomy-0.3.0/src/siderea
+creating siderea_astronomy-0.3.0/src/siderea/clients
+creating siderea_astronomy-0.3.0/src/siderea/data
+creating siderea_astronomy-0.3.0/src/siderea/features
+creating siderea_astronomy-0.3.0/src/siderea/ingest
+creating siderea_astronomy-0.3.0/src/siderea/ml
+creating siderea_astronomy-0.3.0/src/siderea/operations
+creating siderea_astronomy-0.3.0/src/siderea/reporting
+creating siderea_astronomy-0.3.0/src/siderea/research
+creating siderea_astronomy-0.3.0/src/siderea/review
+creating siderea_astronomy-0.3.0/src/siderea/scoring
+creating siderea_astronomy-0.3.0/src/siderea/validation
+creating siderea_astronomy-0.3.0/src/siderea_astronomy.egg-info
+creating siderea_astronomy-0.3.0/tests
+creating siderea_astronomy-0.3.0/tests/fixtures
+copying files to siderea_astronomy-0.3.0...
+copying .env.example -> siderea_astronomy-0.3.0
+copying CONTRIBUTING.md -> siderea_astronomy-0.3.0
+copying MANIFEST.in -> siderea_astronomy-0.3.0
+copying Makefile -> siderea_astronomy-0.3.0
+copying PROJECT_FINISH_CHECKLIST.md -> siderea_astronomy-0.3.0
+copying README.md -> siderea_astronomy-0.3.0
+copying SECURITY.md -> siderea_astronomy-0.3.0
+copying pyproject.toml -> siderea_astronomy-0.3.0
+copying requirements.txt -> siderea_astronomy-0.3.0
+copying configs/default.toml -> siderea_astronomy-0.3.0/configs
+copying configs/hunt.toml -> siderea_astronomy-0.3.0/configs
+copying configs/jepa.toml -> siderea_astronomy-0.3.0/configs
+copying configs/validation.toml -> siderea_astronomy-0.3.0/configs
+copying docs/ARCHITECTURE.md -> siderea_astronomy-0.3.0/docs
+copying docs/AUDIT_2026-09-06.md -> siderea_astronomy-0.3.0/docs
+copying docs/CODE_REVIEW_SOURCE_INVENTORY_2026-09-07.md -> siderea_astronomy-0.3.0/docs
+copying docs/FIRST_RUN.md -> siderea_astronomy-0.3.0/docs
+copying docs/FULL_CODE_REVIEW_2026-09-07.md -> siderea_astronomy-0.3.0/docs
+copying docs/IMPLEMENTATION_CHECKLIST_2026-09-09.md -> siderea_astronomy-0.3.0/docs
+copying docs/LOCAL_OPERATIONS.md -> siderea_astronomy-0.3.0/docs
+copying docs/MIGRATION.md -> siderea_astronomy-0.3.0/docs
+copying docs/PROJECT_EXECUTION_REPORT.md -> siderea_astronomy-0.3.0/docs
+copying docs/PROJECT_STATUS_2026-09-08.md -> siderea_astronomy-0.3.0/docs
+copying docs/RESEARCH_ALPHA_RELEASE.md -> siderea_astronomy-0.3.0/docs
+copying docs/ROADMAP.md -> siderea_astronomy-0.3.0/docs
+copying docs/SCIENTIFIC_VALIDATION.md -> siderea_astronomy-0.3.0/docs
+copying docs/TNS_TESTING.md -> siderea_astronomy-0.3.0/docs
+copying docs/TRANSIENT_SEARCH.md -> siderea_astronomy-0.3.0/docs
+copying examples/README.md -> siderea_astronomy-0.3.0/examples
+copying examples/baseline_training.csv -> siderea_astronomy-0.3.0/examples
+copying examples/jepa_train.jsonl -> siderea_astronomy-0.3.0/examples
+copying examples/jepa_validation.jsonl -> siderea_astronomy-0.3.0/examples
+copying examples/photometry.csv -> siderea_astronomy-0.3.0/examples
+copying examples/transient_flux.csv -> siderea_astronomy-0.3.0/examples
+copying src/siderea/__init__.py -> siderea_astronomy-0.3.0/src/siderea
+copying src/siderea/__main__.py -> siderea_astronomy-0.3.0/src/siderea
+copying src/siderea/anomaly.py -> siderea_astronomy-0.3.0/src/siderea
+copying src/siderea/atomic.py -> siderea_astronomy-0.3.0/src/siderea
+copying src/siderea/bands.py -> siderea_astronomy-0.3.0/src/siderea
+copying src/siderea/campaigns.py -> siderea_astronomy-0.3.0/src/siderea
+copying src/siderea/cli.py -> siderea_astronomy-0.3.0/src/siderea
+copying src/siderea/config.py -> siderea_astronomy-0.3.0/src/siderea
+copying src/siderea/default.toml -> siderea_astronomy-0.3.0/src/siderea
+copying src/siderea/domain.py -> siderea_astronomy-0.3.0/src/siderea
+copying src/siderea/evaluation.py -> siderea_astronomy-0.3.0/src/siderea
+copying src/siderea/evidence_context.py -> siderea_astronomy-0.3.0/src/siderea
+copying src/siderea/followup.py -> siderea_astronomy-0.3.0/src/siderea
+copying src/siderea/host.py -> siderea_astronomy-0.3.0/src/siderea
+copying src/siderea/identity.py -> siderea_astronomy-0.3.0/src/siderea
+copying src/siderea/integrity.py -> siderea_astronomy-0.3.0/src/siderea
+copying src/siderea/ledger.py -> siderea_astronomy-0.3.0/src/siderea
+copying src/siderea/manifest.py -> siderea_astronomy-0.3.0/src/siderea
+copying src/siderea/pipeline.py -> siderea_astronomy-0.3.0/src/siderea
+copying src/siderea/promotion.py -> siderea_astronomy-0.3.0/src/siderea
+copying src/siderea/provenance.py -> siderea_astronomy-0.3.0/src/siderea
+copying src/siderea/py.typed -> siderea_astronomy-0.3.0/src/siderea
+copying src/siderea/ranking.py -> siderea_astronomy-0.3.0/src/siderea
+copying src/siderea/similarity.py -> siderea_astronomy-0.3.0/src/siderea
+copying src/siderea/state.py -> siderea_astronomy-0.3.0/src/siderea
+copying src/siderea/clients/__init__.py -> siderea_astronomy-0.3.0/src/siderea/clients
+copying src/siderea/clients/base.py -> siderea_astronomy-0.3.0/src/siderea/clients
+copying src/siderea/clients/catalogs.py -> siderea_astronomy-0.3.0/src/siderea/clients
+copying src/siderea/clients/tns.py -> siderea_astronomy-0.3.0/src/siderea/clients
+copying src/siderea/data/__init__.py -> siderea_astronomy-0.3.0/src/siderea/data
+copying src/siderea/data/snapshot.py -> siderea_astronomy-0.3.0/src/siderea/data
+copying src/siderea/features/__init__.py -> siderea_astronomy-0.3.0/src/siderea/features
+copying src/siderea/features/photometry.py -> siderea_astronomy-0.3.0/src/siderea/features
+copying src/siderea/ingest/__init__.py -> siderea_astronomy-0.3.0/src/siderea/ingest
+copying src/siderea/ingest/alerce.py -> siderea_astronomy-0.3.0/src/siderea/ingest
+copying src/siderea/ingest/base.py -> siderea_astronomy-0.3.0/src/siderea/ingest
+copying src/siderea/ingest/csv.py -> siderea_astronomy-0.3.0/src/siderea/ingest
+copying src/siderea/ingest/schema.py -> siderea_astronomy-0.3.0/src/siderea/ingest
+copying src/siderea/ingest/snapshot.py -> siderea_astronomy-0.3.0/src/siderea/ingest
+copying src/siderea/ml/__init__.py -> siderea_astronomy-0.3.0/src/siderea/ml
+copying src/siderea/ml/baseline.py -> siderea_astronomy-0.3.0/src/siderea/ml
+copying src/siderea/ml/dataset.py -> siderea_astronomy-0.3.0/src/siderea/ml
+copying src/siderea/ml/evaluate.py -> siderea_astronomy-0.3.0/src/siderea/ml
+copying src/siderea/ml/jepa.py -> siderea_astronomy-0.3.0/src/siderea/ml
+copying src/siderea/ml/train.py -> siderea_astronomy-0.3.0/src/siderea/ml
+copying src/siderea/operations/__init__.py -> siderea_astronomy-0.3.0/src/siderea/operations
+copying src/siderea/operations/assets.py -> siderea_astronomy-0.3.0/src/siderea/operations
+copying src/siderea/operations/backup.py -> siderea_astronomy-0.3.0/src/siderea/operations
+copying src/siderea/operations/broker_store.py -> siderea_astronomy-0.3.0/src/siderea/operations
+copying src/siderea/operations/fixtures.py -> siderea_astronomy-0.3.0/src/siderea/operations
+copying src/siderea/operations/observability.py -> siderea_astronomy-0.3.0/src/siderea/operations
+copying src/siderea/operations/qualification.py -> siderea_astronomy-0.3.0/src/siderea/operations
+copying src/siderea/operations/recovery.py -> siderea_astronomy-0.3.0/src/siderea/operations
+copying src/siderea/reporting/__init__.py -> siderea_astronomy-0.3.0/src/siderea/reporting
+copying src/siderea/reporting/preflight.py -> siderea_astronomy-0.3.0/src/siderea/reporting
+copying src/siderea/research/__init__.py -> siderea_astronomy-0.3.0/src/siderea/research
+copying src/siderea/research/archives.py -> siderea_astronomy-0.3.0/src/siderea/research
+copying src/siderea/research/benchmark.py -> siderea_astronomy-0.3.0/src/siderea/research
+copying src/siderea/research/cohort.py -> siderea_astronomy-0.3.0/src/siderea/research
+copying src/siderea/research/injection.py -> siderea_astronomy-0.3.0/src/siderea/research
+copying src/siderea/research/preregistration.py -> siderea_astronomy-0.3.0/src/siderea/research
+copying src/siderea/research/qualification.py -> siderea_astronomy-0.3.0/src/siderea/research
+copying src/siderea/research/transients.py -> siderea_astronomy-0.3.0/src/siderea/research
+copying src/siderea/review/__init__.py -> siderea_astronomy-0.3.0/src/siderea/review
+copying src/siderea/review/assembly.py -> siderea_astronomy-0.3.0/src/siderea/review
+copying src/siderea/review/dossier.py -> siderea_astronomy-0.3.0/src/siderea/review
+copying src/siderea/review/evidence.py -> siderea_astronomy-0.3.0/src/siderea/review
+copying src/siderea/review/inspection.py -> siderea_astronomy-0.3.0/src/siderea/review
+copying src/siderea/review/metrics.py -> siderea_astronomy-0.3.0/src/siderea/review
+copying src/siderea/review/server.py -> siderea_astronomy-0.3.0/src/siderea/review
+copying src/siderea/scoring/__init__.py -> siderea_astronomy-0.3.0/src/siderea/scoring
+copying src/siderea/scoring/heuristic.py -> siderea_astronomy-0.3.0/src/siderea/scoring
+copying src/siderea/validation/__init__.py -> siderea_astronomy-0.3.0/src/siderea/validation
+copying src/siderea/validation/binding.py -> siderea_astronomy-0.3.0/src/siderea/validation
+copying src/siderea/validation/catalog_policy.py -> siderea_astronomy-0.3.0/src/siderea/validation
+copying src/siderea/validation/gates.py -> siderea_astronomy-0.3.0/src/siderea/validation
+copying src/siderea/validation/suite.py -> siderea_astronomy-0.3.0/src/siderea/validation
+copying src/siderea_astronomy.egg-info/PKG-INFO -> siderea_astronomy-0.3.0/src/siderea_astronomy.egg-info
+copying src/siderea_astronomy.egg-info/SOURCES.txt -> siderea_astronomy-0.3.0/src/siderea_astronomy.egg-info
+copying src/siderea_astronomy.egg-info/dependency_links.txt -> siderea_astronomy-0.3.0/src/siderea_astronomy.egg-info
+copying src/siderea_astronomy.egg-info/entry_points.txt -> siderea_astronomy-0.3.0/src/siderea_astronomy.egg-info
+copying src/siderea_astronomy.egg-info/requires.txt -> siderea_astronomy-0.3.0/src/siderea_astronomy.egg-info
+copying src/siderea_astronomy.egg-info/top_level.txt -> siderea_astronomy-0.3.0/src/siderea_astronomy.egg-info
+copying tests/test_archive_cohort_assets.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_atomic.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_authenticated_workflow.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_baseline_ranking_host.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_cli.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_clients.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_config_domain.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_core_trust_boundaries.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_evidence_backup.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_evidence_binding.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_fixture_qualification.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_jepa.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_ledger_migration_v5.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_ledger_versions.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_legacy_reporting_quarantine.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_operations_contracts.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_packaging.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_paper_reconstruction.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_photometry_features.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_pipeline_ingest.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_promotion_integration.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_reproducibility.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_research_archives.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_research_qualification.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_review_assembly.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_review_http.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_review_inspection.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_review_metrics.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_review_server.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_safety_foundation.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_science_platform.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_scoring.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_similarity.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_tns_live_qualification.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_transient_search.py -> siderea_astronomy-0.3.0/tests
+copying tests/test_verification_suite.py -> siderea_astronomy-0.3.0/tests
+copying tests/fixtures/ledger_v5.sql -> siderea_astronomy-0.3.0/tests/fixtures
+Writing siderea_astronomy-0.3.0/setup.cfg
+Creating tar archive
+removing 'siderea_astronomy-0.3.0' (and everything under it)
+* Building wheel from sdist
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - setuptools>=77
+  - wheel
+* Getting build dependencies for wheel...
+running egg_info
+writing src/siderea_astronomy.egg-info/PKG-INFO
+writing dependency_links to src/siderea_astronomy.egg-info/dependency_links.txt
+writing entry points to src/siderea_astronomy.egg-info/entry_points.txt
+writing requirements to src/siderea_astronomy.egg-info/requires.txt
+writing top-level names to src/siderea_astronomy.egg-info/top_level.txt
+reading manifest file 'src/siderea_astronomy.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+warning: no previously-included files matching '__pycache__' found under directory '*'
+warning: no previously-included files matching '*.py[cod]' found under directory '*'
+writing manifest file 'src/siderea_astronomy.egg-info/SOURCES.txt'
+* Installed build dependency versions:
+  - setuptools==84.0.0
+  - wheel==0.48.0
+* Building wheel...
+running bdist_wheel
+running build
+running build_py
+creating build/lib/siderea
+copying src/siderea/config.py -> build/lib/siderea
+copying src/siderea/domain.py -> build/lib/siderea
+copying src/siderea/similarity.py -> build/lib/siderea
+copying src/siderea/manifest.py -> build/lib/siderea
+copying src/siderea/promotion.py -> build/lib/siderea
+copying src/siderea/host.py -> build/lib/siderea
+copying src/siderea/evaluation.py -> build/lib/siderea
+copying src/siderea/ledger.py -> build/lib/siderea
+copying src/siderea/__init__.py -> build/lib/siderea
+copying src/siderea/evidence_context.py -> build/lib/siderea
+copying src/siderea/campaigns.py -> build/lib/siderea
+copying src/siderea/bands.py -> build/lib/siderea
+copying src/siderea/followup.py -> build/lib/siderea
+copying src/siderea/cli.py -> build/lib/siderea
+copying src/siderea/pipeline.py -> build/lib/siderea
+copying src/siderea/anomaly.py -> build/lib/siderea
+copying src/siderea/ranking.py -> build/lib/siderea
+copying src/siderea/provenance.py -> build/lib/siderea
+copying src/siderea/atomic.py -> build/lib/siderea
+copying src/siderea/identity.py -> build/lib/siderea
+copying src/siderea/integrity.py -> build/lib/siderea
+copying src/siderea/__main__.py -> build/lib/siderea
+copying src/siderea/state.py -> build/lib/siderea
+creating build/lib/siderea/research
+copying src/siderea/research/injection.py -> build/lib/siderea/research
+copying src/siderea/research/benchmark.py -> build/lib/siderea/research
+copying src/siderea/research/transients.py -> build/lib/siderea/research
+copying src/siderea/research/cohort.py -> build/lib/siderea/research
+copying src/siderea/research/__init__.py -> build/lib/siderea/research
+copying src/siderea/research/archives.py -> build/lib/siderea/research
+copying src/siderea/research/qualification.py -> build/lib/siderea/research
+copying src/siderea/research/preregistration.py -> build/lib/siderea/research
+creating build/lib/siderea/clients
+copying src/siderea/clients/catalogs.py -> build/lib/siderea/clients
+copying src/siderea/clients/__init__.py -> build/lib/siderea/clients
+copying src/siderea/clients/tns.py -> build/lib/siderea/clients
+copying src/siderea/clients/base.py -> build/lib/siderea/clients
+creating build/lib/siderea/reporting
+copying src/siderea/reporting/__init__.py -> build/lib/siderea/reporting
+copying src/siderea/reporting/preflight.py -> build/lib/siderea/reporting
+creating build/lib/siderea/ingest
+copying src/siderea/ingest/alerce.py -> build/lib/siderea/ingest
+copying src/siderea/ingest/__init__.py -> build/lib/siderea/ingest
+copying src/siderea/ingest/csv.py -> build/lib/siderea/ingest
+copying src/siderea/ingest/base.py -> build/lib/siderea/ingest
+copying src/siderea/ingest/snapshot.py -> build/lib/siderea/ingest
+copying src/siderea/ingest/schema.py -> build/lib/siderea/ingest
+creating build/lib/siderea/features
+copying src/siderea/features/__init__.py -> build/lib/siderea/features
+copying src/siderea/features/photometry.py -> build/lib/siderea/features
+creating build/lib/siderea/operations
+copying src/siderea/operations/backup.py -> build/lib/siderea/operations
+copying src/siderea/operations/recovery.py -> build/lib/siderea/operations
+copying src/siderea/operations/__init__.py -> build/lib/siderea/operations
+copying src/siderea/operations/observability.py -> build/lib/siderea/operations
+copying src/siderea/operations/qualification.py -> build/lib/siderea/operations
+copying src/siderea/operations/assets.py -> build/lib/siderea/operations
+copying src/siderea/operations/broker_store.py -> build/lib/siderea/operations
+copying src/siderea/operations/fixtures.py -> build/lib/siderea/operations
+creating build/lib/siderea/ml
+copying src/siderea/ml/baseline.py -> build/lib/siderea/ml
+copying src/siderea/ml/__init__.py -> build/lib/siderea/ml
+copying src/siderea/ml/dataset.py -> build/lib/siderea/ml
+copying src/siderea/ml/train.py -> build/lib/siderea/ml
+copying src/siderea/ml/jepa.py -> build/lib/siderea/ml
+copying src/siderea/ml/evaluate.py -> build/lib/siderea/ml
+creating build/lib/siderea/review
+copying src/siderea/review/metrics.py -> build/lib/siderea/review
+copying src/siderea/review/server.py -> build/lib/siderea/review
+copying src/siderea/review/__init__.py -> build/lib/siderea/review
+copying src/siderea/review/dossier.py -> build/lib/siderea/review
+copying src/siderea/review/inspection.py -> build/lib/siderea/review
+copying src/siderea/review/assembly.py -> build/lib/siderea/review
+copying src/siderea/review/evidence.py -> build/lib/siderea/review
+creating build/lib/siderea/scoring
+copying src/siderea/scoring/__init__.py -> build/lib/siderea/scoring
+copying src/siderea/scoring/heuristic.py -> build/lib/siderea/scoring
+creating build/lib/siderea/data
+copying src/siderea/data/__init__.py -> build/lib/siderea/data
+copying src/siderea/data/snapshot.py -> build/lib/siderea/data
+creating build/lib/siderea/validation
+copying src/siderea/validation/catalog_policy.py -> build/lib/siderea/validation
+copying src/siderea/validation/suite.py -> build/lib/siderea/validation
+copying src/siderea/validation/__init__.py -> build/lib/siderea/validation
+copying src/siderea/validation/gates.py -> build/lib/siderea/validation
+copying src/siderea/validation/binding.py -> build/lib/siderea/validation
+running egg_info
+writing src/siderea_astronomy.egg-info/PKG-INFO
+writing dependency_links to src/siderea_astronomy.egg-info/dependency_links.txt
+writing entry points to src/siderea_astronomy.egg-info/entry_points.txt
+writing requirements to src/siderea_astronomy.egg-info/requires.txt
+writing top-level names to src/siderea_astronomy.egg-info/top_level.txt
+reading manifest file 'src/siderea_astronomy.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+warning: no previously-included files matching '__pycache__' found under directory '*'
+warning: no previously-included files matching '*.py[cod]' found under directory '*'
+writing manifest file 'src/siderea_astronomy.egg-info/SOURCES.txt'
+copying src/siderea/default.toml -> build/lib/siderea
+copying src/siderea/py.typed -> build/lib/siderea
+installing to build/bdist.macosx-15.0-arm64/wheel
+running install
+running install_lib
+creating build/bdist.macosx-15.0-arm64/wheel
+creating build/bdist.macosx-15.0-arm64/wheel/siderea
+creating build/bdist.macosx-15.0-arm64/wheel/siderea/research
+copying build/lib/siderea/research/injection.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/research
+copying build/lib/siderea/research/benchmark.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/research
+copying build/lib/siderea/research/transients.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/research
+copying build/lib/siderea/research/cohort.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/research
+copying build/lib/siderea/research/__init__.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/research
+copying build/lib/siderea/research/archives.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/research
+copying build/lib/siderea/research/qualification.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/research
+copying build/lib/siderea/research/preregistration.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/research
+creating build/bdist.macosx-15.0-arm64/wheel/siderea/clients
+copying build/lib/siderea/clients/catalogs.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/clients
+copying build/lib/siderea/clients/__init__.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/clients
+copying build/lib/siderea/clients/tns.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/clients
+copying build/lib/siderea/clients/base.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/clients
+creating build/bdist.macosx-15.0-arm64/wheel/siderea/reporting
+copying build/lib/siderea/reporting/__init__.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/reporting
+copying build/lib/siderea/reporting/preflight.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/reporting
+copying build/lib/siderea/config.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea
+copying build/lib/siderea/domain.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea
+copying build/lib/siderea/similarity.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea
+copying build/lib/siderea/manifest.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea
+copying build/lib/siderea/promotion.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea
+copying build/lib/siderea/host.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea
+creating build/bdist.macosx-15.0-arm64/wheel/siderea/ingest
+copying build/lib/siderea/ingest/alerce.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/ingest
+copying build/lib/siderea/ingest/__init__.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/ingest
+copying build/lib/siderea/ingest/csv.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/ingest
+copying build/lib/siderea/ingest/base.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/ingest
+copying build/lib/siderea/ingest/snapshot.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/ingest
+copying build/lib/siderea/ingest/schema.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/ingest
+copying build/lib/siderea/evaluation.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea
+creating build/bdist.macosx-15.0-arm64/wheel/siderea/features
+copying build/lib/siderea/features/__init__.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/features
+copying build/lib/siderea/features/photometry.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/features
+copying build/lib/siderea/default.toml -> build/bdist.macosx-15.0-arm64/wheel/./siderea
+copying build/lib/siderea/ledger.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea
+copying build/lib/siderea/__init__.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea
+copying build/lib/siderea/evidence_context.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea
+copying build/lib/siderea/campaigns.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea
+copying build/lib/siderea/bands.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea
+creating build/bdist.macosx-15.0-arm64/wheel/siderea/operations
+copying build/lib/siderea/operations/backup.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/operations
+copying build/lib/siderea/operations/recovery.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/operations
+copying build/lib/siderea/operations/__init__.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/operations
+copying build/lib/siderea/operations/observability.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/operations
+copying build/lib/siderea/operations/qualification.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/operations
+copying build/lib/siderea/operations/assets.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/operations
+copying build/lib/siderea/operations/broker_store.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/operations
+copying build/lib/siderea/operations/fixtures.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/operations
+copying build/lib/siderea/followup.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea
+copying build/lib/siderea/cli.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea
+creating build/bdist.macosx-15.0-arm64/wheel/siderea/ml
+copying build/lib/siderea/ml/baseline.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/ml
+copying build/lib/siderea/ml/__init__.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/ml
+copying build/lib/siderea/ml/dataset.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/ml
+copying build/lib/siderea/ml/train.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/ml
+copying build/lib/siderea/ml/jepa.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/ml
+copying build/lib/siderea/ml/evaluate.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/ml
+copying build/lib/siderea/pipeline.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea
+creating build/bdist.macosx-15.0-arm64/wheel/siderea/review
+copying build/lib/siderea/review/metrics.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/review
+copying build/lib/siderea/review/server.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/review
+copying build/lib/siderea/review/__init__.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/review
+copying build/lib/siderea/review/dossier.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/review
+copying build/lib/siderea/review/inspection.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/review
+copying build/lib/siderea/review/assembly.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/review
+copying build/lib/siderea/review/evidence.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/review
+copying build/lib/siderea/anomaly.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea
+copying build/lib/siderea/ranking.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea
+creating build/bdist.macosx-15.0-arm64/wheel/siderea/scoring
+copying build/lib/siderea/scoring/__init__.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/scoring
+copying build/lib/siderea/scoring/heuristic.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/scoring
+copying build/lib/siderea/py.typed -> build/bdist.macosx-15.0-arm64/wheel/./siderea
+copying build/lib/siderea/provenance.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea
+copying build/lib/siderea/atomic.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea
+creating build/bdist.macosx-15.0-arm64/wheel/siderea/data
+copying build/lib/siderea/data/__init__.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/data
+copying build/lib/siderea/data/snapshot.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/data
+copying build/lib/siderea/identity.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea
+copying build/lib/siderea/integrity.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea
+copying build/lib/siderea/__main__.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea
+copying build/lib/siderea/state.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea
+creating build/bdist.macosx-15.0-arm64/wheel/siderea/validation
+copying build/lib/siderea/validation/catalog_policy.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/validation
+copying build/lib/siderea/validation/suite.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/validation
+copying build/lib/siderea/validation/__init__.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/validation
+copying build/lib/siderea/validation/gates.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/validation
+copying build/lib/siderea/validation/binding.py -> build/bdist.macosx-15.0-arm64/wheel/./siderea/validation
+running install_egg_info
+Copying src/siderea_astronomy.egg-info to build/bdist.macosx-15.0-arm64/wheel/./siderea_astronomy-0.3.0-py3.11.egg-info
+running install_scripts
+creating build/bdist.macosx-15.0-arm64/wheel/siderea_astronomy-0.3.0.dist-info/WHEEL
+creating '/Volumes/PRO-BLADE/IRIS-Project/dist/.tmp-soh4c7cc/siderea_astronomy-0.3.0-py3-none-any.whl' and adding 'build/bdist.macosx-15.0-arm64/wheel' to it
+adding 'siderea/__init__.py'
+adding 'siderea/__main__.py'
+adding 'siderea/anomaly.py'
+adding 'siderea/atomic.py'
+adding 'siderea/bands.py'
+adding 'siderea/campaigns.py'
+adding 'siderea/cli.py'
+adding 'siderea/config.py'
+adding 'siderea/default.toml'
+adding 'siderea/domain.py'
+adding 'siderea/evaluation.py'
+adding 'siderea/evidence_context.py'
+adding 'siderea/followup.py'
+adding 'siderea/host.py'
+adding 'siderea/identity.py'
+adding 'siderea/integrity.py'
+adding 'siderea/ledger.py'
+adding 'siderea/manifest.py'
+adding 'siderea/pipeline.py'
+adding 'siderea/promotion.py'
+adding 'siderea/provenance.py'
+adding 'siderea/py.typed'
+adding 'siderea/ranking.py'
+adding 'siderea/similarity.py'
+adding 'siderea/state.py'
+adding 'siderea/clients/__init__.py'
+adding 'siderea/clients/base.py'
+adding 'siderea/clients/catalogs.py'
+adding 'siderea/clients/tns.py'
+adding 'siderea/data/__init__.py'
+adding 'siderea/data/snapshot.py'
+adding 'siderea/features/__init__.py'
+adding 'siderea/features/photometry.py'
+adding 'siderea/ingest/__init__.py'
+adding 'siderea/ingest/alerce.py'
+adding 'siderea/ingest/base.py'
+adding 'siderea/ingest/csv.py'
+adding 'siderea/ingest/schema.py'
+adding 'siderea/ingest/snapshot.py'
+adding 'siderea/ml/__init__.py'
+adding 'siderea/ml/baseline.py'
+adding 'siderea/ml/dataset.py'
+adding 'siderea/ml/evaluate.py'
+adding 'siderea/ml/jepa.py'
+adding 'siderea/ml/train.py'
+adding 'siderea/operations/__init__.py'
+adding 'siderea/operations/assets.py'
+adding 'siderea/operations/backup.py'
+adding 'siderea/operations/broker_store.py'
+adding 'siderea/operations/fixtures.py'
+adding 'siderea/operations/observability.py'
+adding 'siderea/operations/qualification.py'
+adding 'siderea/operations/recovery.py'
+adding 'siderea/reporting/__init__.py'
+adding 'siderea/reporting/preflight.py'
+adding 'siderea/research/__init__.py'
+adding 'siderea/research/archives.py'
+adding 'siderea/research/benchmark.py'
+adding 'siderea/research/cohort.py'
+adding 'siderea/research/injection.py'
+adding 'siderea/research/preregistration.py'
+adding 'siderea/research/qualification.py'
+adding 'siderea/research/transients.py'
+adding 'siderea/review/__init__.py'
+adding 'siderea/review/assembly.py'
+adding 'siderea/review/dossier.py'
+adding 'siderea/review/evidence.py'
+adding 'siderea/review/inspection.py'
+adding 'siderea/review/metrics.py'
+adding 'siderea/review/server.py'
+adding 'siderea/scoring/__init__.py'
+adding 'siderea/scoring/heuristic.py'
+adding 'siderea/validation/__init__.py'
+adding 'siderea/validation/binding.py'
+adding 'siderea/validation/catalog_policy.py'
+adding 'siderea/validation/gates.py'
+adding 'siderea/validation/suite.py'
+adding 'siderea_astronomy-0.3.0.dist-info/METADATA'
+adding 'siderea_astronomy-0.3.0.dist-info/WHEEL'
+adding 'siderea_astronomy-0.3.0.dist-info/entry_points.txt'
+adding 'siderea_astronomy-0.3.0.dist-info/top_level.txt'
+adding 'siderea_astronomy-0.3.0.dist-info/RECORD'
+removing build/bdist.macosx-15.0-arm64/wheel
+Successfully built siderea_astronomy-0.3.0.tar.gz and siderea_astronomy-0.3.0-py3-none-any.whl

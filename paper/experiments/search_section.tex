@@ -26,7 +26,7 @@ repeats the entire search, giving the finite Monte Carlo p-value
 \begin{equation}
 \widehat p(T)=\frac{1+\sum_{j=1}^{N_0}\mathbf{1}[T_j^{(0)}\geq T]}{N_0+1}.
 \end{equation}
-Passbands remain separate, with conservative within-object Bonferroni correction.
+The uncorrected resolution floor is $1/(N_0+1)$. Passbands remain separate, with conservative within-object Bonferroni correction; the CLI records when the corrected resolution cannot reach the requested threshold.
 This does not control all survey objects or repeated monitoring decisions.
 Invalid covariance, censored limits masquerading as flux, and ill-conditioned
 designs are rejected; insufficient-epoch channels remain explicitly unevaluated.
@@ -69,6 +69,8 @@ Protocols, source snapshots, per-trial statistics and plotting code are archived
 under \texttt{paper/experiments}. Each design was recorded locally before its run;
 the covariance follow-up was designed after the initial failure, not externally
 preregistered. Historical campaign counts are unchanged by these simulations.
+
+\input{experiments/noise_results_table.tex}
 
 A second adaptive stress design uses the declared exponential covariance
 (six-day timescale, 80\% correlated variance), independent calibration/evaluation

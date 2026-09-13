@@ -1,0 +1,18 @@
+\begin{table}[ht]
+\centering
+\caption{All declared exponential-covariance null stresses. Each row uses 1,000 evaluation curves. Intervals are marginal 95\% Wilson intervals conditional on the simulated cadence, not survey uncertainty.}
+\label{tab:noise-stress}
+\begin{tabular}{p{0.48\linewidth}rr}
+\toprule
+Null scenario & False alarms & Fraction interval \\
+\midrule
+matched gaussian & 11 & [0.006, 0.020] \\
+errors underestimated 1.5 & 337 & [0.308, 0.367] \\
+student t 3 unit variance & 104 & [0.087, 0.124] \\
+variance doubles second half & 118 & [0.099, 0.139] \\
+seasonal gap matched & 10 & [0.005, 0.018] \\
+true timescale 1 day & 129 & [0.110, 0.151] \\
+true timescale 20 days & 2 & [0.001, 0.007] \\
+\bottomrule
+\end{tabular}
+\end{table}

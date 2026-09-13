@@ -1,7 +1,8 @@
 """Unknown-location, constant-background-profiled transient search for shadow use.
 
-Templates are phenomenological shapes, not physical-class likelihoods. The null
-model assumes independent Gaussian flux errors; real noise requires qualification.
+Templates are phenomenological shapes, not physical-class likelihoods. Gaussian
+and conditional wild-residual nulls are available; both require qualification on
+survey-realistic negative controls before scientific use.
 """
 
 from __future__ import annotations
@@ -286,6 +287,48 @@ class TransientBank:
             ]
         )
 
+    def simulate_wild_null(
+        self,
+        flux: Any,
+        *,
+        trials: int,
+        seed: int,
+        block_size: int = 1,
+    ) -> Array:
+        """Condition on null residual magnitudes and randomize their signs.
+
+        Residuals are formed after profiling the constant background in whitened
+        coordinates. One Rademacher sign is drawn per consecutive block, making
+        ``block_size=1`` the coordinatewise wild bootstrap and larger values a
+        sensitivity analysis for locally dependent residuals. This is exact only
+        under the corresponding sign-symmetry assumption; it is not a substitute
+        for real-background injection tests.
+        """
+
+        values = _vector(flux, "flux")
+        if len(values) != len(self.times):
+            raise ValueError("flux must match the bank epochs")
+        if type(trials) is not int or not 99 <= trials <= 100_000:
+            raise ValueError("null trials must be an integer in [99, 100000]")
+        if type(seed) is not int or seed < 0:
+            raise ValueError("seed must be a nonnegative integer")
+        if type(block_size) is not int or not 1 <= block_size <= len(self.times):
+            raise ValueError("wild block size must be an integer within the epoch count")
+
+        shifted = values - values[0]
+        white = self._whiten(shifted)
+        residual = white - float(white @ self._constant) * self._constant
+        block_ids = np.arange(len(self.times)) // block_size
+        block_count = int(block_ids[-1]) + 1
+        rng = np.random.default_rng(seed)
+        statistics: list[Array] = []
+        for start in range(0, trials, 128):
+            count = min(128, trials - start)
+            signs = rng.integers(0, 2, size=(count, block_count), dtype=np.int8) * 2 - 1
+            simulated = self._noise(signs[:, block_ids] * residual)
+            statistics.append(self.statistics(simulated))
+        return np.concatenate(statistics)
+
 
 def empirical_pvalue(statistic: float, null_statistics: Any) -> float:
     null = _vector(null_statistics, "null statistics")
@@ -303,12 +346,19 @@ def search_flux_table(
     seed: int = 0,
     alpha: float = 0.01,
     noise_timescale_days: float | None = None,
+    object_universe_size: int | None = None,
+    planned_looks: int = 1,
+    look_index: int = 1,
+    null_method: str = "gaussian",
+    wild_block_size: int = 1,
 ) -> dict[str, Any]:
-    """Search measured flux channels independently; Bonferroni-correct within object.
+    """Search measured flux channels with explicit object and campaign corrections.
 
     Input must contain measured (including signed difference) flux with known errors.
     Censored limits are rejected rather than treated as Gaussian flux observations.
-    No p-value here corrects the number of objects in a survey or repeated monitoring.
+    The original within-object correction is always retained. When the complete
+    object universe is declared, a second conservative Bonferroni p-value covers
+    every object and every look planned before inspecting the results.
     """
     import pandas as pd
 
@@ -321,6 +371,10 @@ def search_flux_table(
         raise ValueError("null_trials must be an integer in [99, 100000]")
     if type(seed) is not int or seed < 0:
         raise ValueError("seed must be a nonnegative integer")
+    if null_method not in {"gaussian", "wild_residual"}:
+        raise ValueError("null_method must be 'gaussian' or 'wild_residual'")
+    if type(wild_block_size) is not int or wild_block_size < 1:
+        raise ValueError("wild_block_size must be a positive integer")
     if isinstance(alpha, bool) or not np.isfinite(alpha) or not 0 < alpha < 1:
         raise ValueError("alpha must be within (0, 1)")
     if alpha < 1 / (null_trials + 1):
@@ -333,6 +387,16 @@ def search_flux_table(
         or noise_timescale_days <= 0
     ):
         raise ValueError("noise timescale must be finite and positive")
+    for name, value in (("planned_looks", planned_looks), ("look_index", look_index)):
+        if type(value) is not int or value < 1:
+            raise ValueError(f"{name} must be a positive integer")
+    if look_index > planned_looks:
+        raise ValueError("look_index cannot exceed planned_looks")
+    if object_universe_size is None:
+        if planned_looks != 1 or look_index != 1:
+            raise ValueError("repeated-look inference requires object_universe_size")
+    elif type(object_universe_size) is not int or object_universe_size < 1:
+        raise ValueError("object_universe_size must be a positive integer")
     data = frame.copy()
     for column in ("source_id", "survey", "band"):
         if data[column].isna().any():
@@ -340,7 +404,11 @@ def search_flux_table(
         normalized = [str(value).strip() for value in data[column].tolist()]
         if any(not value for value in normalized):
             raise ValueError(f"{column} identifiers must be present")
-        data[column] = normalized
+        data[column] = (
+            [" ".join(value.casefold().split()) for value in normalized]
+            if column == "survey"
+            else normalized
+        )
     if "is_detection" in data and not all(
         str(value).lower() == "true" for value in data["is_detection"].tolist()
     ):
@@ -350,11 +418,26 @@ def search_flux_table(
         _vector(data[column], column)
     if (data["flux_error"] <= 0).any():
         raise ValueError("flux errors must be positive")
-    if data.duplicated(subset=sorted(required)).any():
+    duplicate_columns = sorted(required)
+    if "observation_id" in data:
+        ids = data["observation_id"].astype("string").str.strip()
+        missing = ids.isna() | ids.fillna("").str.casefold().isin({"", "nan", "none", "null"})
+        data["observation_id"] = ids.mask(missing, pd.NA)
+        if data.loc[~missing].duplicated(subset=["source_id", "survey", "observation_id"]).any():
+            raise ValueError("reused observation_id would count the same evidence more than once")
+        if (data.duplicated(subset=sorted(required), keep=False) & missing).any():
+            raise ValueError(
+                "duplicate measurements with missing observation identity are ambiguous"
+            )
+        duplicate_columns.append("observation_id")
+    if data.duplicated(subset=duplicate_columns).any():
         raise ValueError("duplicate measurements would count the same evidence more than once")
     groups = list(data.groupby(["source_id", "survey", "band"], sort=True))
     if len(groups) > 100:
         raise ValueError("search supports at most 100 channels per invocation")
+    observed_objects = len(set(data["source_id"].astype(str)))
+    if object_universe_size is not None and object_universe_size < observed_objects:
+        raise ValueError("object_universe_size cannot be smaller than the searched object count")
     results: list[dict[str, Any]] = []
     for identity, group in groups:
         ordered = group.sort_values("mjd", kind="stable")
@@ -386,7 +469,16 @@ def search_flux_table(
                 correlation=correlation,
             )
             fit = bank.fit(ordered["flux"])
-            null = bank.simulate_null(trials=null_trials, seed=seed)
+            null = (
+                bank.simulate_null(trials=null_trials, seed=seed)
+                if null_method == "gaussian"
+                else bank.simulate_wild_null(
+                    ordered["flux"],
+                    trials=null_trials,
+                    seed=seed,
+                    block_size=wild_block_size,
+                )
+            )
             result.update(
                 status="evaluated", **fit, search_pvalue=empirical_pvalue(fit["max_local_z"], null)
             )
@@ -398,6 +490,20 @@ def search_flux_table(
         corrected = min(1.0, min(measured) * len(channels)) if measured else None
         minimum_pvalue = min(1.0, len(channels) / (null_trials + 1))
         threshold_resolvable = minimum_pvalue <= alpha
+        campaign_factor = (
+            None if object_universe_size is None else object_universe_size * planned_looks
+        )
+        campaign_pvalue = (
+            None
+            if corrected is None or campaign_factor is None
+            else min(1.0, corrected * campaign_factor)
+        )
+        minimum_campaign_pvalue = (
+            None if campaign_factor is None else min(1.0, minimum_pvalue * campaign_factor)
+        )
+        campaign_resolvable = (
+            None if minimum_campaign_pvalue is None else minimum_campaign_pvalue <= alpha
+        )
         objects.append(
             {
                 "source_id": source,
@@ -416,21 +522,48 @@ def search_flux_table(
                 "threshold_resolvable": threshold_resolvable,
                 "object_pvalue": corrected,
                 "shadow_excess": corrected is not None and corrected <= alpha,
+                "campaign_pvalue": campaign_pvalue,
+                "minimum_resolvable_campaign_pvalue": minimum_campaign_pvalue,
+                "campaign_threshold_resolvable": campaign_resolvable,
+                "campaign_shadow_excess": (
+                    None if campaign_pvalue is None else campaign_pvalue <= alpha
+                ),
             }
         )
     output = {
         "schema": "siderea.transient_search.v1",
         "mode": "shadow_only",
         "assumptions": (
-            "Gaussian measured flux errors with declared correlation "
-            "and constant channel background"
+            "Gaussian measured flux errors with declared correlation and constant channel "
+            "background"
+            if null_method == "gaussian"
+            else "sign-symmetric profiled residuals within declared consecutive blocks and "
+            "constant channel background"
         ),
+        "null_method": null_method,
+        "wild_block_size": wild_block_size if null_method == "wild_residual" else None,
         "noise_timescale_days": noise_timescale_days,
         "correlated_variance_fraction": 0.0 if noise_timescale_days is None else 0.8,
         "scope": (
-            "template-search and within-object channel correction; "
-            "no survey-wide or repeated-look correction"
+            "template-search with within-object channel correction"
+            if object_universe_size is None
+            else "template-search with within-object, survey-object, and planned-look correction"
         ),
+        "campaign_inference": {
+            "method": None if object_universe_size is None else "bonferroni_union_bound",
+            "object_universe_size": object_universe_size,
+            "searched_object_count": observed_objects,
+            "planned_looks": planned_looks if object_universe_size is not None else None,
+            "look_index": look_index if object_universe_size is not None else None,
+            "correction_factor": (
+                None if object_universe_size is None else object_universe_size * planned_looks
+            ),
+            "selection_warning": (
+                "object universe not declared; campaign-level inference is unavailable"
+                if object_universe_size is None
+                else None
+            ),
+        },
         "physical_classification": False,
         "qualifies_reportability": False,
         "seed": seed,

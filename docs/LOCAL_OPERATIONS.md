@@ -219,3 +219,7 @@ versions remain downloadable; an old decision is never copied onto new evidence.
 The authenticated `/inbox` view lists current reporting-preflight blockers in pages
 of 50 candidates. Its links lead to evidence inspection. There is no dismiss endpoint:
 only new valid evidence or authorized review can resolve an underlying requirement.
+
+For isolated live registry tests and credential requirements, see
+[TNS testing](TNS_TESTING.md). `tns-qualify` records a single read-only case;
+it does not grant candidate clearance or qualify detector sensitivity.

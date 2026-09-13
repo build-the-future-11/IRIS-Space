@@ -2,6 +2,14 @@
 
 `siderea transient-search flux.csv search.json --null-trials 4095 --seed 20260908`
 
+For a predeclared sensitivity analysis that conditions on the observed null-residual
+magnitudes instead of drawing Gaussian amplitudes, use
+`--null-method wild_residual --wild-block-size N`. The implementation profiles the
+constant background in whitened coordinates and flips one sign per consecutive
+block. Its validity requires blockwise sign symmetry. It does not replace blinded
+injections into held-out real backgrounds; report Gaussian and wild-residual results
+side by side and freeze the primary choice before opening outcomes.
+
 The input contains `source_id,survey,band,mjd,flux,flux_error`. Each row must be an
 actual measured flux with a finite positive uncertainty in the same channel units.
 Signed difference flux is supported. Magnitudes and censored limiting magnitudes
@@ -35,7 +43,11 @@ chi-square reference distribution.
 Independent simulations rerun the entire search. The finite Monte Carlo p-value is
 `(1 + number of null maxima >= observed maximum)/(N_null + 1)`. It is never zero.
 A conservative Bonferroni correction covers channels within an object, including
-unevaluated channels. It does not cover all survey objects or repeated monitoring.
+unevaluated channels. Supplying `--survey-object-count`, `--planned-looks`, and
+`--look-index` adds a separate union-bound p-value across the complete pre-filter
+object universe and all planned monitoring looks. The full planned-look factor is
+charged from the first look, so optional stopping cannot make later results appear
+stronger. Without a declared survey denominator, campaign p-values remain null.
 Calibration trial counts must be large enough to resolve the requested threshold.
 
 The default covariance is diagonal. `--noise-timescale-days TAU` explicitly selects
@@ -45,12 +57,22 @@ remaining marginal errors. The CLI does not fit TAU from the target. The Python
 nonfinite, asymmetric, non-unit-diagonal, singular or poorly conditioned matrices.
 Correlation must be independently justified on suitable background data.
 
-Exact duplicate measurements are rejected because repeated rows must not be treated
-as independent evidence. Object summaries report the number of evaluated channels,
-the smallest resolvable corrected p-value, and an explicit status when the null
-simulation count cannot resolve the requested threshold. An unevaluated source is
-not evidence of absence. Correlated inputs exceeding 2,048 epochs are rejected
-before allocating a quadratic covariance matrix.
+Repeated evidence is rejected. Supply canonical `observation_id` as text when available;
+the CSV command preserves identifiers such as `001` separately from `1`. Identity
+is scoped to source and normalized survey name. Reusing an ID fails even when the
+measurement values or band change. Distinct nonempty IDs preserve genuinely distinct
+same-time exposures, including equal-valued measurements. Missing IDs are normalized
+before duplicate checks; identical measurements with any missing ID are ambiguous
+and rejected. Without IDs, exact repeated measurements remain rejected. Distinct
+IDs alone do not establish statistically independent noise. Generic exposure IDs
+must first be mapped to an observation identity with the appropriate survey scope;
+this interface does not guess whether one exposure contains multiple measurements.
+
+Object summaries report the number of evaluated channels, within-object and
+campaign p-values, their smallest resolvable values, and explicit resolution
+status. An unevaluated source is not evidence of absence. Correlated inputs
+exceeding 2,048 epochs are rejected before allocating a quadratic covariance
+matrix.
 
 ## Evidence and limitations
 

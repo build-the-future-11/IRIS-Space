@@ -1,0 +1,22 @@
+{
+  "calibration": "deterministic-fixture",
+  "detection_policy": "column:is_detection",
+  "detector_flux_sha256": "3506939d8d86731bef67aee3ec9beb68a01ae62bfaacfbd0bf20c679b2ec93be",
+  "entities": 2,
+  "flux_unit": "synthetic_flux",
+  "identity_policy": "column:source_id",
+  "input_sha256": "bb180a9b205360ee740ba096be9d3317bcf17c9e932c63ec84870aaf6576b0f7",
+  "jepa_dataset_sha256": "73dbabc3ea3cb07b30e756341d4c21babaed45ec7038da283a58b626615416b9",
+  "manifest_digest": "cf2b7b8aeee4f2af940c74581d94eed911eeb34248b42305c02e18b7b2860c2f",
+  "mode": "shadow_only",
+  "observations": 12,
+  "pipeline_view": {
+    "path": "pipeline_photometry.csv",
+    "sha256": "e0fb5d15c49a765c557aa062f2847d27c8155549b51f1fc61fd7bfb9fe897e5c",
+    "status": "available"
+  },
+  "prediction_cutoff_mjd": 62010.0,
+  "preparation_code_sha256": "25bee2d58bd85ab5a328fc98c3994e8278198f4e131b68c956a0ad6e672fb712",
+  "qualifies_reportability": false,
+  "schema": "siderea.pilot_dataset.v2"
+}

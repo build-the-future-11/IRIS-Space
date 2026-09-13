@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import inspect
 import json
 import platform
 from pathlib import Path
@@ -16,6 +17,7 @@ import numpy as np
 
 from siderea.atomic import atomic_create_binary
 from siderea.provenance import digest_file, digest_value, stable_json
+from siderea.research.archives import validate_experiment_protocol
 from siderea.research.transients import TransientBank, transient_template
 
 
@@ -30,12 +32,19 @@ def interval(successes, n, confidence):
 
 def run(protocol_path, destination):
     config = json.loads(protocol_path.read_text())
+    validate_experiment_protocol(config, noise=False)
+    source_path = Path(__file__).resolve().parents[2] / "src/siderea/research/transients.py"
+    runtime_source = Path(inspect.getfile(TransientBank))
+    if runtime_source.read_bytes() != source_path.read_bytes():
+        raise ValueError(
+            "Imported detector differs from checkout; run with PYTHONPATH=src "
+            "or install this checkout before recording experiment provenance"
+        )
     if destination.exists():
         raise FileExistsError("experiment destination exists; preserve previous results")
     destination.mkdir(parents=True)
     protocol_digest = digest_value(config)
     (destination / "protocol.json").write_text(stable_json(config) + "\n")
-    source_path = Path(__file__).resolve().parents[2] / "src/siderea/research/transients.py"
     (destination / "transients.source.txt").write_bytes(source_path.read_bytes())
     (destination / "runner.source.txt").write_bytes(Path(__file__).read_bytes())
     seeds = np.random.SeedSequence(config["master_seed"]).spawn(4)

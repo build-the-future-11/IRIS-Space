@@ -50,13 +50,17 @@ def make_contiguous_target_mask(
     *,
     target_fraction: float = 0.25,
     min_target: int = 1,
+    scale_jitter: float = 0.0,
     generator: Any | None = None,
 ) -> Any:
     """Sample one contiguous target block per usable sequence.
 
     At least one observation remains as context.  Rows shorter than two valid
     observations receive no targets and are ignored by the loss; a batch with no
-    usable target observations is rejected by :class:`TSJEPA`.
+    usable target observations is rejected by :class:`TSJEPA`. Nonzero
+    ``scale_jitter`` draws per-row fractions from the short/base/long scales
+    ``(1-jitter, 1, 1+jitter) * target_fraction``. This exposes the predictor to
+    both brief transients and longer evolution without mixing disjoint intervals.
     """
 
     require_torch()
@@ -70,6 +74,12 @@ def make_contiguous_target_mask(
         raise ValueError("target_fraction must be finite and between zero and one")
     if isinstance(min_target, bool) or not isinstance(min_target, int) or min_target < 1:
         raise ValueError("min_target must be a positive integer")
+    if (
+        isinstance(scale_jitter, bool)
+        or not math.isfinite(scale_jitter)
+        or not 0.0 <= scale_jitter < 1.0
+    ):
+        raise ValueError("scale_jitter must be finite and within [0, 1)")
 
     target_mask = torch.zeros_like(padding_mask)
     for batch_index in range(padding_mask.shape[0]):
@@ -77,7 +87,11 @@ def make_contiguous_target_mask(
         length = int(valid_indices.numel())
         if length < 2:
             continue
-        target_count = max(min_target, int(round(length * target_fraction)))
+        row_fraction = target_fraction
+        if scale_jitter:
+            scale_index = int(torch.randint(3, (1,), generator=generator).item())
+            row_fraction *= (1.0 - scale_jitter, 1.0, 1.0 + scale_jitter)[scale_index]
+        target_count = max(min_target, int(round(length * row_fraction)))
         target_count = min(target_count, length - 1)
         last_start = length - target_count
         if last_start == 0:
@@ -551,6 +565,7 @@ if nn is not None:
             target_mask: Any | None = None,
             target_fraction: float = 0.25,
             min_target: int = 1,
+            mask_scale_jitter: float = 0.0,
             generator: Any | None = None,
         ) -> dict[str, Any]:
             if target_mask is None:
@@ -558,6 +573,7 @@ if nn is not None:
                     padding_mask,
                     target_fraction=target_fraction,
                     min_target=min_target,
+                    scale_jitter=mask_scale_jitter,
                     generator=generator,
                 )
             if target_mask.shape != padding_mask.shape or target_mask.dtype != torch.bool:

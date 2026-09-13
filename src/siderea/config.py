@@ -234,6 +234,7 @@ class JEPAConfig:
     encoder_layers: int = 6
     attention_heads: int = 8
     mask_fraction: float = 0.5
+    mask_scale_jitter: float = 0.5
     learning_rate: float = 0.0003
     batch_size: int = 128
     seed: int = 2026
@@ -257,6 +258,13 @@ class JEPAConfig:
             or not 0 < self.mask_fraction < 1
         ):
             raise ConfigError("jepa.mask_fraction must be finite and between 0 and 1")
+        if (
+            isinstance(self.mask_scale_jitter, bool)
+            or not isinstance(self.mask_scale_jitter, (int, float))
+            or not math.isfinite(self.mask_scale_jitter)
+            or not 0 <= self.mask_scale_jitter < 1
+        ):
+            raise ConfigError("jepa.mask_scale_jitter must be finite and within [0, 1)")
         _positive(self.learning_rate, "jepa.learning_rate")
         _integer_value(self.batch_size, "jepa.batch_size", minimum=1)
         _integer_value(self.seed, "jepa.seed", minimum=0)
@@ -521,6 +529,7 @@ def load_config(path: str | Path | None = None) -> SIDEREAConfig:
             "encoder_layers",
             "attention_heads",
             "mask_fraction",
+            "mask_scale_jitter",
             "learning_rate",
             "batch_size",
             "seed",
@@ -538,6 +547,7 @@ def load_config(path: str | Path | None = None) -> SIDEREAConfig:
         encoder_layers=_integer(jepa_data, "encoder_layers", 6, "jepa"),
         attention_heads=_integer(jepa_data, "attention_heads", 8, "jepa"),
         mask_fraction=_number(jepa_data, "mask_fraction", 0.5, "jepa"),
+        mask_scale_jitter=_number(jepa_data, "mask_scale_jitter", 0.5, "jepa"),
         learning_rate=_number(jepa_data, "learning_rate", 0.0003, "jepa"),
         batch_size=_integer(jepa_data, "batch_size", 128, "jepa"),
         seed=_integer(jepa_data, "seed", 2026, "jepa"),

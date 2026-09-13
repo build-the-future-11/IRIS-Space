@@ -27,3 +27,10 @@ def test_public_distribution_and_cli_use_only_the_siderea_identity() -> None:
     assert project["project"]["name"] == "siderea-astronomy"
     assert project["project"]["scripts"] == {"siderea": "siderea.cli:main"}
     assert find_spec("iris") is None
+
+
+def test_development_extra_covers_standard_test_imports() -> None:
+    project = tomllib.loads((Path(__file__).parents[1] / "pyproject.toml").read_text())
+    dependencies = project["project"]["optional-dependencies"]
+
+    assert any(item.startswith("matplotlib") for item in dependencies["dev"])

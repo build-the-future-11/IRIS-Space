@@ -394,6 +394,11 @@ def normalize_photometry_frame(
     if quality_source is not None and canonical["quality"].isna().any():
         warnings.append("missing_or_unrecognized_quality_values")
 
+    observation_ids = canonical["observation_id"].astype("string").str.strip()
+    identified = observation_ids.notna() & ~observation_ids.fillna("").eq("")
+    identified &= ~observation_ids.fillna("").str.casefold().isin({"nan", "none", "null"})
+    canonical["observation_id"] = observation_ids.mask(~identified, pd.NA)
+
     duplicate_subset = [
         "source_id",
         "mjd",
@@ -408,16 +413,15 @@ def normalize_photometry_frame(
         "observation_id",
         "quality",
     ]
-    duplicated = canonical.duplicated(subset=duplicate_subset, keep=False)
+    value_columns = [column for column in duplicate_subset if column != "observation_id"]
+    ambiguous = canonical.duplicated(subset=value_columns, keep=False) & ~identified
+    duplicated = canonical.duplicated(subset=duplicate_subset, keep=False) | ambiguous
     if duplicated.any():
         rows = canonical.index[duplicated].tolist()[:10]
         raise IngestionError(
             f"duplicate observations would inflate candidate evidence at row(s) {rows}"
         )
 
-    observation_ids = canonical["observation_id"].astype("string").str.strip()
-    identified = observation_ids.notna() & ~observation_ids.fillna("").eq("")
-    identified &= ~observation_ids.fillna("").str.casefold().isin({"nan", "none", "null"})
     repeated_ids = (
         canonical.loc[identified]
         .assign(observation_id=observation_ids.loc[identified])
@@ -428,7 +432,6 @@ def normalize_photometry_frame(
         raise IngestionError(
             f"conflicting rows reuse the same non-empty observation_id at row(s) {rows}"
         )
-    canonical["observation_id"] = observation_ids.mask(~identified, pd.NA)
 
     canonical["_input_order"] = np.arange(len(canonical), dtype=int)
     canonical = canonical.sort_values(

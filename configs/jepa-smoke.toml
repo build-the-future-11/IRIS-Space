@@ -1,0 +1,15 @@
+# Tiny CPU execution check; not a scientific training configuration.
+[general]
+campaign = "jepa_smoke"
+environment = "research"
+
+[jepa]
+enabled = true
+shadow_mode = true
+embedding_dim = 32
+encoder_layers = 1
+attention_heads = 4
+batch_size = 2
+mask_fraction = 0.5
+learning_rate = 0.0003
+seed = 2026

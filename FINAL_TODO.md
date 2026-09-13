@@ -1,6 +1,6 @@
 # SIDEREA final execution checklist
 
-Current local validation: 405 tests and 96 subtests passed, 78.35% coverage; strict typing passed for 74 source files.
+Current local validation: 479 tests and 99 subtests passed, 78.60% coverage; strict typing passed for 75 source files. Evidence: paper/research/identity-pass-20260909/.
 The latest first-run example and detector hardening are implemented. This file lists
 remaining work, not features already completed. See PROJECT_FINISH_CHECKLIST.md for
 historical implementation evidence. An unchecked task is not a claim that its current
@@ -191,3 +191,15 @@ flagged only the pulse, and produced result digest
 After installing `.[all]`, strict doctor and `pip check` passed; repeating both
 commands produced the same fingerprint, decisions and result digest. Temporary
 outputs remain under the gitignored `.test-tmp/first-run-core-20260908/` directory.
+
+Paper finishing pass: see paper/FINAL_PAPER_CHECKLIST.md. The manuscript retains
+its explicitly dated 405-test snapshot; the current 421-test result includes later
+TNS and reconstruction work and is archived in paper/research/paper-finishing-checks.txt.
+
+## 2026-09-09 identity execution update
+
+D05's canonical observation-ID path now preserves distinct same-time exposures,
+rejects changed-value replays and ambiguous missing-ID duplicates, preserves textual
+CSV identifiers and normalizes survey namespaces. Tests cover ingestion, the Python
+detector API and CLI. D05 remains open for survey-specific exposure-ID qualification;
+we do not guess whether one exposure contains multiple separately identified measurements.

@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import json
 from copy import deepcopy
+from pathlib import Path
 
 import pandas as pd
 import pytest
@@ -9,6 +11,17 @@ from siderea.provenance import digest_value
 from siderea.research.benchmark import run_rolling_origin_benchmark
 from siderea.research.preregistration import Preregistration
 from siderea.research.qualification import bind_benchmark, cohort_labels, valid_interval
+
+
+def test_prospective_protocol_draft_is_valid_but_unmistakably_unfrozen():
+    source = Path(__file__).parents[1] / "examples/prospective_study_protocol.DRAFT.json"
+    payload = json.loads(source.read_text(encoding="utf-8"))
+
+    frozen = Preregistration.from_protocol(payload, frozen_at="2026-12-01T00:00:00+00:00")
+
+    assert frozen.study_id.startswith("DRAFT-")
+    assert "REPLACE" in frozen.protocol["selection"]["pipeline_version"]
+    assert frozen.protocol["selection"]["configuration_digest"] == "0" * 64
 
 
 def protocol():
@@ -139,6 +152,41 @@ def test_bound_benchmark_roundtrip():
     assert bind_benchmark(bound, cohort, study) == bound
 
 
+def test_bound_benchmark_preserves_explicit_time_blocks():
+    study, _, cohort = study_data()
+    frame = pd.DataFrame(
+        {
+            "entity": list("abcdef"),
+            "time": [1.1, 1.2, 2.1, 2.2, 3.1, 3.2],
+            "label": [0, 1, 0, 1, 0, 1],
+            "baseline": [0.5] * 6,
+            "model": [0, 1, 0, 1, 0, 1],
+        }
+    )
+    result = run_rolling_origin_benchmark(
+        frame,
+        entity_column="entity",
+        time_column="time",
+        label_column="label",
+        score_columns=["baseline", "model"],
+        review_budget=1,
+        bootstrap_repeats=100,
+        time_block_days=1.0,
+    )
+
+    bound = bind_benchmark(result, cohort, study)
+
+    assert bound["evaluation_inputs"]["time_block_days"] == 1.0
+    assert bind_benchmark(bound, cohort, study) == bound
+
+    tampered = deepcopy(result)
+    tampered["evaluation_inputs"]["time_block_days"] = 2.0
+    tampered["benchmark_digest"] = digest_value(tampered["evaluation_inputs"])
+    rehash(tampered, "result_digest")
+    with pytest.raises(ValueError, match="reproduced|recomputed"):
+        bind_benchmark(tampered, cohort, study)
+
+
 def test_frozen_protocol_serialization_is_independent_and_mutation_rejected(tmp_path):
     from siderea.research.cohort import CohortRegistry
 
@@ -225,6 +273,63 @@ def test_singleton_blocks_rejected_and_explicit_bins_supported():
         run_rolling_origin_benchmark(frame, **args)
     result = run_rolling_origin_benchmark(frame, **args, time_block_days=1.0)
     assert result["folds"][0]["test_rows"] == 2
+
+
+def test_time_block_bootstrap_is_paired_recorded_and_repeatable():
+    frame = pd.DataFrame(
+        {
+            "id": list("abcdefgh"),
+            "t": [1, 1, 2, 2, 3, 3, 4, 4],
+            "label": [0, 1] * 4,
+            "baseline": [0.5] * 8,
+            "model": [0, 1] * 4,
+        }
+    )
+    kwargs = dict(
+        entity_column="id",
+        time_column="t",
+        label_column="label",
+        score_columns=["baseline", "model"],
+        review_budget=1,
+        bootstrap_repeats=100,
+        bootstrap_unit="time_block",
+        seed=9,
+    )
+
+    first = run_rolling_origin_benchmark(frame, **kwargs)
+    second = run_rolling_origin_benchmark(frame, **kwargs)
+
+    assert first == second
+    assert first["bootstrap_unit"] == "time_block"
+    assert first["evaluation_inputs"]["bootstrap_unit"] == "time_block"
+    assert first["summary"]["model"]["precision_at_budget"]["delta_confidence_interval"] == [
+        0.5,
+        0.5,
+    ]
+
+
+def test_invalid_bootstrap_unit_is_rejected():
+    study, _, _ = study_data()
+    frame = pd.DataFrame(
+        {
+            "entity": list("abcdef"),
+            "time": [1, 1, 2, 2, 3, 3],
+            "label": [0, 1] * 3,
+            "baseline": [0.5] * 6,
+            "model": [0, 1] * 3,
+        }
+    )
+    with pytest.raises(ValueError, match="bootstrap_unit"):
+        run_rolling_origin_benchmark(
+            frame,
+            entity_column="entity",
+            time_column="time",
+            label_column="label",
+            score_columns=["baseline", "model"],
+            review_budget=study.protocol["selection"]["review_budget"],
+            bootstrap_repeats=100,
+            bootstrap_unit="row",
+        )
 
 
 def test_protocol_cannot_be_frozen_after_enrollment_opens():

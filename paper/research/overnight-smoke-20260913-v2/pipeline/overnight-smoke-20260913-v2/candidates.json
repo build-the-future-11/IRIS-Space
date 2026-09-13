@@ -1,0 +1,990 @@
+{
+  "candidates": [
+    {
+      "automated_gate": {
+        "decision": "block_incomplete_evidence",
+        "matched_services": [],
+        "missing_services": [
+          "skybot",
+          "tns",
+          "simbad",
+          "vsx"
+        ],
+        "reasons": [
+          "skybot: status is not clear",
+          "tns: status is not clear",
+          "simbad: status is not clear",
+          "vsx: status is not clear"
+        ],
+        "reportable": false
+      },
+      "campaign": "novel_transients",
+      "candidate_id": "INTEGRATED-CONSTANT",
+      "candidate_record_digest": "44a0920e57f02da0ae4a67275c5c84134c51e4f8154290f8401da397be410c30",
+      "candidate_run_binding_digest": "b6bf6f76ec34946d149aeb849a9c6933da9b1b8c783fae07984feb5672216a8e",
+      "candidate_version": "d3027852190d4a5ce71bdefe1bda0be7eaf2da1e2981193086579990f2cdf370",
+      "evidence_binding": {
+        "candidate_id": "INTEGRATED-CONSTANT",
+        "dec_deg": -12.5,
+        "max_ttl_hours": 24.0,
+        "position_tolerance_arcsec": 0.1,
+        "ra_deg": 42.199999999999996,
+        "required_radii_arcsec": {
+          "simbad": 3.0,
+          "skybot": 10.0,
+          "tns": 5.0,
+          "vsx": 3.0
+        },
+        "skybot_epoch_tolerance_days": 0.001,
+        "skybot_reference_mjds": [
+          61000.0,
+          61001.0,
+          61002.0,
+          61003.0,
+          61004.0,
+          61005.0
+        ]
+      },
+      "external_checks": [
+        {
+          "attempts": 0,
+          "checked_at": "2026-09-13T04:49:13.735981+00:00",
+          "error": "",
+          "expires_at": "2026-09-14T04:49:13.735981+00:00",
+          "latency_ms": null,
+          "matches": [],
+          "query": {
+            "candidate_id": "INTEGRATED-CONSTANT",
+            "dec_deg": -12.5,
+            "ra_deg": 42.199999999999996
+          },
+          "response_digest": "",
+          "service": "skybot",
+          "service_version": "",
+          "status": "pending"
+        },
+        {
+          "attempts": 0,
+          "checked_at": "2026-09-13T04:49:13.735981+00:00",
+          "error": "",
+          "expires_at": "2026-09-14T04:49:13.735981+00:00",
+          "latency_ms": null,
+          "matches": [],
+          "query": {
+            "candidate_id": "INTEGRATED-CONSTANT",
+            "dec_deg": -12.5,
+            "ra_deg": 42.199999999999996
+          },
+          "response_digest": "",
+          "service": "tns",
+          "service_version": "",
+          "status": "pending"
+        },
+        {
+          "attempts": 0,
+          "checked_at": "2026-09-13T04:49:13.735981+00:00",
+          "error": "",
+          "expires_at": "2026-09-14T04:49:13.735981+00:00",
+          "latency_ms": null,
+          "matches": [],
+          "query": {
+            "candidate_id": "INTEGRATED-CONSTANT",
+            "dec_deg": -12.5,
+            "ra_deg": 42.199999999999996
+          },
+          "response_digest": "",
+          "service": "simbad",
+          "service_version": "",
+          "status": "pending"
+        },
+        {
+          "attempts": 0,
+          "checked_at": "2026-09-13T04:49:13.735981+00:00",
+          "error": "",
+          "expires_at": "2026-09-14T04:49:13.735981+00:00",
+          "latency_ms": null,
+          "matches": [],
+          "query": {
+            "candidate_id": "INTEGRATED-CONSTANT",
+            "dec_deg": -12.5,
+            "ra_deg": 42.199999999999996
+          },
+          "response_digest": "",
+          "service": "vsx",
+          "service_version": "",
+          "status": "pending"
+        }
+      ],
+      "features": {
+        "band_features": {
+          "synthetic::g": {
+            "channel_id": "synthetic::g",
+            "flux_amplitude_p90_p10": 0.1999999999999993,
+            "flux_error_missing_fraction": 0.0,
+            "flux_median": 10.0,
+            "flux_n_detections": 6,
+            "flux_peak": 10.1,
+            "flux_peak_contrast": 0.09999999999999964,
+            "flux_peak_significance": 0.09046232977951475,
+            "flux_peak_time": 61001.0,
+            "flux_robust_scatter": 0.14825999999999948,
+            "flux_scale": 10.0,
+            "fractional_flux_excursion": 0.009999999999999964,
+            "median_flux_error": 1.0,
+            "n_significant_flux_points": 0,
+            "n_significant_measurements": 0,
+            "normalized_flux_fade_rate_per_day": 0.0020000000000000018,
+            "normalized_flux_rise_rate_per_day": 0.010000000000000009,
+            "passband": "g",
+            "survey": "synthetic"
+          }
+        },
+        "band_missing_fraction": 0.0,
+        "bands": [
+          "g"
+        ],
+        "channels": [
+          "synthetic::g"
+        ],
+        "detection_baseline_days": 5.0,
+        "feature_schema": "siderea.photometry.v4",
+        "first_detection_time": 61000.0,
+        "flux_error_missing_fraction": 0.0,
+        "has_prior_nondetection": false,
+        "has_recent_prior_nondetection": false,
+        "last_detection_time": 61005.0,
+        "magnitude_error_missing_fraction": 0.0,
+        "max_band_amplitude_mag": null,
+        "max_detection_significance": 0.09046232977951475,
+        "max_fade_rate_mag_per_day": null,
+        "max_flux_peak_significance": 0.09046232977951475,
+        "max_fractional_flux_excursion": 0.009999999999999964,
+        "max_normalized_flux_fade_rate_per_day": 0.0020000000000000018,
+        "max_normalized_flux_rise_rate_per_day": 0.010000000000000009,
+        "max_peak_brightening_mag": null,
+        "max_peak_relative_flux": null,
+        "max_peak_significance": null,
+        "max_prior_forced_flux_snr": null,
+        "max_rise_rate_mag_per_day": null,
+        "measurement_error_missing_fraction": 0.0,
+        "median_band_amplitude_mag": null,
+        "median_fractional_flux_excursion": 0.009999999999999964,
+        "median_peak_significance": null,
+        "missing_critical_fraction": 0.0,
+        "n_bands": 1,
+        "n_bands_with_prior_nondetection": 0,
+        "n_channels": 1,
+        "n_channels_with_prior_nondetection": 0,
+        "n_detections": 6,
+        "n_detections_raw": 6,
+        "n_nondetections": 0,
+        "n_nondetections_raw": 0,
+        "n_nondetections_with_forced_flux": 0,
+        "n_nondetections_with_limit": 0,
+        "n_observations": 6,
+        "n_rejected_detections": 0,
+        "n_rejected_nondetections": 0,
+        "n_significant_bright_points": 0,
+        "n_significant_flux_points": 0,
+        "n_significant_measurements": 0,
+        "prior_forced_flux_contrast_significance": null,
+        "prior_nondetection_by_band": [],
+        "prior_nondetection_contrast_mag": null,
+        "prior_nondetection_gap_days": null,
+        "quality_rejected_fraction": 0.0,
+        "rejected_detection_fraction": 0.0,
+        "survey_missing_fraction": 0.0,
+        "warnings": [
+          "flux_only_detections_present"
+        ]
+      },
+      "gate": {
+        "decision": "block_incomplete_evidence",
+        "matched_services": [],
+        "missing_services": [
+          "skybot",
+          "tns",
+          "simbad",
+          "vsx"
+        ],
+        "reasons": [
+          "skybot: status is not clear",
+          "tns: status is not clear",
+          "simbad: status is not clear",
+          "vsx: status is not clear"
+        ],
+        "reportable": false
+      },
+      "gate_evaluated_at": "2026-09-13T04:49:13.745984+00:00",
+      "independent_review": {
+        "approved": false,
+        "reason": "missing screener approval"
+      },
+      "manual_adjudication": {
+        "reason": "scientific adjudication not required",
+        "resolved": true
+      },
+      "manual_review_required": false,
+      "observations": [
+        {
+          "band": "g",
+          "dec_deg": -12.5,
+          "flux": 10.0,
+          "flux_error": 1.0,
+          "is_detection": true,
+          "limiting_magnitude": null,
+          "magnitude": null,
+          "magnitude_error": null,
+          "mjd": 61000,
+          "observation_id": "constant-001",
+          "quality": true,
+          "ra_deg": 42.2,
+          "source_id": "INTEGRATED-CONSTANT",
+          "survey": "synthetic"
+        },
+        {
+          "band": "g",
+          "dec_deg": -12.5,
+          "flux": 10.1,
+          "flux_error": 1.0,
+          "is_detection": true,
+          "limiting_magnitude": null,
+          "magnitude": null,
+          "magnitude_error": null,
+          "mjd": 61001,
+          "observation_id": "constant-002",
+          "quality": true,
+          "ra_deg": 42.2,
+          "source_id": "INTEGRATED-CONSTANT",
+          "survey": "synthetic"
+        },
+        {
+          "band": "g",
+          "dec_deg": -12.5,
+          "flux": 9.9,
+          "flux_error": 1.0,
+          "is_detection": true,
+          "limiting_magnitude": null,
+          "magnitude": null,
+          "magnitude_error": null,
+          "mjd": 61002,
+          "observation_id": "constant-003",
+          "quality": true,
+          "ra_deg": 42.2,
+          "source_id": "INTEGRATED-CONSTANT",
+          "survey": "synthetic"
+        },
+        {
+          "band": "g",
+          "dec_deg": -12.5,
+          "flux": 10.0,
+          "flux_error": 1.0,
+          "is_detection": true,
+          "limiting_magnitude": null,
+          "magnitude": null,
+          "magnitude_error": null,
+          "mjd": 61003,
+          "observation_id": "constant-004",
+          "quality": true,
+          "ra_deg": 42.2,
+          "source_id": "INTEGRATED-CONSTANT",
+          "survey": "synthetic"
+        },
+        {
+          "band": "g",
+          "dec_deg": -12.5,
+          "flux": 10.1,
+          "flux_error": 1.0,
+          "is_detection": true,
+          "limiting_magnitude": null,
+          "magnitude": null,
+          "magnitude_error": null,
+          "mjd": 61004,
+          "observation_id": "constant-005",
+          "quality": true,
+          "ra_deg": 42.2,
+          "source_id": "INTEGRATED-CONSTANT",
+          "survey": "synthetic"
+        },
+        {
+          "band": "g",
+          "dec_deg": -12.5,
+          "flux": 9.9,
+          "flux_error": 1.0,
+          "is_detection": true,
+          "limiting_magnitude": null,
+          "magnitude": null,
+          "magnitude_error": null,
+          "mjd": 61005,
+          "observation_id": "constant-006",
+          "quality": true,
+          "ra_deg": 42.2,
+          "source_id": "INTEGRATED-CONSTANT",
+          "survey": "synthetic"
+        }
+      ],
+      "observations_digest": "0d85513e70df9754778de5f638d1a26b3d3aff66928739b18e2c4c230191dda5",
+      "origin": "csv:/Volumes/PRO-BLADE/IRIS-Project/paper/research/overnight-smoke-20260913-v2/prepared/pipeline_photometry.csv",
+      "pipeline_version": "siderea.local_analysis.v4",
+      "position": {
+        "dec_deg": -12.5,
+        "ra_deg": 42.199999999999996
+      },
+      "preflight_digest": "07ac01e8d6eb8c4445ac82374f843cbfd8a543da26b5917479cbcd0b1d868ec7",
+      "quality": {
+        "passed": true,
+        "reasons": []
+      },
+      "reportable": false,
+      "review_policy": {
+        "allow_self_approval": false,
+        "require_authenticated": false,
+        "require_human_approval": true,
+        "required_reviewers": 1,
+        "trusted_assertion_key_ids": []
+      },
+      "run_id": "overnight-smoke-20260913-v2",
+      "scientific_config": {
+        "hunt": {
+          "broker": "alerce",
+          "broker_classes": [
+            "SN",
+            "SNIa",
+            "SNIbc",
+            "SNII"
+          ],
+          "discovered_within_days": 30.0,
+          "min_detections": 3,
+          "object_limit": 350
+        },
+        "ranking": {
+          "amplitude_weight": 0.24,
+          "anomaly_slots": 2,
+          "audit_slots": 0,
+          "nondetection_weight": 0.12,
+          "quality_weight": 0.15,
+          "sampling_weight": 0.12,
+          "significance_weight": 0.22,
+          "temporal_weight": 0.15
+        },
+        "review": {
+          "allow_self_approval": false,
+          "nightly_budget": 10,
+          "require_authenticated": false,
+          "require_human_approval": true,
+          "required_reviewers": 1,
+          "trusted_assertion_key_ids": []
+        },
+        "validation": {
+          "catalog_radius_arcsec": 3.0,
+          "evidence_ttl_hours": 24.0,
+          "fail_closed": true,
+          "required_checks": [
+            "skybot",
+            "tns",
+            "simbad",
+            "vsx"
+          ],
+          "skybot_radius_arcsec": 10.0,
+          "tns_radius_arcsec": 5.0
+        }
+      },
+      "scientific_fingerprint": "analysis-28b523556adaf03f",
+      "score": {
+        "adjustments": {
+          "data_integrity_factor": 1.0,
+          "sparse_history_factor": 1.0
+        },
+        "components": {
+          "amplitude": {
+            "inputs": {
+              "basis": "forced_flux",
+              "max_fractional_flux_excursion": 0.009999999999999964,
+              "max_peak_brightening_mag": null,
+              "median_band_amplitude_mag": null,
+              "median_fractional_flux_excursion": 0.009999999999999964
+            },
+            "score": 0.00995,
+            "weight": 0.24,
+            "weighted_contribution": 0.002388
+          },
+          "data_quality": {
+            "inputs": {
+              "measurement_error_missing_fraction": 0.0,
+              "missing_critical_fraction": 0.0,
+              "quality_rejected_fraction": 0.0,
+              "rejected_detection_fraction": 0.0
+            },
+            "score": 1.0,
+            "weight": 0.15,
+            "weighted_contribution": 0.15
+          },
+          "prior_nondetection": {
+            "inputs": {
+              "contrast_mag": null,
+              "contrast_subscore": 0.0,
+              "forced_flux_contrast_significance": null,
+              "gap_days": null,
+              "has_prior_nondetection": false,
+              "recency_subscore": 0.0
+            },
+            "score": 0.0,
+            "weight": 0.12,
+            "weighted_contribution": 0.0
+          },
+          "sampling": {
+            "inputs": {
+              "n_bands": 1,
+              "n_detections": 6,
+              "n_significant_measurements": 0
+            },
+            "score": 0.342511,
+            "weight": 0.12,
+            "weighted_contribution": 0.041101
+          },
+          "significance": {
+            "inputs": {
+              "max_detection_significance": 0.09046232977951475,
+              "max_flux_peak_significance": 0.09046232977951475,
+              "max_peak_significance": null
+            },
+            "score": 0.06873,
+            "weight": 0.22,
+            "weighted_contribution": 0.015121
+          },
+          "temporal_shape": {
+            "inputs": {
+              "basis": "forced_flux",
+              "max_fade_rate_mag_per_day": null,
+              "max_normalized_flux_fade_rate_per_day": 0.0020000000000000018,
+              "max_normalized_flux_rise_rate_per_day": 0.010000000000000009,
+              "max_rise_rate_mag_per_day": null
+            },
+            "score": 0.019801,
+            "weight": 0.15,
+            "weighted_contribution": 0.00297
+          }
+        },
+        "interpretation": "Relative heuristic review priority only; not a probability, confidence estimate, or trained calibration.",
+        "is_probability": false,
+        "priority_score": 0.21158,
+        "raw_weighted_score": 0.21158,
+        "score_kind": "bounded_heuristic_priority",
+        "score_version": "siderea.heuristic_priority.v2",
+        "warnings": [
+          "flux_only_detections_present",
+          "magnitude_amplitude_missing_using_flux",
+          "magnitude_significance_missing_using_flux",
+          "magnitude_temporal_shape_missing_using_flux"
+        ]
+      },
+      "state": "needs_review",
+      "verification_context": {
+        "simbad": [],
+        "skybot_epochs": [
+          "61000.00000000",
+          "61001.00000000",
+          "61002.00000000",
+          "61003.00000000",
+          "61004.00000000",
+          "61005.00000000"
+        ]
+      }
+    },
+    {
+      "automated_gate": {
+        "decision": "block_incomplete_evidence",
+        "matched_services": [],
+        "missing_services": [
+          "skybot",
+          "tns",
+          "simbad",
+          "vsx"
+        ],
+        "reasons": [
+          "skybot: status is not clear",
+          "tns: status is not clear",
+          "simbad: status is not clear",
+          "vsx: status is not clear"
+        ],
+        "reportable": false
+      },
+      "campaign": "novel_transients",
+      "candidate_id": "INTEGRATED-PULSE",
+      "candidate_record_digest": "2a1331af445b23863fc7ede01d54656e524553fde71e56a89e638cfcb2b77daf",
+      "candidate_run_binding_digest": "87e3e6a5449ec98f5a8dd17927533bd0239d363889b90f886e578b5eb4868f70",
+      "candidate_version": "898209bef8f5dbf871ff23864ee430ed5502f5cd73c32a83ca7bc05775acb248",
+      "evidence_binding": {
+        "candidate_id": "INTEGRATED-PULSE",
+        "dec_deg": 2.3,
+        "max_ttl_hours": 24.0,
+        "position_tolerance_arcsec": 0.1,
+        "ra_deg": 150.1,
+        "required_radii_arcsec": {
+          "simbad": 3.0,
+          "skybot": 10.0,
+          "tns": 5.0,
+          "vsx": 3.0
+        },
+        "skybot_epoch_tolerance_days": 0.001,
+        "skybot_reference_mjds": [
+          61000.0,
+          61001.0,
+          61002.0,
+          61003.0,
+          61004.0,
+          61005.0
+        ]
+      },
+      "external_checks": [
+        {
+          "attempts": 0,
+          "checked_at": "2026-09-13T04:49:13.735981+00:00",
+          "error": "",
+          "expires_at": "2026-09-14T04:49:13.735981+00:00",
+          "latency_ms": null,
+          "matches": [],
+          "query": {
+            "candidate_id": "INTEGRATED-PULSE",
+            "dec_deg": 2.3,
+            "ra_deg": 150.1
+          },
+          "response_digest": "",
+          "service": "skybot",
+          "service_version": "",
+          "status": "pending"
+        },
+        {
+          "attempts": 0,
+          "checked_at": "2026-09-13T04:49:13.735981+00:00",
+          "error": "",
+          "expires_at": "2026-09-14T04:49:13.735981+00:00",
+          "latency_ms": null,
+          "matches": [],
+          "query": {
+            "candidate_id": "INTEGRATED-PULSE",
+            "dec_deg": 2.3,
+            "ra_deg": 150.1
+          },
+          "response_digest": "",
+          "service": "tns",
+          "service_version": "",
+          "status": "pending"
+        },
+        {
+          "attempts": 0,
+          "checked_at": "2026-09-13T04:49:13.735981+00:00",
+          "error": "",
+          "expires_at": "2026-09-14T04:49:13.735981+00:00",
+          "latency_ms": null,
+          "matches": [],
+          "query": {
+            "candidate_id": "INTEGRATED-PULSE",
+            "dec_deg": 2.3,
+            "ra_deg": 150.1
+          },
+          "response_digest": "",
+          "service": "simbad",
+          "service_version": "",
+          "status": "pending"
+        },
+        {
+          "attempts": 0,
+          "checked_at": "2026-09-13T04:49:13.735981+00:00",
+          "error": "",
+          "expires_at": "2026-09-14T04:49:13.735981+00:00",
+          "latency_ms": null,
+          "matches": [],
+          "query": {
+            "candidate_id": "INTEGRATED-PULSE",
+            "dec_deg": 2.3,
+            "ra_deg": 150.1
+          },
+          "response_digest": "",
+          "service": "vsx",
+          "service_version": "",
+          "status": "pending"
+        }
+      ],
+      "features": {
+        "band_features": {
+          "synthetic::g": {
+            "channel_id": "synthetic::g",
+            "flux_amplitude_p90_p10": 4.5,
+            "flux_error_missing_fraction": 0.0,
+            "flux_median": 10.6,
+            "flux_n_detections": 6,
+            "flux_peak": 18.0,
+            "flux_peak_contrast": 7.800000000000001,
+            "flux_peak_significance": 6.873049409015704,
+            "flux_peak_time": 61003.0,
+            "flux_robust_scatter": 0.7413,
+            "flux_scale": 10.6,
+            "fractional_flux_excursion": 0.7358490566037736,
+            "median_flux_error": 1.0,
+            "n_significant_flux_points": 1,
+            "n_significant_measurements": 1,
+            "normalized_flux_fade_rate_per_day": 0.3726415094339623,
+            "normalized_flux_rise_rate_per_day": 0.2349056603773585,
+            "passband": "g",
+            "survey": "synthetic"
+          }
+        },
+        "band_missing_fraction": 0.0,
+        "bands": [
+          "g"
+        ],
+        "channels": [
+          "synthetic::g"
+        ],
+        "detection_baseline_days": 5.0,
+        "feature_schema": "siderea.photometry.v4",
+        "first_detection_time": 61000.0,
+        "flux_error_missing_fraction": 0.0,
+        "has_prior_nondetection": false,
+        "has_recent_prior_nondetection": false,
+        "last_detection_time": 61005.0,
+        "magnitude_error_missing_fraction": 0.0,
+        "max_band_amplitude_mag": null,
+        "max_detection_significance": 6.873049409015704,
+        "max_fade_rate_mag_per_day": null,
+        "max_flux_peak_significance": 6.873049409015704,
+        "max_fractional_flux_excursion": 0.7358490566037736,
+        "max_normalized_flux_fade_rate_per_day": 0.3726415094339623,
+        "max_normalized_flux_rise_rate_per_day": 0.2349056603773585,
+        "max_peak_brightening_mag": null,
+        "max_peak_relative_flux": null,
+        "max_peak_significance": null,
+        "max_prior_forced_flux_snr": null,
+        "max_rise_rate_mag_per_day": null,
+        "measurement_error_missing_fraction": 0.0,
+        "median_band_amplitude_mag": null,
+        "median_fractional_flux_excursion": 0.7358490566037736,
+        "median_peak_significance": null,
+        "missing_critical_fraction": 0.0,
+        "n_bands": 1,
+        "n_bands_with_prior_nondetection": 0,
+        "n_channels": 1,
+        "n_channels_with_prior_nondetection": 0,
+        "n_detections": 6,
+        "n_detections_raw": 6,
+        "n_nondetections": 0,
+        "n_nondetections_raw": 0,
+        "n_nondetections_with_forced_flux": 0,
+        "n_nondetections_with_limit": 0,
+        "n_observations": 6,
+        "n_rejected_detections": 0,
+        "n_rejected_nondetections": 0,
+        "n_significant_bright_points": 0,
+        "n_significant_flux_points": 1,
+        "n_significant_measurements": 1,
+        "prior_forced_flux_contrast_significance": null,
+        "prior_nondetection_by_band": [],
+        "prior_nondetection_contrast_mag": null,
+        "prior_nondetection_gap_days": null,
+        "quality_rejected_fraction": 0.0,
+        "rejected_detection_fraction": 0.0,
+        "survey_missing_fraction": 0.0,
+        "warnings": [
+          "flux_only_detections_present"
+        ]
+      },
+      "gate": {
+        "decision": "block_incomplete_evidence",
+        "matched_services": [],
+        "missing_services": [
+          "skybot",
+          "tns",
+          "simbad",
+          "vsx"
+        ],
+        "reasons": [
+          "skybot: status is not clear",
+          "tns: status is not clear",
+          "simbad: status is not clear",
+          "vsx: status is not clear"
+        ],
+        "reportable": false
+      },
+      "gate_evaluated_at": "2026-09-13T04:49:13.745984+00:00",
+      "independent_review": {
+        "approved": false,
+        "reason": "missing screener approval"
+      },
+      "manual_adjudication": {
+        "reason": "scientific adjudication not required",
+        "resolved": true
+      },
+      "manual_review_required": false,
+      "observations": [
+        {
+          "band": "g",
+          "dec_deg": 2.3,
+          "flux": 10.0,
+          "flux_error": 1.0,
+          "is_detection": true,
+          "limiting_magnitude": null,
+          "magnitude": null,
+          "magnitude_error": null,
+          "mjd": 61000,
+          "observation_id": "pulse-001",
+          "quality": true,
+          "ra_deg": 150.1,
+          "source_id": "INTEGRATED-PULSE",
+          "survey": "synthetic"
+        },
+        {
+          "band": "g",
+          "dec_deg": 2.3,
+          "flux": 10.2,
+          "flux_error": 1.0,
+          "is_detection": true,
+          "limiting_magnitude": null,
+          "magnitude": null,
+          "magnitude_error": null,
+          "mjd": 61001,
+          "observation_id": "pulse-002",
+          "quality": true,
+          "ra_deg": 150.1,
+          "source_id": "INTEGRATED-PULSE",
+          "survey": "synthetic"
+        },
+        {
+          "band": "g",
+          "dec_deg": 2.3,
+          "flux": 11.1,
+          "flux_error": 1.0,
+          "is_detection": true,
+          "limiting_magnitude": null,
+          "magnitude": null,
+          "magnitude_error": null,
+          "mjd": 61002,
+          "observation_id": "pulse-003",
+          "quality": true,
+          "ra_deg": 150.1,
+          "source_id": "INTEGRATED-PULSE",
+          "survey": "synthetic"
+        },
+        {
+          "band": "g",
+          "dec_deg": 2.3,
+          "flux": 18.0,
+          "flux_error": 1.0,
+          "is_detection": true,
+          "limiting_magnitude": null,
+          "magnitude": null,
+          "magnitude_error": null,
+          "mjd": 61003,
+          "observation_id": "pulse-004",
+          "quality": true,
+          "ra_deg": 150.1,
+          "source_id": "INTEGRATED-PULSE",
+          "survey": "synthetic"
+        },
+        {
+          "band": "g",
+          "dec_deg": 2.3,
+          "flux": 11.0,
+          "flux_error": 1.0,
+          "is_detection": true,
+          "limiting_magnitude": null,
+          "magnitude": null,
+          "magnitude_error": null,
+          "mjd": 61004,
+          "observation_id": "pulse-005",
+          "quality": true,
+          "ra_deg": 150.1,
+          "source_id": "INTEGRATED-PULSE",
+          "survey": "synthetic"
+        },
+        {
+          "band": "g",
+          "dec_deg": 2.3,
+          "flux": 10.1,
+          "flux_error": 1.0,
+          "is_detection": true,
+          "limiting_magnitude": null,
+          "magnitude": null,
+          "magnitude_error": null,
+          "mjd": 61005,
+          "observation_id": "pulse-006",
+          "quality": true,
+          "ra_deg": 150.1,
+          "source_id": "INTEGRATED-PULSE",
+          "survey": "synthetic"
+        }
+      ],
+      "observations_digest": "f6945deac81bafc543df2b5947739ee846b0b289ed054b6fca6f778b9a36f802",
+      "origin": "csv:/Volumes/PRO-BLADE/IRIS-Project/paper/research/overnight-smoke-20260913-v2/prepared/pipeline_photometry.csv",
+      "pipeline_version": "siderea.local_analysis.v4",
+      "position": {
+        "dec_deg": 2.3,
+        "ra_deg": 150.1
+      },
+      "preflight_digest": "4e037fdeb359d2f545e11bbb1c49defc45e8394a29f91ff04f8f204116b84ffb",
+      "quality": {
+        "passed": true,
+        "reasons": []
+      },
+      "reportable": false,
+      "review_policy": {
+        "allow_self_approval": false,
+        "require_authenticated": false,
+        "require_human_approval": true,
+        "required_reviewers": 1,
+        "trusted_assertion_key_ids": []
+      },
+      "run_id": "overnight-smoke-20260913-v2",
+      "scientific_config": {
+        "hunt": {
+          "broker": "alerce",
+          "broker_classes": [
+            "SN",
+            "SNIa",
+            "SNIbc",
+            "SNII"
+          ],
+          "discovered_within_days": 30.0,
+          "min_detections": 3,
+          "object_limit": 350
+        },
+        "ranking": {
+          "amplitude_weight": 0.24,
+          "anomaly_slots": 2,
+          "audit_slots": 0,
+          "nondetection_weight": 0.12,
+          "quality_weight": 0.15,
+          "sampling_weight": 0.12,
+          "significance_weight": 0.22,
+          "temporal_weight": 0.15
+        },
+        "review": {
+          "allow_self_approval": false,
+          "nightly_budget": 10,
+          "require_authenticated": false,
+          "require_human_approval": true,
+          "required_reviewers": 1,
+          "trusted_assertion_key_ids": []
+        },
+        "validation": {
+          "catalog_radius_arcsec": 3.0,
+          "evidence_ttl_hours": 24.0,
+          "fail_closed": true,
+          "required_checks": [
+            "skybot",
+            "tns",
+            "simbad",
+            "vsx"
+          ],
+          "skybot_radius_arcsec": 10.0,
+          "tns_radius_arcsec": 5.0
+        }
+      },
+      "scientific_fingerprint": "analysis-28b523556adaf03f",
+      "score": {
+        "adjustments": {
+          "data_integrity_factor": 1.0,
+          "sparse_history_factor": 1.0
+        },
+        "components": {
+          "amplitude": {
+            "inputs": {
+              "basis": "forced_flux",
+              "max_fractional_flux_excursion": 0.7358490566037736,
+              "max_peak_brightening_mag": null,
+              "median_band_amplitude_mag": null,
+              "median_fractional_flux_excursion": 0.7358490566037736
+            },
+            "score": 0.520901,
+            "weight": 0.24,
+            "weighted_contribution": 0.125016
+          },
+          "data_quality": {
+            "inputs": {
+              "measurement_error_missing_fraction": 0.0,
+              "missing_critical_fraction": 0.0,
+              "quality_rejected_fraction": 0.0,
+              "rejected_detection_fraction": 0.0
+            },
+            "score": 1.0,
+            "weight": 0.15,
+            "weighted_contribution": 0.15
+          },
+          "prior_nondetection": {
+            "inputs": {
+              "contrast_mag": null,
+              "contrast_subscore": 0.0,
+              "forced_flux_contrast_significance": null,
+              "gap_days": null,
+              "has_prior_nondetection": false,
+              "recency_subscore": 0.0
+            },
+            "score": 0.0,
+            "weight": 0.12,
+            "weighted_contribution": 0.0
+          },
+          "sampling": {
+            "inputs": {
+              "n_bands": 1,
+              "n_detections": 6,
+              "n_significant_measurements": 1
+            },
+            "score": 0.460551,
+            "weight": 0.12,
+            "weighted_contribution": 0.055266
+          },
+          "significance": {
+            "inputs": {
+              "max_detection_significance": 6.873049409015704,
+              "max_flux_peak_significance": 6.873049409015704,
+              "max_peak_significance": null
+            },
+            "score": 0.871621,
+            "weight": 0.22,
+            "weighted_contribution": 0.191757
+          },
+          "temporal_shape": {
+            "inputs": {
+              "basis": "forced_flux",
+              "max_fade_rate_mag_per_day": null,
+              "max_normalized_flux_fade_rate_per_day": 0.3726415094339623,
+              "max_normalized_flux_rise_rate_per_day": 0.2349056603773585,
+              "max_rise_rate_mag_per_day": null
+            },
+            "score": 0.5254,
+            "weight": 0.15,
+            "weighted_contribution": 0.07881
+          }
+        },
+        "interpretation": "Relative heuristic review priority only; not a probability, confidence estimate, or trained calibration.",
+        "is_probability": false,
+        "priority_score": 0.600849,
+        "raw_weighted_score": 0.600849,
+        "score_kind": "bounded_heuristic_priority",
+        "score_version": "siderea.heuristic_priority.v2",
+        "warnings": [
+          "flux_only_detections_present",
+          "magnitude_amplitude_missing_using_flux",
+          "magnitude_significance_missing_using_flux",
+          "magnitude_temporal_shape_missing_using_flux"
+        ]
+      },
+      "state": "needs_review",
+      "verification_context": {
+        "simbad": [],
+        "skybot_epochs": [
+          "61000.00000000",
+          "61001.00000000",
+          "61002.00000000",
+          "61003.00000000",
+          "61004.00000000",
+          "61005.00000000"
+        ]
+      }
+    }
+  ],
+  "pipeline_version": "siderea.local_analysis.v4",
+  "run_id": "overnight-smoke-20260913-v2",
+  "schema": "siderea.candidates.v1",
+  "scientific_fingerprint": "analysis-28b523556adaf03f"
+}

@@ -1,0 +1,60 @@
+{
+  "checks": [
+    {
+      "detail": "3.13.1 (/Volumes/PRO-BLADE/IRIS-Project/.venv/bin/python)",
+      "name": "python",
+      "status": "ok"
+    },
+    {
+      "detail": "/Volumes/PRO-BLADE/IRIS-Project/configs/jepa.toml",
+      "name": "config",
+      "status": "ok"
+    },
+    {
+      "detail": "root=/Volumes/PRO-BLADE/IRIS-Project/var/siderea; nearest parent=/Volumes/PRO-BLADE/IRIS-Project/var",
+      "name": "storage",
+      "status": "ok"
+    },
+    {
+      "detail": "available",
+      "name": "dependency:numpy",
+      "status": "ok"
+    },
+    {
+      "detail": "available",
+      "name": "dependency:pandas",
+      "status": "ok"
+    },
+    {
+      "detail": "available",
+      "name": "dependency:sklearn",
+      "status": "ok"
+    },
+    {
+      "detail": "available",
+      "name": "dependency:torch",
+      "status": "ok"
+    },
+    {
+      "detail": "not installed",
+      "name": "dependency:astropy",
+      "status": "warning"
+    },
+    {
+      "detail": "not installed",
+      "name": "dependency:astroquery",
+      "status": "warning"
+    },
+    {
+      "detail": "not installed",
+      "name": "dependency:alerce",
+      "status": "warning"
+    },
+    {
+      "detail": "not installed",
+      "name": "dependency:matplotlib",
+      "status": "warning"
+    }
+  ],
+  "ok": true
+}

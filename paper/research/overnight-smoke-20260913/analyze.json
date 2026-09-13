@@ -1,0 +1,15 @@
+{
+  "blocked_count": 2,
+  "candidate_count": 2,
+  "candidates_path": "/Volumes/PRO-BLADE/IRIS-Project/paper/research/overnight-smoke-20260913/pipeline/overnight-smoke-20260913/candidates.json",
+  "features_path": "/Volumes/PRO-BLADE/IRIS-Project/paper/research/overnight-smoke-20260913/pipeline/overnight-smoke-20260913/features.csv",
+  "ledger_path": "/Volumes/PRO-BLADE/IRIS-Project/paper/research/overnight-smoke-20260913/outcomes.sqlite",
+  "manifest_path": "/Volumes/PRO-BLADE/IRIS-Project/paper/research/overnight-smoke-20260913/pipeline/overnight-smoke-20260913/manifest.json",
+  "normalized_photometry_path": "/Volumes/PRO-BLADE/IRIS-Project/paper/research/overnight-smoke-20260913/pipeline/overnight-smoke-20260913/photometry.normalized.csv",
+  "ranked_candidates_path": "/Volumes/PRO-BLADE/IRIS-Project/paper/research/overnight-smoke-20260913/pipeline/overnight-smoke-20260913/ranked_candidates.csv",
+  "reportable_count": 0,
+  "run_dir": "/Volumes/PRO-BLADE/IRIS-Project/paper/research/overnight-smoke-20260913/pipeline/overnight-smoke-20260913",
+  "run_id": "overnight-smoke-20260913",
+  "scientific_fingerprint": "analysis-28b523556adaf03f",
+  "snapshot_path": "/Volumes/PRO-BLADE/IRIS-Project/paper/research/overnight-smoke-20260913/pipeline/overnight-smoke-20260913/dataset.snapshot.json"
+}

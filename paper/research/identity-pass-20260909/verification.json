@@ -1,0 +1,18 @@
+{
+  "tests": 479,
+  "subtests": 99,
+  "coverage_percent": 78.6,
+  "targeted_tests": 55,
+  "targeted_subtests": 3,
+  "reproduced_result_rows": 67,
+  "build": "passed",
+  "wheel_smoke": "five rows evaluated; textual ID preserved; replay exits 2 with no output",
+  "scope": "local identity integrity; not live scientific qualification",
+  "validated_source_sha256": {
+    "src/siderea/ingest/schema.py": "df8e87178a0fb0cb4559689fa59b61ae0bfc996ef54b1b07750d28774ca77a13",
+    "src/siderea/research/transients.py": "89fa2650e6c5d04e325a423e252e780d2737ad2757f8c2885044ad9179c51ad4",
+    "src/siderea/cli.py": "7133089cb6f56de242dcd4d79469fdc124930e9745e533a7a813b9e16b89bf23",
+    "tests/test_transient_search.py": "48f6168d082264425f8aa2fa0da898064a7d3d56969b5b97d80393c2728fa6ab",
+    "tests/test_pipeline_ingest.py": "1479afef6c573c93a9fd338b44a1ab403acd1c4d12fe234b49ab5b8fd7af6899"
+  }
+}

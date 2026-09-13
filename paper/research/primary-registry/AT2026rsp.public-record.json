@@ -1,0 +1,40 @@
+{
+  "schema": "siderea.public_registry_record.v1",
+  "registry": "IAU Transient Name Server",
+  "object_name": "AT 2026rsp",
+  "object_url": "https://www.wis-tns.org/object/2026rsp",
+  "retrieved_on": "2026-09-13",
+  "capture_method": "public search-index extraction of the primary registry page",
+  "public": true,
+  "tns_at": true,
+  "object_id": 212592,
+  "coordinates_current_j2000": {
+    "ra_sexagesimal": "22:22:35.923",
+    "dec_sexagesimal": "+04:44:17.75",
+    "ra_deg": 335.649680801,
+    "dec_deg": 4.73826397051
+  },
+  "discovery": {
+    "date_utc": "2026-06-19 10:11:11.000",
+    "magnitude_ab": 21.067,
+    "magnitude_error": 0.311,
+    "filter": "g-ZTF",
+    "data_source": "ZTF",
+    "internal_name": "ZTF26abdqbqw"
+  },
+  "at_report": {
+    "report_id": 312644,
+    "received_utc": "2026-07-05 17:23:37",
+    "sender": "Ajeesh PU",
+    "reporter": "Aadi Ajeesh Nair",
+    "at_type": "PSN",
+    "host_name": "WISEA J222235.91+044418.8",
+    "ads_bibcode": "2026TNSTR2797....1P"
+  },
+  "limitations": [
+    "This is a structured extraction, not the original API response or HTML bytes.",
+    "The page verifies designation and report metadata, not the full historical 3824-object selection cohort.",
+    "The page does not reproduce all row-level broker photometry in the surviving operations summary.",
+    "The object remains unclassified on the captured public record."
+  ]
+}

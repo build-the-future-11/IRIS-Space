@@ -1,0 +1,382 @@
+{
+  "schema": "siderea.synthetic_search_results.v1",
+  "protocol_digest": "82eaf5f57fe5b49abc53758adb9dfe29da4837a85d45066f108efcec6035e381",
+  "bank_digest": "11bf2c24cc190c33ae7a474705f4b9b9fa88188a1436a3a968ff6a1b133feba3",
+  "template_count": 252,
+  "results": [
+    {
+      "scenario": "independent_gaussian",
+      "amplitude_sigma": 0,
+      "method": "bank",
+      "trials": 1000,
+      "detections": 417,
+      "fraction": 0.417,
+      "wilson_interval": [
+        0.38681470363066783,
+        0.4478205382779342
+      ]
+    },
+    {
+      "scenario": "independent_gaussian",
+      "amplitude_sigma": 0,
+      "method": "single_epoch",
+      "trials": 1000,
+      "detections": 20,
+      "fraction": 0.02,
+      "wilson_interval": [
+        0.012983682916415142,
+        0.03069000522971778
+      ]
+    },
+    {
+      "scenario": "ar1_rho_0.7",
+      "amplitude_sigma": 0,
+      "method": "bank",
+      "trials": 1000,
+      "detections": 11,
+      "fraction": 0.011,
+      "wilson_interval": [
+        0.006153174098086639,
+        0.019589395700786272
+      ]
+    },
+    {
+      "scenario": "ar1_rho_0.7",
+      "amplitude_sigma": 0,
+      "method": "single_epoch",
+      "trials": 1000,
+      "detections": 3,
+      "fraction": 0.003,
+      "wilson_interval": [
+        0.001020783881138619,
+        0.008783014053503171
+      ]
+    },
+    {
+      "scenario": "single_positive_8sigma_outlier",
+      "amplitude_sigma": 0,
+      "method": "bank",
+      "trials": 1000,
+      "detections": 805,
+      "fraction": 0.805,
+      "wilson_interval": [
+        0.7792957712157101,
+        0.8283699061081015
+      ]
+    },
+    {
+      "scenario": "single_positive_8sigma_outlier",
+      "amplitude_sigma": 0,
+      "method": "single_epoch",
+      "trials": 1000,
+      "detections": 1000,
+      "fraction": 1.0,
+      "wilson_interval": [
+        0.996173241514445,
+        1.0
+      ]
+    },
+    {
+      "scenario": "gaussian",
+      "amplitude_sigma": 2.0,
+      "method": "bank",
+      "trials": 1000,
+      "detections": 313,
+      "fraction": 0.313,
+      "wilson_interval": [
+        0.28502093895360764,
+        0.34241026871999
+      ]
+    },
+    {
+      "scenario": "gaussian",
+      "amplitude_sigma": 2.0,
+      "method": "single_epoch",
+      "trials": 1000,
+      "detections": 141,
+      "fraction": 0.141,
+      "wilson_interval": [
+        0.12080112670494819,
+        0.1639464858876804
+      ]
+    },
+    {
+      "scenario": "gaussian",
+      "amplitude_sigma": 4.0,
+      "method": "bank",
+      "trials": 1000,
+      "detections": 936,
+      "fraction": 0.936,
+      "wilson_interval": [
+        0.9190992674988255,
+        0.9495637991017706
+      ]
+    },
+    {
+      "scenario": "gaussian",
+      "amplitude_sigma": 4.0,
+      "method": "single_epoch",
+      "trials": 1000,
+      "detections": 788,
+      "fraction": 0.788,
+      "wilson_interval": [
+        0.7615898394196515,
+        0.8122059476926687
+      ]
+    },
+    {
+      "scenario": "gaussian",
+      "amplitude_sigma": 8.0,
+      "method": "bank",
+      "trials": 1000,
+      "detections": 995,
+      "fraction": 0.995,
+      "wilson_interval": [
+        0.9883490446266249,
+        0.9978624644726756
+      ]
+    },
+    {
+      "scenario": "gaussian",
+      "amplitude_sigma": 8.0,
+      "method": "single_epoch",
+      "trials": 1000,
+      "detections": 990,
+      "fraction": 0.99,
+      "wilson_interval": [
+        0.9816905311296853,
+        0.9945592455544707
+      ]
+    },
+    {
+      "scenario": "exponential",
+      "amplitude_sigma": 2.0,
+      "method": "bank",
+      "trials": 1000,
+      "detections": 127,
+      "fraction": 0.127,
+      "wilson_interval": [
+        0.10778000925843849,
+        0.14907475257178568
+      ]
+    },
+    {
+      "scenario": "exponential",
+      "amplitude_sigma": 2.0,
+      "method": "single_epoch",
+      "trials": 1000,
+      "detections": 62,
+      "fraction": 0.062,
+      "wilson_interval": [
+        0.04866418011998064,
+        0.07868806031336564
+      ]
+    },
+    {
+      "scenario": "exponential",
+      "amplitude_sigma": 4.0,
+      "method": "bank",
+      "trials": 1000,
+      "detections": 673,
+      "fraction": 0.673,
+      "wilson_interval": [
+        0.6433104519531344,
+        0.7013654896108635
+      ]
+    },
+    {
+      "scenario": "exponential",
+      "amplitude_sigma": 4.0,
+      "method": "single_epoch",
+      "trials": 1000,
+      "detections": 475,
+      "fraction": 0.475,
+      "wilson_interval": [
+        0.44420380838551404,
+        0.5059875295387636
+      ]
+    },
+    {
+      "scenario": "exponential",
+      "amplitude_sigma": 8.0,
+      "method": "bank",
+      "trials": 1000,
+      "detections": 933,
+      "fraction": 0.933,
+      "wilson_interval": [
+        0.9157879467581331,
+        0.9468980803933762
+      ]
+    },
+    {
+      "scenario": "exponential",
+      "amplitude_sigma": 8.0,
+      "method": "single_epoch",
+      "trials": 1000,
+      "detections": 889,
+      "fraction": 0.889,
+      "wilson_interval": [
+        0.8680219923564878,
+        0.9070007895417505
+      ]
+    },
+    {
+      "scenario": "bazin",
+      "amplitude_sigma": 2.0,
+      "method": "bank",
+      "trials": 1000,
+      "detections": 240,
+      "fraction": 0.24,
+      "wilson_interval": [
+        0.21455652518754262,
+        0.267433389224946
+      ]
+    },
+    {
+      "scenario": "bazin",
+      "amplitude_sigma": 2.0,
+      "method": "single_epoch",
+      "trials": 1000,
+      "detections": 105,
+      "fraction": 0.105,
+      "wilson_interval": [
+        0.08748778261441684,
+        0.1255353565891717
+      ]
+    },
+    {
+      "scenario": "bazin",
+      "amplitude_sigma": 4.0,
+      "method": "bank",
+      "trials": 1000,
+      "detections": 889,
+      "fraction": 0.889,
+      "wilson_interval": [
+        0.8680219923564878,
+        0.9070007895417505
+      ]
+    },
+    {
+      "scenario": "bazin",
+      "amplitude_sigma": 4.0,
+      "method": "single_epoch",
+      "trials": 1000,
+      "detections": 738,
+      "fraction": 0.738,
+      "wilson_interval": [
+        0.7098723945402419,
+        0.764306068420634
+      ]
+    },
+    {
+      "scenario": "bazin",
+      "amplitude_sigma": 8.0,
+      "method": "bank",
+      "trials": 1000,
+      "detections": 992,
+      "fraction": 0.992,
+      "wilson_interval": [
+        0.98429366546902,
+        0.9959408041811939
+      ]
+    },
+    {
+      "scenario": "bazin",
+      "amplitude_sigma": 8.0,
+      "method": "single_epoch",
+      "trials": 1000,
+      "detections": 981,
+      "fraction": 0.981,
+      "wilson_interval": [
+        0.9705155440876868,
+        0.9878031142492091
+      ]
+    },
+    {
+      "scenario": "fallback",
+      "amplitude_sigma": 2.0,
+      "method": "bank",
+      "trials": 1000,
+      "detections": 199,
+      "fraction": 0.199,
+      "wilson_interval": [
+        0.175427205789421,
+        0.22487650281888322
+      ]
+    },
+    {
+      "scenario": "fallback",
+      "amplitude_sigma": 2.0,
+      "method": "single_epoch",
+      "trials": 1000,
+      "detections": 89,
+      "fraction": 0.089,
+      "wilson_interval": [
+        0.07288824391300745,
+        0.10825735156211884
+      ]
+    },
+    {
+      "scenario": "fallback",
+      "amplitude_sigma": 4.0,
+      "method": "bank",
+      "trials": 1000,
+      "detections": 841,
+      "fraction": 0.841,
+      "wilson_interval": [
+        0.8170364534597756,
+        0.8623536972530759
+      ]
+    },
+    {
+      "scenario": "fallback",
+      "amplitude_sigma": 4.0,
+      "method": "single_epoch",
+      "trials": 1000,
+      "detections": 648,
+      "fraction": 0.648,
+      "wilson_interval": [
+        0.6178838670299425,
+        0.6769834124583332
+      ]
+    },
+    {
+      "scenario": "fallback",
+      "amplitude_sigma": 8.0,
+      "method": "bank",
+      "trials": 1000,
+      "detections": 989,
+      "fraction": 0.989,
+      "wilson_interval": [
+        0.9804106042992138,
+        0.9938468259019133
+      ]
+    },
+    {
+      "scenario": "fallback",
+      "amplitude_sigma": 8.0,
+      "method": "single_epoch",
+      "trials": 1000,
+      "detections": 978,
+      "fraction": 0.978,
+      "wilson_interval": [
+        0.9669143266526004,
+        0.985427292235209
+      ]
+    }
+  ],
+  "python": "3.11.15",
+  "numpy": "2.4.6",
+  "source_sha256": "be19f13d50130817d5300d7068e1751cacaf8287df93f9de1eae928533656c7b",
+  "runner_sha256": "c2a5a596a94031162ca45459e8af6179ca5be66d9c649d291a5c747bd6013711",
+  "calibration_correlation_rho": 0.7,
+  "trial_statistics_sha256": "7f4f2ede62f023b74aa51faed242dff3fb281249f3e55fe586539d57904a16ed",
+  "limitations": [
+    "Synthetic cadence and Gaussian noise with the declared calibration covariance",
+    "Conditional on one cadence realization",
+    "Any stress row differing from declared covariance violates calibration assumptions",
+    "No astrophysical class or survey selection claim",
+    "No empirical red-noise calibration or real transient benchmark"
+  ],
+  "result_digest": "b6eba6815a24e9919115f2c418349077e81568c6f80588f27d3c6890d0f87b80"
+}

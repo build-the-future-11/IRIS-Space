@@ -152,6 +152,7 @@ def evaluate_jepa(
     *,
     batch_size: int = 64,
     target_fraction: float = 0.25,
+    mask_scale_jitter: float = 0.0,
     min_target: int = 1,
     seed: int = 101,
     mask_repeats: int = 5,
@@ -202,6 +203,7 @@ def evaluate_jepa(
                         padding_mask,
                         target_fraction=target_fraction,
                         min_target=min_target,
+                        scale_jitter=mask_scale_jitter,
                         generator=generator,
                     )
                     if not bool(target_mask.any()):
@@ -226,7 +228,7 @@ def evaluate_jepa(
     finally:
         model.train(was_training)
 
-    if len(set(repeat_target_counts)) != 1:
+    if mask_scale_jitter == 0.0 and len(set(repeat_target_counts)) != 1:
         raise RuntimeError(
             "evaluation target counts changed across mask repeats; the data loader is not stable"
         )
@@ -254,10 +256,12 @@ def evaluate_jepa(
         "representation_diagnostic_scope": "all_target_tokens_across_all_mask_repeats",
         "target_tokens": target_count,
         "target_tokens_per_repeat": repeat_target_counts,
+        "target_count_variation_expected": mask_scale_jitter > 0.0,
         "batches": batch_count,
         "collapsed_batch_fraction": collapsed_batches / batch_count,
         "collapsed_batch_fraction_is_batch_dependent": True,
         "target_fraction": target_fraction,
+        "mask_scale_jitter": mask_scale_jitter,
         "seed": seed,
     }
 

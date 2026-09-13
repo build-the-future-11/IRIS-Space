@@ -31,26 +31,27 @@ def _rss_bytes() -> int:
 
 def _workload(entities: int, epochs: int, seed: int) -> pd.DataFrame:
     rng = np.random.default_rng(seed)
-    rows: list[dict[str, Any]] = []
     times = np.arange(epochs, dtype=float)
     pulse = np.exp(-0.5 * ((times - epochs * 0.55) / 2.0) ** 2)
-    for entity in range(entities):
-        errors = rng.uniform(0.8, 1.2, size=epochs)
-        signal = pulse * 7.0 if entity % 50 == 0 else 0.0
-        flux = 20.0 + signal + rng.standard_t(df=5, size=epochs) * errors
-        for epoch, value, error in zip(times, flux, errors, strict=True):
-            rows.append(
-                {
-                    "source_id": f"scale-{entity:06d}",
-                    "survey": "qualification-synthetic",
-                    "band": "g",
-                    "mjd": 62000.0 + epoch,
-                    "flux": float(value),
-                    "flux_error": float(error),
-                    "observation_id": f"{entity:06d}-{int(epoch):04d}",
-                }
-            )
-    return pd.DataFrame(rows)
+    errors = rng.uniform(0.8, 1.2, size=(entities, epochs))
+    signals = (np.arange(entities) % 50 == 0)[:, None] * pulse[None, :] * 7.0
+    flux = 20.0 + signals + rng.standard_t(df=5, size=(entities, epochs)) * errors
+    entity_ids = np.repeat(np.arange(entities), epochs)
+    epoch_ids = np.tile(np.arange(epochs), entities)
+    return pd.DataFrame(
+        {
+            "source_id": [f"scale-{entity:06d}" for entity in entity_ids],
+            "survey": "qualification-synthetic",
+            "band": "g",
+            "mjd": 62000.0 + np.tile(times, entities),
+            "flux": flux.ravel(),
+            "flux_error": errors.ravel(),
+            "observation_id": [
+                f"{entity:06d}-{epoch:04d}"
+                for entity, epoch in zip(entity_ids, epoch_ids, strict=True)
+            ],
+        }
+    )
 
 
 def main() -> int:
@@ -63,6 +64,8 @@ def main() -> int:
     args = parser.parse_args()
     if args.entities < 2 or args.epochs < 4:
         raise ValueError("qualification requires at least two entities and four epochs")
+    if args.entities > 100_000 or args.epochs > 2_048 or args.entities * args.epochs > 10_000_000:
+        raise ValueError("qualification workload exceeds the bounded allocation limit")
     if args.output.exists():
         raise FileExistsError(f"output already exists: {args.output}")
     args.output.mkdir(parents=True)

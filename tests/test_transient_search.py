@@ -37,6 +37,35 @@ def test_profiled_fit_matches_weighted_least_squares_and_offset_invariance():
     assert bank.fit(np.full(50, 100.0))["amplitude"] == 0
 
 
+def test_fit_reuses_projection_and_matches_batched_statistic(monkeypatch):
+    times = np.arange(16.0)
+    errors = np.linspace(0.8, 1.2, len(times))
+    correlation = 0.5 ** np.abs(times[:, None] - times)
+    flux = 4 + 3 * transient_template(times, center=8, width=2, family="gaussian")
+    bank = TransientBank(
+        times,
+        errors,
+        centers=[5, 8, 11],
+        widths=[1, 2],
+        correlation=correlation,
+    )
+    expected_statistic = bank.statistics(flux)[0]
+    original_whiten = bank._whiten
+    calls = 0
+
+    def counted_whiten(values):
+        nonlocal calls
+        calls += 1
+        return original_whiten(values)
+
+    monkeypatch.setattr(bank, "_whiten", counted_whiten)
+    fit = bank.fit(flux)
+    assert fit["max_local_z"] == pytest.approx(expected_statistic)
+    # One projection fits the selected template; one batched projection computes
+    # all leave-one-out influence diagnostics.
+    assert calls == 2
+
+
 def test_null_is_reproducible_search_corrected_and_never_zero_pvalue():
     bank = TransientBank(np.arange(20), np.ones(20), centers=[5, 10, 15], widths=[1, 3])
     null = bank.simulate_null(trials=199, seed=13)

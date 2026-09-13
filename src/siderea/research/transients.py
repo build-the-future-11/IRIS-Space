@@ -141,7 +141,8 @@ class TransientBank:
                     )
         raw = np.stack(templates)
         whitened = raw * inverse_error if self._whitener is None else raw @ self._whitener.T
-        projected = whitened - (whitened @ self._constant)[:, None] * self._constant
+        constant_projection = whitened @ self._constant
+        projected = whitened - constant_projection[:, None] * self._constant
         norms = np.linalg.norm(projected, axis=1)
         valid = norms > 1e-10
         if not valid.any():
@@ -150,6 +151,7 @@ class TransientBank:
         self._templates = raw[valid]
         self._norms = norms[valid]
         self._design = projected[valid] / self._norms[:, None]
+        self._template_constant_projection = constant_projection[valid]
         self.identity = digest_value(
             {
                 "schema": "siderea.transient_bank.v1",
@@ -168,6 +170,7 @@ class TransientBank:
             self._templates,
             self._norms,
             self._design,
+            self._template_constant_projection,
         ):
             array.flags.writeable = False
 
@@ -182,25 +185,25 @@ class TransientBank:
             raise ValueError("too many curves for one search")
         maxima: list[Array] = []
         for start in range(0, len(values), 128):
-            # Subtract a reference before whitening to avoid cancellation for large offsets.
-            shifted = values[start : start + 128] - values[start : start + 128, :1]
-            with np.errstate(over="ignore", invalid="ignore"):
-                white = self._whiten(shifted)
-            if not np.isfinite(white).all():
-                raise ValueError("flux significance exceeds supported numeric range")
+            white = self._whiten_curves(values[start : start + 128])
             maxima.append(np.maximum(0, (white @ self._design.T).max(axis=1)))
         return np.concatenate(maxima) if maxima else np.empty(0)
 
     def fit(self, flux: Any) -> dict[str, Any]:
         values = _vector(flux, "flux")
-        self.statistics(values)  # validates numeric range and dimensions
-        z = self._design @ self._whiten(values - values[0])
+        if len(values) != len(self.times):
+            raise ValueError("flux must match the bank epochs")
+        white = self._whiten_curves(values[None, :])[0]
+        z = self._design @ white
         index = int(np.argmax(z))
         amplitude = max(0.0, float(z[index])) * self.error_scale / self._norms[index]
-        residual = values - values[0] - amplitude * self._templates[index]
+        whitened_template = (
+            self._design[index] * self._norms[index]
+            + self._template_constant_projection[index] * self._constant
+        ) / self.error_scale
+        whitened_residual = white - amplitude * whitened_template
         baseline = float(
-            values[0]
-            + self._constant @ self._whiten(residual) * self.error_scale / self._constant_norm
+            values[0] + self._constant @ whitened_residual * self.error_scale / self._constant_norm
         )
         statistic = max(0.0, float(z[index]))
         return {
@@ -222,8 +225,9 @@ class TransientBank:
         a recalibrated search, and does not rerun template selection after deletion.
         """
         raw = np.stack([np.ones(len(values)), self._templates[index]], axis=1)
-        white = self._whiten(raw.T).T * self.error_scale
-        target = self._whiten(values - values[0])
+        whitened = self._whiten(np.vstack((raw.T, values - values[0])))
+        white = whitened[:2].T * self.error_scale
+        target = whitened[2]
         gram, rhs = white.T @ white, white.T @ target
         if self._whitener is None:
             inverse_error = self.error_scale / self.errors
@@ -265,6 +269,15 @@ class TransientBank:
         if self._whitener is None:
             return np.asarray(values / self.errors, dtype=float)
         return np.asarray(values @ self._whitener.T / self.error_scale, dtype=float)
+
+    def _whiten_curves(self, values: Array) -> Array:
+        """Whiten curves after a stable, offset-invariant reference subtraction."""
+
+        with np.errstate(over="ignore", invalid="ignore"):
+            white = self._whiten(values - values[:, :1])
+        if not np.isfinite(white).all():
+            raise ValueError("flux significance exceeds supported numeric range")
+        return white
 
     def _noise(self, standard: Array) -> Array:
         if self._correlation_factor is not None:
@@ -432,13 +445,14 @@ def search_flux_table(
         duplicate_columns.append("observation_id")
     if data.duplicated(subset=duplicate_columns).any():
         raise ValueError("duplicate measurements would count the same evidence more than once")
-    groups = list(data.groupby(["source_id", "survey", "band"], sort=True))
-    if len(groups) > 100:
+    groups = data.groupby(["source_id", "survey", "band"], sort=True)
+    if groups.ngroups > 100:
         raise ValueError("search supports at most 100 channels per invocation")
-    observed_objects = len(set(data["source_id"].astype(str)))
+    observed_objects = data["source_id"].nunique()
     if object_universe_size is not None and object_universe_size < observed_objects:
         raise ValueError("object_universe_size cannot be smaller than the searched object count")
     results: list[dict[str, Any]] = []
+    channels_by_source: dict[str, list[dict[str, Any]]] = {}
     for identity, group in groups:
         ordered = group.sort_values("mjd", kind="stable")
         source, survey, band = identity
@@ -483,9 +497,10 @@ def search_flux_table(
                 status="evaluated", **fit, search_pvalue=empirical_pvalue(fit["max_local_z"], null)
             )
         results.append(result)
+        channels_by_source.setdefault(str(source), []).append(result)
     objects: list[dict[str, Any]] = []
-    for source in sorted({str(item["source_id"]) for item in results}):
-        channels = [item for item in results if item["source_id"] == source]
+    for source in sorted(channels_by_source):
+        channels = channels_by_source[source]
         measured = [item["search_pvalue"] for item in channels if item["search_pvalue"] is not None]
         corrected = min(1.0, min(measured) * len(channels)) if measured else None
         minimum_pvalue = min(1.0, len(channels) / (null_trials + 1))

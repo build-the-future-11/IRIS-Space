@@ -186,7 +186,7 @@ def evaluate_jepa(
     repeat_target_counts: list[int] = []
     run_contract: object = _UNSET_TOKEN_CONTRACT
     try:
-        with torch.no_grad():
+        with torch.inference_mode():
             for repeat in range(mask_repeats):
                 generator = torch.Generator(device="cpu").manual_seed(seed + repeat)
                 repeat_weighted_loss = 0.0
@@ -288,7 +288,7 @@ def extract_embeddings(
     representation_moments = _RepresentationMoments()
     run_contract: object = _UNSET_TOKEN_CONTRACT
     try:
-        with torch.no_grad():
+        with torch.inference_mode():
             for batch in loader:
                 run_contract = _observe_run_contract(
                     run_contract,

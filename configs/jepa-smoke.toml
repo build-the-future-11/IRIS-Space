@@ -12,4 +12,6 @@ attention_heads = 4
 batch_size = 2
 mask_fraction = 0.5
 learning_rate = 0.0003
+ema_momentum = 0.99
+ema_final_momentum = 0.999
 seed = 2026

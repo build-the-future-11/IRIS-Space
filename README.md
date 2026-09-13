@@ -543,6 +543,11 @@ siderea jepa-train train.jsonl validation.jsonl var/siderea/models/jepa-v1 \
   --split-policy chronological --evaluation-masks 5
 ```
 
+The research profile uses multiscale contiguous masks and a cosine EMA teacher
+schedule. `jepa.ema_momentum` controls the responsive starting teacher and
+`jepa.ema_final_momentum` controls its late-training stability; both values and
+the applied step count are preserved in `training.json` and checkpoint training state.
+
 The default split requires every training observation to precede every validation
 observation. `--split-policy predefined` is an explicit assertion that an external
 split has already been audited; it is not an automatic leakage check. Held-out

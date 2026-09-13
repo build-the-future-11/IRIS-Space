@@ -170,6 +170,12 @@ Optional settings include `RUN_ID`, `RUN_ROOT`, `EPOCHS`, `NULL_TRIALS`,
 The launcher is shadow-only;
 completion produces a review queue, never a reporting decision.
 
+The launcher atomically updates `status.json` before every stage and records
+`completed` only after the final shadow queue is durable. A failed run retains
+the exact failing stage, exit code, completed receipts, and the current stage's
+`.partial` stdout. Commands that emit JSON retain `.json` receipts; commands
+that emit only an artifact path use `.stdout.txt` so their format is explicit.
+
 The dated `paper/research/overnight-smoke-20260913-v3` fixture run completed every
 launcher stage with one training epoch and two mask repeats. Earlier immutable
 attempts are retained: the first exposed an invalid fixed-target-count invariant

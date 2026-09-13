@@ -576,6 +576,7 @@ class TrainingAndCheckpointTests(unittest.TestCase):
             "target_fraction",
             "mask_scale_jitter",
             "ema_momentum",
+            "ema_final_momentum",
         ):
             with self.subTest(keyword=keyword), self.assertRaises(ValueError):
                 TrainingConfig(**{keyword: True})
@@ -585,6 +586,55 @@ class TrainingAndCheckpointTests(unittest.TestCase):
             TSJEPA(d_model=8, n_heads=2, num_layers=1, dropout=False)
         with self.assertRaises(ValueError):
             TSJEPA(d_model=8, n_heads=2, num_layers=1, ema_momentum=False)
+        with self.assertRaisesRegex(ValueError, "cannot be smaller"):
+            TrainingConfig(ema_momentum=0.99, ema_final_momentum=0.9)
+
+    def test_training_cosine_ema_schedule_is_recorded_and_reaches_endpoints(self) -> None:
+        dataset = self._dataset()
+        model = TSJEPA(
+            d_model=8,
+            n_heads=2,
+            num_layers=1,
+            predictor_hidden=8,
+            dropout=0.0,
+            ema_momentum=0.8,
+        )
+        history = train_jepa(
+            model,
+            dataset,
+            TrainingConfig(
+                epochs=2,
+                batch_size=2,
+                shuffle=False,
+                ema_momentum=0.8,
+                ema_final_momentum=0.9,
+            ),
+        )
+        self.assertEqual(
+            history["ema_schedule"],
+            {
+                "kind": "cosine",
+                "start": 0.8,
+                "final": 0.9,
+                "planned_steps": 4,
+                "applied_steps": 4,
+            },
+        )
+        self.assertAlmostEqual(history["epochs"][0]["ema_momentum_first"], 0.8)
+        self.assertAlmostEqual(history["epochs"][-1]["ema_momentum_last"], 0.9)
+
+        one_step = train_jepa(
+            TSJEPA(d_model=8, n_heads=2, num_layers=1, dropout=0.0, ema_momentum=0.8),
+            dataset,
+            TrainingConfig(
+                epochs=1,
+                batch_size=4,
+                shuffle=False,
+                ema_momentum=0.8,
+                ema_final_momentum=0.9,
+            ),
+        )
+        self.assertAlmostEqual(one_step["epochs"][0]["ema_momentum_first"], 0.8)
 
     def test_train_evaluate_embeddings_and_checkpoint_round_trip(self) -> None:
         torch.manual_seed(11)

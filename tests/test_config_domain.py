@@ -134,11 +134,15 @@ class ConfigTests(unittest.TestCase):
             lambda: JEPAConfig(enabled=1),  # type: ignore[arg-type]
             lambda: JEPAConfig(encoder_layers=True),
             lambda: JEPAConfig(mask_fraction=True),
+            lambda: JEPAConfig(ema_final_momentum=True),
             lambda: JEPAConfig(seed=True),
         )
         for construct in unsafe_constructors:
             with self.subTest(construct=construct), self.assertRaises(ConfigError):
                 construct()
+
+        with self.assertRaisesRegex(ConfigError, "cannot be smaller"):
+            JEPAConfig(ema_momentum=0.999, ema_final_momentum=0.99)
 
 
 class DomainTests(unittest.TestCase):

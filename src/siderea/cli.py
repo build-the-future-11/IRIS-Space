@@ -1594,6 +1594,7 @@ def _command_jepa_train(args: argparse.Namespace, config: SIDEREAConfig) -> int:
         num_bands=max(DEFAULT_BAND_TO_ID.values()) + 1,
         n_heads=config.jepa.attention_heads,
         num_layers=config.jepa.encoder_layers,
+        ema_momentum=config.jepa.ema_momentum,
     )
     selected_batch_size = args.batch_size if args.batch_size is not None else config.jepa.batch_size
     training_config = TrainingConfig(
@@ -1602,6 +1603,8 @@ def _command_jepa_train(args: argparse.Namespace, config: SIDEREAConfig) -> int:
         learning_rate=config.jepa.learning_rate,
         target_fraction=config.jepa.mask_fraction,
         mask_scale_jitter=config.jepa.mask_scale_jitter,
+        ema_momentum=config.jepa.ema_momentum,
+        ema_final_momentum=config.jepa.ema_final_momentum,
         seed=config.jepa.seed,
         device=args.device,
         deterministic_algorithms=deterministic,

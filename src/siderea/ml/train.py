@@ -75,6 +75,7 @@ class TrainingConfig:
     min_target: int = 1
     grad_clip: float = 1.0
     ema_momentum: float | None = None
+    ema_final_momentum: float | None = None
     seed: int = 17
     device: str = "cpu"
     num_workers: int = 0
@@ -136,12 +137,35 @@ class TrainingConfig:
             raise ValueError("shuffle must be boolean")
         if not isinstance(self.deterministic_algorithms, bool):
             raise ValueError("deterministic_algorithms must be boolean")
-        if self.ema_momentum is not None and (
-            isinstance(self.ema_momentum, bool)
-            or not math.isfinite(self.ema_momentum)
-            or not 0.0 <= self.ema_momentum < 1.0
+        for name, value in (
+            ("ema_momentum", self.ema_momentum),
+            ("ema_final_momentum", self.ema_final_momentum),
         ):
-            raise ValueError("ema_momentum must be finite and in [0, 1)")
+            if value is not None and (
+                isinstance(value, bool) or not math.isfinite(value) or not 0.0 <= value < 1.0
+            ):
+                raise ValueError(f"{name} must be finite and in [0, 1)")
+        if (
+            self.ema_momentum is not None
+            and self.ema_final_momentum is not None
+            and self.ema_final_momentum < self.ema_momentum
+        ):
+            raise ValueError("ema_final_momentum cannot be smaller than ema_momentum")
+
+
+def _cosine_ema_momentum(
+    start: float,
+    final: float,
+    *,
+    step: int,
+    total_steps: int,
+) -> float:
+    """Anneal target momentum from a responsive to a stable EMA teacher."""
+
+    if total_steps <= 1:
+        return start
+    progress = min(max(step / (total_steps - 1), 0.0), 1.0)
+    return final - (final - start) * (math.cos(math.pi * progress) + 1.0) / 2.0
 
 
 def _seed_everything(seed: int, *, deterministic_algorithms: bool) -> None:
@@ -232,6 +256,19 @@ def train_jepa(
         generator=loader_generator,
     )
 
+    ema_start = model.ema_momentum if config.ema_momentum is None else config.ema_momentum
+    ema_final = ema_start if config.ema_final_momentum is None else config.ema_final_momentum
+    if ema_final < ema_start:
+        raise ValueError("effective final EMA momentum cannot be smaller than its start")
+    try:
+        planned_steps = config.epochs * len(loader)  # type: ignore[arg-type]
+    except TypeError:
+        if ema_final != ema_start:
+            raise ValueError(
+                "scheduled EMA requires training data with a finite batch count"
+            ) from None
+        planned_steps = 0
+
     history: list[dict[str, Any]] = []
     total_steps = 0
     run_contract: object = _UNSET_TOKEN_CONTRACT
@@ -242,6 +279,7 @@ def train_jepa(
         epoch_steps = 0
         feature_sum: Any | None = None
         feature_outer_sum: Any | None = None
+        epoch_momenta: list[float] = []
         for batch in loader:
             contract_digest = batch_token_contract_digest(batch)
             try:
@@ -280,7 +318,14 @@ def train_jepa(
                     error_if_nonfinite=True,
                 )
             optimizer.step()
-            model.update_target_encoder(config.ema_momentum)
+            momentum = _cosine_ema_momentum(
+                ema_start,
+                ema_final,
+                step=total_steps,
+                total_steps=planned_steps,
+            )
+            model.update_target_encoder(momentum)
+            epoch_momenta.append(momentum)
 
             count = int(output["target_mask"].sum().item())
             diagnostics = output["diagnostics"]
@@ -325,6 +370,8 @@ def train_jepa(
                 "steps": epoch_steps,
                 "collapsed_step_fraction": collapsed_steps / epoch_steps,
                 "collapsed_step_fraction_is_batch_dependent": True,
+                "ema_momentum_first": epoch_momenta[0],
+                "ema_momentum_last": epoch_momenta[-1],
             }
         )
 
@@ -352,6 +399,13 @@ def train_jepa(
         "token_contract_sha256": (None if run_contract is _UNSET_TOKEN_CONTRACT else run_contract),
         "epochs": history,
         "total_steps": total_steps,
+        "ema_schedule": {
+            "kind": "constant" if ema_start == ema_final else "cosine",
+            "start": ema_start,
+            "final": ema_final,
+            "planned_steps": planned_steps,
+            "applied_steps": total_steps,
+        },
     }
 
 

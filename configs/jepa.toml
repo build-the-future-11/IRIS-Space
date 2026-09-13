@@ -19,5 +19,8 @@ mask_fraction = 0.50
 # events and slower evolution are both represented during training/evaluation.
 mask_scale_jitter = 0.50
 learning_rate = 0.0003
+# A responsive early target that anneals to a stable teacher over training.
+ema_momentum = 0.996
+ema_final_momentum = 0.9999
 batch_size = 128
 seed = 2026

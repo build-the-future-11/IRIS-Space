@@ -236,6 +236,8 @@ class JEPAConfig:
     mask_fraction: float = 0.5
     mask_scale_jitter: float = 0.5
     learning_rate: float = 0.0003
+    ema_momentum: float = 0.996
+    ema_final_momentum: float = 0.9999
     batch_size: int = 128
     seed: int = 2026
 
@@ -266,6 +268,19 @@ class JEPAConfig:
         ):
             raise ConfigError("jepa.mask_scale_jitter must be finite and within [0, 1)")
         _positive(self.learning_rate, "jepa.learning_rate")
+        for name, value in (
+            ("ema_momentum", self.ema_momentum),
+            ("ema_final_momentum", self.ema_final_momentum),
+        ):
+            if (
+                isinstance(value, bool)
+                or not isinstance(value, (int, float))
+                or not math.isfinite(value)
+                or not 0 <= value < 1
+            ):
+                raise ConfigError(f"jepa.{name} must be finite and within [0, 1)")
+        if self.ema_final_momentum < self.ema_momentum:
+            raise ConfigError("jepa.ema_final_momentum cannot be smaller than jepa.ema_momentum")
         _integer_value(self.batch_size, "jepa.batch_size", minimum=1)
         _integer_value(self.seed, "jepa.seed", minimum=0)
 
@@ -531,6 +546,8 @@ def load_config(path: str | Path | None = None) -> SIDEREAConfig:
             "mask_fraction",
             "mask_scale_jitter",
             "learning_rate",
+            "ema_momentum",
+            "ema_final_momentum",
             "batch_size",
             "seed",
         },
@@ -549,6 +566,8 @@ def load_config(path: str | Path | None = None) -> SIDEREAConfig:
         mask_fraction=_number(jepa_data, "mask_fraction", 0.5, "jepa"),
         mask_scale_jitter=_number(jepa_data, "mask_scale_jitter", 0.5, "jepa"),
         learning_rate=_number(jepa_data, "learning_rate", 0.0003, "jepa"),
+        ema_momentum=_number(jepa_data, "ema_momentum", 0.996, "jepa"),
+        ema_final_momentum=_number(jepa_data, "ema_final_momentum", 0.9999, "jepa"),
         batch_size=_integer(jepa_data, "batch_size", 128, "jepa"),
         seed=_integer(jepa_data, "seed", 2026, "jepa"),
     )

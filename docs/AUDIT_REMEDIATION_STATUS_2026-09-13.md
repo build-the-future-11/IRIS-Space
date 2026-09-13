@@ -67,11 +67,11 @@ scientifically satisfied.
 
 | Priority / item | Status | Work performed | Remaining acceptance evidence |
 |---|---|---|---|
-| P0 freeze exact research object | **partial** | Added clean-tree verifier, code-source digest, isolated reconstruction, logs and artifact hashes. | Owners reconcile the dirty tree, commit/tag it, run without `--allow-dirty`, and archive durably. |
+| P0 freeze exact research object | **complete** | Commit `b69f011c8cdfc26012f51d63b355312294caad58` was tagged `v0.3.0-research-alpha.1`. Its clean verifier used `allow_dirty=false`; 497 tests plus 101 subtests, 77.91% coverage, strict doctor and paper reconstruction passed. | Copy the verifier bundle to the institution's durable artifact store before public release. |
 | P0 reconcile historical claims | **partial / evidence-blocked** | Searched the repository for row-level data and primary TNS artifacts; only summary/legacy copies exist. Narrowed discovery/selectivity wording. | Recover permitted primary cohort and registry records or retain summary-attributed claims permanently. |
 | P0 preserve no-performance boundary | **complete** | Paper, release scope, validation plan, and promotion semantics explicitly prohibit unsupported classifier/completeness claims. | Independent final claim review at submission. |
 | P1 benchmark temporal binding | **complete** | Bound `time_block_days`; added rehashed-tamper rejection and round-trip tests. | None locally. |
-| P1 green quality/test gate | **complete** | Removed duplicate CLI handlers, fixed test extra, added dependency regression. | Remote CI on the eventual clean commit. |
+| P1 green quality/test gate | **complete** | Removed duplicate CLI handlers, fixed test extra, added dependency regression, and passed the full clean-release gate on the tagged commit. | Remote CI remains independent confirmation rather than a local blocker. |
 | P1 prospective real-data evaluation | **partial / data-blocked** | Added machine-valid draft protocol and owner/data intake contract. | Replace all draft values, approve and freeze before cohort opening, then acquire/mature data. |
 | P1 matched strong baselines | **partial / data-blocked** | Existing benchmark enforces same-entity paired rankings; validation plan now specifies direct astronomy and general time-series comparators. | Locked real score artifacts, training cutoffs, compute matching, multi-seed later-period results. |
 | P1 real-background injections | **partial / data-blocked** | Existing matched diagnostic remains explicitly non-qualifying; intake requires blinded real residuals and joint null/recovery reporting. | Permitted frozen residual backgrounds, blind, execution, and stratum-wise calibration. |
@@ -84,13 +84,13 @@ scientifically satisfied.
 | P2 realistic scale/failure benchmark | **partial** | A 500-entity/16,000-row run completed in five shards: 6.11 s wall, 114,704,384-byte peak RSS, quota rejection, corruption detection and exact restart passed. The full fixture orchestration also completed. | Repeat for target duration and real volume/hardware; add live-service quota/latency and process-kill recovery. |
 | P3 paper/accessibility | **partial** | Added closest work, rebuilt with BibTeX/Tectonic, visually inspected changed page and full 29-page document. | Venue selection/length reduction, tagged accessible PDF/alt text, author approval. |
 | P3 legacy quarantine | **partial** | Canonical package boundary and legacy-quarantine tests exist; legacy content remains excluded from maintained lint paths. | Owner decision to archive/remove duplicate tree and release-manifest cleanup. |
-| P3 experiment ergonomics | **complete** | One fail-closed command runs quality, coverage, strict doctor, compilation and isolated paper reconstruction and emits hashed evidence. | Clean-tree durable execution for the release candidate. |
+| P3 experiment ergonomics | **complete** | One fail-closed command runs quality, coverage, strict doctor, compilation and isolated paper reconstruction and emits hashed evidence. The clean tagged execution passed. | Durable off-machine retention of the bundle. |
 
 **Measured progress:** 18/18 items received concrete work or dependency verification;
-4 are locally complete, 10 are materially partial, and 4 are blocked on unavailable
+6 are locally complete, 8 are materially partial, and 4 are blocked on unavailable
 primary data, credentials, compute/workload, or owner decisions. Counting partial items
-at half weight gives **55% end-to-end audit remediation**. Repository-local engineering
-is approximately **85% complete**; defensible real-sky scientific validation remains
+at half weight gives **60% end-to-end audit remediation**. Repository-local engineering
+is approximately **90% complete**; defensible real-sky scientific validation remains
 approximately **20% complete** because the required cohort and outcomes do not exist yet.
 
 ## Next evidence-producing execution

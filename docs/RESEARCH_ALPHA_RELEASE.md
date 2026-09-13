@@ -1,5 +1,15 @@
 # Research-alpha release scope
 
+## Audited release identity
+
+The first audited candidate is commit
+`b69f011c8cdfc26012f51d63b355312294caad58`, annotated tag
+`v0.3.0-research-alpha.1`. Its clean verifier recorded `allow_dirty=false`, source
+digest `af49d00db88f38cdbe74872a1f48854a4179d37a4f37150e8aad5c67a63bf7e7`,
+497 passing tests plus 101 subtests, 77.91% branch coverage, strict doctor success,
+and a passing isolated paper reconstruction. This identifies a research-alpha
+software artifact, not a validated astronomical-performance result.
+
 Supported locally: CSV ingestion, channel-aware features and ranking, immutable
 run artifacts, version-bound review, reporting preflight, outcome summaries,
 single-ledger evidence backup/verification, and shadow transient-search experiments.

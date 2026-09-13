@@ -1,0 +1,33 @@
+{
+  "schema": "siderea.manuscript_verification.v1",
+  "verified_at": "2026-09-13",
+  "build_command": "tectonic --keep-intermediates siderea_transient_triage.tex",
+  "source_sha256": "d16068c25bc2881a07a591cb1eca1a1706062562ce0e8ce9c65172da3ed9b89f",
+  "bibliography_sha256": "699bd53fbc3d716dc835252d7a8693f225fcc39c43ca43f912adf59823a7ebb0",
+  "pdf_sha256": "3813a9dc81678dda1b9464314b0b84a017dfd136f76c425c7759a83b891e639b",
+  "pdf_pages": 30,
+  "pdf_page_size": "letter",
+  "fonts_embedded": true,
+  "undefined_citations": 0,
+  "undefined_references": 0,
+  "overfull_boxes": 0,
+  "underfull_spacing_warnings": 8,
+  "all_pages_rendered": true,
+  "all_pages_visually_inspected": true,
+  "clipping_or_overlap_found": false,
+  "targeted_tests": {
+    "passed": 53,
+    "failed": 0,
+    "duration_seconds": 169.37
+  },
+  "fresh_reconstruction": {
+    "passed": true,
+    "reconstruction_sha256": "54d33eb81bc958db70be19750db059afec15039bf86e6cd2d8d44fbba1cc7011",
+    "historical_metrics_equal": true,
+    "generated_tables_equal": true,
+    "iid_rows_equal": true,
+    "covariance_rows_equal": true,
+    "noise_rows_equal": true
+  },
+  "scope": "manuscript build, local reconstruction, and visual verification; not venue approval or scientific peer review"
+}

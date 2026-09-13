@@ -70,9 +70,12 @@ and JEPA smoke evidence is archived separately. Use the copied workspace to buil
 the manuscript with Tectonic; redistribution remains subject to the project's
 existing proprietary declaration and third-party data permissions.
 
-The paper's 405-test statement is intentionally bound to its dated source/test
-snapshot. Newer software checks must not be substituted without corresponding
-source identity and logs. Track final work in `FINAL_PAPER_CHECKLIST.md`.
+The original 405-test statement remains bound to its dated source/test snapshot.
+The manuscript also reports the clean 2026-09-13 release verification of revision
+`4e084a795be3` (499 tests, 103 parameterized subtests, and 77.95% branch-aware
+coverage) through `research/software-verification-2026-09-13.json`. Neither record
+is evidence of astronomical performance. Track final work in
+`FINAL_PAPER_CHECKLIST.md`.
 
 `make paper-check` checks the reconstruction tools and their regression tests.
 `make paper-reconstruct PAPER_OUTPUT=/absolute/path/to/new-directory` runs the

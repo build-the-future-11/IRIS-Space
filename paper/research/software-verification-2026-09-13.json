@@ -1,0 +1,39 @@
+{
+  "schema": "siderea.paper_software_verification.v1",
+  "executed_at": "2026-09-13",
+  "git_revision": "4e084a795be316ca991b213e2f8309b6143e7f9f",
+  "working_tree_dirty": false,
+  "dirty_override_used": false,
+  "python_version": "3.13.1",
+  "tests_passed": 499,
+  "subtests_passed": 103,
+  "test_failures": 0,
+  "coverage_percent": 77.95,
+  "coverage_threshold_percent": 70.0,
+  "typed_source_files": 77,
+  "format_passed": true,
+  "lint_passed": true,
+  "mypy_passed": true,
+  "compile_passed": true,
+  "strict_doctor_passed": true,
+  "paper_reconstruction_passed": true,
+  "release_verification_sha256": "7f1898ad8537c7c676401660dc0bb7a8f407d0dc08ad1aa14ff68ddbe069a085",
+  "code_source_digest": "ec718fd6831061d1ba2cf72b5e405bec489c14ba6fe207b2d27b0edd949014b0",
+  "fixture_end_to_end": {
+    "run_id": "final-e2e-v2",
+    "status": "completed",
+    "terminal_stage": "complete",
+    "status_sha256": "6872d9282b10fd8e4f8be431da73155cc66ac44bb259b9f9dcb867f34c994de5",
+    "candidate_count": 2,
+    "queue_count": 2,
+    "reportability_claim": false
+  },
+  "controlled_failure": {
+    "run_id": "failure-path-status",
+    "status": "failed",
+    "terminal_stage": "jepa-train",
+    "exit_code": 2,
+    "status_sha256": "fa76a84b413f11e3fe61e3d2b3243af192c84dca4cc1cda8ef5e2cc15c75f833"
+  },
+  "scope": "Local software, fixture, and synthetic reconstruction evidence only; not representative real-sky performance or live-service qualification."
+}

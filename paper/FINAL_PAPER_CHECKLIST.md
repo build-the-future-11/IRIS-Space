@@ -16,7 +16,7 @@ rerun while preparing this checklist. The execution notes below record subsequen
 - [x] **A01 — State one primary contribution in the abstract and introduction.** Describe auditable, evidence-bound, human-supervised transient triage. State what this adds beyond a ranked candidate list; do not advertise a validated new astrophysical classifier.
 - [x] **A02 — Separate four evidence categories throughout.** Label historical I SPY campaign results, current SIDEREA implementation tests, synthetic detector experiments, and proposed prospective evaluation. Acceptance: no historical outcome is attributed to controls or models introduced afterward.
 - [x] **A03 — Shorten the abstract around question, method, supported findings and limits.** Retain only headline numbers needed for the contribution; move detailed software counts and operational accounting to their tables where venue rules permit. Acceptance: every remaining number resolves to the claim ledger.
-- [ ] **A04 — Freeze the manuscript's software revision.** Choose a tagged/referenced source revision and record its validation evidence. The current manuscript's 405 tests/78.35% describe an earlier check; final-check-rerun.json reports 405/78.34% on 44d2867; later local TNS work passed 416/78.43% and is not yet committed. Preserve these as separate dated records, or update all manuscript references to a newly frozen revision. Do not silently substitute counts across revisions.
+- [x] **A04 — Freeze the manuscript's software revision.** The current manuscript reports the clean-tree verification of revision `4e084a795be316ca991b213e2f8309b6143e7f9f` (499 tests, 103 parameterized subtests, and 77.95% branch-aware coverage) in `research/software-verification-2026-09-13.json`. The original 405-test record remains separately identified as historical evidence.
 - [x] **A05 — Correct historical/current runtime ambiguity.** The limitations section says the audit lacked astronomy dependencies. Tie that statement to its original execution environment; distinguish installed dependencies from an actually executed live integration. Verify environment manifests rather than infer live readiness from installation.
 - [x] **A06 — Qualify the injection–recovery limitation.** Change the unqualified 'No injection–recovery analysis was performed' to refer to the historical campaign and/or absence of real-background recovery studies. Explicitly acknowledge the separately reported synthetic experiments.
 
@@ -80,7 +80,7 @@ replaced by software tests or additional prose.
 - [ ] **G03 — Produce a stable cited research release.** Freeze code, paper source, evidence manifests and permitted data; record commit/tag and immutable archive identifier where available. Make the code/data availability statement point to that actual release.
 - [x] **G04 — Rebuild the final PDF after all edits.** Compile from the release bundle; resolve missing references/citations and check fonts, page count, figure placement, tables and appendix numbering. Inspect every page visually; save source/PDF digests and exact build command.
 - [ ] **G05 — Obtain an independent scientific review.** Have a reviewer inspect claim scope, denominators, uncertainty, adverse cases, evidence attribution and limitations. Resolve substantive objections or disclose the unresolved limitation before submission.
-- [ ] **G06 — Perform the final consistency pass.** Compare abstract, tables, conclusions, README, claim ledger, software record and PDF against the same frozen revision. No stale 'current' counts, unsupported discoveries, demo figures presented as results or completed-tense descriptions of planned studies.
+- [x] **G06 — Perform the final consistency pass.** The 2026-09-13 pass aligned the manuscript, README, current software record, and rendered PDF to revision `4e084a795be316ca991b213e2f8309b6143e7f9f`. The historical 405-test snapshot remains separately identified; current counts are 499 tests, 103 parameterized subtests, and 77.95% branch-aware coverage. Synthetic and fixture results remain explicitly non-performance evidence.
 - [ ] **G07 — Obtain author approval and submit the exact reviewed artifact.** Retain final approval, submission receipt and file identities. A GitHub push is not a paper submission or acceptance.
 
 ## Prior verified evidence to preserve
@@ -169,3 +169,19 @@ The prior bundle is an earlier snapshot and does not contain these new safeguard
 This pass strengthens C06/D03/D06; it does not mark the remaining external or scientific
 gates complete. Detailed source identities and verification logs are recorded in
 `research/integrity-pass-20260908/`.
+
+### Final release pass — 2026-09-13
+
+The manuscript now records the clean-tree software verification of revision
+`4e084a795be316ca991b213e2f8309b6143e7f9f`, while preserving the earlier audit as
+historical evidence. A fresh copied-workspace reconstruction reproduced the
+historical metrics, all 67 synthetic result rows, trial digests, protocols, and both
+generated tables. The targeted paper/archive/packaging suite passed 53 tests.
+
+Tectonic rebuilt a 30-page PDF with all fonts embedded, no undefined citations or
+references, and no overfull boxes. All pages were rendered and visually inspected;
+no clipping or overlap was found. Exact source, bibliography, PDF, reconstruction,
+and software-record digests are stored in
+`research/manuscript-verification-2026-09-13.json`. Remaining unchecked items require
+missing primary records, new real-data experiments, external approvals, or human
+review and have not been represented as completed.

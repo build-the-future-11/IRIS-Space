@@ -393,7 +393,7 @@ Let $\mathcal{E}$ be the eligible candidates and $K$ the review budget. If the o
 \end{equation}
 Each $\operatorname{Top}_n$ returns at most $n$ available candidates. Priority ordering uses decreasing $q_i$, then decreasing $a_i$; anomaly ordering reverses those two keys, and both finish with a stable identifier tie-break. The fill set $\mathcal{F}$ returns unused anomaly slots to priority review. The audit sample is drawn from the full eligible population before either ranked route; its seed and inclusion probability $r/|\mathcal{E}|$ are recorded when applicable. The audit reserve is zero by default. Here $a_i$ may derive from engineered features or a learned embedding; none of these routes authorizes reporting.
 
-The experimental irregular-time joint-embedding predictive architecture masks contiguous temporal windows and predicts their latent representations from the remaining context. Its target encoder is updated by an exponential moving average, and normalization is recomputed from unmasked context so hidden target values cannot determine the context scale. This route is shadow-only: $a_i$ can affect membership in $\mathcal{Q}_K$, but it does not occur in Equation~\ref{eq:preflight-predicate}. No result in this paper establishes that these embeddings improve astrophysical discovery.
+The experimental irregular-time joint-embedding predictive architecture masks contiguous temporal windows and predicts their latent representations from the remaining context. The checked research profile samples short, nominal, and long target fractions around a declared base fraction. Its target encoder follows the context encoder with a cosine schedule from a responsive initial exponential-moving-average momentum to a more stable final momentum. The exact schedule and applied step count are checkpointed. Normalization is recomputed from unmasked context so hidden target values cannot determine the context scale, and streaming covariance diagnostics expose amplitude and low-rank collapse. This route is shadow-only: $a_i$ can affect membership in $\mathcal{Q}_K$, but it does not occur in Equation~\ref{eq:preflight-predicate}. These mechanisms are implementation safeguards and testable hypotheses; no result in this paper establishes that the embeddings improve astrophysical discovery.
 
 \section{Campaign and Results}
 \label{sec:campaign}
@@ -567,7 +567,7 @@ A bulk draft prepared on 2026 July 10 contained ZTF26abbkkey, labeled PSN with 4
 \section{Software Verification and Reproducibility}
 \label{sec:software-verification}
 
-We report the dated local verification snapshot archived in \texttt{paper/research/software-verification.json}, executed on 2026 September 8 using Python 3.11. That record binds source and test tree SHA-256 digests to the execution log; it is not a moving claim about every later repository revision. Table~\ref{tab:software-verification} distinguishes implementation evidence from scientific validation. That suite completed 405 tests without failure; strict static typing covered 74 source files, and branch-aware coverage was 78.35\%. Historical multi-interpreter results describe an earlier revision and are archived separately. These checks verify implemented invariants and failure behavior, not astronomical discovery performance.
+The original frozen verification snapshot in \texttt{paper/research/software-verification.json} was executed on 2026 September 8 using Python 3.11 and remains available for historical traceability. A later clean-tree release verification, summarized in \texttt{paper/research/software-verification-2026-09-13.json}, binds revision \texttt{4e084a795be3} and the source digest to its logs and reconstructed paper inputs. It completed 499 tests and 103 parameterized subtests without failure, applied strict typing to 77 source files, and measured 77.95\% branch-aware coverage against a 70\% threshold. Table~\ref{tab:software-verification} distinguishes this implementation evidence from scientific validation. Neither snapshot is a moving claim about later repository revisions.
 
 \begin{table}[ht]
 \centering
@@ -577,13 +577,15 @@ We report the dated local verification snapshot archived in \texttt{paper/resear
 \toprule
 Check & Result & Scope and interpretation \\
 \midrule
-Unit/invariant suite & 405 tests + 96 subtests passed & Configuration, ingestion, photometry, scoring, clients, evidence binding, ledgers, review, baseline, JEPA, and command behavior. \\
-Static analysis & Passed & \texttt{ruff} over \texttt{src} and \texttt{tests}; strict typing over 74 source files. \\
+Unit/invariant suite & 499 tests + 103 subtests passed & Configuration, ingestion, photometry, scoring, clients, evidence binding, ledgers, review, baseline, JEPA, and command behavior. \\
+Static analysis & Passed & Formatting, lint, compilation, and strict typing over 77 source files. \\
+Coverage & 77.95\% & Branch-aware coverage exceeded the frozen 70\% release threshold. \\
 Deterministic local replay & 2/2 fingerprints identical & Same frozen input and scientific policy; distinct execution identifiers. \\
 Core artifact identity & 3/3 byte-identical & Normalized photometry, band-aware features, and ranking table. \\
 Candidate identity & 2/2 versions identical & Pending-check timestamps differ, but are excluded from scientific identity. \\
 Fail-closed fixture & 0/2 reportable & Both candidates blocked because all four mandatory services were pending. \\
 Live astronomy services & Not qualified here & Offline adapter tests do not establish current live behavior or prospective performance. \\
+End-to-end shadow fixture & Completed & Preparation through final queue ran with atomic stage receipts; a controlled malformed-input run stopped and recorded failure at JEPA training. \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -592,7 +594,7 @@ Two executions of the checked-in \texttt{examples/photometry.csv} fixture produc
 
 The same replay produced two candidates, both blocked and neither reportable, because SkyBoT, TNS, SIMBAD, and VSX evidence remained pending. This is a positive safety test: the local score and deterministic ranking completed, yet absence of network evidence did not become clearance. Conversely, this audit did not perform a live ALeRCE fetch, catalog query, image-level review, multi-user review study, or TNS submission. The verified maturity is therefore implementation-level and fixture-level, below retrospective benchmarking on a frozen representative alert cohort.
 
-Tiny synthetic execution checks also exercised the logistic baseline and JEPA training paths. The baseline retained an uncalibrated-score label because its three-row calibration partition could not supply the required five examples per class. A three-epoch JEPA run and repeated-mask evaluation exercise checkpointing and numerical execution only; they do not demonstrate useful representations or astronomical generalization. The full smoke metadata is retained in \texttt{paper/experiments/learning-smoke-results.json}.
+Tiny synthetic execution checks also exercised the logistic baseline and JEPA training paths. The baseline retained an uncalibrated-score label because its three-row calibration partition could not supply the required five examples per class. A three-epoch JEPA run and repeated-mask evaluation exercise checkpointing and numerical execution only; they do not demonstrate useful representations or astronomical generalization. The full smoke metadata is retained in \texttt{paper/experiments/learning-smoke-results.json}. The later end-to-end fixture additionally exercised multiscale target masking, the cosine target-encoder schedule, checkpoint loading, frozen-reference embedding, template search, evidence assembly, and finite-budget routing. It produced two shadow queue entries and explicitly set \texttt{qualifies\_reportability=false}. A separate malformed-training-input run exited at the JEPA stage and atomically retained a failed status rather than a completed marker.
 
 \begin{table}[ht]
 \centering
@@ -690,7 +692,7 @@ We have presented a run-level audit of the \legacycampaign\ campaign and the imp
 
 The run summaries also show a substantial policy discontinuity on 2026 July 5. The early-veto fraction decreased from 54.5\% to 2.68\%, while the shortlist fraction increased from 0.51\% to 13.9\%. Cluster-bootstrap intervals describe the between-run variation in these quantities, but the change cannot be attributed causally because policy version, date, and query composition are confounded.
 
-\siderea\ addresses the provenance and state-management weaknesses found in the campaign record. Candidate versions are content-addressed; external results are bound to position, epoch, radius, and lifetime; review decisions apply to a specific candidate version; and report preparation requires every mandatory clearance. The archived software snapshot passed 405 tests on Python 3.11 and reproduced the scientific outputs of the local replay fixture. A time-forward object-level cohort, complete outcomes, injection--recovery tests, and independent review labels are still required to estimate completeness or compare ranking methods.
+\siderea\ addresses the provenance and state-management weaknesses found in the campaign record. Candidate versions are content-addressed; external results are bound to position, epoch, radius, and lifetime; review decisions apply to a specific candidate version; and report preparation requires every mandatory clearance. The clean release snapshot passed 499 tests plus 103 parameterized subtests, reconstructed the archived numerical studies, and completed the synthetic shadow workflow from preparation through finite-budget routing. A time-forward object-level cohort, complete outcomes, injection--recovery tests, and independent review labels are still required to estimate completeness or compare ranking methods.
 
 \section*{Acknowledgments}
 
@@ -698,11 +700,11 @@ This work makes use of data from the Zwicky Transient Facility. ZTF is supported
 
 \section*{Data Availability}
 
-The source code, operating protocol, campaign-level audit record, manuscript source, bibliography, and figure-generation program are included with the project. Live-query outputs, cached light curves, candidate shortlists, report packages, and correspondence were intentionally untracked during the recorded campaign. Consequently, the aggregate results can be audited against the surviving summaries, but the exact stage-by-stage cohort cannot be independently reconstructed from the repository alone. Because upstream alert and catalog services evolve, future releases should archive immutable row-level manifests, service responses or content hashes where redistribution permits, configuration files, and final outcome tables.
+The source code, operating protocol, campaign-level audit record, manuscript source, bibliography, and figure-generation program are available at \url{https://github.com/build-the-future-11/IRIS-Space}. The reviewed research-alpha artifact is identified by tag \texttt{v0.3.0-research-alpha.3}; repository availability does not change the proprietary license declaration or grant permission to redistribute third-party records. Live-query outputs, cached light curves, candidate shortlists, report packages, and correspondence were intentionally untracked during the recorded campaign. Consequently, the aggregate results can be audited against the surviving summaries, but the exact stage-by-stage cohort cannot be independently reconstructed from the repository alone. Because upstream alert and catalog services evolve, future releases should archive immutable row-level manifests, service responses or content hashes where redistribution permits, configuration files, and final outcome tables.
 
 \section*{Software}
 
-The pipeline uses Python, NumPy \citep{harris2020}, pandas \citep{mckinney2010}, Astropy \citep{astropy2013,astropy2018}, astroquery \citep{ginsburg2019}, Matplotlib \citep{hunter2007}, and the ALeRCE Python client. Historical manuscript figures are reproducible from \texttt{paper/figures/make\_figures.py}; these parse the checked-in operations record and do not query live services. Synthetic diagnostic figures and trial statistics are produced by the separately archived runners in \texttt{paper/experiments}. The machine-readable software audit is preserved in \texttt{paper/research/software-verification.json}.
+The pipeline uses Python, NumPy \citep{harris2020}, pandas \citep{mckinney2010}, Astropy \citep{astropy2013,astropy2018}, astroquery \citep{ginsburg2019}, Matplotlib \citep{hunter2007}, and the ALeRCE Python client. Historical manuscript figures are reproducible from \texttt{paper/figures/make\_figures.py}; these parse the checked-in operations record and do not query live services. Synthetic diagnostic figures and trial statistics are produced by the separately archived runners in \texttt{paper/experiments}. The original and current machine-readable software audits are preserved in \texttt{paper/research/software-verification.json} and \texttt{paper/research/software-verification-2026-09-13.json}.
 
 \appendix
 
@@ -804,7 +806,8 @@ Self approval & Disabled \\
 Anomaly reserve & 2 of 10 review slots \\
 TS-JEPA & Disabled by default; shadow mode required \\
 TS-JEPA latent dimension / layers / heads & 256 / 6 / 8 \\
-TS-JEPA mask fraction / seed & 0.50 / 2026 \\
+TS-JEPA mask fraction / scale jitter / seed & 0.50 / 0.50 / 2026 \\
+TS-JEPA initial / final EMA momentum & 0.996 / 0.9999 \\
 \bottomrule
 \end{tabular}
 \end{table}

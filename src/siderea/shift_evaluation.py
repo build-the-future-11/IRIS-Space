@@ -14,10 +14,10 @@ chooses a "hard" population from model outcomes and never rewrites onset times.
 
 from __future__ import annotations
 
+import math
 from collections import defaultdict
 from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
-import math
 from statistics import median
 
 import numpy as np
@@ -152,9 +152,13 @@ def population_transfer_report(
     undeclared = observed - declared
     absent = declared - observed
     if undeclared:
-        raise ValueError(f"observed populations lack a frozen split role: {', '.join(sorted(undeclared))}")
+        raise ValueError(
+            f"observed populations lack a frozen split role: {', '.join(sorted(undeclared))}"
+        )
     if absent:
-        raise ValueError(f"declared populations are absent from evaluation rows: {', '.join(sorted(absent))}")
+        raise ValueError(
+            f"declared populations are absent from evaluation rows: {', '.join(sorted(absent))}"
+        )
 
     per_population: list[PopulationMetrics] = []
     for name in sorted(observed):

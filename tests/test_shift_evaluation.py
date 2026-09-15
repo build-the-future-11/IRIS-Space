@@ -47,6 +47,24 @@ def test_population_transfer_reports_degradation() -> None:
     assert macro["auroc_delta_held_minus_in"] == -0.75
 
 
+def test_population_transfer_excludes_undefined_ap_from_macro() -> None:
+    report = population_transfer_report(
+        [1, 0, 0, 0, 1, 0],
+        [0.9, 0.1, 0.8, 0.2, 0.9, 0.1],
+        ["in", "in", "held-empty", "held-empty", "held-valid", "held-valid"],
+        in_population=["in"],
+        held_population=["held-empty", "held-valid"],
+    )
+    per_population = {
+        row["population"]: row for row in report["per_population"]
+    }
+    assert per_population["held-empty"]["positives"] == 0
+    assert per_population["held-empty"]["average_precision"] is None
+    assert per_population["held-valid"]["average_precision"] == 1.0
+    assert report["macro"]["held_population_average_precision"] == 1.0
+    assert report["macro"]["average_precision_delta_held_minus_in"] == 0.0
+
+
 def test_auroc_is_tie_aware() -> None:
     report = population_transfer_report(
         [1, 0, 1, 0],

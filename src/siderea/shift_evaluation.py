@@ -96,7 +96,7 @@ class PopulationMetrics:
     positives: int
     positive_rate: float
     auroc: float | None
-    average_precision: float
+    average_precision: float | None
     brier_score: float | None
     expected_calibration_error: float | None
 
@@ -165,6 +165,7 @@ def population_transfer_report(
         mask = np.asarray([value == name for value in pop], dtype=bool)
         local_y = y[mask]
         local_p = p[mask]
+        local_positives = int(local_y.sum())
         metrics = ranking_metrics(
             local_y.tolist(),
             local_p.tolist(),
@@ -177,10 +178,12 @@ def population_transfer_report(
                 population=name,
                 split_role="in_population" if name in in_set else "held_population",
                 n=len(local_y),
-                positives=int(local_y.sum()),
+                positives=local_positives,
                 positive_rate=float(local_y.mean()),
                 auroc=_auroc(local_y, local_p),
-                average_precision=metrics.average_precision,
+                average_precision=(
+                    metrics.average_precision if local_positives > 0 else None
+                ),
                 brier_score=metrics.brier_score,
                 expected_calibration_error=metrics.expected_calibration_error,
             )
@@ -221,7 +224,9 @@ def population_transfer_report(
         "claim_guard": (
             "Population groups must be defined from scientific metadata/class definitions "
             "before outcome inspection. A held-population degradation is a transfer result, "
-            "not evidence that the held population was intrinsically harder."
+            "not evidence that the held population was intrinsically harder. Average "
+            "precision is unavailable for populations with no positive examples and those "
+            "groups are excluded from macro AP rather than treated as zero performance."
         ),
     }
 

@@ -55,9 +55,7 @@ def test_population_transfer_excludes_undefined_ap_from_macro() -> None:
         in_population=["in"],
         held_population=["held-empty", "held-valid"],
     )
-    per_population = {
-        row["population"]: row for row in report["per_population"]
-    }
+    per_population = {row["population"]: row for row in report["per_population"]}
     assert per_population["held-empty"]["positives"] == 0
     assert per_population["held-empty"]["average_precision"] is None
     assert per_population["held-valid"]["average_precision"] == 1.0

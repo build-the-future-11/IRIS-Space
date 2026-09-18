@@ -42,6 +42,8 @@ make research-release-check PYTHON=.venv/bin/python \
   RELEASE_OUTPUT=/absolute/path/to/new-release-verification
 ```
 
+Put `RELEASE_OUTPUT` on durable free disk (for this workspace, under `/Volumes/PRO-BLADE/...`). The verifier now sets `TMPDIR`/`TMP`/`TEMP` and `PYTHONPYCACHEPREFIX` inside `$RELEASE_OUTPUT/tmp` so pytest and SQLite scratch do not land on a near-full system `/tmp`, which previously produced SQLite `disk I/O` failures during release runs.
+
 The destination must not exist. The command requires a clean Git tree, runs formatting,
 lint, MyPy, the coverage suite, byte compilation and strict dependency checks, then
 reconstructs the paper experiments in an isolated copied workspace. It writes the Git

@@ -23,9 +23,17 @@ if [[ -e "$output" ]]; then
   echo "release verification output already exists: $output" >&2
   exit 2
 fi
-mkdir -p "$output/logs"
+mkdir -p "$output/logs" "$output/tmp"
 output="$(cd "$output" && pwd)"
 cd "$repo_root"
+
+# Keep pytest/sqlite scratch on the output volume. System /tmp on a near-full
+# macOS data volume has produced SQLite "disk I/O" failures during release runs.
+export TMPDIR="$output/tmp"
+export TMP="$output/tmp"
+export TEMP="$output/tmp"
+export PYTHONPYCACHEPREFIX="$output/tmp/pycache"
+mkdir -p "$PYTHONPYCACHEPREFIX"
 
 git rev-parse HEAD >"$output/git-revision.txt"
 git status --porcelain=v1 >"$output/git-status.txt"

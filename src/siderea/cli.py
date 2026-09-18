@@ -399,6 +399,23 @@ def _build_parser() -> argparse.ArgumentParser:
     pilot_prepare.add_argument("--prediction-cutoff-mjd", type=float, required=True)
     pilot_prepare.add_argument("--flux-unit", required=True)
     pilot_prepare.add_argument("--calibration", required=True)
+    pilot_prepare.add_argument(
+        "--time-scale",
+        choices=("utc", "tai", "tdb", "unknown"),
+        default="unknown",
+    )
+    pilot_prepare.add_argument(
+        "--flux-kind",
+        choices=("difference", "forced_difference", "forced_total", "total", "unspecified"),
+        default="unspecified",
+    )
+    pilot_prepare.add_argument(
+        "--coordinate-frame",
+        choices=("icrs", "fk5", "unknown"),
+        default="unknown",
+    )
+    pilot_prepare.add_argument("--survey-release", default="unspecified")
+    pilot_prepare.add_argument("--expected-survey", default=None)
     pilot_identity = pilot_prepare.add_mutually_exclusive_group(required=True)
     pilot_identity.add_argument("--entity-column")
     pilot_identity.add_argument("--assert-source-is-entity", action="store_true")
@@ -423,6 +440,13 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     transient_merge.add_argument("output", type=Path)
     transient_merge.add_argument("inputs", nargs="+", type=Path)
+
+    shadow_run = commands.add_parser(
+        "shadow-pilot-run",
+        help="execute the complete JEPA-integrated shadow pipeline from a strict TOML spec",
+    )
+    shadow_run.add_argument("spec", type=Path)
+    shadow_run.add_argument("output", type=Path, help="new immutable run directory")
 
     study = commands.add_parser(
         "study-freeze", help="validate and freeze a prospective study protocol"
@@ -1603,6 +1627,7 @@ def _command_jepa_train(args: argparse.Namespace, config: SIDEREAConfig) -> int:
         learning_rate=config.jepa.learning_rate,
         target_fraction=config.jepa.mask_fraction,
         mask_scale_jitter=config.jepa.mask_scale_jitter,
+        mask_strategy=config.jepa.mask_strategy,
         ema_momentum=config.jepa.ema_momentum,
         ema_final_momentum=config.jepa.ema_final_momentum,
         seed=config.jepa.seed,
@@ -1616,6 +1641,7 @@ def _command_jepa_train(args: argparse.Namespace, config: SIDEREAConfig) -> int:
         batch_size=selected_batch_size,
         target_fraction=config.jepa.mask_fraction,
         mask_scale_jitter=config.jepa.mask_scale_jitter,
+        mask_strategy=config.jepa.mask_strategy,
         seed=config.jepa.seed + 1,
         mask_repeats=args.evaluation_masks,
         device=args.device,
@@ -1657,6 +1683,7 @@ def _command_jepa_train(args: argparse.Namespace, config: SIDEREAConfig) -> int:
                 "band_to_id": DEFAULT_BAND_TO_ID,
                 "band_vocabulary_sha256": digest_value(DEFAULT_BAND_TO_ID),
                 "normalization_scope": "full_curve_then_context_rebased_during_masking",
+                "mask_strategy": config.jepa.mask_strategy,
                 "validation": validation,
             },
         )
@@ -1783,8 +1810,17 @@ def _command_pilot_prepare(args: argparse.Namespace) -> int:
         raise ValueError("prediction cutoff MJD must be finite")
     flux_unit = args.flux_unit.strip()
     calibration = args.calibration.strip()
-    if not flux_unit or not calibration:
-        raise ValueError("flux unit and calibration must be non-empty")
+    survey_release = args.survey_release.strip()
+    if not flux_unit or not calibration or not survey_release:
+        raise ValueError("flux unit, calibration, and survey release must be non-empty")
+    measurement_contract_complete = all(
+        (
+            args.time_scale != "unknown",
+            args.flux_kind != "unspecified",
+            args.coordinate_frame != "unknown" if args.require_pipeline_view else True,
+            survey_release != "unspecified",
+        )
+    )
     input_bytes = args.input.read_bytes()
     identifier_columns = {"source_id": "string", "observation_id": "string"}
     if args.entity_column:
@@ -1845,6 +1881,10 @@ def _command_pilot_prepare(args: argparse.Namespace) -> int:
     normalized_surveys = [" ".join(str(value).casefold().split()) for value in frame["survey"]]
     if any(not value for value in normalized_surveys) or len(set(normalized_surveys)) != 1:
         raise ValueError("pilot preparation requires exactly one non-empty survey per bundle")
+    if args.expected_survey is not None:
+        expected_survey = " ".join(args.expected_survey.casefold().split())
+        if not expected_survey or set(normalized_surveys) != {expected_survey}:
+            raise ValueError("pilot survey differs from --expected-survey")
     frame["survey"] = normalized_surveys
 
     identity_columns = ["_canonical_entity", "survey"]
@@ -1896,7 +1936,11 @@ def _command_pilot_prepare(args: argparse.Namespace) -> int:
             "value_kind": "flux",
             "survey": surveys[0],
             "flux_unit": flux_unit,
+            "flux_kind": args.flux_kind,
             "calibration": calibration,
+            "time_scale": args.time_scale,
+            "coordinate_frame": args.coordinate_frame,
+            "survey_release": survey_release,
         }
         records.append(record)
         columns = ["survey", "band", "mjd", "flux", "flux_error"]
@@ -1947,8 +1991,14 @@ def _command_pilot_prepare(args: argparse.Namespace) -> int:
             "mode": "shadow_only",
             "qualifies_reportability": False,
             "prediction_cutoff_mjd": float(args.prediction_cutoff_mjd),
+            "survey": normalized_surveys[0],
             "flux_unit": flux_unit,
+            "flux_kind": args.flux_kind,
             "calibration": calibration,
+            "time_scale": args.time_scale,
+            "coordinate_frame": args.coordinate_frame,
+            "survey_release": survey_release,
+            "measurement_contract_complete": measurement_contract_complete,
             "identity_policy": (
                 f"column:{args.entity_column}"
                 if args.entity_column
@@ -2056,6 +2106,14 @@ def _command_transient_shard(args: argparse.Namespace) -> int:
     )
     result = shard_flux_table(frame, args.output, max_channels=args.max_channels)
     _emit_json({"output": args.output.expanduser().resolve(), "manifest": result})
+    return 0
+
+
+def _command_shadow_pilot_run(args: argparse.Namespace) -> int:
+    from siderea.research.run import run_shadow_pilot
+
+    result = run_shadow_pilot(args.spec, args.output)
+    _emit_json(result)
     return 0
 
 
@@ -2713,6 +2771,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             "pilot-prepare": _command_pilot_prepare,
             "transient-shard": _command_transient_shard,
             "transient-merge": _command_transient_merge,
+            "shadow-pilot-run": _command_shadow_pilot_run,
             "jepa-embed": _command_jepa_embed,
             "jepa-reference-freeze": _command_jepa_reference_freeze,
             "shadow-assemble": _command_shadow_assemble,

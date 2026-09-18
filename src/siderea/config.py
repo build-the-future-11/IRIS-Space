@@ -235,6 +235,7 @@ class JEPAConfig:
     attention_heads: int = 8
     mask_fraction: float = 0.5
     mask_scale_jitter: float = 0.5
+    mask_strategy: str = "observation_count"
     learning_rate: float = 0.0003
     ema_momentum: float = 0.996
     ema_final_momentum: float = 0.9999
@@ -267,6 +268,8 @@ class JEPAConfig:
             or not 0 <= self.mask_scale_jitter < 1
         ):
             raise ConfigError("jepa.mask_scale_jitter must be finite and within [0, 1)")
+        if self.mask_strategy not in {"observation_count", "elapsed_time"}:
+            raise ConfigError("jepa.mask_strategy must be observation_count or elapsed_time")
         _positive(self.learning_rate, "jepa.learning_rate")
         for name, value in (
             ("ema_momentum", self.ema_momentum),
@@ -545,6 +548,7 @@ def load_config(path: str | Path | None = None) -> SIDEREAConfig:
             "attention_heads",
             "mask_fraction",
             "mask_scale_jitter",
+            "mask_strategy",
             "learning_rate",
             "ema_momentum",
             "ema_final_momentum",
@@ -565,6 +569,7 @@ def load_config(path: str | Path | None = None) -> SIDEREAConfig:
         attention_heads=_integer(jepa_data, "attention_heads", 8, "jepa"),
         mask_fraction=_number(jepa_data, "mask_fraction", 0.5, "jepa"),
         mask_scale_jitter=_number(jepa_data, "mask_scale_jitter", 0.5, "jepa"),
+        mask_strategy=_string(jepa_data, "mask_strategy", "observation_count", "jepa"),
         learning_rate=_number(jepa_data, "learning_rate", 0.0003, "jepa"),
         ema_momentum=_number(jepa_data, "ema_momentum", 0.996, "jepa"),
         ema_final_momentum=_number(jepa_data, "ema_final_momentum", 0.9999, "jepa"),

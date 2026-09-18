@@ -9,6 +9,11 @@ from siderea.research.preregistration import (
     freeze_preregistration,
     load_preregistration,
 )
+from siderea.research.run import (
+    inspect_jepa_dataset_contract,
+    load_shadow_run_spec,
+    run_shadow_pilot,
+)
 
 __all__ = [
     "CohortRegistry",
@@ -19,6 +24,9 @@ __all__ = [
     "export_matured_cohort",
     "freeze_preregistration",
     "load_preregistration",
+    "inspect_jepa_dataset_contract",
+    "load_shadow_run_spec",
     "run_injection_recovery",
     "run_rolling_origin_benchmark",
+    "run_shadow_pilot",
 ]

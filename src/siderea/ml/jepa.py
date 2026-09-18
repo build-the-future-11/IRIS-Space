@@ -51,6 +51,8 @@ def make_contiguous_target_mask(
     target_fraction: float = 0.25,
     min_target: int = 1,
     scale_jitter: float = 0.0,
+    strategy: str = "observation_count",
+    delta_times: Any | None = None,
     generator: Any | None = None,
 ) -> Any:
     """Sample one contiguous target block per usable sequence.
@@ -59,8 +61,11 @@ def make_contiguous_target_mask(
     observations receive no targets and are ignored by the loss; a batch with no
     usable target observations is rejected by :class:`TSJEPA`. Nonzero
     ``scale_jitter`` draws per-row fractions from the short/base/long scales
-    ``(1-jitter, 1, 1+jitter) * target_fraction``. This exposes the predictor to
-    both brief transients and longer evolution without mixing disjoint intervals.
+    ``(1-jitter, 1, 1+jitter) * target_fraction``. ``observation_count`` masks a
+    contiguous number of measurements. ``elapsed_time`` masks a contiguous window
+    in physical elapsed-time coordinates reconstructed from ``delta_times``. The
+    latter prevents a dense hour and a sparse season from being treated as the
+    same target solely because they contain the same number of observations.
     """
 
     require_torch()
@@ -80,6 +85,17 @@ def make_contiguous_target_mask(
         or not 0.0 <= scale_jitter < 1.0
     ):
         raise ValueError("scale_jitter must be finite and within [0, 1)")
+    if strategy not in {"observation_count", "elapsed_time"}:
+        raise ValueError("mask strategy must be observation_count or elapsed_time")
+    if strategy == "elapsed_time":
+        if delta_times is None:
+            raise ValueError("elapsed_time masking requires delta_times")
+        if delta_times.shape != padding_mask.shape:
+            raise ValueError("delta_times must match padding_mask")
+        if not bool(torch.isfinite(delta_times[padding_mask]).all()) or bool(
+            (delta_times[padding_mask] < 0).any()
+        ):
+            raise ValueError("valid delta_times must be finite and non-negative")
 
     target_mask = torch.zeros_like(padding_mask)
     for batch_index in range(padding_mask.shape[0]):
@@ -91,16 +107,61 @@ def make_contiguous_target_mask(
         if scale_jitter:
             scale_index = int(torch.randint(3, (1,), generator=generator).item())
             row_fraction *= (1.0 - scale_jitter, 1.0, 1.0 + scale_jitter)[scale_index]
-        target_count = max(min_target, int(round(length * row_fraction)))
-        target_count = min(target_count, length - 1)
-        last_start = length - target_count
-        if last_start == 0:
-            start = 0
+        if strategy == "observation_count":
+            target_count = max(min_target, int(round(length * row_fraction)))
+            target_count = min(target_count, length - 1)
+            last_start = length - target_count
+            start = (
+                0
+                if last_start == 0
+                else int(torch.randint(last_start + 1, (1,), generator=generator).item())
+            )
+            selected = valid_indices[start : start + target_count]
         else:
-            # Sampling on CPU keeps a caller-supplied CPU generator valid even
-            # when training tensors live on an accelerator.
-            start = int(torch.randint(last_start + 1, (1,), generator=generator).item())
-        selected = valid_indices[start : start + target_count]
+            assert delta_times is not None
+            row_deltas = (
+                delta_times[batch_index, valid_indices]
+                .detach()
+                .to(device="cpu", dtype=torch.float64)
+            )
+            elapsed = torch.cumsum(row_deltas, dim=0)
+            elapsed = elapsed - elapsed[0]
+            span = float(elapsed[-1].item())
+            if span <= 0.0:
+                target_count = min(
+                    length - 1,
+                    max(min_target, int(round(length * row_fraction))),
+                )
+                last_start = length - target_count
+                start = (
+                    0
+                    if last_start == 0
+                    else int(torch.randint(last_start + 1, (1,), generator=generator).item())
+                )
+                selected = valid_indices[start : start + target_count]
+            else:
+                window_span = min(span, max(span * row_fraction, torch.finfo(torch.float64).eps))
+                start_limit = max(span - window_span, 0.0)
+                random_fraction = float(torch.rand((), generator=generator).item())
+                window_start = random_fraction * start_limit
+                window_end = window_start + window_span
+                local = torch.nonzero(
+                    (elapsed >= window_start) & (elapsed <= window_end),
+                    as_tuple=False,
+                ).flatten()
+                minimum = min(min_target, length - 1)
+                if int(local.numel()) < minimum:
+                    center = window_start + window_span / 2.0
+                    nearest = torch.argsort((elapsed - center).abs(), stable=True)[:minimum]
+                    first = int(nearest.min().item())
+                    last = min(length, first + minimum)
+                    first = max(0, last - minimum)
+                    local = torch.arange(first, last)
+                if int(local.numel()) >= length:
+                    center = window_start + window_span / 2.0
+                    drop = int(torch.argmax((elapsed - center).abs()).item())
+                    local = local[local != drop]
+                selected = valid_indices[local.to(device=valid_indices.device)]
         target_mask[batch_index, selected] = True
     return target_mask
 
@@ -566,6 +627,7 @@ if nn is not None:
             target_fraction: float = 0.25,
             min_target: int = 1,
             mask_scale_jitter: float = 0.0,
+            mask_strategy: str = "observation_count",
             generator: Any | None = None,
         ) -> dict[str, Any]:
             if target_mask is None:
@@ -574,6 +636,8 @@ if nn is not None:
                     target_fraction=target_fraction,
                     min_target=min_target,
                     scale_jitter=mask_scale_jitter,
+                    strategy=mask_strategy,
+                    delta_times=tokens[..., DELTA_TIME_INDEX],
                     generator=generator,
                 )
             if target_mask.shape != padding_mask.shape or target_mask.dtype != torch.bool:

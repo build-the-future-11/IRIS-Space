@@ -34,3 +34,11 @@ def test_development_extra_covers_standard_test_imports() -> None:
     dependencies = project["project"]["optional-dependencies"]
 
     assert any(item.startswith("matplotlib") for item in dependencies["dev"])
+
+
+def test_source_distribution_includes_integrated_shadow_run_spec() -> None:
+    manifest = (Path(__file__).parents[1] / "MANIFEST.in").read_text(encoding="utf-8")
+
+    assert "recursive-include examples" in manifest
+    assert "*.toml" in manifest
+    assert (Path(__file__).parents[1] / "examples" / "shadow-pilot-smoke.toml").is_file()

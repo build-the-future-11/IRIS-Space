@@ -83,8 +83,10 @@ supernova label or reconstructing a brightness curve.
 1. A JSONL record supplies one curve's times, values, errors, bands and detection
    flags. Tokens contain time offset, normalized value/error, band identity,
    detection status and value-presence status.
-2. Training masks a contiguous temporal region. Context normalization is recomputed
-   from visible observations so hidden brightness values do not determine it.
+2. Training masks a contiguous physical elapsed-time region by default. The
+   observation-count policy remains available as an explicit ablation. Context
+   normalization is recomputed from visible observations so hidden brightness
+   values do not determine it.
 3. The online/context encoder processes masked content. Timing and band information
    remain available; the predictor produces representations at target locations.
 4. A target encoder processes the unmasked content under the same normalization.
@@ -185,8 +187,9 @@ requires the same provenance discipline for persisted indexes. These commands do
 not fetch survey photometry, infer source aliases, or turn an anomaly score into a
 discovery probability. Only load checkpoints from trusted sources.
 
-For a strict point-in-time pilot that prepares both data views, extracts bound
-embeddings and assembles separate detector/JEPA evidence, follow
+For a strict point-in-time pilot that validates the full dataset contract, prepares
+both data views, trains the JEPA, extracts bound embeddings, and assembles separate
+detector/JEPA evidence in one command, follow
 [the cutoff-bound pilot runbook](docs/PILOT_RUN.md).
 
 ### D. Extract representations from the checkpoint
@@ -239,11 +242,12 @@ schema adapter. See [migration](docs/MIGRATION.md). Outstanding scientific and
 engineering work remains explicit in [the checklist](PROJECT_FINISH_CHECKLIST.md).
 ## Transient-scale masking upgrade
 
-The research configuration now sets `jepa.mask_scale_jitter = 0.50`. For every
-curve, the seeded mask sampler selects one contiguous interval at 0.5x, 1x, or
-1.5x the base mask fraction. This keeps the no-target-leakage contract while
-training against brief excursions and slower light-curve evolution. The choice
-is stored in training metadata, and evaluation repeats the identical declared
-policy. It is a testable architectural hypothesis, not evidence of improved
-astronomical performance; multi-seed ablations must compare zero and nonzero
-jitter on the frozen prospective splits.
+The research configuration now sets `jepa.mask_strategy = "elapsed_time"` and
+`jepa.mask_scale_jitter = 0.50`. For every curve, the seeded sampler selects one
+contiguous physical-time interval at 0.5x, 1x, or 1.5x the base duration fraction.
+This prevents a dense hour and a sparse season from being treated as equivalent
+merely because they contain the same observation count, while preserving the
+no-target-leakage contract. The policy is stored in training metadata and repeated
+identically during evaluation. It is a testable architectural hypothesis, not
+evidence of improved astronomical performance; multi-seed ablations must compare
+elapsed-time, observation-count, and jitter policies on frozen prospective splits.

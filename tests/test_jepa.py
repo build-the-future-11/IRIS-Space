@@ -345,6 +345,33 @@ class MaskAndModelTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "scale_jitter"):
             make_contiguous_target_mask(padding_mask, scale_jitter=1.0)
 
+    def test_elapsed_time_mask_uses_physical_window_and_is_seeded(self) -> None:
+        padding_mask = torch.tensor([[True, True, True, True, True]])
+        delta_times = torch.tensor([[0.0, 0.01, 0.01, 9.98, 0.01]])
+        first = make_contiguous_target_mask(
+            padding_mask,
+            target_fraction=0.2,
+            strategy="elapsed_time",
+            delta_times=delta_times,
+            generator=torch.Generator().manual_seed(2),
+        )
+        second = make_contiguous_target_mask(
+            padding_mask,
+            target_fraction=0.2,
+            strategy="elapsed_time",
+            delta_times=delta_times,
+            generator=torch.Generator().manual_seed(2),
+        )
+        self.assertTrue(torch.equal(first, second))
+        self.assertFalse(bool((first & ~padding_mask).any()))
+        self.assertTrue(bool((padding_mask & ~first).any()))
+        indices = torch.nonzero(first[0], as_tuple=False).flatten().tolist()
+        self.assertEqual(indices, list(range(indices[0], indices[-1] + 1)))
+        with self.assertRaisesRegex(ValueError, "requires delta_times"):
+            make_contiguous_target_mask(padding_mask, strategy="elapsed_time")
+        with self.assertRaisesRegex(ValueError, "mask strategy"):
+            make_contiguous_target_mask(padding_mask, strategy="unknown")
+
     def test_forward_ema_and_collapse_diagnostics(self) -> None:
         torch.manual_seed(3)
         batch = self._batch()
@@ -582,6 +609,8 @@ class TrainingAndCheckpointTests(unittest.TestCase):
                 TrainingConfig(**{keyword: True})
         with self.assertRaisesRegex(ValueError, "seed"):
             TrainingConfig(seed=-1)
+        with self.assertRaisesRegex(ValueError, "mask_strategy"):
+            TrainingConfig(mask_strategy="unknown")
         with self.assertRaises(ValueError):
             TSJEPA(d_model=8, n_heads=2, num_layers=1, dropout=False)
         with self.assertRaises(ValueError):

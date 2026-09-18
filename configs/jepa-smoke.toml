@@ -11,6 +11,7 @@ encoder_layers = 1
 attention_heads = 4
 batch_size = 2
 mask_fraction = 0.5
+mask_strategy = "elapsed_time"
 learning_rate = 0.0003
 ema_momentum = 0.99
 ema_final_momentum = 0.999

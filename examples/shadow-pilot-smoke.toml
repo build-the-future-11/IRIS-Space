@@ -1,0 +1,39 @@
+[inputs]
+raw_photometry = "integrated_pilot_flux.csv"
+train_jsonl = "jepa_train.jsonl"
+validation_jsonl = "jepa_validation.jsonl"
+reference_jsonl = "jepa_train.jsonl"
+
+[measurement]
+prediction_cutoff_mjd = 61005.0
+survey = "synthetic"
+time_scale = "utc"
+flux_unit = "synthetic_count"
+flux_kind = "difference"
+calibration = "synthetic-engineering-fixture-v1"
+coordinate_frame = "icrs"
+survey_release = "siderea-synthetic-v1"
+entity_column = "source_id"
+detection_column = "is_detection"
+
+[experiment]
+siderea_config = "../configs/jepa-smoke.toml"
+epochs = 1
+evaluation_masks = 2
+device = "cpu"
+null_trials = 99
+null_method = "gaussian"
+wild_block_size = 1
+seed = 20260914
+survey_object_count = 2
+planned_looks = 1
+look_index = 1
+
+[selection]
+budget = 2
+detector_slots = 1
+jepa_slots = 1
+audit_slots = 0
+jepa_threshold = 0.80
+audit_seed = "synthetic-smoke-fixed-seed"
+reference_selection_policy = "training-only synthetic engineering reference population"

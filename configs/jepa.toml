@@ -18,6 +18,7 @@ mask_fraction = 0.50
 # Draw 0.25, 0.50, or 0.75-scale contiguous targets per curve so short-lived
 # events and slower evolution are both represented during training/evaluation.
 mask_scale_jitter = 0.50
+mask_strategy = "elapsed_time"
 learning_rate = 0.0003
 # A responsive early target that anneals to a stable teacher over training.
 ema_momentum = 0.996

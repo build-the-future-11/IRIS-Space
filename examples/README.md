@@ -39,10 +39,27 @@ PYTHONPATH=src python -m siderea jepa-train --config configs/jepa-smoke.toml \
 The resulting checkpoint remains a shadow-research artifact and cannot satisfy a
 catalogue, human-review, or reporting gate.
 
+`shadow-pilot-smoke.toml` is the complete one-command integration fixture. It
+declares all input paths, physical measurement semantics, cutoff, detector family,
+JEPA training settings, and finite-budget queue policy:
+
+```bash
+PYTHONPATH=src python -m siderea shadow-pilot-run \
+  examples/shadow-pilot-smoke.toml runs/integrated-shadow-smoke-v1
+```
+
+The runner refuses existing outputs and validates every JEPA record before work
+begins. Training and validation physical entities must be disjoint, the anomaly
+reference must be a subset of training, candidates must be disjoint from all
+historical splits, temporal arrays must align, detected points need finite flux and
+positive uncertainty, and survey/time/unit/flux/calibration/frame/release semantics
+must agree across the campaign. The fixture is synthetic engineering evidence, not
+real-sky performance evidence.
+
 `integrated_pilot_flux.csv` is the smallest three-path contract fixture. It carries
 coordinates, measured flux, detection state, observation identity, and two physical
 entity IDs so `pilot-prepare --require-pipeline-view` can feed the operational
 heuristic pipeline, template search, and JEPA without an identity translation.
 
 See [the combined JEPA/pipeline guide](../README_JEPA_PIPELINE.md) for the architecture
-and boundaries between these separate synthetic fixtures.
+and boundaries preserved by the integrated runner.

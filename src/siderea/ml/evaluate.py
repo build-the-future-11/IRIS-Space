@@ -153,6 +153,7 @@ def evaluate_jepa(
     batch_size: int = 64,
     target_fraction: float = 0.25,
     mask_scale_jitter: float = 0.0,
+    mask_strategy: str = "observation_count",
     min_target: int = 1,
     seed: int = 101,
     mask_repeats: int = 5,
@@ -204,6 +205,8 @@ def evaluate_jepa(
                         target_fraction=target_fraction,
                         min_target=min_target,
                         scale_jitter=mask_scale_jitter,
+                        strategy=mask_strategy,
+                        delta_times=tokens[..., 0],
                         generator=generator,
                     )
                     if not bool(target_mask.any()):
@@ -262,6 +265,7 @@ def evaluate_jepa(
         "collapsed_batch_fraction_is_batch_dependent": True,
         "target_fraction": target_fraction,
         "mask_scale_jitter": mask_scale_jitter,
+        "mask_strategy": mask_strategy,
         "seed": seed,
     }
 

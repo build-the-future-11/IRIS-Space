@@ -53,6 +53,10 @@ For only local analysis, `python -m pip install -e .` is sufficient. Use
 optional astronomy warnings from `doctor` are expected without that extra.
 
 ```bash
+# Complete, provenance-bound JEPA + transient-pipeline smoke campaign.
+python -m siderea shadow-pilot-run \
+  examples/shadow-pilot-smoke.toml runs/integrated-shadow-smoke-v1
+
 # Canonical photometry -> features -> priority -> immutable candidate evidence.
 python -m siderea analyze examples/photometry.csv --output-dir runs/quickstart-analysis --ledger runs/quickstart.sqlite
 
@@ -66,7 +70,13 @@ python -m siderea transient-search examples/transient_flux.csv runs/quickstart-s
 python -m siderea jepa-train examples/jepa_train.jsonl examples/jepa_validation.jsonl runs/quickstart-jepa --config configs/jepa-smoke.toml --epochs 1 --batch-size 2 --evaluation-masks 2 --device cpu
 ```
 
-Each output must be new; change the path when repeating a command. Local analysis
+The first command is the complete integrated path: it validates physical data
+contracts and entity separation, prepares one cutoff-bound candidate view, runs
+the operational analyzer and campaign-corrected detector, trains the elapsed-time
+masked JEPA, freezes a training-only reference cohort, embeds candidates and
+references, assembles separate evidence channels, and allocates the shadow queue.
+Its terminal `run-manifest.json` hashes every stage receipt and output. Each output
+must be new; change the path when repeating a command. Local analysis
 produces two candidates and zero reportable candidates because external evidence is
 missing. Shadow search writes diagnostic JSON; JEPA writes `checkpoint.pt` and
 `training.json`. These synthetic examples verify execution, not scientific efficacy.
@@ -176,8 +186,9 @@ The longer sections below document the command surface and safety contracts.
   rather than a host posterior; automatic
   acceptance requires positive transient and host positional uncertainties, and a
   scientific tie remains ambiguous even though its display order is deterministic.
-- An optional irregular-time TS-JEPA implementation with contiguous temporal
-  masking, context-only re-normalization after masking, an explicit missing-error
+- An optional irregular-time TS-JEPA implementation with elapsed-time-contiguous
+  masking (plus an observation-count ablation), context-only re-normalization after
+  masking, an explicit missing-error
   sentinel, an EMA target encoder, checkpointing, chronological or explicitly
   asserted predefined splits, deterministic algorithms by default, repeated-mask
   held-out evaluation, and representation-collapse diagnostics. Flux-token
@@ -277,6 +288,7 @@ Run `siderea COMMAND --help` for all arguments.
 | `outcome-add ID` | Record a mature downstream outcome | Requires the exact current `--candidate-version`; does not infer or submit an outcome |
 | `baseline-train INPUT OUTPUT` | Fit, calibrate/evaluate, and save the chronological logistic baseline | Exactly one of `--entity` or `--assert-unique-entities` is required; load trusted joblib bundles only |
 | `jepa-train TRAIN VALIDATION OUTPUT` | Train/evaluate a TS-JEPA checkpoint | Enforces chronological splits by default, uses repeated masks and deterministic algorithms, and remains shadow-only |
+| `shadow-pilot-run SPEC OUTPUT` | Run the complete JEPA-integrated transient shadow campaign | Strictly binds measurement semantics and entity-disjoint splits; writes immutable receipts and never authorizes reporting |
 | `pilot-prepare INPUT OUTPUT` | Emit identity- and cutoff-bound operational, template, and JEPA data views | `--require-pipeline-view` requires coordinates; no survey or alias semantics are guessed |
 | `jepa-embed CHECKPOINT INPUT OUTPUT` | Extract provenance-bound representations | Binds checkpoint, dataset, token contract, and code identity; remains shadow-only |
 | `shadow-assemble SEARCH CANDIDATE_EMBEDDINGS REFERENCE_EMBEDDINGS OUTPUT` | Join three separately inspectable evidence channels | Exact entity sets, pipeline candidate versions, cutoffs, hashes, and disjoint references are verified |

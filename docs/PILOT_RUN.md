@@ -21,6 +21,29 @@ Every row must be information genuinely available at the declared prediction
 cutoff. TNS classifications, follow-up observations and later photometry must not
 be copied into a point-in-time input.
 
+## Complete one-command run
+
+The preferred interface is a strict TOML run specification. The repository's
+credential-free integration fixture is executable as-is:
+
+```bash
+.venv/bin/python -m siderea shadow-pilot-run \
+  examples/shadow-pilot-smoke.toml runs/integrated-shadow-smoke-v1
+```
+
+For a campaign, create a corresponding specification with real immutable input
+paths and declared measurement, experiment, and selection tables. The runner
+rejects unknown or missing fields, reused output directories, mismatched physical
+measurement contracts, malformed temporal arrays, overlapping train/validation or
+historical/candidate entities, and a reference cohort not drawn from training.
+It then executes preparation, operational analysis, JEPA training, reference
+freezing, campaign-aware transient search, embedding, evidence assembly, and queue
+allocation. `status.json`, per-stage logs, and a content-addressed
+`run-manifest.json` make success or the exact failed stage durable.
+
+The remaining sections expose the same individual stages for diagnosis and method
+development.
+
 ## Environment and preflight
 
 ```bash
@@ -40,8 +63,13 @@ and `TNS_BOT_NAME`. The current TNS client does not download photometry.
 ```bash
 .venv/bin/siderea pilot-prepare raw-photometry.csv runs/pilot-data \
   --prediction-cutoff-mjd 61234.5 \
+  --expected-survey ztf \
+  --time-scale utc \
   --flux-unit uJy \
+  --flux-kind forced_difference \
   --calibration 'survey-release-and-zero-point' \
+  --coordinate-frame icrs \
+  --survey-release 'ztf-data-release-id' \
   --entity-column physical_entity_id \
   --detection-column detected \
   --require-pipeline-view
@@ -49,7 +77,8 @@ and `TNS_BOT_NAME`. The current TNS client does not download photometry.
 
 The new directory contains `pipeline_photometry.csv`, `detector_flux.csv`,
 `jepa.jsonl`, and `manifest.json`. All three data views use the same canonical
-physical entity IDs. The preparation fails on future observations, unknown
+physical entity IDs and the manifest records the complete physical measurement
+contract. The preparation fails on future observations, unknown
 passbands, invalid uncertainty, invalid coordinates, multiple surveys per entity,
 missing identity, or an existing destination. Preserve the directory without
 editing it.

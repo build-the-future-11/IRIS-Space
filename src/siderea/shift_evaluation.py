@@ -181,9 +181,7 @@ def population_transfer_report(
                 positives=local_positives,
                 positive_rate=float(local_y.mean()),
                 auroc=_auroc(local_y, local_p),
-                average_precision=(
-                    metrics.average_precision if local_positives > 0 else None
-                ),
+                average_precision=(metrics.average_precision if local_positives > 0 else None),
                 brier_score=metrics.brier_score,
                 expected_calibration_error=metrics.expected_calibration_error,
             )

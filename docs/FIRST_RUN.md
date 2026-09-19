@@ -43,6 +43,12 @@ not authenticated identities. See `LOCAL_OPERATIONS.md` before requiring signed 
 siderea transient-search examples/transient_flux.csv runs/first-shadow-search.json --null-trials 999 --seed 20260908
 ```
 
+Prefer the module form if the console script is not on `PATH`:
+
+```bash
+python -m siderea transient-search examples/transient_flux.csv runs/first-shadow-search.json --null-trials 999 --seed 20260908
+```
+
 The fixture contains a simulated Gaussian pulse and a constant source, both with
 independent unit Gaussian measurement noise. It uses seed 20260908, 32 daily epochs,
 a baseline of 10, and a pulse of amplitude 5, width 3 days, centered on epoch 16.

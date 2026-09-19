@@ -34,6 +34,7 @@ unqualified or unimplemented. External report submission is deliberately absent.
 
 - **Run it locally:** follow the setup and quickstart below.
 - **Understand JEPA and detection together:** [the dedicated JEPA/pipeline README](README_JEPA_PIPELINE.md) explains the data flow, model training, current connections and missing integration.
+- **Run Space JEPA 2:** [implementation status](docs/SPACE_JEPA_2_IMPLEMENTATION_STATUS_2026-09-19.md), [protocol](docs/SPACE_JEPA_2_PROTOCOL.md), and [mathematical specification](docs/SPACE_JEPA_2_HYPERCOMPLEX_PHYSICS_SPEC_2026-09-19.md).
 - **Inspect module responsibilities:** [repository layout](#repository-layout) and [architecture](docs/ARCHITECTURE.md).
 - **Read scientific boundaries:** [transient-search guide](docs/TRANSIENT_SEARCH.md) and [validation plan](docs/SCIENTIFIC_VALIDATION.md).
 
@@ -200,6 +201,13 @@ The longer sections below document the command surface and safety contracts.
   contract digest and reject mid-run provenance changes. The CLI additionally
   requires matching train/validation contracts and records the contract in its
   checkpoint and summary. It is shadow research only.
+- A shadow-only Space JEPA 2 path built around AQPM-JEPA: causal entity-disjoint
+  multi-horizon preparation, quaternion attention and jump-flow prediction, an
+  EMA target encoder, APENic residual memory, physics and anomaly evidence,
+  matched neural and extrapolation controls, fixed-budget benchmarking, reviewer
+  evidence and a resumable digest-bound multi-seed campaign. Base and corrected
+  routes remain separately inspectable, and neither scientific promotion nor TNS
+  reporting is authorized by model output.
 
 The implemented forced-flux path is **extraction from measurements already present
 in an input table**. SIDEREA does not yet request forced photometry from a survey,

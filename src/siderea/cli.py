@@ -733,6 +733,108 @@ def _build_parser() -> argparse.ArgumentParser:
     promotion_sign.add_argument("--area", required=True)
     promotion_sign.add_argument("--verdict", choices=("approve", "reject"), required=True)
     promotion_sign.add_argument("--rationale", required=True)
+
+    sj2_audit = commands.add_parser(
+        "space-jepa-2-data-audit",
+        help="inventory user-supplied TNS or survey data without modifying it",
+    )
+    sj2_audit.add_argument("input", type=Path)
+    sj2_audit.add_argument("output", type=Path)
+
+    sj2_protocol = commands.add_parser(
+        "space-jepa-2-protocol-verify",
+        help="validate or freeze the Space JEPA 2 experiment protocol",
+    )
+    sj2_protocol.add_argument("protocol", type=Path)
+    sj2_protocol.add_argument("--freeze", type=Path, default=None)
+
+    sj2_prepare = commands.add_parser(
+        "space-jepa-2-prepare",
+        help="normalize causal photometry and write entity-disjoint tensor batches",
+    )
+    sj2_prepare.add_argument("protocol", type=Path)
+    sj2_prepare.add_argument("input", type=Path)
+    sj2_prepare.add_argument("output", type=Path)
+    sj2_prepare.add_argument("--batch-size", type=int, default=32)
+
+    sj2_train = commands.add_parser(
+        "space-jepa-2-train",
+        help="train the no-memory AQPM-JEPA predictive core from tensor batches",
+    )
+    sj2_train.add_argument("protocol", type=Path)
+    sj2_train.add_argument("train_batches", type=Path)
+    sj2_train.add_argument("validation_batches", type=Path)
+    sj2_train.add_argument("output", type=Path)
+    sj2_train.add_argument("--input-dim", type=int, required=True)
+    sj2_train.add_argument("--epochs", type=int, default=10)
+    sj2_train.add_argument("--seed", type=int, default=17)
+    sj2_train.add_argument("--device", default="cpu")
+
+    sj2_infer = commands.add_parser(
+        "space-jepa-2-infer",
+        help="emit row-level AQPM-JEPA forecast evidence",
+    )
+    sj2_infer.add_argument("checkpoint", type=Path)
+    sj2_infer.add_argument("batches", type=Path)
+    sj2_infer.add_argument("output", type=Path)
+    sj2_infer.add_argument("--device", default="cpu")
+
+    sj2_memory = commands.add_parser(
+        "space-jepa-2-memory-build",
+        help="validate and freeze an APENic residual-memory bank",
+    )
+    sj2_memory.add_argument("entries_json", type=Path)
+    sj2_memory.add_argument("output", type=Path)
+    sj2_memory.add_argument("--temperature", type=float, default=1.0)
+    sj2_memory.add_argument("--maximum-neighbors", type=int, default=16)
+
+    sj2_route = commands.add_parser(
+        "space-jepa-2-route",
+        help="assemble prediction, APENic memory, anomaly and physics evidence",
+    )
+    sj2_route.add_argument("input", type=Path)
+    sj2_route.add_argument("output", type=Path)
+    sj2_route.add_argument("--memory", type=Path, default=None)
+
+    sj2_benchmark = commands.add_parser(
+        "space-jepa-2-benchmark",
+        help="run fixed-budget common-cohort Space JEPA 2 evaluation",
+    )
+    sj2_benchmark.add_argument("input", type=Path)
+    sj2_benchmark.add_argument("output", type=Path)
+    sj2_benchmark.add_argument("--entity", required=True)
+    sj2_benchmark.add_argument("--label", required=True)
+    sj2_benchmark.add_argument("--scores", nargs="+", required=True)
+    sj2_benchmark.add_argument("--review-budget", type=int, required=True)
+    sj2_benchmark.add_argument("--bootstrap-repeats", type=int, default=10000)
+    sj2_benchmark.add_argument("--seed", type=int, default=1701)
+
+    sj2_shadow = commands.add_parser(
+        "space-jepa-2-shadow-assemble",
+        help="bind AQPM-JEPA forecast evidence to incumbent candidates",
+    )
+    sj2_shadow.add_argument("candidates", type=Path)
+    sj2_shadow.add_argument("evaluation", type=Path)
+    sj2_shadow.add_argument("output", type=Path)
+
+    sj2_campaign = commands.add_parser(
+        "space-jepa-2-campaign",
+        help="initialize or resume one fail-closed Space JEPA 2 campaign",
+    )
+    sj2_campaign.add_argument("protocol", type=Path)
+    sj2_campaign.add_argument("tns_input", type=Path)
+    sj2_campaign.add_argument("survey_input", type=Path)
+    sj2_campaign.add_argument("output", type=Path)
+    sj2_campaign.add_argument("--epochs", type=int, default=10)
+    sj2_campaign.add_argument("--batch-size", type=int, default=32)
+    sj2_campaign.add_argument("--device", choices=("cpu", "mps", "cuda"), default="cpu")
+    sj2_campaign.add_argument("--resume", action="store_true")
+
+    sj2_verify = commands.add_parser(
+        "space-jepa-2-campaign-verify",
+        help="verify Space JEPA 2 campaign status and manifest digests",
+    )
+    sj2_verify.add_argument("campaign", type=Path)
     return parser
 
 
@@ -2733,6 +2835,299 @@ def _command_promotion_sign(args: argparse.Namespace) -> int:
     return 0
 
 
+def _command_space_jepa_v2_data_audit(args: argparse.Namespace) -> int:
+    from siderea.ingest.tns_data import audit_tns_input
+
+    report = audit_tns_input(args.input)
+    _emit_new_json(report, args.output)
+    return 0 if report["readiness"] != "NOT_READY" else 3
+
+
+def _command_space_jepa_v2_protocol(args: argparse.Namespace) -> int:
+    from siderea.research.space_jepa_v2_protocol import (
+        freeze_space_jepa_v2_protocol,
+        load_space_jepa_v2_protocol,
+    )
+
+    if args.freeze is None:
+        protocol = load_space_jepa_v2_protocol(args.protocol)
+        _emit_json(
+            {
+                "valid": True,
+                "study_id": protocol.study_id,
+                "protocol_digest": protocol.protocol_digest,
+            }
+        )
+    else:
+        protocol = freeze_space_jepa_v2_protocol(args.protocol, args.freeze)
+        _emit_json(
+            {
+                "valid": True,
+                "frozen": args.freeze.expanduser().resolve(),
+                "study_id": protocol.study_id,
+                "protocol_digest": protocol.protocol_digest,
+            }
+        )
+    return 0
+
+
+def _command_space_jepa_v2_prepare(args: argparse.Namespace) -> int:
+    from siderea.ml.space_jepa_v2_data import prepare_space_jepa_v2_batches
+    from siderea.research.space_jepa_v2_protocol import load_space_jepa_v2_protocol
+
+    protocol = load_space_jepa_v2_protocol(args.protocol)
+    split = protocol.payload["split"]
+    if not isinstance(split, Mapping):
+        raise ValueError("protocol split settings are invalid")
+    report = prepare_space_jepa_v2_batches(
+        args.input,
+        args.output,
+        horizons_days=protocol.horizons_days,
+        train_fraction=float(split["train_fraction"]),
+        validation_fraction=float(split["validation_fraction"]),
+        test_fraction=float(split["test_fraction"]),
+        batch_size=args.batch_size,
+    )
+    _emit_json(report)
+    return 0
+
+
+def _load_space_jepa_v2_batches(path: Path, description: str) -> list[Mapping[str, Any]]:
+    try:
+        import torch
+    except ImportError as exc:
+        raise RuntimeError("Space JEPA 2 tensor batches require the 'ml' extra") from exc
+    try:
+        value = torch.load(path, map_location="cpu", weights_only=True)
+    except (OSError, RuntimeError, TypeError, ValueError) as exc:
+        raise ValueError(f"cannot read {description} {path}: {exc}") from exc
+    if isinstance(value, Mapping) and "batches" in value:
+        value = value["batches"]
+    if not isinstance(value, (list, tuple)) or any(not isinstance(item, Mapping) for item in value):
+        raise ValueError(f"{description} must contain a list of batch objects")
+    return [dict(item) for item in value]
+
+
+def _command_space_jepa_v2_train(args: argparse.Namespace) -> int:
+    from siderea.ml.space_jepa_v2 import AQPMJEPA, SpaceJEPA2Config
+    from siderea.ml.space_jepa_v2_train import (
+        SpaceJEPA2TrainingConfig,
+        save_space_jepa_v2_checkpoint,
+        train_space_jepa_v2,
+    )
+    from siderea.provenance import digest_file, digest_value
+    from siderea.research.space_jepa_v2_protocol import load_space_jepa_v2_protocol
+
+    protocol = load_space_jepa_v2_protocol(args.protocol)
+    if args.seed not in protocol.seeds:
+        raise ValueError("training seed is absent from the frozen protocol")
+    settings = protocol.payload["model"]
+    if not isinstance(settings, Mapping):
+        raise ValueError("protocol model settings are invalid")
+    model_config = SpaceJEPA2Config(
+        input_dim=args.input_dim,
+        quaternion_width=int(settings["quaternion_width"]),
+        encoder_blocks=int(settings["encoder_blocks"]),
+        attention_heads=int(settings["attention_heads"]),
+        predictor_blocks=int(settings["predictor_blocks"]),
+        dropout=float(settings["dropout"]),
+        horizons_days=protocol.horizons_days,
+    )
+    training_config = SpaceJEPA2TrainingConfig(
+        epochs=args.epochs,
+        learning_rate=float(settings["learning_rate"]),
+        weight_decay=float(settings["weight_decay"]),
+        gradient_clip=float(settings["gradient_clip"]),
+        ema_start=float(settings["ema_start"]),
+        ema_end=float(settings["ema_end"]),
+        seed=args.seed,
+    )
+    train_batches = _load_space_jepa_v2_batches(args.train_batches, "training batches")
+    validation_batches = _load_space_jepa_v2_batches(args.validation_batches, "validation batches")
+    model = AQPMJEPA(model_config)
+    result = train_space_jepa_v2(
+        model,
+        train_batches,
+        validation_batches,
+        training_config,
+        device=args.device,
+    )
+    data_digest = digest_value(
+        {
+            "train_sha256": digest_file(args.train_batches),
+            "validation_sha256": digest_file(args.validation_batches),
+        }
+    )
+    save_space_jepa_v2_checkpoint(
+        args.output,
+        model,
+        training_config=training_config,
+        training_result=result,
+        protocol_digest=protocol.protocol_digest,
+        data_digest=data_digest,
+    )
+    _emit_json(
+        {
+            "checkpoint": args.output.expanduser().resolve(),
+            "protocol_digest": protocol.protocol_digest,
+            "data_digest": data_digest,
+            "training": result,
+        }
+    )
+    return 0
+
+
+def _command_space_jepa_v2_infer(args: argparse.Namespace) -> int:
+    from siderea.ml.space_jepa_v2_evaluate import evaluate_space_jepa_v2
+    from siderea.ml.space_jepa_v2_train import load_space_jepa_v2_checkpoint
+
+    model, _ = load_space_jepa_v2_checkpoint(args.checkpoint, device=args.device)
+    batches = _load_space_jepa_v2_batches(args.batches, "inference batches")
+    _emit_new_json(evaluate_space_jepa_v2(model, batches, device=args.device), args.output)
+    return 0
+
+
+def _command_space_jepa_v2_memory(args: argparse.Namespace) -> int:
+    from siderea.ml.episodic_memory import EpisodicResidualMemory, MemoryEntry
+
+    raw = json.loads(args.entries_json.read_text(encoding="utf-8"))
+    if not isinstance(raw, list) or any(not isinstance(item, Mapping) for item in raw):
+        raise ValueError("memory entries JSON must contain an array of objects")
+    entries = [
+        MemoryEntry(
+            entry_id=str(item["entry_id"]),
+            key=item["key"],
+            residual=item["residual"],
+            source_group=str(item["source_group"]),
+            cutoff_mjd=float(item["cutoff_mjd"]),
+            population=str(item["population"]),
+            calibration=str(item["calibration"]),
+        )
+        for item in raw
+    ]
+    memory = EpisodicResidualMemory(
+        entries,
+        temperature=args.temperature,
+        maximum_neighbors=args.maximum_neighbors,
+    )
+    payload = {
+        "schema": "siderea.space_jepa_v2_memory.v1",
+        "entry_count": len(entries),
+        "temperature": args.temperature,
+        "maximum_neighbors": args.maximum_neighbors,
+        "memory_digest": memory.digest,
+        "entries": raw,
+    }
+    _emit_new_json(payload, args.output)
+    return 0
+
+
+def _command_space_jepa_v2_route(args: argparse.Namespace) -> int:
+    from siderea.ml.episodic_memory import EpisodicResidualMemory, MemoryEntry
+    from siderea.ml.space_jepa_v2_router import route_space_jepa_v2_evidence
+
+    payload = _load_json_mapping(args.input, "Space JEPA 2 routing input")
+    memory = None
+    if args.memory is not None:
+        memory_payload = _load_json_mapping(args.memory, "APENic memory")
+        raw_entries = memory_payload.get("entries")
+        if not isinstance(raw_entries, list) or any(
+            not isinstance(item, Mapping) for item in raw_entries
+        ):
+            raise ValueError("APENic memory artifact lacks entry objects")
+        memory = EpisodicResidualMemory(
+            [
+                MemoryEntry(
+                    entry_id=str(item["entry_id"]),
+                    key=item["key"],
+                    residual=item["residual"],
+                    source_group=str(item["source_group"]),
+                    cutoff_mjd=float(item["cutoff_mjd"]),
+                    population=str(item["population"]),
+                    calibration=str(item["calibration"]),
+                )
+                for item in raw_entries
+            ],
+            temperature=float(memory_payload.get("temperature", 1.0)),
+            maximum_neighbors=int(memory_payload.get("maximum_neighbors", 16)),
+        )
+    result = route_space_jepa_v2_evidence(
+        base_forecast=payload["base_forecast"],
+        observed_target=payload["observed_target"],
+        covariance=payload["covariance"],
+        memory=memory,
+        memory_query=payload.get("memory_query"),
+        query_source_group=str(payload["query_source_group"]),
+        query_cutoff_mjd=float(payload["query_cutoff_mjd"]),
+        population=str(payload["population"]),
+        calibration=str(payload["calibration"]),
+        physics_residual=(
+            None if payload.get("physics_residual") is None else float(payload["physics_residual"])
+        ),
+        physics_status=str(payload["physics_status"]),
+        score_weights=(
+            payload.get("score_weights")
+            if isinstance(payload.get("score_weights"), Mapping)
+            else None
+        ),
+    )
+    _emit_new_json(result, args.output)
+    return 0
+
+
+def _command_space_jepa_v2_benchmark(args: argparse.Namespace) -> int:
+    import pandas as pd
+
+    from siderea.research.space_jepa_v2_benchmark import run_space_jepa_v2_benchmark
+
+    report = run_space_jepa_v2_benchmark(
+        pd.read_csv(args.input),
+        entity_column=args.entity,
+        label_column=args.label,
+        score_columns=args.scores,
+        review_budget=args.review_budget,
+        bootstrap_repeats=args.bootstrap_repeats,
+        seed=args.seed,
+    )
+    _emit_new_json(report, args.output)
+    return 0
+
+
+def _command_space_jepa_v2_shadow(args: argparse.Namespace) -> int:
+    from siderea.research.space_jepa_v2_pipeline import (
+        assemble_space_jepa_v2_shadow_evidence,
+    )
+
+    candidates = _load_json_mapping(args.candidates, "pipeline candidates")
+    evaluation = _load_json_mapping(args.evaluation, "AQPM evaluation")
+    _emit_new_json(assemble_space_jepa_v2_shadow_evidence(candidates, evaluation), args.output)
+    return 0
+
+
+def _command_space_jepa_v2_campaign(args: argparse.Namespace) -> int:
+    from siderea.research.space_jepa_v2_campaign import run_space_jepa_v2_campaign
+
+    report = run_space_jepa_v2_campaign(
+        protocol_path=args.protocol,
+        tns_input=args.tns_input,
+        survey_input=args.survey_input,
+        output=args.output,
+        resume=args.resume,
+        epochs=args.epochs,
+        batch_size=args.batch_size,
+        device=args.device,
+    )
+    _emit_json(report)
+    return 0 if report["state"] in {"COMPLETED", "COMPLETED_NEGATIVE"} else 3
+
+
+def _command_space_jepa_v2_campaign_verify(args: argparse.Namespace) -> int:
+    from siderea.research.space_jepa_v2_campaign import verify_space_jepa_v2_campaign
+
+    _emit_json(verify_space_jepa_v2_campaign(args.campaign))
+    return 0
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     """Run the SIDEREA CLI and return a process exit code."""
 
@@ -2791,6 +3186,17 @@ def main(argv: Sequence[str] | None = None) -> int:
             "principal-assertion-verify": _command_principal_assertion_verify,
             "promotion-check": _command_promotion_check,
             "promotion-sign": _command_promotion_sign,
+            "space-jepa-2-data-audit": _command_space_jepa_v2_data_audit,
+            "space-jepa-2-protocol-verify": _command_space_jepa_v2_protocol,
+            "space-jepa-2-prepare": _command_space_jepa_v2_prepare,
+            "space-jepa-2-train": _command_space_jepa_v2_train,
+            "space-jepa-2-infer": _command_space_jepa_v2_infer,
+            "space-jepa-2-memory-build": _command_space_jepa_v2_memory,
+            "space-jepa-2-route": _command_space_jepa_v2_route,
+            "space-jepa-2-benchmark": _command_space_jepa_v2_benchmark,
+            "space-jepa-2-shadow-assemble": _command_space_jepa_v2_shadow,
+            "space-jepa-2-campaign": _command_space_jepa_v2_campaign,
+            "space-jepa-2-campaign-verify": _command_space_jepa_v2_campaign_verify,
         }
         if args.command in local_dispatch:
             return local_dispatch[args.command](args)

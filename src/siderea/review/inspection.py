@@ -15,6 +15,42 @@ from siderea.provenance import stable_json
 from siderea.review.evidence import light_curve_html
 
 
+def space_jepa_v2_panel(evidence: Mapping[str, Any]) -> str:
+    """Render read-only AQPM evidence without changing any review or report state."""
+
+    if evidence.get("priority_semantics") != "aqpm_predictive_surprise_not_probability":
+        raise ValueError("Space JEPA 2 evidence lacks the required priority semantics")
+    aqpm = evidence.get("aqpm")
+    if not isinstance(aqpm, Mapping):
+        raise ValueError("Space JEPA 2 evidence lacks an AQPM object")
+    horizons = aqpm.get("horizons_days")
+    errors = aqpm.get("mean_absolute_latent_error")
+    if (
+        not isinstance(horizons, list)
+        or not isinstance(errors, list)
+        or len(horizons) != len(errors)
+    ):
+        raise ValueError("AQPM horizon evidence is incomplete")
+    rows = "".join(
+        "<tr><td>" + escape(str(horizon)) + "</td><td>" + escape(str(error)) + "</td></tr>"
+        for horizon, error in zip(horizons, errors, strict=True)
+    )
+    memory_status = escape(str(aqpm.get("memory_status", "unknown")))
+    physics_status = escape(str(aqpm.get("physics_status", "unknown")))
+    candidate = escape(str(evidence.get("candidate_id", "unknown")))
+    priority = escape(str(evidence.get("review_priority", "unknown")))
+    return (
+        '<section aria-label="Space JEPA 2 shadow evidence">'
+        f"<h2>Space JEPA 2: {candidate}</h2>"
+        "<p>Shadow-only predictive evidence. The review priority is not a discovery "
+        "probability and cannot authorize reporting.</p>"
+        f"<p>Review priority: <strong>{priority}</strong></p>"
+        f"<p>Memory: {memory_status}; physics: {physics_status}</p>"
+        "<table><thead><tr><th>Horizon days</th><th>Mean latent error</th></tr></thead>"
+        f"<tbody>{rows}</tbody></table></section>"
+    )
+
+
 def plot_panel(observations: Any, candidate_id: str, filters: Mapping[str, str]) -> str:
     allowed = {"start", "end", "survey", "band"}
     if set(filters) - allowed:

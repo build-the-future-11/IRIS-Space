@@ -1,0 +1,90 @@
+{
+  "schema": "siderea.space_jepa_v2_protocol.v1",
+  "study_id": "space-jepa-2-development-v1",
+  "title": "APENic predictive-memory upgrade for the SIDEREA transient detection pipeline",
+  "system": "SIDEREA transient detection pipeline",
+  "engine": "APENic Quaternion Predictive-Memory JEPA",
+  "horizons_days": [1.0, 3.0, 7.0, 14.0],
+  "seeds": [17, 29, 43, 71, 101],
+  "split": {
+    "unit": "canonical_physical_entity_with_all_aliases",
+    "ordering": "earliest_point_in_time_availability",
+    "train_fraction": 0.6,
+    "validation_fraction": 0.2,
+    "test_fraction": 0.2,
+    "population_b_policy": "metadata_defined_before_outcome_inspection"
+  },
+  "review": {
+    "primary_fraction": 0.01,
+    "minimum": 25,
+    "maximum": 200,
+    "secondary": [25, 50, 100, 200],
+    "audit_slots": 10
+  },
+  "model": {
+    "quaternion_width": 64,
+    "encoder_blocks": 6,
+    "attention_heads": 8,
+    "predictor_blocks": 3,
+    "dropout": 0.1,
+    "ema_start": 0.996,
+    "ema_end": 0.9999,
+    "learning_rate": 0.0003,
+    "weight_decay": 0.0001,
+    "gradient_clip": 1.0
+  },
+  "models": [
+    "heuristic",
+    "template",
+    "persistence",
+    "linear",
+    "quadratic",
+    "gru",
+    "real_transformer",
+    "real_jepa",
+    "quaternion_jepa",
+    "quaternion_flow_jepa",
+    "aqpm_no_memory",
+    "aqpm_full",
+    "aqpm_no_physics",
+    "kernel_residual"
+  ],
+  "memory_controls": [
+    "memory_off",
+    "gate_closed",
+    "gate_open",
+    "uniform_metric",
+    "shuffled_residuals",
+    "shuffled_keys",
+    "wrong_population",
+    "source_exclusion_attack",
+    "kernel_residual"
+  ],
+  "stress_tests": {
+    "primary_ood": "source_population_change",
+    "intervention": "finite_duration_forcing_then_autonomous_evolution",
+    "survey_fidelity": ["filter", "cadence", "depth"],
+    "zero_shot": true,
+    "limited_example": true
+  },
+  "statistics": {
+    "bootstrap_repeats": 10000,
+    "bootstrap_seed": 1701,
+    "confidence_level": 0.95
+  },
+  "promotion": {
+    "component_relative_improvement": 0.02,
+    "calibration_max_worsening": 0.01,
+    "ranking_absolute_recall_gain": 0.03,
+    "workload_reduction": 0.2,
+    "recall_noninferiority_margin": -0.02,
+    "rare_family_max_drop": 0.03
+  },
+  "failure_policy": [
+    "retain_every_failed_cell",
+    "never_aggregate_incomplete_grid",
+    "never_tune_on_test",
+    "preserve_negative_results",
+    "never_authorize_tns_reporting"
+  ]
+}

@@ -28,7 +28,13 @@ from siderea.ledger import (
     ReviewRecord,
 )
 from siderea.review.evidence import evidence_summary
-from siderea.review.inspection import evidence_inbox, inbox_html, plot_panel, version_comparison
+from siderea.review.inspection import (
+    evidence_inbox,
+    inbox_html,
+    plot_panel,
+    space_jepa_v2_panel,
+    version_comparison,
+)
 from siderea.review.metrics import outcome_summary, outcome_summary_html
 
 MAX_FORM_BYTES = 64 * 1024
@@ -245,6 +251,10 @@ def _candidate_page(
         + "?"
         + urlencode({"version": candidate_version})
     )
+    raw_space_jepa_v2 = evidence.get("space_jepa_v2")
+    space_jepa_v2 = (
+        space_jepa_v2_panel(raw_space_jepa_v2) if isinstance(raw_space_jepa_v2, Mapping) else ""
+    )
     return f"""
 <p><a href="/">← queue</a></p>
 <p>{identity_notice}</p>
@@ -254,6 +264,7 @@ screener and reviewer are required before reporting preflight can pass.</p>
     <dt>State</dt><dd>{escape(str(candidate["state"]))}</dd>
     <dt>Current version</dt><dd><code>{escape(candidate_version)}</code></dd></dl>
 {evidence_summary(evidence)}
+{space_jepa_v2}
 <h2>Light curves</h2>{plot_panel(evidence.get("observations"), candidate_id, plot_filters or {})}
 <p><a href="{escape(download_url)}">Download complete version-bound evidence (JSON)</a></p>
 <details><summary>Complete candidate evidence</summary><pre>{escape(payload)}</pre></details>

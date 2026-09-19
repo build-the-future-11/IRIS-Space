@@ -24,6 +24,13 @@ siderea analyze examples/photometry.csv --output-dir runs/first-analysis --ledge
 siderea review-serve --ledger runs/first-ledger.sqlite
 ```
 
+Prefer the module form if the console script is not on `PATH`:
+
+```bash
+python -m siderea analyze examples/photometry.csv --output-dir runs/first-analysis --ledger runs/first-ledger.sqlite
+python -m siderea review-serve --ledger runs/first-ledger.sqlite
+```
+
 Open the local address printed by the review server. Inspect the queue, light curves,
 complete evidence download and outcome dashboard. Stop the server with Ctrl-C.
 The example produces two candidates with missing external evidence; zero reportable

@@ -1,0 +1,30 @@
+{
+  "schema": "siderea.robust_search_gate_audit.v2",
+  "status": "pre_result_deterministic_audit_no_protocol_change",
+  "bound_protocol_git_blob_sha1": "9ab09a2ad2702649fe31ab19eb8b73d45fc7d60b",
+  "bound_amendment_v2_0_2_git_blob_sha1": "52fdce6a876e189450beb87d08326597a8473f67",
+  "bound_amendment_v2_0_4_git_blob_sha1": "139c6832004bd5a945c9a96c5c30e4b006154880",
+  "observed_scientific_results": false,
+  "purpose": "Audit the deterministic geometry of the already-frozen locked safety gate before any v2 candidate-performance statistic is generated. This artifact changes no endpoint, sample size, threshold, candidate, or promotion rule.",
+  "inputs": {
+    "locked_null_trials_per_regime": 5000,
+    "point_estimate_false_alarm_cap": 0.01,
+    "wilson_interval": "two-sided 95%",
+    "wilson_upper_cap": 0.015
+  },
+  "derived": {
+    "maximum_false_alarms_allowed_by_point_estimate_gate": 50,
+    "empirical_false_alarm_fraction_at_point_gate_boundary": 0.01,
+    "wilson_95_upper_at_50_of_5000": 0.013158575092209418,
+    "next_false_alarm_count": 51,
+    "empirical_false_alarm_fraction_at_51_of_5000": 0.0102,
+    "wilson_95_upper_at_51_of_5000": 0.013385304926578188,
+    "wilson_uncertainty_gate_is_binding": false,
+    "proof": "For fixed n=5000, the Wilson upper endpoint is monotone in the observed success count over the relevant range. The point-estimate gate permits only k<=50, and at its largest permitted count the Wilson upper endpoint is 0.013158575092209418<0.015. Therefore every outcome that passes the point-estimate gate also passes the frozen Wilson-upper gate. At k=51 the Wilson-upper condition still passes, but the point-estimate condition already fails."
+  },
+  "conference_interpretation": {
+    "required_language": "Report both frozen safety conditions exactly as preregistered, but do not describe the 0.015 Wilson-upper condition as an additional effective rejection barrier at n=5000; under the frozen sample size it is non-binding relative to the 0.01 point-estimate cap.",
+    "protocol_change": "none",
+    "future_design_note": "A later independently preregistered study that wants an uncertainty condition to add information should choose its count, point-estimate cap, and interval cap jointly by prospective operating-characteristic analysis. Do not retrofit v2 after observing outcomes."
+  }
+}

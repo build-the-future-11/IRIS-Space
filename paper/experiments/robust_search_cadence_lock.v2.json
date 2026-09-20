@@ -1,0 +1,19 @@
+{
+  "schema": "siderea.robust_search_cadence_lock.v2",
+  "protocol_path": "paper/experiments/robust_search_protocol.v2.json",
+  "protocol_git_blob_sha1": "9ab09a2ad2702649fe31ab19eb8b73d45fc7d60b",
+  "cadence_manifest_path": "paper/experiments/robust_search_cadences.v2.json",
+  "cadence_manifest_sha256": "5abfdaa328f5793e92bed7aa6dcfaade44ac1a54a1996b8c310e51112dc72451",
+  "cadence_count": 25,
+  "epochs_per_cadence": 64,
+  "ordinary_cadences": 20,
+  "seasonal_gap_cadences": 5,
+  "cadence_seed": 2026091120,
+  "generator_contract": {
+    "rng": "numpy default_rng over independent SeedSequence(cadence_seed).spawn(25) children",
+    "ordinary": "64 sorted independent Uniform(0,60) day arrivals",
+    "seasonal_gap": "32 sorted Uniform(0,20) plus 32 sorted Uniform(40,60) day arrivals"
+  },
+  "claim": "This lock fixes study inputs only; it contains no candidate statistic or outcome data.",
+  "frozen_before_v2_candidate_evaluation": true
+}

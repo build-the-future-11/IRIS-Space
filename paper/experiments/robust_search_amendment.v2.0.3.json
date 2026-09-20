@@ -1,0 +1,74 @@
+{
+  "schema": "siderea.robust_search_protocol_amendment.v2.0.3",
+  "base_protocol": "robust_search_protocol.v2.json",
+  "base_protocol_git_blob_sha1": "9ab09a2ad2702649fe31ab19eb8b73d45fc7d60b",
+  "previous_amendment": "robust_search_amendment.v2.0.2.json",
+  "previous_amendment_git_blob_sha1": "52fdce6a876e189450beb87d08326597a8473f67",
+  "status": "frozen_before_any_v2_candidate_development_evaluation",
+  "observed_before_amendment": {
+    "v2_candidate_development_statistics": false,
+    "v2_calibration_statistics": false,
+    "v2_locked_evaluation_statistics": false,
+    "v2_generalization_probe_statistics": false,
+    "allowed_prior_information": "Only the preserved v1 results, frozen v2 input generators and locks, source inspection, non-performance integrity tests, and CI status."
+  },
+  "reason": [
+    "The v2.0.2 null-allocation prose referred to ordinary-00 through ordinary-19 and seasonal-gap-00 through seasonal-gap-04, but the already frozen cadence generator and canonical manifest digest use exact identifiers irregular_01 through irregular_20 and seasonal_gap_01 through seasonal_gap_05.",
+    "The discrepancy is identifier spelling and indexing only: the frozen counts, generated time arrays, cadence seed, regime allocation, sample sizes, weighting, statistics, thresholds, and promotion gates are unchanged.",
+    "A runner must not silently invent aliases for a frozen protocol field. The canonical generated identifiers are therefore recorded explicitly before any v2 candidate-performance statistic exists."
+  ],
+  "changes": {
+    "cadence_identifier_erratum": {
+      "supersedes_only": [
+        "robust_search_amendment.v2.0.2.json:changes.null_trial_allocation.ordinary_cadences",
+        "robust_search_amendment.v2.0.2.json:changes.null_trial_allocation.seasonal_gap_cadences"
+      ],
+      "canonical_ordinary_kind": "irregular",
+      "canonical_ordinary_ids": [
+        "irregular_01",
+        "irregular_02",
+        "irregular_03",
+        "irregular_04",
+        "irregular_05",
+        "irregular_06",
+        "irregular_07",
+        "irregular_08",
+        "irregular_09",
+        "irregular_10",
+        "irregular_11",
+        "irregular_12",
+        "irregular_13",
+        "irregular_14",
+        "irregular_15",
+        "irregular_16",
+        "irregular_17",
+        "irregular_18",
+        "irregular_19",
+        "irregular_20"
+      ],
+      "canonical_seasonal_gap_kind": "seasonal_gap",
+      "canonical_seasonal_gap_ids": [
+        "seasonal_gap_01",
+        "seasonal_gap_02",
+        "seasonal_gap_03",
+        "seasonal_gap_04",
+        "seasonal_gap_05"
+      ],
+      "binding_rule": "The canonical cadence rows are exactly build_cadence_manifest(frozen_protocol)['cadences']; ordinary null regimes use rows whose kind is irregular and the seasonal-gap null regime uses rows whose kind is seasonal_gap. String aliases not present in the canonical manifest are forbidden.",
+      "numeric_design_change": false
+    }
+  },
+  "unchanged": [
+    "all cadence time arrays and the frozen cadence-manifest SHA-256",
+    "cadence seed and SeedSequence child mapping",
+    "20 ordinary plus 5 seasonal-gap cadence counts",
+    "all null-regime trial allocations from v2.0.2",
+    "all signal allocations and weighting",
+    "candidate set and candidate-selection rule",
+    "calibration and comparator semantics",
+    "bootstrap mechanics and uncertainty rules",
+    "all primary and secondary promotion gates",
+    "finite synthetic claim boundary and negative-result rule"
+  ],
+  "execution_rule": "Every development, calibration, locked-evaluation, or generalization runner must verify the exact bytes of this identifier erratum in addition to the base protocol and prior amendments, then use only the canonical generated cadence identifiers above."
+}

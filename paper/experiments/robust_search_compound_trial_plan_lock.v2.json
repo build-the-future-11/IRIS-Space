@@ -1,0 +1,32 @@
+{
+  "schema": "siderea.robust_search_compound_trial_plan_lock.v2",
+  "status": "frozen_pre_outcome_secondary_extension_execution_lock",
+  "bound_extension": "robust_search_compound_nuisance_extension.v2.json",
+  "bound_extension_git_blob_sha1": "5fef19f439d5b581f317f30f5292bf5df6900e76",
+  "observed_scientific_results": false,
+  "extension_seed": 2026091105,
+  "canonical_key_schema": "siderea.robust_search_compound_trial_rng.v1",
+  "canonical_key_fields": [
+    "probe_id",
+    "cadence_id",
+    "trial_index"
+  ],
+  "probe_counts": {
+    "seasonal_gap_x_ar1_rho_0_7": 5000,
+    "seasonal_gap_x_errors_underestimated_factor_1_5": 5000,
+    "ar1_rho_0_7_x_errors_underestimated_factor_1_5": 5000,
+    "ar1_rho_0_7_x_single_positive_6sigma_outlier": 5000,
+    "student_t3_x_errors_underestimated_factor_1_5": 5000,
+    "variance_doubles_second_half_x_single_positive_6sigma_outlier": 5000
+  },
+  "total_canonical_trial_keys": 30000,
+  "unique_canonical_trial_keys": 30000,
+  "duplicate_canonical_trial_keys": 0,
+  "digest": {
+    "algorithm": "sha256",
+    "canonicalization": "For each trial, stable-JSON encode an object containing schema plus probe_id, cadence_id, and zero-based trial_index. Sort all canonical key strings lexicographically, append one newline byte after every key including the final key, concatenate as UTF-8, then SHA-256.",
+    "sha256": "618966be54879ba16eb10a13dd01e1b1b642a572d0f77b1f041577dd93b672de"
+  },
+  "execution_rule": "Before the first compound-nuisance curve is generated, verify the exact frozen extension bytes, reproduce all six 5000-trial probe counts, reject duplicate canonical keys, reproduce this sorted-key digest, and retain the digest in the extension execution receipt. The selected statistic and locked threshold must already be frozen and may not be modified in response to these secondary probes.",
+  "interpretation": "This lock contains stochastic identities only. It contains no generated noise, search statistic, threshold, detection, false-alarm count, interval, or other scientific outcome, and it changes no primary v2 protocol value or promotion gate."
+}

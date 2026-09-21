@@ -136,3 +136,37 @@ def test_population_transfer_rejects_nonfinite_scores() -> None:
             in_population=["A"],
             held_population=["B"],
         )
+
+
+@pytest.mark.parametrize("bad", ["1", 1.0, object()])
+def test_population_transfer_rejects_non_typed_binary_labels(bad: object) -> None:
+    with pytest.raises(ValueError, match="typed integer/boolean"):
+        population_transfer_report(
+            [bad, 0],
+            [0.9, 0.1],
+            ["A", "B"],
+            in_population=["A"],
+            held_population=["B"],
+        )
+
+
+@pytest.mark.parametrize(
+    ("in_population", "held_population"),
+    [
+        ([1], ["B"]),
+        (["A "], ["B"]),
+        (["A", "A"], ["B"]),
+        (["A"], ["B", "B"]),
+    ],
+)
+def test_population_transfer_rejects_malformed_population_declarations(
+    in_population: list[object], held_population: list[object]
+) -> None:
+    with pytest.raises(ValueError):
+        population_transfer_report(
+            [1, 0],
+            [0.9, 0.1],
+            ["A", "B"],
+            in_population=in_population,  # type: ignore[arg-type]
+            held_population=held_population,  # type: ignore[arg-type]
+        )

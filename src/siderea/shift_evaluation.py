@@ -43,16 +43,36 @@ def _float_vector(values: Iterable[float], name: str) -> FloatArray:
 
 
 def _binary_vector(values: Iterable[int | bool], name: str) -> IntArray:
-    raw = np.asarray(list(values))
-    try:
-        numeric = raw.astype(float)
-    except (TypeError, ValueError) as exc:
-        raise ValueError(f"{name} must contain only 0/1 values") from exc
-    if numeric.ndim != 1 or len(numeric) == 0 or not np.isfinite(numeric).all():
-        raise ValueError(f"{name} must be a finite non-empty one-dimensional vector")
-    if not np.isin(numeric, [0.0, 1.0]).all():
+    raw = list(values)
+    if not raw:
+        raise ValueError(f"{name} must be a non-empty one-dimensional vector")
+    if any(
+        not isinstance(value, (bool, np.bool_, int, np.integer))
+        or isinstance(value, (float, np.floating))
+        for value in raw
+    ):
+        raise ValueError(f"{name} must contain typed integer/boolean 0/1 values")
+    numeric = np.asarray(raw, dtype=np.int64)
+    if numeric.ndim != 1 or not np.isin(numeric, [0, 1]).all():
         raise ValueError(f"{name} must contain only 0/1 values")
-    return numeric.astype(np.int64)
+    return numeric
+
+
+def _population_declarations(values: Sequence[str], name: str) -> set[str]:
+    if not values:
+        raise ValueError(f"{name} must be non-empty")
+    normalized: set[str] = set()
+    for value in values:
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError(f"{name} must contain non-empty strings")
+        if value != value.strip():
+            raise ValueError(f"{name} entries must not contain surrounding whitespace")
+        if len(value) > 128 or any(ord(ch) < 32 for ch in value):
+            raise ValueError(f"{name} entries must be bounded printable strings")
+        if value in normalized:
+            raise ValueError(f"{name} must not contain duplicate populations")
+        normalized.add(value)
+    return normalized
 
 
 def _population_vector(values: Iterable[str], *, n: int) -> tuple[str, ...]:
@@ -137,12 +157,8 @@ def population_transfer_report(
         raise ValueError("labels and scores must be equally sized")
     pop = _population_vector(populations, n=len(y))
 
-    in_set = {value.strip() for value in in_population}
-    held_set = {value.strip() for value in held_population}
-    if not in_set or not held_set:
-        raise ValueError("in_population and held_population must both be non-empty")
-    if "" in in_set or "" in held_set:
-        raise ValueError("population declarations must be non-empty")
+    in_set = _population_declarations(in_population, "in_population")
+    held_set = _population_declarations(held_population, "held_population")
     overlap = in_set & held_set
     if overlap:
         raise ValueError(f"in/held populations overlap: {', '.join(sorted(overlap))}")

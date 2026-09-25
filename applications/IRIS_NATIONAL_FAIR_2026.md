@@ -51,17 +51,17 @@ The audited campaign contained 24 productive runs and 3,824 distinct broker obje
 
 We acknowledge the public Zwicky Transient Facility alert stream, the ALeRCE broker, the Transient Name Server, SIMBAD, SkyBoT, and the AAVSO Variable Star Index for the data and external services used in this work. Key references include Bellm et al. (2019) and Masci et al. (2019) for ZTF, Förster et al. (2021) for ALeRCE, and relevant transient-template and broker literature cited in the full paper. All software, protocols, and retained experimental artifacts were developed and audited by the project team.
 
-## 90-second video script — ~201 words
+## 90-second video script — 174 words
 
-Every night, time-domain surveys can produce more astronomical alerts than a small team can inspect. The obvious response is to rank them with software. But a high score does not prove that an object is new, that a catalog query succeeded, or that the evidence is reliable.
+Time-domain surveys can generate more astronomical alerts than a small team can inspect manually. Ranking software helps, but a high score does not prove that an object is new, that an external catalog check succeeded, or that the evidence is reliable.
 
-We built SIDEREA to separate those questions. It analyzes irregular optical light curves, ranks promising candidates, records the exact evidence used, and then fails closed: missing, stale, or malformed checks cannot become scientific clearance.
+We built SIDEREA to separate ranking from scientific clearance. It analyzes irregular optical light curves, records the exact candidate and evidence version, and fails closed when required checks are missing, stale, or malformed. Human review remains the final gate.
 
-We also tested a second question. Can evidence spread across several observations reveal faint transient signals better than looking for one extreme point? In matched Gaussian simulations, our calibrated template bank recovered 707 of 1,000 two-sigma Gaussian pulses, compared with 136 for a separately calibrated single-epoch method.
+We also tested whether information spread across several observations can reveal faint transient signals better than one extreme measurement. In matched Gaussian simulations, a calibrated multi-epoch template bank recovered 707 of 1,000 two-sigma Gaussian pulses, compared with 136 for a separately calibrated single-epoch method.
 
-But the more important result was a failure. When the noise was correlated but we calibrated as if it were independent, false alarms rose to 454 out of 1,000. Supplying the correct covariance reduced that to 11.
+The important limitation was noise misspecification. Under correlated noise calibrated as independent, false alarms rose to 454 of 1,000. Supplying the correct covariance reduced them to 11.
 
-So our conclusion is not that automation can discover transients by itself. It is that temporal structure can improve sensitivity, but only when uncertainty, provenance, and human review are treated as part of the scientific method.
+Our result is therefore bounded: temporal structure can improve sensitivity, but trustworthy triage still requires explicit uncertainty, provenance, evidence checks, and human review.
 
 ## Submission visuals to build
 

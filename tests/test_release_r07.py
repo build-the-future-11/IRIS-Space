@@ -8,7 +8,6 @@ import pytest
 
 from siderea.cli import main
 from siderea.config import load_config
-from siderea.ledger import OutcomeLedger
 from siderea.pipeline import analyze_csv
 
 
@@ -100,6 +99,8 @@ def test_r07_unwritable_output_finishes_failed_manifest(tmp_path: Path) -> None:
 def test_r07_interrupt_during_publication_rewrites_manifest_terminal_state(
     tmp_path: Path,
 ) -> None:
+    from siderea.ledger import OutcomeLedger
+
     config = load_config()
     runs = tmp_path / "runs"
     run_id = "r07-interrupted-publication"

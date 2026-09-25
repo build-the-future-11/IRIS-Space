@@ -10,7 +10,6 @@ from siderea.cli import main
 from siderea.config import load_config
 from siderea.pipeline import analyze_csv
 
-
 SOURCE = Path("examples/photometry.csv")
 
 

@@ -90,10 +90,10 @@ def test_r07_unwritable_output_finishes_failed_manifest(tmp_path: Path) -> None:
     payload = _manifest(manifest_path)
     assert payload["status"] == "failed"
     assert payload["completed_at"]
-    assert payload["metrics"]["partial_artifact_count"] == 0
+    assert payload["metrics"]["partial_artifact_count"] == 1
+    assert [artifact["role"] for artifact in payload["artifacts"]] == ["source-input-snapshot"]
     assert any(
-        "PermissionError" in warning and message in warning
-        for warning in payload["warnings"]
+        "PermissionError" in warning and message in warning for warning in payload["warnings"]
     )
 
 
@@ -123,7 +123,6 @@ def test_r07_interrupt_during_publication_rewrites_manifest_terminal_state(
     assert payload["completed_at"]
     assert payload["metrics"]["candidate_count"] >= 1
     assert any(
-        warning == "pipeline interrupted during publication"
-        for warning in payload["warnings"]
+        warning == "pipeline interrupted during publication" for warning in payload["warnings"]
     )
     assert len(payload["artifacts"]) >= 5

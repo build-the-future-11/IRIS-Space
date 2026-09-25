@@ -1,0 +1,13 @@
+{
+  "schema": "siderea.robust_search_reported_errors_lock.v2",
+  "status": "frozen_before_any_v2_candidate_development_evaluation",
+  "protocol": "robust_search_protocol.v2.json",
+  "amendment": "robust_search_amendment.v2.0.1.json",
+  "cadence_seed": 2026091120,
+  "vector_count": 25,
+  "epochs_per_vector": 64,
+  "distribution": "Uniform(0.7,1.3)",
+  "seed_spawn_indices": [25, 49],
+  "canonical_generated_manifest_sha256": "c047f7c56138ba562ad41e960d8ee52b8c773d199c9347e64e0db39bde857bd7",
+  "note": "Precommits the deterministic full 25x64 reported-error input manifest before any v2 result. Every runner must regenerate the vectors from the frozen protocol/amendment contract and reproduce this digest before computing a candidate-performance statistic."
+}

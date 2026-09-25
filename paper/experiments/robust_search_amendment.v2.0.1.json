@@ -1,0 +1,85 @@
+{
+  "schema": "siderea.robust_search_protocol_amendment.v2.0.1",
+  "base_protocol": "robust_search_protocol.v2.json",
+  "base_protocol_git_blob_sha1": "9ab09a2ad2702649fe31ab19eb8b73d45fc7d60b",
+  "status": "frozen_before_any_v2_candidate_development_evaluation",
+  "observed_before_amendment": {
+    "v2_candidate_development_statistics": false,
+    "v2_calibration_statistics": false,
+    "v2_locked_evaluation_statistics": false,
+    "v2_generalization_probe_statistics": false,
+    "allowed_prior_information": "Only the v1 synthetic failures already recorded in the base protocol, source inspection, and unit/integrity tests that do not evaluate candidate performance."
+  },
+  "reason": [
+    "The base development feasibility rule constructs a provisional threshold from a development null sample and then evaluates false-alarm rate on that same sample. Because the threshold is itself a high empirical quantile of those nulls, the <=2% feasibility check is nearly guaranteed by construction and therefore does not provide an out-of-sample robustness screen.",
+    "The base protocol names a Huberized candidate but does not define a constant-baseline-invariant robust centering operation under heteroskedastic and correlated errors. Implementing one after seeing candidate results would create avoidable researcher degrees of freedom.",
+    "Several execution details that materially affect recovery or false alarms were not explicit: development signal sample size, signal-center law, reported-error vectors, AR(1) indexing semantics, outlier placement, and empirical quantile convention. They must be frozen before candidate evaluation."
+  ],
+  "changes": {
+    "candidate_statistics": {
+      "remove": ["huberized_stability"],
+      "effective_candidates": [
+        "raw_bank_envelope_calibrated",
+        "selected_template_leave_one_out_stability"
+      ],
+      "rationale": "Keep v2 as a comparison of the existing bank against one fully specified stability modification. A separately preregistered v3 may study robust residual transformations after defining their invariance and covariance semantics."
+    },
+    "development_null_split": {
+      "total_trials_per_regime_unchanged": 2000,
+      "threshold_construction_trials_per_regime": 1000,
+      "feasibility_evaluation_trials_per_regime": 1000,
+      "independence": "Use distinct child RNG streams within the development seed namespace; no curve may appear in both halves.",
+      "provisional_threshold": "For each candidate, estimate each regime's 0.995 quantile on the threshold-construction half using the higher empirical order-statistic convention; use the maximum regime threshold as the candidate's single provisional threshold.",
+      "feasibility": "Apply the provisional threshold only to the independent feasibility-evaluation half. Reject a candidate if any regime has empirical false-alarm fraction >0.02."
+    },
+    "development_signal_design": {
+      "primary_amplitude_sigma": 4.0,
+      "trials_per_family_width_noise_regime": 250,
+      "allocation_across_cadences": "Exactly 10 paired signal/noise draws on each of the 25 frozen cadences for every family x width x signal-noise regime cell.",
+      "families": ["gaussian", "exponential", "bazin", "fallback"],
+      "widths_days": [1.0, 3.0, 10.0],
+      "noise_regimes": [
+        "iid_gaussian",
+        "ar1_rho_0_7",
+        "student_t3_unit_variance",
+        "errors_underestimated_factor_1_5"
+      ],
+      "center_distribution": "Independent Uniform(0,60) days. Edge and seasonal-gap misses remain part of end-to-end recovery rather than being conditioned away.",
+      "amplitude_definition": "Positive unit-peak template multiplied by amplitude_sigma times the median reported error of that cadence.",
+      "pairing": "Every candidate and comparator receives the identical cadence, reported-error vector, noise draw, signal family, width, center, and amplitude."
+    },
+    "reported_error_vectors": {
+      "definition": "One fixed vector per cadence; 64 independent Uniform(0.7,1.3) positive reported errors.",
+      "seed_contract": "Create SeedSequence(cadence_seed).spawn(50). Children 0..24 are reserved for the already locked cadence times; children 25..49 generate the reported-error vectors corresponding to cadence indices 0..24. The vectors are frozen before development and reused across all phases.",
+      "purpose": "Preserve the repository's existing moderate heteroskedasticity without letting error patterns vary across candidates or phases."
+    },
+    "noise_generation_semantics": {
+      "iid_gaussian": "Independent N(0,1) residuals multiplied elementwise by the reported errors.",
+      "ar1_rho": "AR(1) correlation is by sorted observation index: Corr(i,j)=rho^abs(i-j), then scaled by reported errors.",
+      "ou": "Corr(i,j)=f*exp(-abs(t_i-t_j)/tau)+(1-f)*I(i=j), with f=0.8, then scaled by reported errors.",
+      "errors_underestimated_factor_1_5": "Independent Gaussian residuals with true standard deviation 1.5 times the reported error while the search continues to receive the uninflated reported errors.",
+      "student_t3_unit_variance": "Independent Student-t(3)/sqrt(3) residuals multiplied by reported errors.",
+      "variance_doubles_second_half": "Independent Gaussian noise with variance multiplier 2 for epochs with time >30 days, i.e. standard-deviation multiplier sqrt(2).",
+      "single_positive_outlier": "Start from IID Gaussian noise and choose one epoch uniformly at random; add the named positive sigma amplitude times that epoch's reported error.",
+      "two_positive_5sigma_outliers": "Start from IID Gaussian noise and sample two distinct epoch indices uniformly without replacement; add +5 times each selected epoch's reported error.",
+      "contaminated_gaussian_sigma8": "Independently per epoch, use N(0,1) with probability 0.99 and N(0,8^2) with probability 0.01, then multiply by reported errors.",
+      "linear_variance_drift": "Independent Gaussian noise with variance multiplier changing linearly from 0.75 at day 0 to 1.75 at day 60; standard deviation is the square root of that multiplier times the reported error."
+    },
+    "quantile_convention": {
+      "rule": "Every 0.995 empirical calibration quantile uses the higher order-statistic convention (equivalent to numpy.quantile(values,0.995,method='higher')).",
+      "threshold_comparison": "A curve is counted as detected when statistic >= the frozen threshold.",
+      "ties": "Report the number of calibration values exactly equal to each regime threshold; do not jitter ties."
+    }
+  },
+  "unchanged": [
+    "base scientific question and finite synthetic claim boundary",
+    "null-envelope regimes and locked generalization probes",
+    "development/calibration/locked top-level seed separation",
+    "independent calibration after candidate selection",
+    "locked false-alarm and utility promotion gates",
+    "matched-IID noninferiority gate",
+    "requirement to publish failed gates and negative results",
+    "requirement for a later complete prospective real-data cohort before stronger scientific claims"
+  ],
+  "execution_rule": "All v2 development runners must verify both the original base-protocol lock and this amendment before generating any candidate-performance statistic. The original base protocol remains immutable in the artifact bundle."
+}

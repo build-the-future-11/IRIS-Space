@@ -1,0 +1,103 @@
+{
+  "schema": "siderea.robust_search_compound_nuisance_extension.v2",
+  "status": "frozen_pre_outcome_secondary_extension_no_v2_protocol_change",
+  "bound_protocol": "robust_search_protocol.v2.json",
+  "bound_protocol_git_blob_sha1": "9ab09a2ad2702649fe31ab19eb8b73d45fc7d60b",
+  "outcome_access_before_freeze": {
+    "v2_candidate_development_statistics": false,
+    "v2_calibration_statistics": false,
+    "v2_locked_evaluation_statistics": false,
+    "v2_generalization_probe_statistics": false,
+    "compound_extension_statistics": false
+  },
+  "scientific_gap": "The primary v2 calibration envelope perturbs major nuisance mechanisms mostly one at a time. Control under each atomic regime does not imply control when nuisance mechanisms co-occur. In particular, the locked signal study already evaluates signals on all 25 cadences while several non-Gaussian or misspecified noise regimes are calibrated only on ordinary cadences, so a successful v2 must not be read as evidence for arbitrary cadence-by-noise interactions.",
+  "purpose": "Prospectively stress the final frozen v2 statistic and threshold on a small, mechanism-driven set of compound null nuisances without changing candidate selection, calibration, locked promotion gates, or the interpretation of the primary v2 result.",
+  "execution_timing": {
+    "earliest_allowed": "Only after locked_evaluation_complete exists and the selected statistic implementation plus threshold are frozen.",
+    "ordering": "Run after the primary locked evaluation and before or after the original three generalization probes; results may not feed back into any v2 decision.",
+    "retuning": "No candidate, threshold, template bank, nuisance parameter, cadence, error vector, or promotion gate may be changed in response to this extension."
+  },
+  "rng_contract": {
+    "extension_seed": 2026091105,
+    "independence": "This seed is separate from the frozen development, calibration, locked-evaluation, cadence, and bootstrap seeds.",
+    "canonical_key_schema": "siderea.robust_search_compound_trial_rng.v1",
+    "canonical_key_fields": [
+      "probe_id",
+      "cadence_id",
+      "trial_index"
+    ],
+    "canonicalization": "Stable JSON with all fields present; trial_index is zero-based within probe_id x cadence_id.",
+    "seed_derivation": "payload = UTF8(str(extension_seed) + '\\n' + canonical_key_json); digest = SHA256(payload); seed_words are the first 16 digest bytes interpreted as four unsigned big-endian 32-bit integers; use PCG64(SeedSequence(seed_words)).",
+    "collision_rule": "Reject duplicate canonical keys before generating any curve."
+  },
+  "probes": [
+    {
+      "id": "seasonal_gap_x_ar1_rho_0_7",
+      "mechanisms": ["seasonal_gap_cadence", "ar1_rho_0_7"],
+      "cadences": "seasonal_gap_01..seasonal_gap_05",
+      "trials_per_cadence": 1000,
+      "total_trials": 5000,
+      "generation": "Use each frozen seasonal-gap time array and reported-error vector. Generate zero-mean Gaussian residuals with Corr(i,j)=0.7^abs(i-j) by sorted observation index, scaled by the frozen reported errors."
+    },
+    {
+      "id": "seasonal_gap_x_errors_underestimated_factor_1_5",
+      "mechanisms": ["seasonal_gap_cadence", "errors_underestimated_factor_1_5"],
+      "cadences": "seasonal_gap_01..seasonal_gap_05",
+      "trials_per_cadence": 1000,
+      "total_trials": 5000,
+      "generation": "Use each frozen seasonal-gap time array. Generate independent Gaussian residuals with true standard deviation 1.5 times the frozen reported errors while the search still receives the uninflated reported errors."
+    },
+    {
+      "id": "ar1_rho_0_7_x_errors_underestimated_factor_1_5",
+      "mechanisms": ["ar1_rho_0_7", "errors_underestimated_factor_1_5"],
+      "cadences": "irregular_01..irregular_20",
+      "trials_per_cadence": 250,
+      "total_trials": 5000,
+      "generation": "Generate zero-mean Gaussian residuals with Corr(i,j)=0.7^abs(i-j) by sorted observation index and marginal standard deviation 1.5 times the frozen reported error; the search receives the uninflated reported errors."
+    },
+    {
+      "id": "ar1_rho_0_7_x_single_positive_6sigma_outlier",
+      "mechanisms": ["ar1_rho_0_7", "single_positive_6sigma_outlier"],
+      "cadences": "irregular_01..irregular_20",
+      "trials_per_cadence": 250,
+      "total_trials": 5000,
+      "generation": "Generate AR(1) rho=0.7 Gaussian residuals scaled by the frozen reported errors, then choose one epoch uniformly and add +6 times that epoch's reported error."
+    },
+    {
+      "id": "student_t3_x_errors_underestimated_factor_1_5",
+      "mechanisms": ["student_t3_unit_variance", "errors_underestimated_factor_1_5"],
+      "cadences": "irregular_01..irregular_20",
+      "trials_per_cadence": 250,
+      "total_trials": 5000,
+      "generation": "Generate independent Student-t(3)/sqrt(3) residuals and multiply by 1.5 times the frozen reported errors; the search receives the uninflated reported errors."
+    },
+    {
+      "id": "variance_doubles_second_half_x_single_positive_6sigma_outlier",
+      "mechanisms": ["variance_doubles_second_half", "single_positive_6sigma_outlier"],
+      "cadences": "irregular_01..irregular_20",
+      "trials_per_cadence": 250,
+      "total_trials": 5000,
+      "generation": "Generate independent Gaussian residuals with variance multiplier 1 for times <=30 days and 2 for times >30 days, scaled by the frozen reported errors, then choose one epoch uniformly and add +6 times that epoch's reported error."
+    }
+  ],
+  "total_extension_trials": 30000,
+  "analysis": {
+    "threshold": "Apply the already frozen selected-statistic threshold unchanged to every probe.",
+    "detection_rule": "Use the same v2 locked detection comparison as the selected statistic; do not jitter ties.",
+    "per_probe_report": [
+      "false_alarm_count",
+      "trial_count",
+      "false_alarm_fraction",
+      "two_sided_95_percent_Wilson_interval",
+      "one_sided_exact_binomial_upper_bound"
+    ],
+    "simultaneous_diagnostic": "For the six extension probes, use one-sided exact-binomial upper bounds with Bonferroni family-wise alpha 0.05/6. This is descriptive/secondary and is not a v2 promotion gate.",
+    "interpretive_flag": "Flag any probe with point false-alarm fraction >0.01 as a compound-nuisance failure. The flag constrains claims but does not retroactively change the frozen primary v2 pass/fail decision."
+  },
+  "claim_rules": {
+    "if_any_probe_fails": "A primary v2 success may still be reported exactly as an atomic-envelope synthetic qualification, but the manuscript must state that robustness did not extend to all prespecified compound nuisances tested here and must name the failed probes.",
+    "if_all_probes_pass": "The study may additionally report control on these six prespecified compound-nuisance probes. It may not claim robustness to arbitrary nuisance combinations, target-survey systematics, or real-sky completeness.",
+    "negative_results": "Every extension result is retained and reported; no failing probe may be removed, reparameterized, or rerun with a changed threshold."
+  },
+  "non_modification_statement": "This extension changes no v2 candidate, seed, cadence, reported-error vector, atomic null regime, signal design, calibration rule, threshold, primary endpoint, promotion gate, or original generalization probe. It is a separately identified secondary post-lock stress study frozen before any v2 performance outcome is observed."
+}

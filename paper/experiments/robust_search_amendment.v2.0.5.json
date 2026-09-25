@@ -1,0 +1,108 @@
+{
+  "schema": "siderea.robust_search_protocol_amendment.v2.0.5",
+  "base_protocol": "robust_search_protocol.v2.json",
+  "base_protocol_git_blob_sha1": "9ab09a2ad2702649fe31ab19eb8b73d45fc7d60b",
+  "previous_amendment": "robust_search_amendment.v2.0.4.json",
+  "previous_amendment_git_blob_sha1": "139c6832004bd5a945c9a96c5c30e4b006154880",
+  "status": "frozen_before_any_v2_candidate_development_evaluation",
+  "observed_before_amendment": {
+    "v2_candidate_development_statistics": false,
+    "v2_calibration_statistics": false,
+    "v2_locked_evaluation_statistics": false,
+    "v2_generalization_probe_statistics": false,
+    "allowed_prior_information": "Only preserved v1 results, the frozen v2 protocol/amendment/input chain, source inspection, deterministic trial-accounting calculations, non-performance integrity tests, and CI status."
+  },
+  "reason": [
+    "V2.0.4 freezes the fields of a semantic trial key but not the exact phase and role vocabulary. Two runners could therefore use different strings for the same scientific allocation and receive different streams while both claiming semantic RNG compliance.",
+    "V2.0.2 assigns locked-signal widths from a global index within each family x amplitude x noise cell, while v2.0.4 requires trial_index to be zero-based within the exact final semantic cell. The global width-assignment index and the local RNG trial_index must therefore be separated explicitly before any outcome exists.",
+    "A deterministic trial-plan count is needed to catch omitted allocations before execution. The complete frozen design contains 415375 stochastic data-generation identities, including the 12000 development-signal trials that are easy to omit when accounting only from base-protocol top-level null and locked counts."
+  ],
+  "changes": {
+    "phase_vocabulary": {
+      "development": {
+        "phase": "development",
+        "phase_seed_field": "development_seed"
+      },
+      "calibration": {
+        "phase": "calibration",
+        "phase_seed_field": "calibration_seed"
+      },
+      "locked_evaluation": {
+        "phase": "locked_evaluation",
+        "phase_seed_field": "locked_evaluation_seed"
+      }
+    },
+    "role_vocabulary_and_counts": [
+      {
+        "role": "development_threshold_null",
+        "phase": "development",
+        "count": 14000
+      },
+      {
+        "role": "development_feasibility_null",
+        "phase": "development",
+        "count": 14000
+      },
+      {
+        "role": "development_signal",
+        "phase": "development",
+        "count": 12000
+      },
+      {
+        "role": "calibration_null",
+        "phase": "calibration",
+        "count": 140000
+      },
+      {
+        "role": "v1_raw_bank_comparator_calibration",
+        "phase": "calibration",
+        "count": 102375
+      },
+      {
+        "role": "locked_null",
+        "phase": "locked_evaluation",
+        "count": 70000
+      },
+      {
+        "role": "locked_signal",
+        "phase": "locked_evaluation",
+        "count": 48000
+      },
+      {
+        "role": "generalization_probe",
+        "phase": "locked_evaluation",
+        "count": 15000
+      }
+    ],
+    "total_stochastic_data_generation_identities": 415375,
+    "semantic_field_rules": {
+      "candidate_id": "JSON null for every currently prespecified data-generation trial. Methods compared on paired curves must consume the same generated curve; role already separates the v1 comparator-calibration stream, so method identity does not enter any v2 data-generation RNG key.",
+      "development_and_calibration_nulls": "Set cadence_id and null_regime; signal_family, signal_width_days, amplitude_sigma, noise_regime, and probe_id are null. trial_index is local to the exact cadence x null-regime cell within the role.",
+      "development_signal": "Set cadence_id, signal_family, signal_width_days, amplitude_sigma=4.0, and noise_regime; null_regime and probe_id are null. There are exactly 10 trials per final cadence x family x width x noise cell, indexed 0..9.",
+      "v1_raw_bank_comparator_calibration": "Set cadence_id and null_regime=iid_gaussian; all signal fields, probe_id, and candidate_id are null. There are exactly 4095 trials per cadence, indexed 0..4094.",
+      "locked_null": "Set cadence_id and null_regime; signal fields and probe_id are null. trial_index is local to the exact cadence x null-regime cell.",
+      "generalization_probe": "Set cadence_id and probe_id to the exact base-protocol generalization-probe identifier; null_regime, signal fields, noise_regime, and candidate_id are null. Use the 20 canonical irregular cadences with exactly 250 trials per cadence per probe, indexed 0..249."
+    },
+    "locked_signal_global_width_to_local_trial_index": {
+      "unchanged_global_width_assignment": "For each family x amplitude x signal-noise cell in base-protocol order, enumerate cadence_index=0..24 and within_cadence_index=0..39, compute global_trial_index=40*cadence_index+within_cadence_index, cell_index=((family_index*3+amplitude_index)*4+noise_index), and width_index=(global_trial_index+cell_index) mod 3 over widths [1.0,3.0,10.0].",
+      "local_rng_index_rule": "After width is assigned, group trials by the final semantic cell cadence_id x signal_family x signal_width_days x amplitude_sigma x noise_regime. Within each such final cell, preserve increasing within_cadence_index order and relabel those rows trial_index=0..cell_count-1. global_trial_index and within_cadence_index are allocation bookkeeping only and are not RNG-key fields.",
+      "invariance": "This preserves the exact v2.0.2 1000-trial allocation and 334/333/333 global width balance in every family x amplitude x noise cell while satisfying v2.0.4's requirement that trial_index be local to the final semantic cell. No signal draw, count, width weight, cadence weight, or seed value is changed."
+    },
+    "trial_plan_lock": {
+      "canonical_rows": "Enumerate canonical_trial_key JSON strings only; do not generate noise, signals, search statistics, thresholds, or outcomes while materializing the plan.",
+      "duplicate_rule": "All 415375 canonical keys must be unique. Duplicate keys are a hard predevelopment failure.",
+      "digest_rule": "Sort canonical key JSON strings lexicographically, concatenate each UTF-8 key followed by one newline byte, and SHA-256 the resulting bytes.",
+      "reordering_test": "Any forward/reverse or otherwise reordered enumeration of the same scientific allocation must produce the identical sorted-key digest and role counts."
+    }
+  },
+  "unchanged": [
+    "all base-protocol and v2.0.1-v2.0.4 numeric scientific design values",
+    "all cadence and reported-error inputs",
+    "all phase seed numeric values",
+    "all null, signal, comparator-calibration, and generalization sample sizes",
+    "all noise and signal-generation semantics",
+    "candidate set, selection rule, calibration rule, comparators, bootstrap, endpoints, and promotion gates",
+    "finite synthetic claim boundary and negative-result preservation requirement"
+  ],
+  "execution_rule": "Before any stochastic v2 data-generation outcome is produced, a runner must verify the exact bytes of the base protocol and amendments v2.0.1 through v2.0.5, materialize the complete semantic trial plan, verify all role counts and total count 415375, reject duplicate keys, and record the sorted-key SHA-256."
+}

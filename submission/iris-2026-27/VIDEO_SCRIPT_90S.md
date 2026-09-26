@@ -1,37 +1,34 @@
 # IRIS 2026–27 — 90-Second Video Script Draft
 
-**Status:** evidence-bound draft.  
-**Intro line requires the final IRIS entrant(s) and grade(s).**  
-**Do not state school name, city, or state unless the current 2026–27 portal explicitly requires it.**
+**Status:** revised review script, not a recorded or approved video.  
+**Introduction:** add the confirmed entrant name or names and grades only after contribution and eligibility review.  
+**Privacy:** omit school, city and state identifiers from this review copy.
 
-## Script
+## Spoken script
 
-Hi, I’m **[student researcher name]**, in Grade **[grade]**.
+In astronomy, an alert ranked highly by software is not automatically a new discovery. SIDEREA asks how a search can remain honest when the evidence is incomplete.
 
-Astronomy surveys can generate huge numbers of alerts, but a computer ranking an alert highly does not prove that the object is new, real, or ready to report. My project asks a different question: how can we make transient-search software fail safely when evidence is incomplete?
+The workflow separates ranking from reportability. Each candidate version is tied to its external checks and human review. A failed, stale, or missing required check remains unknown; it does not become permission to report.
 
-I built and audited SIDEREA, a human-supervised workflow that separates ranking from reportability. Every candidate version is tied to the evidence checked for it. If a required registry or catalog query fails, is stale, or is malformed, the system records that evidence as unknown and blocks report preparation instead of treating the missing result as a clear.
+The retained historical table contains 24 productive run entries. One is a documented repeat. Excluding it leaves 23 entries, whose row totals can be reproduced. A separate summary reports 3,824 distinct objects, but that object count has not been independently reconstructed.
 
-The design came from auditing a historical campaign containing 24 productive runs and 3,824 distinct broker objects. The audit found existing registered transients and known or suspected variables at downstream stages, and it also exposed configuration changes and missing historical evidence that prevent us from claiming completeness or classifier accuracy.
+Registry checks and catalog checks have different denominators. They cannot be combined into an accuracy score. Historical policy and input changes also prevent a causal claim of improvement.
 
-I then tested the current software invariants through deterministic replay and controlled synthetic experiments. Importantly, the synthetic search also showed severe false alarms when the noise model was wrong.
+Dated software tests support the implementation. Separate synthetic studies show both conditional recovery and severe false alarms when noise assumptions are wrong.
 
-So the result is not “AI discovers every transient.” The result is a reproducible framework for keeping ranking, evidence, human review, and scientific claims separate—and a clear protocol for what must be validated next on prospective sky data.
+The contribution is an auditable, human-supervised workflow, not a claim of complete sky coverage or proven classifier superiority.
 
-## Visual sequence
+## Recording and visual notes
 
-- 0–10 s: one-sentence problem + alert-stream graphic.
-- 10–32 s: SIDEREA evidence flow: rank → external checks → human review → reportability.
-- 32–52 s: historical audit counts, clearly labeled as stage-specific.
-- 52–70 s: deterministic/software verification + synthetic recovery and adverse false-alarm result.
-- 70–90 s: supported conclusion + explicit limitation/future cohort.
+Record the final named introduction plus this script, then measure the actual duration. Word count is a pacing aid, not proof of compliance with a 90-second limit. Do not claim sole authorship of the historical campaign or another contributor's work.
 
-## On-screen claim guardrails
+| Segment | Suggested visual | Evidence boundary |
+|---|---|---|
+| Problem | A clearly labeled conceptual alert-to-review sequence | Illustration, not measured performance |
+| Workflow | Existing candidate/evidence/review schematic | Describe implementation rather than astronomical completeness |
+| Historical audit | 24 table entries → exclude one stated repeat → 23 entries | Label as retained historical run entries, not unique objects |
+| Denominators | Registry: 30/200; catalog: 55/193, displayed separately | No funnel conversion, shared accuracy score or implied causal effect |
+| Results | Dated software verification alongside the adverse synthetic-noise conclusion | Software and synthetic evidence remain separate |
+| Conclusion | Supported contribution and missing prospective validation | No discovery-rate, physical-classification or superiority claim |
 
-Do not show:
-- “accuracy,” “precision,” “recall,” “purity,” or “completeness” for real-sky performance;
-- “AI discovery rate”;
-- venue/competition acceptance not yet received;
-- any locked held-out result.
-
-If a figure is shown, its final video caption must include the exact source artifact listed in the claim ledger.
+Exact artifact paths and remaining limitations are recorded in `DOCUMENT_EVIDENCE_MANIFEST.json` and `ABSTRACT_AND_SYNOPSIS_DRAFT.md`. Any numerical scientific figure added later still needs its own source-artifact and caption review. No new visual, video or experiment is claimed as completed here.

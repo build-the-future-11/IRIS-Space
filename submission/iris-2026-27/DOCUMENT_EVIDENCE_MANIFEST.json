@@ -8,8 +8,8 @@
   "submission_authorized": false,
   "unresolved_gates": [
     "B01/B02: primary historical-count and stage-denominator reconciliation remain open.",
-    "B04/B05: primary registry verification, candidate attribution, and historical case evidence remain open.",
-    "B06/D01: bind every used number and figure to retained primary artifacts, exact paths, transforms, and digests; these four documents are not the full experiment bundle.",
+    "B04/B05: one retained structured extraction for AT 2026rsp is bound; both-designation verification, raw primary response bytes, and remaining case evidence are not established.",
+    "B06/D01: six retained files and historical point estimates are bound; synthetic trial/figure provenance and a complete experiment bundle remain separate. Bootstrap intervals are retained, not rerun.",
     "Issue #26: eligibility, individual/team contribution ownership, author/independent review, final paper/video, and portal approval/receipt remain unverified.",
     "No new outcome-bearing run, held-out access, tuning, submission, or publication is authorized."
   ],
@@ -33,6 +33,16 @@
       "id": "software_snapshot",
       "path": "paper/research/software-verification-2026-09-13.json",
       "git_blob_sha": "d8885d966d48c57b87f879bb15ea03246cf7568c"
+    },
+    {
+      "id": "derived_metrics",
+      "path": "paper/figures/derived_run_metrics.json",
+      "git_blob_sha": "38dfaff8b5b6e5117c804a161410e8df3fb2c760"
+    },
+    {
+      "id": "registry_capture",
+      "path": "paper/research/primary-registry/AT2026rsp.public-record.json",
+      "git_blob_sha": "af4d9249464c0e46104b66dc7a9ef8baaa8523bd"
     }
   ],
   "claims": [
@@ -42,10 +52,11 @@
       "ledger_status": "SUPPORTED, reconciliation still required by paper checklist B01",
       "document_refs": [
         "ledger",
-        "operations"
+        "operations",
+        "derived_metrics"
       ],
       "independently_approved": false,
-      "remaining_evidence_boundary": "B01 remains open: the operations table documents 24 productive run records; this check does not reconstruct the underlying campaign archive."
+      "remaining_evidence_boundary": "The retained table and derived metrics agree on 24 productive rows and 23 pulls after the declared duplicate exclusion. B01 remains partial: no reconstruction of the primary cached object inventory or claim of object independence."
     },
     {
       "id": "C02",
@@ -85,10 +96,11 @@
       "claim": "Early-veto fraction 54.5% → 2.68% and shortlist fraction 0.51% → 13.9% around policy discontinuity",
       "ledger_status": "SUPPORTED DESCRIPTIVELY",
       "document_refs": [
-        "ledger"
+        "ledger",
+        "derived_metrics"
       ],
       "independently_approved": false,
-      "remaining_evidence_boundary": "Only the submission ledger is bound for these four percentages. Bind the exact retained figure/bootstrap artifact before final export; no causal interpretation."
+      "remaining_evidence_boundary": "Exact retained derived metrics are now bound. Deterministic arithmetic is checked against the operations table with the existing exclusions and regime cutoffs; it is an observational contrast, not a causal effect or independent-object estimate."
     },
     {
       "id": "C06",
@@ -96,10 +108,11 @@
       "ledger_status": "SUPPORTED subject to artifact digest completion",
       "document_refs": [
         "ledger",
-        "historical_audit"
+        "historical_audit",
+        "derived_metrics"
       ],
       "independently_approved": false,
-      "remaining_evidence_boundary": "The historical audit documents this interval. Bind the underlying retained bootstrap output and transformation before final export; do not rerun the bootstrap in this check."
+      "remaining_evidence_boundary": "The exact derived_run_metrics.json containing the unrounded estimate and interval is bound. This pass recomputes only the deterministic point estimate; it does not rerun the 50,000-draw bootstrap or claim newly reproduced intervals."
     },
     {
       "id": "C07",
@@ -107,10 +120,11 @@
       "ledger_status": "SUPPORTED subject to artifact digest completion",
       "document_refs": [
         "ledger",
-        "historical_audit"
+        "historical_audit",
+        "derived_metrics"
       ],
       "independently_approved": false,
-      "remaining_evidence_boundary": "The historical audit documents this interval. Bind the underlying retained bootstrap output and transformation before final export; do not rerun the bootstrap in this check."
+      "remaining_evidence_boundary": "The exact derived_run_metrics.json containing the unrounded estimate and interval is bound. This pass recomputes only the deterministic point estimate; it does not rerun the 50,000-draw bootstrap or claim newly reproduced intervals."
     },
     {
       "id": "C08",
@@ -204,10 +218,11 @@
       "ledger_status": "OPEN",
       "document_refs": [
         "ledger",
-        "operations"
+        "operations",
+        "registry_capture"
       ],
       "independently_approved": false,
-      "remaining_evidence_boundary": "B04 remains open. The historical headline lists two designations, while the defensible-claims section narrows to one detailed surviving summary and still requires primary-registry verification."
+      "remaining_evidence_boundary": "B04 remains open for the claim about both designations. The retained 2026-09-13 search-index extraction records AT 2026rsp, object 212592, AT report 312644, and reporter Aadi Ajeesh Nair. It is not raw registry response bytes or fresh 2026-09-26 verification; AT 2026pcz remains summary-attributed."
     }
   ]
 }

@@ -11,12 +11,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-CHECKER = (
-    Path(__file__).resolve().parents[1]
-    / "submission"
-    / "iris-2026-27"
-    / "verify_evidence.py"
-)
+CHECKER = Path(__file__).resolve().parents[1] / "submission" / "iris-2026-27" / "verify_evidence.py"
 API = runpy.run_path(str(CHECKER))
 
 
@@ -86,9 +81,7 @@ class SubmissionEvidenceTests(unittest.TestCase):
         self.assertFalse(report["submission_authorized"])
 
     def test_git_blob_hash_includes_header(self) -> None:
-        self.assertEqual(
-            API["git_blob_sha"](b""), "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
-        )
+        self.assertEqual(API["git_blob_sha"](b""), "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391")
 
     def test_tampered_source_fails(self) -> None:
         self.ledger.write_bytes(self.ledger.read_bytes() + b"changed\n")

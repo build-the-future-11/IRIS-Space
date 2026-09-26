@@ -1,0 +1,213 @@
+{
+  "schema": "siderea.iris_document_binding.v1",
+  "repository": "build-the-future-11/IRIS-Space",
+  "source_snapshot_revision": "ec7a1903dcaf3c68c27f3dc8caa90f10cefa6d4f",
+  "observed_on": "2026-09-26",
+  "scope": "retained_documentation_only",
+  "scientific_execution_authorized": false,
+  "submission_authorized": false,
+  "unresolved_gates": [
+    "B01/B02: primary historical-count and stage-denominator reconciliation remain open.",
+    "B04/B05: primary registry verification, candidate attribution, and historical case evidence remain open.",
+    "B06/D01: bind every used number and figure to retained primary artifacts, exact paths, transforms, and digests; these four documents are not the full experiment bundle.",
+    "Issue #26: eligibility, individual/team contribution ownership, author/independent review, final paper/video, and portal approval/receipt remain unverified.",
+    "No new outcome-bearing run, held-out access, tuning, submission, or publication is authorized."
+  ],
+  "artifacts": [
+    {
+      "id": "ledger",
+      "path": "submission/iris-2026-27/CLAIM_LEDGER.md",
+      "git_blob_sha": "5d5d5f3e98cbf4c0a68dfc8b3a95b66e30cbd619"
+    },
+    {
+      "id": "operations",
+      "path": "PIPELINE_OPERATIONS_RECORD.md",
+      "git_blob_sha": "17d5577e49ed9791c7972da332a190d11e2bf14d"
+    },
+    {
+      "id": "historical_audit",
+      "path": "paper/AUDIT.md",
+      "git_blob_sha": "57ead27c1522d0f53716200ccc203e01e9eecf82"
+    },
+    {
+      "id": "software_snapshot",
+      "path": "paper/research/software-verification-2026-09-13.json",
+      "git_blob_sha": "d8885d966d48c57b87f879bb15ea03246cf7568c"
+    }
+  ],
+  "claims": [
+    {
+      "id": "C01",
+      "claim": "24 productive historical campaign runs",
+      "ledger_status": "SUPPORTED, reconciliation still required by paper checklist B01",
+      "document_refs": [
+        "ledger",
+        "operations"
+      ],
+      "independently_approved": false,
+      "remaining_evidence_boundary": "B01 remains open: the operations table documents 24 productive run records; this check does not reconstruct the underlying campaign archive."
+    },
+    {
+      "id": "C02",
+      "claim": "3,824 distinct broker objects",
+      "ledger_status": "SUPPORTED in manuscript; B01 final reconciliation open",
+      "document_refs": [
+        "ledger",
+        "operations"
+      ],
+      "independently_approved": false,
+      "remaining_evidence_boundary": "B01 remains open: 3,824 is attributed to the surviving summary, not independently reconstructed from cached object identities."
+    },
+    {
+      "id": "C03",
+      "claim": "30 existing TNS objects among 200 recorded registry checks",
+      "ledger_status": "SUPPORTED AS STAGE-SPECIFIC ONLY",
+      "document_refs": [
+        "ledger",
+        "operations"
+      ],
+      "independently_approved": false,
+      "remaining_evidence_boundary": "B02 remains open: preserve 200 registry-stage evaluations; do not interpret as an end-to-end denominator or purity."
+    },
+    {
+      "id": "C04",
+      "claim": "55 known/suspected variables among 193 catalog evaluations",
+      "ledger_status": "SUPPORTED AS STAGE-SPECIFIC ONLY",
+      "document_refs": [
+        "ledger",
+        "operations"
+      ],
+      "independently_approved": false,
+      "remaining_evidence_boundary": "B02 remains open: preserve 193 catalog-stage evaluations; do not combine with the TNS denominator."
+    },
+    {
+      "id": "C05",
+      "claim": "Early-veto fraction 54.5% → 2.68% and shortlist fraction 0.51% → 13.9% around policy discontinuity",
+      "ledger_status": "SUPPORTED DESCRIPTIVELY",
+      "document_refs": [
+        "ledger"
+      ],
+      "independently_approved": false,
+      "remaining_evidence_boundary": "Only the submission ledger is bound for these four percentages. Bind the exact retained figure/bootstrap artifact before final export; no causal interpretation."
+    },
+    {
+      "id": "C06",
+      "claim": "Run-cluster bootstrap change in early-veto fraction −0.518, 95% interval [−0.812, −0.282]",
+      "ledger_status": "SUPPORTED subject to artifact digest completion",
+      "document_refs": [
+        "ledger",
+        "historical_audit"
+      ],
+      "independently_approved": false,
+      "remaining_evidence_boundary": "The historical audit documents this interval. Bind the underlying retained bootstrap output and transformation before final export; do not rerun the bootstrap in this check."
+    },
+    {
+      "id": "C07",
+      "claim": "Run-cluster bootstrap change in shortlist fraction +0.134, 95% interval [0.098, 0.171]",
+      "ledger_status": "SUPPORTED subject to artifact digest completion",
+      "document_refs": [
+        "ledger",
+        "historical_audit"
+      ],
+      "independently_approved": false,
+      "remaining_evidence_boundary": "The historical audit documents this interval. Bind the underlying retained bootstrap output and transformation before final export; do not rerun the bootstrap in this check."
+    },
+    {
+      "id": "C08",
+      "claim": "Current candidate/evidence pipeline fails closed when required evidence is missing",
+      "ledger_status": "SOFTWARE-SUPPORTED",
+      "document_refs": [
+        "ledger",
+        "historical_audit"
+      ],
+      "independently_approved": false,
+      "remaining_evidence_boundary": "The bound audit is historical. Current-source behavior requires its own exact-revision test evidence; no completeness or real-sky safety guarantee."
+    },
+    {
+      "id": "C09",
+      "claim": "Clean snapshot: 499 tests + 103 parameterized subtests",
+      "ledger_status": "SUPPORTED FOR FROZEN SNAPSHOT",
+      "document_refs": [
+        "ledger",
+        "software_snapshot"
+      ],
+      "independently_approved": false,
+      "remaining_evidence_boundary": "This record describes 2026-09-13 at 4e084a795be316ca991b213e2f8309b6143e7f9f: 499 tests, 103 subtests. It is not fresh test evidence for ec7a1903 or this PR."
+    },
+    {
+      "id": "C10",
+      "claim": "Deterministic replay reproduced archived numerical artifacts",
+      "ledger_status": "SUPPORTED",
+      "document_refs": [
+        "ledger",
+        "historical_audit",
+        "software_snapshot"
+      ],
+      "independently_approved": false,
+      "remaining_evidence_boundary": "Retained verification records describe prior replay/reconstruction. No replay or experiment was executed by this checker; raw-output lineage is still separate."
+    },
+    {
+      "id": "C11",
+      "claim": "Synthetic template search can recover injected signals under controlled conditions",
+      "ledger_status": "SUPPORTED CONDITIONALLY",
+      "document_refs": [
+        "ledger"
+      ],
+      "independently_approved": false,
+      "remaining_evidence_boundary": "The archived synthetic experiment files were not opened or executed in this pass. Bind exact already-authorized archived reports/trials/figure files before quantitative use."
+    },
+    {
+      "id": "C12",
+      "claim": "Synthetic search shows severe false-alarm inflation under misspecified noise",
+      "ledger_status": "SUPPORTED AND REQUIRED",
+      "document_refs": [
+        "ledger",
+        "historical_audit"
+      ],
+      "independently_approved": false,
+      "remaining_evidence_boundary": "The historical audit preserves adverse noise/outlier results. Bind exact retained trial/summary artifacts before quantitative use; retain the adverse result in summaries."
+    },
+    {
+      "id": "C13",
+      "claim": "SIDEREA real-sky completeness / precision / recall",
+      "ledger_status": "UNSUPPORTED",
+      "document_refs": [
+        "ledger"
+      ],
+      "independently_approved": false,
+      "remaining_evidence_boundary": "PROHIBITED: no representative, prospectively frozen real-sky evidence is supplied by this document audit."
+    },
+    {
+      "id": "C14",
+      "claim": "Learned model outperforms existing brokers / baselines on representative sky data",
+      "ledger_status": "UNSUPPORTED",
+      "document_refs": [
+        "ledger"
+      ],
+      "independently_approved": false,
+      "remaining_evidence_boundary": "PROHIBITED: no comparative real-sky ML superiority is supplied by this document audit."
+    },
+    {
+      "id": "C15",
+      "claim": "TNS designation implies spectroscopic/physical class",
+      "ledger_status": "FALSE BOUNDARY",
+      "document_refs": [
+        "ledger",
+        "operations"
+      ],
+      "independently_approved": false,
+      "remaining_evidence_boundary": "PROHIBITED: registry designation is not spectroscopic classification or a verified physical type."
+    },
+    {
+      "id": "C16",
+      "claim": "Both historical claimed TNS designations are independently verified end-to-end",
+      "ledger_status": "OPEN",
+      "document_refs": [
+        "ledger",
+        "operations"
+      ],
+      "independently_approved": false,
+      "remaining_evidence_boundary": "B04 remains open. The historical headline lists two designations, while the defensible-claims section narrows to one detailed surviving summary and still requires primary-registry verification."
+    }
+  ]
+}

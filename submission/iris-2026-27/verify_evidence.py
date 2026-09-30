@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import re
 import sys
 from pathlib import Path, PurePosixPath
@@ -35,6 +36,14 @@ def reject_constant(value: str) -> None:
     raise ValueError(f"Non-finite JSON constant: {value}")
 
 
+def finite_float(value: str) -> float:
+    """Reject exponent overflow as well as explicit NaN/Infinity tokens."""
+    result = float(value)
+    if not math.isfinite(result):
+        raise ValueError(f"Non-finite JSON number: {value}")
+    return result
+
+
 def read_json(path: Path) -> dict[str, Any]:
     if path.stat().st_size > MAX_BYTES:
         raise ValueError("Manifest exceeds size limit")
@@ -42,6 +51,7 @@ def read_json(path: Path) -> dict[str, Any]:
         path.read_text(encoding="utf-8"),
         object_pairs_hook=unique_object,
         parse_constant=reject_constant,
+        parse_float=finite_float,
     )
     if not isinstance(value, dict):
         raise ValueError("Manifest must be a JSON object")
@@ -95,8 +105,10 @@ def audit(root: Path, manifest: dict[str, Any]) -> dict[str, Any]:
         if manifest.get(guard) is not False:
             errors.append(f"{guard} must be literal false")
     blockers = manifest.get("unresolved_gates")
-    if not isinstance(blockers, list) or not blockers or any(
-        not isinstance(item, str) or not item.strip() for item in blockers
+    if (
+        not isinstance(blockers, list)
+        or not blockers
+        or any(not isinstance(item, str) or not item.strip() for item in blockers)
     ):
         errors.append("Nonempty unresolved human/evidence gates are required")
     artifacts = manifest.get("artifacts")
@@ -161,8 +173,10 @@ def audit(root: Path, manifest: dict[str, Any]) -> dict[str, Any]:
         else:
             mapped_rows.append((text, status))
         refs = claim.get("document_refs")
-        if not isinstance(refs, list) or not refs or any(
-            not isinstance(ref, str) or ref not in verified for ref in refs
+        if (
+            not isinstance(refs, list)
+            or not refs
+            or any(not isinstance(ref, str) or ref not in verified for ref in refs)
         ):
             errors.append(f"Unverified document reference: {cid}")
         if claim.get("independently_approved") is not False:

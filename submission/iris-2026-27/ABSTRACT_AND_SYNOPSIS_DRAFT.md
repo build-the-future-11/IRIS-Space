@@ -2,66 +2,73 @@
 
 **Project title:** SIDEREA: Evidence-Bound and Human-Supervised Triage of Optical Transient Alerts  
 **Working category:** Physics & Astronomy  
-**Entry type:** TBD pending authorship/team eligibility check.
+**Entry type:** Unconfirmed; resolve individual/team eligibility and contribution ownership before submission.  
+**Status:** Revised source for author and scientific review, not an approved submission.
 
-> Do not add school name, city, or state to the final project materials unless the current 2026–27 portal explicitly requires it.
+Keep school, city and state identifiers out of the review copy. Confirm the live portal's requirements before final export. The abstract below is deliberately within the overlapping 200–250-word range of the differing requirements recorded in issue #26; this is not fresh rule verification.
 
-## Project Abstract (200–500 words)
+## Project Abstract
 
-Modern sky surveys generate far more transient alerts than a person can inspect manually, but a high ranking score is not the same thing as evidence that an event is new, real, or scientifically reportable. This project develops SIDEREA, a human-supervised workflow for optical-transient triage that separates candidate ranking from evidence checks and reportability. Each candidate version is bound to the external evidence inspected, the software/policy revision used, and the human decision made from that evidence. Missing, failed, stale, or malformed checks are treated as unknown rather than as a false “clear,” so incomplete evidence cannot silently authorize a report.
+A high ranking score does not establish that an astronomical alert is new, physically understood, or ready to report. SIDEREA is a human-supervised optical-transient triage workflow that separates ranking from evidence completion and reportability. It binds candidate versions to external checks and review decisions. A missing, failed, stale, or malformed required check remains unknown rather than silently becoming a clear result.
 
-The design was motivated by an audit of a historical transient-search campaign. Surviving records contain 24 productive runs and 3,824 distinct broker objects. Among recorded downstream stages, 30 of 200 registry checks identified an existing Transient Name Server object, while 55 of 193 catalog evaluations identified a known or suspected variable. These are stage-specific operational counts, not estimates of population purity or completeness. A major policy change during the campaign was also preserved rather than hidden: the early-veto fraction decreased and the shortlist fraction increased, but policy, time, and input population changed together, so the difference is not interpreted causally.
+The methods study combines a historical campaign audit, software verification, and separate synthetic experiments. The retained operations table contains 24 productive run entries, including one explicitly documented repeat. Excluding that repeat gives 23 pull entries, totaling 424,223 detection rows and 223,938 clean rows. These are table-derived counts, not independent objects. The historical summary reports 3,824 distinct broker objects; that count has not been independently reconstructed from the original cached identities. Downstream summaries record 30 existing registry objects among 200 checks and 55 known or suspected variables among 193 catalog evaluations. Their different denominators cannot establish end-to-end accuracy.
 
-SIDEREA adds immutable candidate identities, evidence binding, fail-closed external checks, version-bound human review, deterministic review queues, and non-authoritative shadow learning. Software tests and deterministic replay verify these implementation invariants. Separate synthetic template-search experiments show both conditional recovery of injected signals and severe false-alarm inflation when the noise model is misspecified, demonstrating why apparent detections require careful uncertainty modeling.
+Retained software tests and deterministic replay support the implementation's evidence-handling invariants. Separate archived synthetic studies report conditional signal recovery alongside severe false-alarm inflation under misspecified noise. Those failures remain part of the result.
 
-The completed evidence supports a methods and scientific-audit contribution. It does not establish real-sky completeness, classifier accuracy, or superiority over existing transient brokers. A future time-forward cohort with complete outcomes and independent labels is required for those stronger claims.
+The contribution is an auditable workflow and a diagnosis of the evidence needed for defensible transient reporting. It does not demonstrate real-sky completeness, classifier superiority, or physical discovery. Stronger claims require a prospectively frozen, time-forward cohort with complete selection records and independent outcomes.
 
 ## Introduction and Objective
 
-Wide-field surveys such as the Zwicky Transient Facility produce streams of alerts for changing astronomical sources. Brokers can rank and classify these alerts, but downstream reporting still requires independent checks: an apparent candidate may already be registered, match a known variable or moving object, arise from a subtraction artifact, or remain uncertain because an external service failed.
+Optical-transient searches must distinguish an interesting alert from an adequately checked candidate. An object may already be registered, resemble a known variable, require moving-object checks, or remain unresolved because an external service failed. A ranking score alone does not answer those questions.
 
-The objective of this work is to design and audit a triage workflow in which a candidate can advance only when the evidence required for that exact candidate version is valid and current. The project asks a methodological question: **how can transient-search software allocate limited human attention without allowing ranking scores, missing data, or stale external checks to become unsupported scientific claims?**
+SIDEREA addresses the transition from automated prioritization to human-supervised reporting. The objective is to preserve which observations, external evidence, policy version, and review decision support each candidate version. Required evidence must remain current and attributable before that version can advance.
+
+The study asks: how can transient-search software allocate limited reviewer attention without turning missing checks, stale approvals, or changes in selection policy into unsupported scientific claims? It evaluates that question through retained historical records, implementation tests, and explicitly separate synthetic studies.
 
 ## Innovation
 
-SIDEREA separates five concepts that are often collapsed in automated pipelines: ranking, evidence completion, reportability, registry status, and physical classification. Its central safety rule is fail-closed: a failed or missing required check remains unknown and blocks report preparation rather than being interpreted as “no match.”
-
-The workflow also binds external evidence and human review to immutable candidate versions, so a later data or policy change cannot silently inherit an earlier approval. Learned representations are permitted only for review-queue ordering in shadow mode; they are not allowed to override the reportability predicate.
+The design contribution is the explicit separation of ranking, evidence completion, reportability, registry designation, and physical classification. Content-bound candidate versions prevent an earlier review from silently approving later, changed evidence. Required checks fail closed: an unknown result blocks clearance rather than being interpreted as a negative match. Learned representations remain non-authoritative shadow components; they cannot override reporting requirements. This is a workflow and auditability contribution, not a claim of a new validated astrophysical classifier or superiority over established brokers.
 
 ## Methodology
 
-The historical campaign used ZTF alerts accessed through the ALeRCE broker. The audit distinguishes detections, broker objects, unique objects, repeated candidate evaluations, prepared packets, registry designations, and physical classifications.
+The historical campaign used ZTF observations accessed through the ALeRCE broker. Its audit distinguishes detection rows, broker objects, repeated run entries, downstream evaluations, report packets, and registry records. The productive-run table is reconciled using its existing duplicate marker. The pre/post comparison retains the established regime cutoffs and excludes entries missing either downstream stage count; fractions are ratios of summed counts, not averages of per-run percentages.
 
-The current SIDEREA implementation standardizes observations, versions candidates with content hashes, records policy and execution provenance, binds external queries to position/epoch/radius and freshness, and requires completion of TNS, SkyBoT, SIMBAD, and VSX checks before automated clearance. Human image and wording review remains separate from automated ranking.
+The SIDEREA implementation standardizes observations, versions candidates, records policy and execution provenance, and binds external checks to the evidence requested. TNS, SkyBoT, SIMBAD, and VSX checks remain distinct from human image and wording review. Missing or stale required evidence cannot provide automated clearance.
 
-Three evidence classes are intentionally kept distinct:
-
-1. **Historical campaign evidence:** surviving run-level records and stage-specific downstream counts.
-2. **Software verification:** tests, deterministic replay, state-machine checks, and fail-closed behavior.
-3. **Synthetic scientific experiments:** controlled template-search studies under known and misspecified noise.
-
-No prospective real-sky cohort is opened by this submission package.
+Evidence is assessed in three separate classes: historical operational summaries, dated software tests and deterministic replay, and archived synthetic template-search experiments. The current reconciliation recomputes deterministic table quantities only. It does not rerun bootstrap simulations, retrain models, open held-out evaluations, or generate new scientific outcomes. A dated registry extraction is treated as retained documentation, not as a freshly verified registry response.
 
 ## Results and Conclusions
 
-The surviving campaign record contains 24 productive runs covering 3,824 distinct broker objects. In the recorded downstream checks, 30 of 200 registry evaluations matched an existing TNS object and 55 of 193 catalog evaluations matched a known or suspected variable. These denominators belong to different stages and cannot be combined into an end-to-end accuracy estimate.
+The 24-entry productive-run table reduces to 23 pull entries after excluding its documented repeat, yielding 424,223 detection rows and 223,938 clean rows. Fifteen deterministic quantities agree with the archived derived metrics. The separately reported 3,824-object total remains summary-attributed. The 30/200 registry and 55/193 catalog counts refer to different downstream stages, not a shared accuracy denominator.
 
-The clean software snapshot reported 499 tests plus 103 parameterized subtests and deterministic reconstruction of archived numerical studies. Synthetic experiments showed that the search could recover signals under some controlled conditions, but also produced severe false-alarm inflation when the assumed noise model was wrong. This adverse result is part of the conclusion, not an excluded failure.
+A clean software verification dated 13 September 2026 records 499 tests and 103 parameterized subtests at its frozen revision. This is historical implementation evidence, not a current test count or astronomical-performance estimate. Archived synthetic studies retain adverse false-alarm behavior under noise misspecification.
 
-The main conclusion is therefore methodological: reliable transient triage requires explicit evidence states and provenance, not merely a higher ranking score. The present evidence supports the SIDEREA workflow and its auditability, but not real-sky completeness, purity, or classifier-superiority claims.
+The evidence supports auditable, human-supervised triage and identifies limits of the available records. It does not establish representative-sky completeness, physical classifications, or learned-model superiority.
 
 ## Limitations
 
-The repository does not contain a complete row-level reconstruction of the historical campaign. Original campaign photometry, some selection rows, and submission response bytes were intentionally not retained. Historical policy, date, and query composition are confounded. The existing campaign also lacks the complete labeled rejected population required to estimate false negatives.
+The table reconciliation does not reconstruct the historical object-level selection cohort or establish independence between runs. The two downstream summaries lack a reconciled shared denominator; their seven-evaluation difference must not be filled with invented matches. Policy, time and input population are confounded in the pre/post comparison.
 
-A stronger detection-performance claim would require a preregistered time-forward cohort, complete eligible and rejected objects, independent labels, held-out evaluation, injection–recovery, and matched comparisons under the same information/review budget.
+The retained 13 September structured extraction for AT 2026rsp is not raw registry HTML or an API response. It records one object's metadata, not two independently verified discoveries. A fresh page request on 26 September returned HTTP 403; an empty search result is not evidence that an object does not exist. No current classification or reporter status is inferred from that failed request.
+
+Synthetic trial-level provenance, primary historical evidence, contribution ownership, eligibility, independent review, final paper/video inspection and submission approval remain separate checks. None is replaced by a passing software or document-integrity test.
 
 ## Acknowledgements and Reference Path
 
-The scientific manuscript contains the complete bibliography and acknowledgements:
-`paper/siderea_transient_triage.tex`
+The existing manuscript and bibliography are the authoritative sources for scientific references and recorded contributors. Confirm acknowledgements, contribution statements, author order, and the eligible entrant or entrants with the authors before export. Do not attribute historical discoveries, reporting, observations, or another contributor's implementation to the entrant solely because this submission copy was prepared. Preserve attribution to the underlying surveys, brokers, registries and catalogs.
 
-Project repository:
-https://github.com/build-the-future-11/IRIS-Space
+## Internal evidence map — exclude from the portal abstract
 
-Primary systems/resources described in the paper include ZTF, ALeRCE, the Transient Name Server, SIMBAD/VizieR/VSX, and SkyBoT. The final IRIS export should carry the paper bibliography rather than inventing shortened citations here.
+Source snapshot: `ec7a1903dcaf3c68c27f3dc8caa90f10cefa6d4f`.
+
+| Statement | Retained evidence | Boundary |
+|---|---|---|
+| 24 entries; 23 after the stated repeat; row totals | `PIPELINE_OPERATIONS_RECORD.md`, productive-run table; `paper/figures/derived_run_metrics.json` | Arithmetic verified; no unique-object reconstruction |
+| Fifteen deterministic quantities agree | `reconcile_historical_evidence.py` and its generated JSON report | No bootstrap rerun or new scientific outcome |
+| 3,824 distinct objects | Operations record, headline summary | Summary-attributed |
+| 30/200 and 55/193 | Operations record, rejection-funnel section | Different stage denominators |
+| 499 tests and 103 subtests | `paper/research/software-verification-2026-09-13.json` | Revision `4e084a795be316ca991b213e2f8309b6143e7f9f`, not current head |
+| Conditional synthetic recovery and adverse noise behavior | Existing `CLAIM_LEDGER.md`, `paper/AUDIT.md`, and manuscript's archived experiment references | Qualitative retained result; trial-level binding remains separate |
+| AT 2026rsp metadata | `paper/research/primary-registry/AT2026rsp.public-record.json` | Retained search-index extraction, not fresh primary-response verification |
+
+The original research manuscript, protocols, source data, numerical results and claim-ledger statuses are unchanged by this copy revision. This document is not permission to submit.

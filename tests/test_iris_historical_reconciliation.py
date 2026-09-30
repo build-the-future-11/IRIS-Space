@@ -157,6 +157,36 @@ class HistoricalReconciliationTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             API["json_object"](b"[]")
 
+    def test_exponent_overflow_json_fails(self) -> None:
+        for number in (b"1e999", b"-1e999", b"1.0e309"):
+            with (
+                self.subTest(number=number),
+                self.assertRaisesRegex(ValueError, "Non-finite JSON number"),
+            ):
+                API["json_object"](b'{"retained": [{"value": ' + number + b"}]}")
+
+    def test_finite_exponent_json_is_preserved(self) -> None:
+        self.assertEqual(
+            API["json_object"](b'{"large": 1e308, "small": -1.25e-12}'),
+            {"large": 1e308, "small": -1.25e-12},
+        )
+
+    def test_cli_overflow_returns_json_failure_without_approval(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "manifest.json"
+            text = json.dumps(self.manifest)
+            path.write_text(text[:-1] + ', "overflow": 1e999}')
+            output = io.StringIO()
+            with contextlib.redirect_stdout(output):
+                code = API["main"](["--root", str(ROOT), "--manifest", str(path)])
+        report = json.loads(output.getvalue(), parse_constant=API["BINDING"]["reject_constant"])
+        self.assertEqual(code, 1)
+        self.assertEqual(report["historical_arithmetic"], "FAIL")
+        self.assertEqual(report["submission_readiness"], "BLOCKED")
+        self.assertIs(report["scientific_execution_authorized"], False)
+        self.assertIs(report["submission_authorized"], False)
+        self.assertIn("Non-finite JSON number", report["error"])
+
     def test_cli_ready_stays_blocked(self) -> None:
         args = ["--root", str(ROOT), "--manifest", str(PACKAGE / "DOCUMENT_EVIDENCE_MANIFEST.json")]
         for suffix, expected in (([], 0), (["--require-ready"], 2)):
@@ -164,10 +194,14 @@ class HistoricalReconciliationTests(unittest.TestCase):
                 self.assertEqual(API["main"](args + suffix), expected)
 
     def test_cli_missing_manifest_fails(self) -> None:
-        with tempfile.TemporaryDirectory() as temp, contextlib.redirect_stdout(io.StringIO()):
+        output = io.StringIO()
+        with tempfile.TemporaryDirectory() as temp, contextlib.redirect_stdout(output):
             self.assertEqual(
                 API["main"](["--root", str(ROOT), "--manifest", str(Path(temp) / "absent")]), 1
             )
+        report = json.loads(output.getvalue())
+        self.assertIs(report["scientific_execution_authorized"], False)
+        self.assertIs(report["submission_authorized"], False)
 
 
 if __name__ == "__main__":

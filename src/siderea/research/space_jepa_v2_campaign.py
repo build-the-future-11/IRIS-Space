@@ -10,6 +10,7 @@ from siderea.atomic import atomic_write_text
 from siderea.ingest.tns_data import audit_tns_input, inspect_tns_asset
 from siderea.provenance import digest_file, digest_value, stable_json, utc_now
 from siderea.research.space_jepa_v2_protocol import load_space_jepa_v2_protocol
+from siderea.research.space_jepa_v2_split_integrity import verify_prepared_splits
 
 SPACE_JEPA_V2_CAMPAIGN_SCHEMA = "siderea.space_jepa_v2_campaign.v1"
 SPACE_JEPA_V2_TERMINAL_STATES = frozenset(
@@ -154,12 +155,6 @@ def run_space_jepa_v2_campaign(
             prepared_manifest_path = prepared / "manifest.json"
             if prepared_manifest_path.exists():
                 prepared_manifest = json.loads(prepared_manifest_path.read_text(encoding="utf-8"))
-                if prepared_manifest.get("input_sha256") != digest_file(photometry_source):
-                    raise ValueError("prepared data input digest differs on resume")
-                prepared_identity = dict(prepared_manifest)
-                stored_prepared_digest = prepared_identity.pop("result_digest", None)
-                if stored_prepared_digest != digest_value(prepared_identity):
-                    raise ValueError("prepared data manifest digest differs")
             else:
                 prepared_manifest = prepare_space_jepa_v2_batches(
                     photometry_source,
@@ -170,6 +165,10 @@ def run_space_jepa_v2_campaign(
                     test_fraction=float(split["test_fraction"]),
                     batch_size=batch_size,
                 )
+            split_receipt = verify_prepared_splits(prepared, photometry_source, protocol_path)
+            if split_receipt["prepared_manifest_digest"] != prepared_manifest.get("result_digest"):
+                raise ValueError("prepared split receipt differs from manifest")
+            _write_json(root / "data/prepared-integrity.json", split_receipt)
             status["phases"]["causal_preparation"] = "passed"
 
             def _load_batches(path: Path) -> list[dict[str, Any]]:

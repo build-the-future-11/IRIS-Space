@@ -36,7 +36,10 @@ TNS submission endpoint and cannot authorize an astronomical report.
 - Shadow-only joining to incumbent candidate evidence and a reviewer panel.
 - A resumable campaign runner that prepares data, trains every frozen seed,
   evaluates validation and test partitions, freezes checkpoints and forecasts,
-  and binds source, protocol, data, code and status digests.
+  and binds source, protocol, data, code and status digests. Before any prepared
+  tensor is loaded, the campaign re-derives the frozen chronological entity split,
+  verifies the source and tensor SHA-256 values, and writes a prepared-integrity
+  receipt. Resume fails closed on source, split, manifest or tensor-byte drift.
 
 ## Command surface
 

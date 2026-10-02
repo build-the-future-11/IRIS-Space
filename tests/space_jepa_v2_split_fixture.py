@@ -1,19 +1,38 @@
-import json
-from pathlib import Path
-from siderea.provenance import digest_file,digest_value,stable_json
-def make_split_fixture(tmp_path):
- source=tmp_path/"survey.csv"
- source.write_text("entity_id,observation_id,observed_at_mjd,available_at_mjd,band,value,value_error,is_detection\n"+"".join(f"e{i},o{i},{60000+i},{60000+i},g,1.0,0.1,True\n" for i in range(6)))
- root=tmp_path/"prepared"; root.mkdir()
- groups={"train":["e0","e1","e2"],"validation":["e3"],"test":["e4","e5"]}
- splits={}
- for name,entities in groups.items():
-  path=root/f"{name}.pt"; path.write_bytes((name+"-tensor").encode())
-  splits[name]={"entities":entities,"batch_count":1,"sha256":digest_file(path)}
- m={"schema":"siderea.space_jepa_v2_tensor_batches.v1","input_sha256":digest_file(source),"input_dim":7,"horizons_days":[1.0,3.0,7.0,14.0],"band_to_id":{"g":0},"accepted_observations":6,"rejected_rows":0,"splits":splits}
- m["result_digest"]=digest_value(m)
- (root/"manifest.json").write_text(stable_json(m)+"\n")
- return root,source,Path("configs/space-jepa-2-protocol.json")
-def rewrite_manifest(root,m):
- x=dict(m); x.pop("result_digest",None); m["result_digest"]=digest_value(x)
- (root/"manifest.json").write_text(stable_json(m)+"\n")
+import pandas as pd
+
+from siderea.ml.space_jepa_v2_data import prepare_space_jepa_v2_batches
+from siderea.research.space_jepa_v2_protocol import load_space_jepa_v2_protocol
+
+
+def prepared_fixture(tmp_path):
+    rows = []
+    for entity in range(6):
+        for epoch in range(18):
+            rows.append(
+                {
+                    "entity_id": f"e{entity}",
+                    "observation_id": f"e{entity}-{epoch}",
+                    "observed_at_mjd": 60000 + entity * 100 + epoch,
+                    "available_at_mjd": 60000 + entity * 100 + epoch,
+                    "band": "g",
+                    "value": float(epoch),
+                    "value_error": 0.1,
+                    "is_detection": True,
+                }
+            )
+    source = tmp_path / "survey.csv"
+    pd.DataFrame(rows).to_csv(source, index=False)
+    protocol_path = "configs/space-jepa-2-protocol.json"
+    protocol = load_space_jepa_v2_protocol(protocol_path)
+    split = protocol.payload["split"]
+    output = tmp_path / "prepared"
+    prepare_space_jepa_v2_batches(
+        source,
+        output,
+        horizons_days=protocol.horizons_days,
+        train_fraction=float(split["train_fraction"]),
+        validation_fraction=float(split["validation_fraction"]),
+        test_fraction=float(split["test_fraction"]),
+        batch_size=4,
+    )
+    return output, source, protocol_path

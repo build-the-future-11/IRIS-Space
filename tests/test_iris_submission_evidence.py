@@ -207,6 +207,35 @@ class SubmissionEvidenceTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             API["read_json"](path)
 
+    def test_exponent_overflow_json_fails(self) -> None:
+        path = self.root / "manifest.json"
+        for value in ("1e999", "-1e999", "1.0e309"):
+            with self.subTest(value=value):
+                path.write_text('{"nested": [{"value": ' + value + "}]}")
+                with self.assertRaisesRegex(ValueError, "Non-finite JSON number"):
+                    API["read_json"](path)
+
+    def test_finite_exponent_json_is_preserved(self) -> None:
+        path = self.root / "manifest.json"
+        path.write_text('{"large": 1e308, "small": -1.25e-12}')
+        self.assertEqual(API["read_json"](path), {"large": 1e308, "small": -1.25e-12})
+
+    def test_cli_overflow_returns_json_failure_without_approval(self) -> None:
+        path = self.root / "manifest.json"
+        # The otherwise-valid manifest must not pass because the field is unused.
+        text = json.dumps(self.manifest)
+        path.write_text(text[:-1] + ', "overflow": 1e999}')
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            code = API["main"](["--root", str(self.root), "--manifest", str(path)])
+        report = json.loads(output.getvalue(), parse_constant=API["reject_constant"])
+        self.assertEqual(code, 1)
+        self.assertEqual(report["source_integrity"], "FAIL")
+        self.assertEqual(report["submission_readiness"], "BLOCKED")
+        self.assertIs(report["scientific_execution_authorized"], False)
+        self.assertIs(report["submission_authorized"], False)
+        self.assertIn("Non-finite JSON number", report["error"])
+
     def test_non_object_json_fails(self) -> None:
         path = self.root / "manifest.json"
         path.write_text("[]")

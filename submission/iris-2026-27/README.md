@@ -2,22 +2,27 @@
 
 **Project:** SIDEREA: Evidence-Bound and Human-Supervised Triage of Optical Transient Alerts  
 **Working category:** Physics & Astronomy  
-**Submission deadline:** 3 October 2026, 18:00 (current IRIS registration portal)  
+**Submission deadline:** 13 October 2026, 11:59 pm (extended; live portal re-checked 5 October 2026; timezone not stated)
 **Status:** DRAFT / evidence-bound; no locked evaluation is authorized by this package.
 
-## Current official requirements checked on 25 Sep 2026
+## Current official requirements checked on 5 Oct 2026
 
 Current registration portal:
 https://register.irisnationalfair.org/
 
 The portal currently states:
-- registration window: 1 Aug 2026, 16:00 to 3 Oct 2026, 18:00;
+- registration window: 1 Aug 2026, 4:00 pm to 13 Oct 2026, 11:59 pm;
 - 22 ISEF-aligned categories, including Physics & Astronomy and Software Design;
 - project title, category, and 200–500 word abstract;
 - research synopsis PDF;
 - research paper PDF;
-- project video link;
+- YouTube project-video link;
 - individual or two-student team entry.
+
+The live portal was re-checked on 5 October and explicitly announces the extension to 13 October at 11:59 pm. It does not state
+the deadline's timezone; do not silently label it UTC or infer an offset. The
+older 3 October date in issue #26 is historical. The extended deadline does not
+resolve eligibility, contribution ownership, evidence or submission approval.
 
 Current sample pages:
 - Synopsis: https://register.irisnationalfair.org/examples/synopsis
@@ -41,10 +46,11 @@ Do not resolve this by deleting a contributor from the scientific record.
 
 The package may claim:
 - an evidence-bound, human-supervised optical-transient triage workflow;
-- a run-level audit of 24 productive historical campaign runs covering 3,824 distinct broker objects;
+- a retained table with 24 productive historical run entries, including one declared repeat; excluding it leaves 23 pull entries and reproducible row totals;
+- a historical summary reporting 3,824 distinct broker objects, explicitly attributed to that summary; original cached object identities have not been independently reconstructed;
 - stage-specific historical counts: 30 existing TNS objects in 200 recorded registry checks and 55 known/suspected variables in 193 catalog evaluations;
 - deterministic software/replay evidence for the implemented safety invariants;
-- a clean release snapshot reporting 499 tests plus 103 parameterized subtests;
+- the dated 13 September 2026 software verification reporting 499 tests plus 103 parameterized subtests at revision `4e084a795be316ca991b213e2f8309b6143e7f9f`, not a current test count;
 - synthetic experiments that show conditional signal recovery **and** severe false-alarm inflation under misspecified noise;
 - a documented policy discontinuity, described as observational/confounded rather than causal.
 
@@ -74,7 +80,7 @@ The current paper itself says final submission readiness is not established beca
 
 ## Remaining hard gates
 
-- [ ] Complete B01/B02 historical accounting reconciliation from surviving records.
+- [ ] Complete B01/B02 primary object accounting and stage-denominator reconciliation; the retained table's 15 deterministic quantities have been reconciled, but this does not reconstruct unique objects or resolve the seven-evaluation stage difference.
 - [ ] Resolve B04 primary evidence for both claimed TNS designations or narrow the claim.
 - [ ] Complete B05 case-study evidence reconciliation.
 - [ ] Complete B06 claim-to-source ledger.

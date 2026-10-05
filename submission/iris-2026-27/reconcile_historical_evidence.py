@@ -136,6 +136,7 @@ def json_object(data: bytes) -> dict[str, Any]:
         data,
         object_pairs_hook=BINDING["unique_object"],
         parse_constant=BINDING["reject_constant"],
+        parse_float=BINDING["finite_float"],
     )
     if not isinstance(value, dict):
         raise ValueError("Evidence JSON must be an object")
@@ -203,6 +204,8 @@ def main(argv: list[str] | None = None) -> int:
                 {
                     "historical_arithmetic": "FAIL",
                     "submission_readiness": "BLOCKED",
+                    "scientific_execution_authorized": False,
+                    "submission_authorized": False,
                     "error": str(exc),
                 }
             )

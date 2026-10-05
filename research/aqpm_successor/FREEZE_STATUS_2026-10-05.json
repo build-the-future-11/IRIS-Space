@@ -1,0 +1,37 @@
+{
+  "audit_date": "2026-10-05",
+  "claim_boundary": "AQPM-JEPA / Space-JEPA 2 has no frozen successor identity in the repository at this audit point. No evidence from prior Space-JEPA, telemetry/image studies, or the IRIS/SIDEREA pipeline is transferred into the successor.",
+  "current_main_at_audit": "a4f534181231b0ad38b6e5670c6991940a126462",
+  "missing_freeze_requirements": [
+    "successor implementation file identities and hashes",
+    "frozen model/config identities",
+    "data manifest identity",
+    "entity-disjoint split identity",
+    "chronological split identity",
+    "incremental quaternion mechanism specification",
+    "incremental jump-flow mechanism specification",
+    "incremental residual-memory mechanism specification",
+    "full 2^3 mechanism ablation matrix",
+    "development-only readout and selection rule",
+    "primary transient/calibration/false-alert metrics",
+    "cadence/missingness/population-shift robustness contract",
+    "parameter/training/inference/human-review cost ceilings"
+  ],
+  "protected_outcomes_opened": false,
+  "repo_search": {
+    "matches_found": 0,
+    "terms_checked": [
+      "AQPM",
+      "quaternion",
+      "jump flow",
+      "jump_flow",
+      "residual memory",
+      "residual_memory",
+      "Space-JEPA 2",
+      "space_jepa"
+    ]
+  },
+  "schema_version": 1,
+  "scientific_execution_authorized": false,
+  "status": "PROTOCOL_NOT_FROZEN"
+}

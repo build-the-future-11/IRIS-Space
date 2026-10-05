@@ -34,11 +34,9 @@ def _write(root: Path, relative: str, content: str) -> dict[str, str]:
 
 def _valid_payload(tmp_path: Path) -> dict:
     implementation = _write(tmp_path, "src/aqpm.py", "MODEL = 'aqpm'\n")
-    config = _write(tmp_path, "configs/aqpm.json", "{\"version\": 1}\n")
-    manifest = _write(tmp_path, "data/manifest.json", "{\"objects\": 10}\n")
-    split_manifest = _write(
-        tmp_path, "data/splits.json", "{\"entity_disjoint\": true}\n"
-    )
+    config = _write(tmp_path, "configs/aqpm.json", '{"version": 1}\n')
+    manifest = _write(tmp_path, "data/manifest.json", '{"objects": 10}\n')
+    split_manifest = _write(tmp_path, "data/splits.json", '{"entity_disjoint": true}\n')
 
     factorial = {
         "matched_capacity_non_aqpm": (False, False, False),

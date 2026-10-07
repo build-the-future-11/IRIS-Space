@@ -1,0 +1,27 @@
+{
+  "schema": "siderea.space_jepa_v2_benchmark_validation.v1",
+  "as_of": "2026-10-07",
+  "base_commit": "7f14c66f9018db0e15d4e87d713bbe47d9479b10",
+  "source_sha256": {
+    "src/siderea/research/space_jepa_v2_benchmark.py": "3a82112ed048692baf4778b25a05dda2644cb1b665f0a35c889b34f1b62d0650",
+    "tests/test_space_jepa_v2_benchmark.py": "044cf03afce03aa3ee8ecdfbdddb3307f9c1b3c313fd2421c64fadcf839fc362",
+    "examples/space_jepa_2_tie_fixture.csv": "b2f0744295ab927c817801d895502d88926e43c8bf53d615d4b570a6f5cde39d",
+    "docs/evidence/space-jepa-2-tie-report-2026-10-07.json": "83c4fecba034a9743dd22f41b980b8576e3814f081e96cda50e317bf08714199"
+  },
+  "validation": {
+    "python": "3.14.7",
+    "numpy": "2.4.6",
+    "pandas": "3.0.6",
+    "command": "python -m pytest tests/test_space_jepa_v2_benchmark.py tests/test_science_platform.py -q",
+    "passed": 41,
+    "subtests_passed": 5,
+    "failed": 0,
+    "ruff": "passed",
+    "cli_fixture_execution": "passed"
+  },
+  "scope": "metric integrity and row-order invariance; engineering fixture only",
+  "real_astronomical_observations_used": 0,
+  "scientific_promotion_authorized": false,
+  "tns_reporting_authorized": false,
+  "independent_review": "Resolved lossy complex-number conversion and distinguished observed from bootstrap-mean recall difference."
+}

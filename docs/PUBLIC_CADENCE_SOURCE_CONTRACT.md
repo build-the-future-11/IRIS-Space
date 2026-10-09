@@ -57,10 +57,11 @@ with the same identity quarantine the entire identity group, without selecting a
 preferred value. Missing/non-finite time and invalid cadence/quality integers have
 stable reason codes.
 
-This first checkpoint emits independent source reports, not a merged dataset.
-Row identity is stable across overlapping files, but their counts must not be
-summed as distinct observations. Cross-file cohort assembly and its overlap audit
-remain a separate review gate; no such assembly is enabled here.
+This per-source adapter emits independent source reports. Their counts must not
+be summed as distinct observations. The separate offline
+[cohort input checkpoint](PUBLIC_CADENCE_COHORT_CONTRACT.md) reparses exact raw
+sources, reconciles overlapping identities, and retains its own input-only
+contract and review gate. The per-source adapter does not invoke that assembly.
 
 ## Output and replay contract
 

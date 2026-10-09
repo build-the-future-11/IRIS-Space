@@ -20,8 +20,12 @@ jobs:
       - name: Install parser and development dependencies
         run: python -m pip install -e '.[dev]' 'astropy>=6'
       - name: Verify input parser and exact-byte replay
-        run: python -m pytest -q tests/test_public_cadence.py
+        run: python -m pytest -q tests/test_public_cadence.py tests/test_public_cadence_cohort.py
       - name: Reproduce the pinned input artifact
         run: |
           python -m siderea.public_cadence tests/fixtures/public_cadence/tess-pimen-100.fits --source tests/fixtures/public_cadence/source.json --output-dir "$RUNNER_TEMP/public-cadence"
           python -m siderea.public_cadence tests/fixtures/public_cadence/tess-pimen-100.fits --source tests/fixtures/public_cadence/source.json --output-dir "$RUNNER_TEMP/public-cadence"
+      - name: Reconcile repeated source inputs and replay the cohort
+        run: |
+          python -m siderea.public_cadence_cohort --input tests/fixtures/public_cadence/tess-pimen-100.fits tests/fixtures/public_cadence/source.json --input tests/fixtures/public_cadence/tess-pimen-100.fits tests/fixtures/public_cadence/source.json --output-dir "$RUNNER_TEMP/public-cohort"
+          python -m siderea.public_cadence_cohort --input tests/fixtures/public_cadence/tess-pimen-100.fits tests/fixtures/public_cadence/source.json --output-dir "$RUNNER_TEMP/public-cohort"

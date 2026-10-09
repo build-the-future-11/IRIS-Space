@@ -191,6 +191,19 @@ def _expect_header(header: Any, expected: dict[str, object]) -> None:
             raise CadenceInputError("schema_drift", f"Unsupported FITS header {key}")
 
 
+def _require_zero_time_offsets(header: Any) -> None:
+    # TIME is emitted unchanged as native BTJD. Neither the FITS time offset
+    # nor the legacy TIME-column offset may silently change that meaning.
+    # Missing offsets have their zero default; do not infer cancellation.
+    for key in ("TIMEZERO", "TIMEOFFS"):
+        if key in header:
+            value = _header_value(header, key)
+            if type(value) not in (int, float) or value != 0:
+                raise CadenceInputError(
+                    "schema_drift", f"Unsupported nonzero or nonnumeric FITS header {key}"
+                )
+
+
 def _extract(raw: bytes, source: SourceReceipt) -> tuple[list[dict[str, Any]], float]:
     # Lazy optional dependency: importing SIDEREA or this module does not load Astropy.
     try:
@@ -230,6 +243,7 @@ def _extract(raw: bytes, source: SourceReceipt) -> tuple[list[dict[str, Any]], f
                         "OBJECT": f"TIC {source.tic_id}",
                     },
                 )
+                _require_zero_time_offsets(table.header)
                 if (
                     tuple(
                         (column.name, str(column.format), column.unit or "")

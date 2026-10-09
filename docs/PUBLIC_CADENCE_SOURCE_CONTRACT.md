@@ -49,6 +49,21 @@ generator occurs. `TIMEDEL` is retained as header metadata, not used to invent
 missing exposures. The adapter rejects absent, contradictory, or changed time
 semantics. It never uses the UTC `DATE-OBS` string to reinterpret TDB measurements.
 
+The `LIGHTCURVE` header's `TIMEOFFS` and legacy `TIMEZERO` must each be absent
+or occur exactly once with a numeric zero value. Nonzero offsets, booleans,
+strings, undefined values and repeated cards fail with `schema_drift` before
+row extraction. Opposite offsets are not assumed to cancel. This adapter
+performs no offset correction: absent offsets and explicit numeric zeros keep
+the same native row/time semantics, and the pinned fixture's report is unchanged.
+The same admission applies when a source enters a multi-file cohort, so an
+unsupported offset cannot be mistaken for an identical overlapping cadence.
+
+This boundary follows the time-offset meaning in
+[FITS 4.0, section 9.4.1](https://fits.gsfc.nasa.gov/standard40/fits_standard40aa-le.pdf)
+for `TIMEOFFS` and the NASA FITS User's Guide's
+[legacy `TIMEZERO` example](https://fits.gsfc.nasa.gov/users_guide/users_guide/node114.html).
+It does not add another time representation or source schema.
+
 Clean rows identify `(TICID, SECTOR, CAMERA, CCD, CADENCENO)` and carry the native
 time and unchanged quality bitmask. The source hash plus one-based raw row number
 maps a clean or quarantined row back to its input. Identical rows for one cadence
@@ -87,7 +102,7 @@ From a clean checkout with Python 3.11 or newer:
 ```sh
 python -m pip install -e '.[dev]' 'astropy>=6'
 python -m siderea.public_cadence tests/fixtures/public_cadence/tess-pimen-100.fits --source tests/fixtures/public_cadence/source.json --output-dir /tmp/siderea-public-cadence
-python -m pytest -q tests/test_public_cadence.py
+python -m pytest -q tests/test_public_cadence.py tests/test_public_cadence_cohort.py tests/test_public_cadence_time_offsets.py
 ```
 
 Repeating the adapter command must report `reused` and `new_artifacts=0`. The

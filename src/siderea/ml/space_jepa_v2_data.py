@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
+import io
 import math
 import os
 import shutil
 import tempfile
 from collections import defaultdict
 from collections.abc import Mapping, Sequence
+from hashlib import sha256
 from pathlib import Path
 from typing import Any, cast
 
@@ -32,7 +34,7 @@ except ImportError as exc:  # pragma: no cover
 else:
     _TORCH_IMPORT_ERROR = None
 
-SPACE_JEPA_V2_TENSOR_SCHEMA = "siderea.space_jepa_v2_tensor_batches.v1"
+SPACE_JEPA_V2_TENSOR_SCHEMA = "siderea.space_jepa_v2_tensor_batches.v2"
 SPACE_JEPA_V2_INPUT_DIM = 7
 
 
@@ -80,7 +82,7 @@ def chronological_entity_split(
     ordered = sorted(first_available, key=lambda entity: (first_available[entity], entity))
     if len(ordered) < 3:
         raise ValueError("entity-disjoint train/validation/test split requires at least 3 entities")
-    train_end = max(1, int(math.floor(len(ordered) * train_fraction)))
+    train_end = min(len(ordered) - 2, max(1, int(math.floor(len(ordered) * train_fraction))))
     validation_end = max(
         train_end + 1, int(math.floor(len(ordered) * (train_fraction + validation_fraction)))
     )
@@ -90,6 +92,25 @@ def chronological_entity_split(
         "validation": tuple(ordered[train_end:validation_end]),
         "test": tuple(ordered[validation_end:]),
     }
+
+
+def training_band_vocabulary(
+    observations: Sequence[PhotometricObservation], training_entities: Sequence[str]
+) -> dict[str, int]:
+    """Fit a stable vocabulary using training entities alone.
+
+    Index zero is reserved before inspecting any held-out band. Adding or
+    renaming a validation/test band therefore cannot change training tokens.
+    """
+    entities = frozenset(training_entities)
+    bands = sorted(
+        {
+            item.band
+            for item in observations
+            if item.entity_id in entities and item.band != "unknown"
+        }
+    )
+    return {"unknown": 0, **{band: index + 1 for index, band in enumerate(bands)}}
 
 
 def _token(
@@ -103,6 +124,8 @@ def _token(
 ) -> list[float]:
     raw_value = observation.value if observation.is_detection else observation.limiting_value
     assert raw_value is not None
+    if not math.isfinite(center) or not math.isfinite(scale) or scale <= 0:
+        raise ValueError("prefix normalization must be finite with a positive scale")
     normalized_value = (raw_value - center) / scale
     normalized_error = (
         observation.value_error / scale if observation.value_error is not None else 0.0
@@ -110,15 +133,22 @@ def _token(
     delta = max(0.0, observation.observed_at_mjd - previous_mjd)
     elapsed = max(0.0, observation.observed_at_mjd - first_mjd)
     band_scale = max(len(band_to_id) - 1, 1)
-    return [
+    band_id = band_to_id.get(observation.band, band_to_id.get("unknown"))
+    if band_id is None:
+        raise ValueError(f"passband {observation.band!r} has no configured ID or unknown bucket")
+    token = [
         normalized_value,
         normalized_error,
         math.log1p(delta),
         math.log1p(elapsed),
         float(observation.is_detection),
         float(not observation.is_detection),
-        band_to_id[observation.band] / band_scale,
+        band_id / band_scale,
     ]
+    float32_max = float.fromhex("0x1.fffffep+127")
+    if any(not math.isfinite(value) or abs(value) > float32_max for value in token):
+        raise ValueError("normalized Space JEPA 2 token exceeds the finite float32 range")
+    return token
 
 
 def _tokens(
@@ -153,9 +183,13 @@ def examples_to_batches(
     band_to_id: Mapping[str, int],
 ) -> tuple[list[dict[str, Any]], dict[str, int]]:
     require_quaternion_torch()
-    if batch_size < 1:
-        raise ValueError("batch_size must be positive")
+    if isinstance(batch_size, bool) or not isinstance(batch_size, int) or batch_size < 1:
+        raise ValueError("batch_size must be a positive integer")
     horizons = tuple(float(value) for value in horizons_days)
+    if not horizons or any(not math.isfinite(value) or value <= 0 for value in horizons):
+        raise ValueError("horizons_days must contain positive finite values")
+    if len(set(horizons)) != len(horizons):
+        raise ValueError("horizons_days must not contain duplicates")
     horizon_set = frozenset(horizons)
     by_cutoff: dict[tuple[str, float], dict[float, PrequentialExample]] = defaultdict(dict)
     for example in examples:
@@ -233,7 +267,10 @@ def prepare_space_jepa_v2_batches(
     output = Path(output_directory).expanduser().resolve()
     if output.exists():
         raise FileExistsError("Space JEPA 2 prepared-data output already exists")
-    frame = pd.read_csv(source)
+    # Parse and hash the same snapshot. Reopening the pathname after tensor
+    # construction could bind a changed source to batches made from old bytes.
+    source_bytes = source.read_bytes()
+    frame = pd.read_csv(io.BytesIO(source_bytes))
     observations, rejected = _observations(frame)
     splits = chronological_entity_split(
         observations,
@@ -241,8 +278,7 @@ def prepare_space_jepa_v2_batches(
         validation_fraction=validation_fraction,
         test_fraction=test_fraction,
     )
-    bands = sorted({observation.band for observation in observations})
-    band_to_id = {band: index for index, band in enumerate(bands)}
+    band_to_id = training_band_vocabulary(observations, splits["train"])
     output.parent.mkdir(parents=True, exist_ok=True)
     staging = Path(tempfile.mkdtemp(prefix=f".{output.name}.", dir=output.parent))
     try:
@@ -271,15 +307,25 @@ def prepare_space_jepa_v2_batches(
                 **receipt,
                 "entities": list(entities),
                 "batch_count": len(batches),
+                "unknown_band_observations": sum(
+                    item.band not in band_to_id or item.band == "unknown" for item in selected
+                ),
                 "sha256": digest_file(destination),
             }
         rejected.to_csv(staging / "rejected-rows.csv", index=False)
         identity = {
             "schema": SPACE_JEPA_V2_TENSOR_SCHEMA,
-            "input_sha256": digest_file(source),
+            "input_sha256": sha256(source_bytes).hexdigest(),
             "input_dim": SPACE_JEPA_V2_INPUT_DIM,
             "horizons_days": list(horizons_days),
             "band_to_id": band_to_id,
+            "band_vocabulary_policy": "training_entities_only; unknown_id=0",
+            "split_policy": "first_available_time_then_entity_id; nonempty_entity_partitions",
+            "requested_split_fractions": {
+                "train": train_fraction,
+                "validation": validation_fraction,
+                "test": test_fraction,
+            },
             "accepted_observations": len(observations),
             "rejected_rows": len(rejected),
             "splits": split_receipts,
@@ -299,4 +345,5 @@ __all__ = [
     "chronological_entity_split",
     "examples_to_batches",
     "prepare_space_jepa_v2_batches",
+    "training_band_vocabulary",
 ]

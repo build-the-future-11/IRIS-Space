@@ -1,0 +1,42 @@
+name: Space JEPA preparation contract
+
+on:
+  pull_request:
+    paths:
+      - 'src/siderea/ml/dataset.py'
+      - 'src/siderea/ml/prequential.py'
+      - 'src/siderea/ml/space_jepa_v2_data.py'
+      - 'src/siderea/ml/quaternion.py'
+      - 'src/siderea/ml/space_jepa_v2.py'
+      - 'src/siderea/research/space_jepa_v2_pipeline.py'
+      - 'tests/test_space_jepa_v2_preparation_integrity.py'
+      - 'tests/test_space_jepa_v2_cli.py'
+      - 'tests/test_space_jepa_v2_shadow_integrity.py'
+      - 'tests/test_quaternion_mask_gradients.py'
+      - 'tests/test_optional_ml_import.py'
+      - '.github/workflows/space-jepa-preparation.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  preparation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.12'
+      - run: python -m pip install 'numpy>=1.26,<2.5' 'pandas>=2.2' pytest
+      - run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - name: Verify source and development tensor paths
+        run: |
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          python -m pytest -q tests/test_prequential.py tests/test_space_jepa_v2_data.py tests/test_space_jepa_v2_train.py tests/test_space_jepa_v2_preparation_integrity.py tests/test_optional_ml_import.py tests/test_space_jepa_v2_cli.py tests/test_space_jepa_v2_shadow_integrity.py tests/test_quaternion.py tests/test_space_jepa_v2.py tests/test_quaternion_mask_gradients.py

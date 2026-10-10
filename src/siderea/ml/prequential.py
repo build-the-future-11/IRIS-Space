@@ -174,8 +174,11 @@ def build_prequential_examples(
     examples: list[PrequentialExample] = []
     for entity_id, rows in sorted(grouped.items()):
         ordered = sorted(rows, key=lambda item: (item.observed_at_mjd, item.observation_id))
-        for cutoff_index in range(minimum_prefix - 1, len(ordered) - 1):
-            cutoff = ordered[cutoff_index].observed_at_mjd
+        # A cutoff is a time, not a row index. Simultaneous measurements in
+        # multiple bands must produce one example per horizon, not duplicate
+        # examples with the same identity.
+        cutoffs = sorted({item.observed_at_mjd for item in ordered[minimum_prefix - 1 : -1]})
+        for cutoff in cutoffs:
             prefix = tuple(
                 item
                 for item in ordered

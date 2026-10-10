@@ -65,6 +65,12 @@ def quaternion_norm_squared(value: Any, *, keepdim: bool = False) -> Any:
 def quaternion_norm(value: Any, *, keepdim: bool = False, epsilon: float = 0.0) -> Any:
     if epsilon < 0.0 or not math.isfinite(epsilon):
         raise ValueError("epsilon must be finite and non-negative")
+    if epsilon == 0.0:
+        _check_quaternion(value, "value")
+        # vector_norm defines the zero subgradient at the origin. The naive
+        # square-sum-sqrt chain instead yields 0 * infinity in backward, which
+        # makes the radial gate's analytically finite Jacobian become NaN.
+        return torch.linalg.vector_norm(value, dim=-1, keepdim=keepdim)
     return (quaternion_norm_squared(value, keepdim=keepdim) + epsilon).sqrt()
 
 

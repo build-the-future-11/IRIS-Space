@@ -41,3 +41,13 @@ python -m pytest -q tests/test_prequential.py tests/test_space_jepa_v2_data.py t
 The tensor checks require the optional PyTorch dependency. Fixtures contain
 constructed photometry only; they establish data-path behavior, not astronomical
 performance, discovery, or a candidate-yield improvement.
+
+## 10 October 2026 follow-up: masked model and checkpoint version
+
+The independent shadow-admission follow-up remains at parent
+`62a3470bbdb2411f88c14f720ed69a6c3766d299`. A further prospective correction
+fixes the radial gate's zero-input gradient and causal summaries with non-prefix
+masks, and excludes masked payloads before projection. New model checkpoints
+use metadata v2; v1 checkpoints remain historical and are rejected by the new
+loader. See [the explicit mathematical and migration contract](SPACE_JEPA_2_MASK_AND_GRADIENT_V2.md).
+The source/split preparation v2 and seven input features remain unchanged.

@@ -18,6 +18,7 @@ def test_dual_router_keeps_prediction_anomaly_memory_and_physics_inspectable() -
                 residual=np.ones((2, 4)) * 0.1,
                 source_group="training-object",
                 cutoff_mjd=59_000.0,
+                available_at_mjd=59_001.0,
                 population="A",
                 calibration="cal-v1",
             )

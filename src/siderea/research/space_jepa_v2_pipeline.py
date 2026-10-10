@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hmac
+import math
 from collections.abc import Mapping
 from typing import Any
 
@@ -20,6 +21,36 @@ def _verified(payload: Mapping[str, Any], schema: str, name: str) -> dict[str, A
         raise ValueError(f"{name} result digest differs from content")
     materialized["result_digest"] = stored
     return materialized
+
+
+def _identities(rows: list[Any], key: str, name: str) -> list[str]:
+    identities: list[str] = []
+    for row in rows:
+        value = row.get(key)
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError(f"{name} identities must be non-empty strings and unique")
+        identities.append(value)
+    if len(set(identities)) != len(identities):
+        raise ValueError(f"{name} identities must be non-empty strings and unique")
+    return identities
+
+
+def _numeric_list(value: Any, name: str, *, positive: bool = False) -> list[float]:
+    if not isinstance(value, list) or not value:
+        raise ValueError(f"{name} must be a non-empty array of finite numbers")
+    result = []
+    for item in value:
+        if isinstance(item, bool) or not isinstance(item, (int, float)):
+            raise ValueError(f"{name} must contain finite numeric values without coercion")
+        try:
+            number = float(item)
+        except OverflowError as exc:
+            raise ValueError(f"{name} exceeds the finite numeric range") from exc
+        if not math.isfinite(number) or number < 0 or (positive and number == 0):
+            boundary = "positive" if positive else "nonnegative"
+            raise ValueError(f"{name} must contain finite {boundary} numbers")
+        result.append(number)
+    return result
 
 
 def assemble_space_jepa_v2_shadow_evidence(
@@ -41,10 +72,14 @@ def assemble_space_jepa_v2_shadow_evidence(
         not isinstance(row, Mapping) for row in evaluation_rows
     ):
         raise ValueError("AQPM evaluation lacks row evidence")
-    by_id = {str(row.get("example_id", "")): row for row in evaluation_rows}
-    candidate_ids = [str(row.get("candidate_id", "")) for row in records]
-    if any(not value for value in candidate_ids) or len(set(candidate_ids)) != len(candidate_ids):
-        raise ValueError("candidate identities must be non-empty and unique")
+    row_count = verified_evaluation.get("row_count")
+    if type(row_count) is not int or row_count != len(evaluation_rows):
+        raise ValueError("AQPM evaluation row_count must equal the number of evidence rows")
+    evaluation_ids = _identities(evaluation_rows, "example_id", "evaluation")
+    candidate_ids = _identities(records, "candidate_id", "candidate")
+    # Validate identity before indexing: a dictionary alone silently discards
+    # repeated rows, including conflicting evidence for the same candidate.
+    by_id = dict(zip(evaluation_ids, evaluation_rows, strict=True))
     missing = sorted(set(candidate_ids) - set(by_id))
     extra = sorted(set(by_id) - set(candidate_ids))
     if missing or extra:
@@ -53,15 +88,18 @@ def assemble_space_jepa_v2_shadow_evidence(
         )
     rows = []
     for candidate in records:
-        candidate_id = str(candidate["candidate_id"])
+        candidate_id = candidate["candidate_id"]
         aqpm = by_id[candidate_id]
-        errors = aqpm.get("mean_absolute_latent_error")
-        if not isinstance(errors, list) or not errors:
-            raise ValueError(f"AQPM evidence for {candidate_id!r} lacks horizon errors")
+        horizons = _numeric_list(aqpm.get("horizons_days"), "AQPM horizons", positive=True)
+        if len(set(horizons)) != len(horizons):
+            raise ValueError("AQPM horizons must be unique")
+        errors = _numeric_list(aqpm.get("mean_absolute_latent_error"), "AQPM horizon errors")
+        if len(errors) != len(horizons):
+            raise ValueError("AQPM horizon errors must contain exactly one value per horizon")
         rows.append(
             {
                 "candidate_id": candidate_id,
-                "review_priority": float(max(float(value) for value in errors)),
+                "review_priority": max(errors),
                 "priority_semantics": "aqpm_predictive_surprise_not_probability",
                 "aqpm": dict(aqpm),
                 "incumbent": dict(candidate),

@@ -1,5 +1,27 @@
 # Space JEPA 2 implementation status
 
+## Engineering follow-up — 10 October 2026
+
+The masked-sequence and evaluation repair is based on default branch
+`7f14c66f9018db0e15d4e87d713bbe47d9479b10`. Open data-preparation, memory, input
+cadence and benchmark PRs #36–43 were inspected before selecting this separate
+encoder/evaluator scope.
+
+A gapped mask could select a masked slot as the sequence summary, and masked
+nonfinite padding could contaminate predictions. The encoder now zeroes masked
+tokens before projection and selects the actual last valid position. Evaluation
+also rejects duplicate or ambiguous row identities before executing the model.
+The exact supported behavior and compatibility boundary are in
+`SPACE_JEPA_2_MASK_CONTRACT.md`; the draft PR records the executed checks.
+
+This follow-up is engineering validation on constructed inputs. It does not
+supersede `research/aqpm_successor/FREEZE_STATUS_2026-10-05.json`, authorize a
+population-shift or protected-outcome run, change promotion criteria, or create
+an astronomical performance claim. Existing protocols and retained outcomes
+remain unchanged.
+
+## Historical implementation inventory
+
 Date: 2026-09-19
 
 Space JEPA 2 is implemented as a development-grade, shadow-only upgrade to the

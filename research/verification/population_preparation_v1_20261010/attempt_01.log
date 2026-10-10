@@ -1,0 +1,36 @@
+........................F.....................                           [100%]
+=================================== FAILURES ===================================
+_____________ test_cli_failure_and_existing_attempt_are_preserved ______________
+
+inputs = (PosixPath('/tmp/pytest-of-root/pytest-327/test_cli_failure_and_existing_0/inputs/photometry.csv'), PosixPath('/tmp/pytest-of-root/pytest-327/test_cli_failure_and_existing_0/inputs/membership.json'))
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-327/test_cli_failure_and_existing_0')
+capsys = <_pytest.capture.CaptureFixture object at 0x7f6a38c6a300>
+
+    def test_cli_failure_and_existing_attempt_are_preserved(
+        inputs: tuple[Path, Path], tmp_path: Path, capsys: pytest.CaptureFixture[str]
+    ) -> None:
+        args = [
+            "--photometry",
+            str(inputs[0]),
+            "--membership",
+            str(inputs[1]),
+            "--output",
+            str(tmp_path / "attempt"),
+            "--horizons-days",
+            "1",
+            "3",
+        ]
+        assert population.main(args) == 0
+        original = (tmp_path / "attempt/manifest.json").read_bytes()
+        assert population.main(args) == 2
+        assert (tmp_path / "attempt/manifest.json").read_bytes() == original
+>       assert "already exists" in capsys.readouterr().err
+E       assert 'already exists' in "population preparation failed: [Errno 17] File exists: '/tmp/pytest-of-root/pytest-327/test_cli_failure_and_existing_0/attempt'\n"
+E        +  where "population preparation failed: [Errno 17] File exists: '/tmp/pytest-of-root/pytest-327/test_cli_failure_and_existing_0/attempt'\n" = CaptureResult(out='{"partition_rows": {"population_b": 10, "test": 10, "train": 15, "validation": 5}, "result_digest":...reparation failed: [Errno 17] File exists: '/tmp/pytest-of-root/pytest-327/test_cli_failure_and_existing_0/attempt'\n").err
+E        +    where CaptureResult(out='{"partition_rows": {"population_b": 10, "test": 10, "train": 15, "validation": 5}, "result_digest":...reparation failed: [Errno 17] File exists: '/tmp/pytest-of-root/pytest-327/test_cli_failure_and_existing_0/attempt'\n") = readouterr()
+E        +      where readouterr = <_pytest.capture.CaptureFixture object at 0x7f6a38c6a300>.readouterr
+
+tests/test_space_jepa_population_v1.py:357: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_space_jepa_population_v1.py::test_cli_failure_and_existing_attempt_are_preserved
+1 failed, 45 passed in 8.11s

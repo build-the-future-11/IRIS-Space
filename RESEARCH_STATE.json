@@ -1,0 +1,294 @@
+{
+  "schema_version": 1,
+  "project": "IRIS / SIDEREA / Space JEPA 2",
+  "updated_utc": "2026-10-10T16:53:05.630641+00:00",
+  "repository_base_commit": "f336ce1552d5270f3b3ad81682cd2fb0565ea0c2",
+  "scientific_question": "Does predictive memory improve transient retrieval at fixed review cost on physical-entity-disjoint chronological and shifted source populations?",
+  "scientific_disposition": "SUCCESSOR_PROTOCOL_NOT_FROZEN; no confirmatory successor result or discovery claim",
+  "current_phase": "DEVELOPMENT_INPUT_AND_MEMORY_VERIFIED_AWAITING_BASE_INTEGRATION",
+  "current_change": "Compose PR43 residual availability v2 and strict memory policy into PR45 population preparation/as-of v2 without changing PR40 or population implementation.",
+  "protected_evaluation_opened": false,
+  "scientific_runs_this_revision": 0,
+  "research_complete": false,
+  "required_session_reads": [
+    "research/aqpm_successor/README.md",
+    "research/aqpm_successor/FREEZE_STATUS_2026-10-05.json",
+    "docs/SPACE_JEPA_2_PROTOCOL.md",
+    "configs/space-jepa-2-protocol.json",
+    "research/DEVELOPMENT_POPULATION_PREPARATION_V1_20261010.md",
+    "docs/MEMORY_AVAILABILITY_V2.md",
+    "research/integration/memory_population_20261010/CONTRACT.md"
+  ],
+  "active_session": {
+    "id": "20261010-population-preparation-v1",
+    "authorization": "Fresh user continuation requesting substantive GitHub research improvements; root approved this bounded development scope.",
+    "status": "CLOSED_PUBLISHED_DRAFT",
+    "budget": {
+      "local_targeted_test_commands": 4,
+      "local_targeted_test_wall_seconds": 180,
+      "independent_review_test_commands": 1,
+      "retained_generated_demo_attempts": 1,
+      "retained_demo_wall_seconds": 60,
+      "cpu_threads": 1,
+      "generated_demo_photometry_rows": 64,
+      "training_steps": 0,
+      "paid_jobs": 0,
+      "protected_runs": 0
+    },
+    "consumed": {
+      "local_targeted_test_commands": 2,
+      "local_targeted_test_wall_seconds": 16.321,
+      "retained_generated_demo_attempts": 1,
+      "retained_demo_wall_seconds": 6.969
+    },
+    "publication": {
+      "pr": 45,
+      "url": "https://github.com/build-the-future-11/IRIS-Space/pull/45",
+      "branch": "codex/research-pipeline-20261010-population-preparation-v1",
+      "base_branch": "codex/research-integrity-20261010-space",
+      "base_commit": "f336ce1552d5270f3b3ad81682cd2fb0565ea0c2",
+      "reviewed_implementation_commit": "3552d99cd8934091dcea5d407b33a463ec5be08c",
+      "reviewed_implementation_tree": "13e0d5027be7c7d1536401823b074a0c4e1d334b",
+      "status": "PUBLISHED_DRAFT_UNMERGED",
+      "full_remote_tree_leaf_count": 536,
+      "full_remote_tree_mismatches": 0,
+      "hosted_checks": "Observe the latest PR head; initial code-head workflows38029221639 and38029221622 were in progress at publication closure."
+    }
+  },
+  "preserved_history_index": [
+    "paper/research/claim-source-ledger.md",
+    "submission/iris-2026-27/CLAIM_LEDGER.md",
+    "research/aqpm_successor/FREEZE_STATUS_2026-10-05.json",
+    "https://github.com/build-the-future-11/IRIS-Space/pull/40",
+    "https://github.com/build-the-future-11/IRIS-Space/pull/42",
+    "https://github.com/build-the-future-11/IRIS-Space/pull/43",
+    "https://github.com/build-the-future-11/IRIS-Space/pull/44"
+  ],
+  "history_index_scope": "Indices preserve existing source/PR/artifact history; these branch-local records do not replace other branches' canonical states or claim a complete retrospective evidence audit.",
+  "pending_gates": [
+    "Hosted checks on the latest PR45 head and normal integration of this draft with PR40; no merge authorized by this session.",
+    "Real metadata/alias/measurement provenance and a separately frozen source-population study remain unqualified.",
+    "Enrollment chronology is not a global training-label availability embargo; the new manifest must explicitly retain this distinction.",
+    "Protected outcomes and seeds 1000\u20131029 remain closed; no model promotion or TNS reporting is authorized.",
+    "No changes to the completed Eigen geometry-v3 session or its budget.",
+    "Memory/population composition has local constructed-input verification only; no hosted campaign was requested for this revision.",
+    "PR41 full memory-object immutability remains separate; real source/target/model availability and a frozen successor protocol remain unqualified."
+  ],
+  "history": [
+    {
+      "at_utc": "2026-10-10T05:38:53Z",
+      "kind": "development_contract_and_budget",
+      "session": "20261010-population-preparation-v1",
+      "record": "research/DEVELOPMENT_POPULATION_PREPARATION_V1_20261010.md",
+      "observation": "The declared source-population-B protocol has no executable population partition in existing preparation; only three A partitions are emitted.",
+      "status": "recorded before source/test implementation",
+      "scientific_outcomes_created": false
+    },
+    {
+      "kind": "local_targeted_test",
+      "session": "20261010-population-preparation-v1",
+      "record": "research/verification/population_preparation_v1_20261010/attempt_01.json",
+      "exit_code": 1,
+      "wall_seconds": 10.57,
+      "scientific_outcomes_created": false
+    },
+    {
+      "kind": "local_targeted_test",
+      "session": "20261010-population-preparation-v1",
+      "record": "research/verification/population_preparation_v1_20261010/attempt_02.json",
+      "exit_code": 0,
+      "wall_seconds": 5.751,
+      "scientific_outcomes_created": false
+    },
+    {
+      "kind": "independent_source_review",
+      "reviewer": "root",
+      "status": "PASS",
+      "scope": "population module, all29 new tests, demo, workflow and guide",
+      "scientific_outcomes_created": false
+    },
+    {
+      "kind": "generated_demo_started",
+      "record": "research/verification/population_preparation_v1_20261010/demo_attempt_started.json",
+      "scientific_outcomes_created": false
+    },
+    {
+      "kind": "generated_demo_finished",
+      "status": "PASSED",
+      "record": "research/verification/population_preparation_v1_20261010/demo_attempt.json",
+      "wall_seconds": 6.969,
+      "scientific_outcomes_created": false
+    },
+    {
+      "at_utc": "2026-10-10T05:54:23.299734+00:00",
+      "kind": "engineering_verification_complete",
+      "session": "20261010-population-preparation-v1",
+      "status": "PASS; independent review accepted; draft publication authorized",
+      "tests": {
+        "new": 29,
+        "existing": 17,
+        "total": 46,
+        "last_pytest_seconds": 4.47
+      },
+      "demo_record": "research/verification/population_preparation_v1_20261010/demo_attempt.json",
+      "scientific_outcomes_created": false
+    },
+    {
+      "at_utc": "2026-10-10T05:57:44.278854+00:00",
+      "kind": "draft_publication_and_complete_tree_verification",
+      "session": "20261010-population-preparation-v1",
+      "publication": {
+        "pr": 45,
+        "url": "https://github.com/build-the-future-11/IRIS-Space/pull/45",
+        "branch": "codex/research-pipeline-20261010-population-preparation-v1",
+        "base_branch": "codex/research-integrity-20261010-space",
+        "base_commit": "f336ce1552d5270f3b3ad81682cd2fb0565ea0c2",
+        "reviewed_implementation_commit": "3552d99cd8934091dcea5d407b33a463ec5be08c",
+        "reviewed_implementation_tree": "13e0d5027be7c7d1536401823b074a0c4e1d334b",
+        "status": "PUBLISHED_DRAFT_UNMERGED",
+        "full_remote_tree_leaf_count": 536,
+        "full_remote_tree_mismatches": 0,
+        "hosted_checks": "Observe the latest PR head; initial code-head workflows38029221639 and38029221622 were in progress at publication closure."
+      },
+      "metadata_note": "This closure update changes state and verification prose only; source, tests, workflow and generated artifacts remain exactly as independently reviewed and executed.",
+      "scientific_outcomes_created": false
+    },
+    {
+      "date": "2026-10-10",
+      "session": "population-as-of-v2-20261010",
+      "kind": "development_as_of_input_policy",
+      "record": "research/DEVELOPMENT_POPULATION_AS_OF_V2_20261010.md",
+      "previous_gap": "enrollment chronology alone does not establish global training-label availability",
+      "new_property": "opt-in v2 bounds training labels/vocabulary, validation labels and evaluation forecasts by caller-declared fit/selection times",
+      "result": "63 generated checks pass; source-only independent review passes",
+      "failure_preserved": "one initial v1 error-text compatibility failure; fixed without altering the expected legacy contract",
+      "scientific_outcomes_created": false
+    },
+    {
+      "at_utc": "2026-10-10T16:50:14.045926+00:00",
+      "kind": "development_integration_contract",
+      "session": "memory-population-integration-20261010",
+      "record": "research/integration/memory_population_20261010/CONTRACT.md",
+      "status": "recorded before local verification",
+      "scientific_outcomes_created": false
+    },
+    {
+      "at_utc": "2026-10-10T16:50:26.310392+00:00",
+      "kind": "local_targeted_test",
+      "session": "memory-population-integration-20261010",
+      "record": "research/integration/memory_population_20261010/verification/attempt_01.json",
+      "exit_code": 1,
+      "wall_seconds": 0.0688219459989341,
+      "scientific_outcomes_created": false
+    },
+    {
+      "at_utc": "2026-10-10T16:51:35.295731+00:00",
+      "kind": "local_targeted_test",
+      "session": "memory-population-integration-20261010",
+      "record": "research/integration/memory_population_20261010/verification/attempt_02.json",
+      "exit_code": 0,
+      "wall_seconds": 26.668690096998034,
+      "scientific_outcomes_created": false
+    },
+    {
+      "at_utc": "2026-10-10T16:53:05.630641+00:00",
+      "kind": "independent_source_review",
+      "session": "memory-population-integration-20261010",
+      "record": "research/integration/memory_population_20261010/receipt.json",
+      "status": "PASS for source composition only; no scientific validation or full object immutability claim",
+      "scientific_outcomes_created": false
+    }
+  ],
+  "development_sessions": [
+    {
+      "id": "population-as-of-v2-20261010",
+      "status": "IMPLEMENTED_VERIFIED_REVIEWED",
+      "parent_commit": "5b4b6ec4ab5bc90e0e74e0f14941c7415c17fc04",
+      "contract": "research/DEVELOPMENT_POPULATION_AS_OF_V2_20261010.md",
+      "budget": {
+        "local_test_commands": 6,
+        "local_test_wall_seconds": 180,
+        "independent_review_commands": 1,
+        "cpu_threads": 1,
+        "optimizer_steps": 0,
+        "scientific_runs": 0,
+        "protected_outcomes": 0,
+        "paid_compute": 0
+      },
+      "scientific_outcomes_created": false,
+      "tests": {
+        "new": 17,
+        "inherited": 46,
+        "passed": 63,
+        "failed": 0,
+        "skipped": 0
+      },
+      "verification_receipt": "research/verification/population_as_of_v2_20261010/receipt.json",
+      "consumed": {
+        "local_test_commands": 2,
+        "local_test_wall_seconds": 12.96790312801022
+      },
+      "independent_review": {
+        "reviewer": "root agent",
+        "status": "PASS",
+        "scope": "source-only; no extra tests or scientific validation"
+      },
+      "remaining_gates": [
+        "review and integrate the explicit v2 development policy",
+        "qualify actual source membership, completeness and model availability before a scientific freeze"
+      ]
+    },
+    {
+      "id": "memory-population-integration-20261010",
+      "status": "VERIFIED_AND_INDEPENDENTLY_REVIEWED",
+      "target_commit": "fb85b497afff0d626a16800c8b30d2e7874e7a34",
+      "donor_commit": "fa004bccc0aa75565898ef13c434c584f7c24ea0",
+      "common_ancestor": "7f14c66f9018db0e15d4e87d713bbe47d9479b10",
+      "contract": "research/integration/memory_population_20261010/CONTRACT.md",
+      "donor_state_snapshot": "research/integration/memory_population_20261010/source_proposals/pr43_RESEARCH_STATE.json",
+      "budget": {
+        "pytest_commands": 5,
+        "max_seconds_per_command": 120,
+        "max_total_seconds": 300,
+        "numeric_threads": 1,
+        "new_test_modules": 0
+      },
+      "prior_budgets_reopened": false,
+      "scientific_outcomes_created": false,
+      "protected_evaluation_opened": false,
+      "source_composition": "Exact donor production blobs; one clean three-way CLI-test merge; target scientific/history records retained.",
+      "verification_receipt": "research/integration/memory_population_20261010/receipt.json",
+      "tests": {
+        "passed": 131,
+        "failed": 0,
+        "skipped": 0,
+        "warnings_as_errors": true,
+        "existing_modules": 10,
+        "new_test_modules_authored": 0,
+        "pytest_reported_seconds": 13.34,
+        "command_wall_seconds": 26.668690096998034,
+        "raw_log": "verification/attempt_02.log",
+        "command_receipt": "verification/attempt_02.json"
+      },
+      "consumed": {
+        "pytest_invocations": 2,
+        "command_wall_seconds": 26.73751204299697,
+        "max_declared_commands": 5,
+        "max_declared_wall_seconds": 300
+      },
+      "independent_review": {
+        "reviewer": "root agent",
+        "type": "independent source-only review",
+        "status": "PASS",
+        "scope": "Exact source diff including CLI, availability validation/filter ordering, digest-bound schema migration/router and merged CLI test; no source composition blocker. PR41 full object immutability remains separate.",
+        "additional_tests_run_by_reviewer": false
+      },
+      "remaining_gates": [
+        "Real population/measurement/model availability provenance remains unqualified.",
+        "PR43 fixes byte-backed array writes, not all public attributes or NumPy view metadata; PR41 full immutability is separate.",
+        "Current composition does not connect generated population preparation to an automatically provenance-qualified scientific residual bank.",
+        "Existing study/freeze/protected/reporting gates remain in force."
+      ]
+    }
+  ]
+}

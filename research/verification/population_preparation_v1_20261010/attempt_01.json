@@ -1,0 +1,23 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-W",
+    "error",
+    "tests/test_space_jepa_population_v1.py",
+    "tests/test_space_jepa_v2_preparation_integrity.py",
+    "tests/test_space_jepa_v2_data.py",
+    "tests/test_prequential.py"
+  ],
+  "wall_seconds": 10.57,
+  "exit_code": 1,
+  "source_sha256": {
+    "src/siderea/ml/space_jepa_population_v1.py": "96f8d54cc614ab28b040763677536b8a204690b4243b83ef8e7dd31d5468e4af",
+    "scripts/demo_space_jepa_population_v1.py": "401fdf71fb211cb03ad40188b7d9ed2d356e041d35cca78c5bae836117215143",
+    "tests/test_space_jepa_population_v1.py": "4ed6f7522cbbe355d79f9081771988b334b1927f4847ba836681fd1b270e99ba"
+  },
+  "cpu_threads": 1,
+  "training_steps": 0
+}

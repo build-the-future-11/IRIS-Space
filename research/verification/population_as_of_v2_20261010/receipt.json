@@ -1,0 +1,66 @@
+{
+  "schema": "engineering.population_as_of.v1",
+  "parent_commit": "5b4b6ec4ab5bc90e0e74e0f14941c7415c17fc04",
+  "tests": {
+    "new": 17,
+    "inherited": 46,
+    "passed": 63,
+    "failed": 0,
+    "skipped": 0
+  },
+  "attempts": [
+    "attempt_01.json",
+    "attempt_02.json"
+  ],
+  "failed_attempt_preserved": {
+    "passed": 62,
+    "failed": 1,
+    "cause": "v1 error message changed unintentionally",
+    "repair": "restore original v1 text; retain explicit admitted wording only for opt-in policy"
+  },
+  "local_test_commands": 2,
+  "local_test_wall_seconds": 12.96790312801022,
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-W",
+    "error",
+    "tests/test_space_jepa_population_as_of.py",
+    "tests/test_space_jepa_population_v1.py",
+    "tests/test_space_jepa_v2_preparation_integrity.py",
+    "tests/test_space_jepa_v2_data.py",
+    "tests/test_prequential.py"
+  ],
+  "source_sha256": {
+    "src/siderea/ml/space_jepa_population_v1.py": "6a90f8b45ae5391ec333b43429e3ae6b89bab3353421b77790d1d29bd0a30294",
+    "tests/test_space_jepa_population_as_of.py": "3d93fe50ad4c57548c9632ace12458d78f2483f7e86e6e5aa0df90b4e48992ad"
+  },
+  "static_checks": [
+    "python -m ruff check src/siderea/ml/space_jepa_population_v1.py tests/test_space_jepa_population_as_of.py",
+    "python -m mypy --follow-imports=silent --ignore-missing-imports src/siderea/ml/space_jepa_population_v1.py"
+  ],
+  "independent_review": {
+    "reviewer": "root agent",
+    "status": "PASS",
+    "scope": "source-only; no extra tests or scientific validation"
+  },
+  "scientific_runs": 0,
+  "optimizer_steps": 0,
+  "protected_outcomes": 0,
+  "paid_compute": 0,
+  "limits": [
+    "caller-declared source provenance and completeness",
+    "data-level chronology only; model availability not attested",
+    "v1 tensor semantics retained; full manifest hashes change with source revision"
+  ],
+  "retained_output_sha256": {
+    "attempt_01.json": "4097739253fb108986d980b8101c66ebf9982b8f49e8e505766aedf0760e4f92",
+    "attempt_01_stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "attempt_01_stdout.txt": "6967ccf7fe4079ef83c7b8ac0899f1b2d2851121cb7cb4e7c027c36ceeeb8fdb",
+    "attempt_02.json": "69c832648404eb07929ebc505f784eb7b575341697d0d476b5e326f1e6016975",
+    "attempt_02_stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "attempt_02_stdout.txt": "081f9c9c149869bb02e70674fcc8944feb8d525149105b1f515c0b42febf4820"
+  }
+}

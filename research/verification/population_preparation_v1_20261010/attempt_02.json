@@ -1,0 +1,29 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-W",
+    "error",
+    "tests/test_space_jepa_population_v1.py",
+    "tests/test_space_jepa_v2_preparation_integrity.py",
+    "tests/test_space_jepa_v2_data.py",
+    "tests/test_prequential.py"
+  ],
+  "wall_seconds": 5.751,
+  "exit_code": 0,
+  "source_sha256": {
+    "src/siderea/ml/space_jepa_population_v1.py": "99c35b11b60cbc336ef3b0987e6481638184410264a34bee0427bc25583eb74b",
+    "scripts/demo_space_jepa_population_v1.py": "c92360c671432b15c48afe7dd9353e9678377a45424f93d3533941eeb4c417e6",
+    "tests/test_space_jepa_population_v1.py": "dede82109378e23f7e3bb47344927a0eed4ba686b879d3d17f1ce2189e599b0d",
+    ".github/workflows/population-preparation.yml": "1145a96bc4e9d82acd8e4cf26ad692b604b84ee0642d71b982d67ffc669f012c"
+  },
+  "cpu_threads": 1,
+  "training_steps": 0,
+  "changes_since_attempt_01": [
+    "CLI test accepts platform File exists wording; output no-clobber behavior unchanged",
+    "Typed tensor serializer callback for strict Mypy; same torch.save computation",
+    "Shortened demonstration interpretation string for lint"
+  ]
+}

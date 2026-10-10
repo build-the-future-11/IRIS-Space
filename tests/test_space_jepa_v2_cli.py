@@ -135,6 +135,7 @@ def test_train_infer_memory_benchmark_and_shadow_cli(tmp_path: Path) -> None:
                     "residual": [[0.1, 0.0, 0.0, 0.0]],
                     "source_group": "train-a",
                     "cutoff_mjd": 60000.0,
+                    "available_at_mjd": 60001.0,
                     "population": "A",
                     "calibration": "cal-v1",
                 }

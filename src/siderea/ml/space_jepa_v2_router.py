@@ -11,7 +11,7 @@ import numpy as np
 
 from siderea.provenance import digest_value
 
-from .episodic_memory import EpisodicResidualMemory
+from .episodic_memory import MEMORY_CONTRACT_VERSION, EpisodicResidualMemory
 from .space_jepa_v2_anomaly import anomaly_components
 
 
@@ -76,6 +76,14 @@ def route_space_jepa_v2_evidence(
         corrected = retrieval.corrected
         memory_payload = {
             "status": "applied" if retrieval.supported else "unsupported",
+            "memory_digest": memory.digest,
+            "memory_contract": MEMORY_CONTRACT_VERSION,
+            "eligibility": {
+                "query_source_group": query_source_group,
+                "query_cutoff_mjd": query_cutoff_mjd,
+                "population": population,
+                "calibration": calibration,
+            },
             "supported": retrieval.supported,
             "gate": retrieval.gate,
             "neighbor_ids": list(retrieval.neighbor_ids),
@@ -111,7 +119,7 @@ def route_space_jepa_v2_evidence(
             frozen_weights[name] = weight
             ranking_score += weight * math.log1p(float(components[name]))
     identity = {
-        "schema": "siderea.space_jepa_v2_dual_route.v1",
+        "schema": "siderea.space_jepa_v2_dual_route.v2",
         "base_forecast": base.tolist(),
         "corrected_forecast": corrected_trajectory.tolist(),
         "prediction_route": {

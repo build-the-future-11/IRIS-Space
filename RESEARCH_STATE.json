@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "project": "IRIS / SIDEREA / Space JEPA 2",
-  "updated_utc": "2026-10-10T09:55:00.492675+00:00",
+  "updated_utc": "2026-10-10T16:53:05.630641+00:00",
   "repository_base_commit": "f336ce1552d5270f3b3ad81682cd2fb0565ea0c2",
   "scientific_question": "Does predictive memory improve transient retrieval at fixed review cost on physical-entity-disjoint chronological and shifted source populations?",
   "scientific_disposition": "SUCCESSOR_PROTOCOL_NOT_FROZEN; no confirmatory successor result or discovery claim",
-  "current_phase": "DEVELOPMENT_INPUT_PATH_VERIFIED_PENDING_INTEGRATION",
-  "current_change": "Opt-in population-B preparation with explicit physical aliases, metadata membership, A-only vocabulary and four executable tensor partitions.",
+  "current_phase": "DEVELOPMENT_INPUT_AND_MEMORY_VERIFIED_AWAITING_BASE_INTEGRATION",
+  "current_change": "Compose PR43 residual availability v2 and strict memory policy into PR45 population preparation/as-of v2 without changing PR40 or population implementation.",
   "protected_evaluation_opened": false,
   "scientific_runs_this_revision": 0,
   "research_complete": false,
@@ -15,7 +15,9 @@
     "research/aqpm_successor/FREEZE_STATUS_2026-10-05.json",
     "docs/SPACE_JEPA_2_PROTOCOL.md",
     "configs/space-jepa-2-protocol.json",
-    "research/DEVELOPMENT_POPULATION_PREPARATION_V1_20261010.md"
+    "research/DEVELOPMENT_POPULATION_PREPARATION_V1_20261010.md",
+    "docs/MEMORY_AVAILABILITY_V2.md",
+    "research/integration/memory_population_20261010/CONTRACT.md"
   ],
   "active_session": {
     "id": "20261010-population-preparation-v1",
@@ -68,7 +70,9 @@
     "Real metadata/alias/measurement provenance and a separately frozen source-population study remain unqualified.",
     "Enrollment chronology is not a global training-label availability embargo; the new manifest must explicitly retain this distinction.",
     "Protected outcomes and seeds 1000\u20131029 remain closed; no model promotion or TNS reporting is authorized.",
-    "No changes to the completed Eigen geometry-v3 session or its budget."
+    "No changes to the completed Eigen geometry-v3 session or its budget.",
+    "Memory/population composition has local constructed-input verification only; no hosted campaign was requested for this revision.",
+    "PR41 full memory-object immutability remains separate; real source/target/model availability and a frozen successor protocol remain unqualified."
   ],
   "history": [
     {
@@ -159,6 +163,40 @@
       "result": "63 generated checks pass; source-only independent review passes",
       "failure_preserved": "one initial v1 error-text compatibility failure; fixed without altering the expected legacy contract",
       "scientific_outcomes_created": false
+    },
+    {
+      "at_utc": "2026-10-10T16:50:14.045926+00:00",
+      "kind": "development_integration_contract",
+      "session": "memory-population-integration-20261010",
+      "record": "research/integration/memory_population_20261010/CONTRACT.md",
+      "status": "recorded before local verification",
+      "scientific_outcomes_created": false
+    },
+    {
+      "at_utc": "2026-10-10T16:50:26.310392+00:00",
+      "kind": "local_targeted_test",
+      "session": "memory-population-integration-20261010",
+      "record": "research/integration/memory_population_20261010/verification/attempt_01.json",
+      "exit_code": 1,
+      "wall_seconds": 0.0688219459989341,
+      "scientific_outcomes_created": false
+    },
+    {
+      "at_utc": "2026-10-10T16:51:35.295731+00:00",
+      "kind": "local_targeted_test",
+      "session": "memory-population-integration-20261010",
+      "record": "research/integration/memory_population_20261010/verification/attempt_02.json",
+      "exit_code": 0,
+      "wall_seconds": 26.668690096998034,
+      "scientific_outcomes_created": false
+    },
+    {
+      "at_utc": "2026-10-10T16:53:05.630641+00:00",
+      "kind": "independent_source_review",
+      "session": "memory-population-integration-20261010",
+      "record": "research/integration/memory_population_20261010/receipt.json",
+      "status": "PASS for source composition only; no scientific validation or full object immutability claim",
+      "scientific_outcomes_created": false
     }
   ],
   "development_sessions": [
@@ -198,6 +236,58 @@
       "remaining_gates": [
         "review and integrate the explicit v2 development policy",
         "qualify actual source membership, completeness and model availability before a scientific freeze"
+      ]
+    },
+    {
+      "id": "memory-population-integration-20261010",
+      "status": "VERIFIED_AND_INDEPENDENTLY_REVIEWED",
+      "target_commit": "fb85b497afff0d626a16800c8b30d2e7874e7a34",
+      "donor_commit": "fa004bccc0aa75565898ef13c434c584f7c24ea0",
+      "common_ancestor": "7f14c66f9018db0e15d4e87d713bbe47d9479b10",
+      "contract": "research/integration/memory_population_20261010/CONTRACT.md",
+      "donor_state_snapshot": "research/integration/memory_population_20261010/source_proposals/pr43_RESEARCH_STATE.json",
+      "budget": {
+        "pytest_commands": 5,
+        "max_seconds_per_command": 120,
+        "max_total_seconds": 300,
+        "numeric_threads": 1,
+        "new_test_modules": 0
+      },
+      "prior_budgets_reopened": false,
+      "scientific_outcomes_created": false,
+      "protected_evaluation_opened": false,
+      "source_composition": "Exact donor production blobs; one clean three-way CLI-test merge; target scientific/history records retained.",
+      "verification_receipt": "research/integration/memory_population_20261010/receipt.json",
+      "tests": {
+        "passed": 131,
+        "failed": 0,
+        "skipped": 0,
+        "warnings_as_errors": true,
+        "existing_modules": 10,
+        "new_test_modules_authored": 0,
+        "pytest_reported_seconds": 13.34,
+        "command_wall_seconds": 26.668690096998034,
+        "raw_log": "verification/attempt_02.log",
+        "command_receipt": "verification/attempt_02.json"
+      },
+      "consumed": {
+        "pytest_invocations": 2,
+        "command_wall_seconds": 26.73751204299697,
+        "max_declared_commands": 5,
+        "max_declared_wall_seconds": 300
+      },
+      "independent_review": {
+        "reviewer": "root agent",
+        "type": "independent source-only review",
+        "status": "PASS",
+        "scope": "Exact source diff including CLI, availability validation/filter ordering, digest-bound schema migration/router and merged CLI test; no source composition blocker. PR41 full object immutability remains separate.",
+        "additional_tests_run_by_reviewer": false
+      },
+      "remaining_gates": [
+        "Real population/measurement/model availability provenance remains unqualified.",
+        "PR43 fixes byte-backed array writes, not all public attributes or NumPy view metadata; PR41 full immutability is separate.",
+        "Current composition does not connect generated population preparation to an automatically provenance-qualified scientific residual bank.",
+        "Existing study/freeze/protected/reporting gates remain in force."
       ]
     }
   ]

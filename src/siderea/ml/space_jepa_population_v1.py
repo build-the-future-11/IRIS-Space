@@ -36,6 +36,7 @@ from .space_jepa_v2_data import (
 
 MEMBERSHIP_SCHEMA = "siderea.space_jepa_population_membership.v1"
 PREPARATION_SCHEMA = "siderea.space_jepa_population_preparation.v1"
+AS_OF_PREPARATION_SCHEMA = "siderea.space_jepa_population_preparation.v2"
 PARTITIONS = ("train", "validation", "test", "population_b")
 MAX_TENSOR_VALUES = 2_000_000
 _CSV_FIELDS = {
@@ -278,6 +279,77 @@ def _padded_values(groups: Sequence[dict[float, PrequentialExample]], batch_size
     return result
 
 
+def _as_of_policy(fit: float | None, selection: float | None) -> dict[str, Any] | None:
+    if fit is None and selection is None:
+        return None
+    if any(
+        isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value)
+        for value in (fit, selection)
+    ):
+        raise ValueError("both as-of boundaries must be finite real MJD values")
+    assert fit is not None and selection is not None
+    if not fit < selection:
+        raise ValueError("fit boundary must be strictly before selection boundary")
+    return {
+        "schema": "siderea.space_jepa_population_as_of.v1",
+        "fit_available_through_mjd": float(fit),
+        "selection_available_through_mjd": float(selection),
+        "training_vocabulary": "A_train_observations_available_at_or_before_fit",
+        "training_labels": "full_horizon_and_all_targets_at_or_before_fit",
+        "validation": "cutoff_after_fit; full_horizon_and_all_targets_at_or_before_selection",
+        "final_test_and_population_b": "cutoff_strictly_after_selection",
+        "boundary_source": "caller_declared; not_inferred_from_outcomes",
+        "scope": "prepared_data_only; no_model_fit_or_selection_attested",
+    }
+
+
+def _as_of_groups(
+    groups: Sequence[dict[float, PrequentialExample]],
+    split_name: str,
+    policy: Mapping[str, Any],
+) -> tuple[list[dict[float, PrequentialExample]], list[dict[str, Any]]]:
+    accepted: list[dict[float, PrequentialExample]] = []
+    excluded: list[dict[str, Any]] = []
+    fit, selection = policy["fit_available_through_mjd"], policy["selection_available_through_mjd"]
+    for group in groups:
+        representative = next(iter(group.values()))
+        cutoff = representative.cutoff_mjd
+        horizon_end = cutoff + max(group)
+        if not math.isfinite(horizon_end):
+            raise ValueError("declared horizon end must be finite")
+        latest_target = max(
+            item.available_at_mjd for example in group.values() for item in example.target
+        )
+        failures = []
+        lower = fit if split_name == "validation" else selection
+        upper = fit if split_name == "train" else selection
+        if split_name != "train" and cutoff <= lower:
+            failures.append(
+                "forecast_not_after_fit"
+                if split_name == "validation"
+                else "forecast_not_after_selection"
+            )
+        if split_name in ("train", "validation"):
+            if horizon_end > upper:
+                failures.append("declared_horizon_not_complete_by_boundary")
+            if latest_target > upper:
+                failures.append("target_not_available_by_boundary")
+        if failures:
+            excluded.append(
+                {
+                    "physical_entity_id": representative.entity_id,
+                    "example_id": representative.example_id,
+                    "cutoff_mjd": cutoff,
+                    "declared_horizon_end_mjd": horizon_end,
+                    "latest_target_available_at_mjd": latest_target,
+                    "reasons": failures,
+                }
+            )
+        else:
+            accepted.append(group)
+    return accepted, excluded
+
+
 def _tensor_digest(batches: Sequence[Mapping[str, Any]]) -> str:
     identity = []
     for batch in batches:
@@ -304,6 +376,8 @@ def prepare_population_batches(
     validation_fraction: float = 0.2,
     test_fraction: float = 0.2,
     batch_size: int = 32,
+    fit_available_through_mjd: float | None = None,
+    selection_available_through_mjd: float | None = None,
 ) -> dict[str, Any]:
     """Publish four generated/development partitions; retain all failed attempts.
 
@@ -313,6 +387,11 @@ def prepare_population_batches(
     output = Path(output_directory).expanduser().absolute()
     output.mkdir(parents=True, exist_ok=False)
     stage = "input_snapshot"
+    schema = (
+        AS_OF_PREPARATION_SCHEMA
+        if fit_available_through_mjd is not None or selection_available_through_mjd is not None
+        else PREPARATION_SCHEMA
+    )
     try:
         source_files = _checked_sources()
         photometry = _bounded_snapshot(Path(photometry_csv).expanduser(), 8 * 1024 * 1024)
@@ -320,6 +399,7 @@ def prepare_population_batches(
         membership = _bounded_snapshot(Path(membership_json).expanduser(), 2 * 1024 * 1024)
         _publish_bytes(output / "membership-input.json", membership)
         stage = "input_validation"
+        as_of = _as_of_policy(fit_available_through_mjd, selection_available_through_mjd)
         document, aliases, populations = _membership(membership)
         observations, provenance = _observations(photometry, aliases, populations)
         values = (*horizons_days, train_fraction, validation_fraction, test_fraction)
@@ -364,7 +444,16 @@ def prepare_population_batches(
                 entity for entity, population in populations.items() if population != population_a
             )
         )
-        band_to_id = training_band_vocabulary(a_observations, splits["train"])
+        vocabulary_observations = (
+            a_observations
+            if as_of is None
+            else [
+                item
+                for item in a_observations
+                if item.available_at_mjd <= as_of["fit_available_through_mjd"]
+            ]
+        )
+        band_to_id = training_band_vocabulary(vocabulary_observations, splits["train"])
         stage = "tensor_preparation"
         split_receipts: dict[str, Any] = {}
         row_receipts: list[dict[str, Any]] = []
@@ -376,6 +465,23 @@ def prepare_population_batches(
                 selected, horizons_days=horizons, minimum_prefix=2
             )
             groups = _complete_groups(examples, horizons)
+            admission = None
+            if as_of is not None:
+                complete_count = len(groups)
+                candidate_count = len({(item.entity_id, item.cutoff_mjd) for item in examples})
+                groups, excluded = _as_of_groups(groups, split_name, as_of)
+                admission = {
+                    "partition": split_name,
+                    "policy_digest": digest_value(as_of),
+                    "candidate_cutoffs_seen": candidate_count,
+                    "candidate_complete_cutoffs": complete_count,
+                    "incomplete_cutoffs_dropped": candidate_count - complete_count,
+                    "admitted_complete_cutoffs": len(groups),
+                    "excluded_complete_cutoffs": len(excluded),
+                    "excluded": excluded,
+                }
+                _publish_json(output / f"{split_name}-as-of-admission.json", admission)
+                examples = [example for group in groups for example in group.values()]
             total_values += _padded_values(groups, batch_size)
             if total_values > MAX_TENSOR_VALUES:
                 raise ValueError("prepared tensors exceed two million padded floating-point values")
@@ -386,7 +492,10 @@ def prepare_population_batches(
                 band_to_id=band_to_id,
             )
             if not batches:
-                raise ValueError(f"partition {split_name!r} has no complete multi-horizon rows")
+                qualifier = "admitted " if as_of is not None else ""
+                raise ValueError(
+                    f"partition {split_name!r} has no {qualifier}complete multi-horizon rows"
+                )
             expected_ids = [group[horizons[0]].example_id for group in groups]
             if [item for batch in batches for item in batch["example_ids"]] != expected_ids:
                 raise RuntimeError("prepared tensor identities disagree with row provenance")
@@ -456,6 +565,17 @@ def prepare_population_batches(
                     max(item.available_at_mjd for item in selected),
                 ],
             }
+            if admission is not None:
+                admission_file = output / f"{split_name}-as-of-admission.json"
+                split_receipts[split_name]["as_of_admission"] = {
+                    key: value for key, value in admission.items() if key != "excluded"
+                }
+                split_receipts[split_name]["as_of_admission"].update(
+                    {
+                        "receipt": admission_file.name,
+                        "file_sha256": sha256(admission_file.read_bytes()).hexdigest(),
+                    }
+                )
         stage = "manifest_publication"
         rows_raw = "".join(
             json.dumps(row, sort_keys=True, allow_nan=False) + "\n" for row in row_receipts
@@ -463,7 +583,7 @@ def prepare_population_batches(
         _publish_bytes(output / "rows.jsonl", rows_raw)
         _checked_sources()
         identity = {
-            "schema": PREPARATION_SCHEMA,
+            "schema": schema,
             "status": "COMPLETE",
             "purpose": "development",
             "scientific_execution_authorized": False,
@@ -482,10 +602,14 @@ def prepare_population_batches(
             "horizons_days": list(horizons),
             "batch_size": batch_size,
             "band_to_id": band_to_id,
-            "vocabulary_policy": "A_training_entities_only; channel=[survey,band]; unknown_id=0",
+            "vocabulary_policy": (
+                "A_training_entities_only; channel=[survey,band]; unknown_id=0"
+                if as_of is None
+                else "A_train_available_by_fit_only; channel=[survey,band]; unknown_id=0"
+            ),
             "normalization_policy": "detected_context_prefix_only",
             "split_policy": "A_first_available_then_canonical_entity; B_excluded_from_A_split",
-            "global_training_before_evaluation_established": False,
+            "global_training_before_evaluation_established": as_of is not None,
             "requested_A_fractions": {
                 "train": train_fraction,
                 "validation": validation_fraction,
@@ -498,6 +622,13 @@ def prepare_population_batches(
             "source_file_sha256": source_files,
             "environment": {"python": platform.python_version(), "torch": str(torch.__version__)},
         }
+        if as_of is not None:
+            identity["as_of_policy"] = as_of
+            identity["as_of_policy_digest"] = digest_value(as_of)
+            identity["global_selection_before_final_evaluation_established"] = True
+            identity["chronology_scope"] = (
+                "prepared_data_only; model_fit_or_selection_not_performed"
+            )
         manifest = {**identity, "result_digest": digest_value(identity)}
         _publish_json(output / "manifest.json", manifest)
         return manifest
@@ -507,7 +638,7 @@ def prepare_population_batches(
             _publish_json(
                 output / "failure.json",
                 {
-                    "schema": PREPARATION_SCHEMA,
+                    "schema": schema,
                     "status": "FAILED",
                     "stage": stage,
                     "error_type": type(exc).__name__,
@@ -537,6 +668,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         metavar=("TRAIN", "VALIDATION", "TEST"),
     )
     parser.add_argument("--batch-size", type=int, default=32)
+    parser.add_argument("--fit-available-through-mjd", type=float)
+    parser.add_argument("--selection-available-through-mjd", type=float)
     args = parser.parse_args(argv)
     try:
         result = prepare_population_batches(
@@ -548,6 +681,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             validation_fraction=args.fractions[1],
             test_fraction=args.fractions[2],
             batch_size=args.batch_size,
+            fit_available_through_mjd=args.fit_available_through_mjd,
+            selection_available_through_mjd=args.selection_available_through_mjd,
         )
     except (ValueError, OSError, RuntimeError, csv.Error) as exc:
         print(f"population preparation failed: {exc}", file=sys.stderr)

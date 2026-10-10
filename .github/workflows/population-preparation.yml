@@ -7,6 +7,7 @@ on:
       - 'src/siderea/ml/space_jepa_v2_data.py'
       - 'src/siderea/ml/prequential.py'
       - 'tests/test_space_jepa_population_v1.py'
+      - 'tests/test_space_jepa_population_as_of.py'
       - 'scripts/demo_space_jepa_population_v1.py'
       - '.github/workflows/population-preparation.yml'
 
@@ -36,4 +37,4 @@ jobs:
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
         run: |
           test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
-          python -m pytest -q -W error tests/test_space_jepa_population_v1.py tests/test_space_jepa_v2_preparation_integrity.py tests/test_space_jepa_v2_data.py tests/test_prequential.py
+          python -m pytest -q -W error tests/test_space_jepa_population_as_of.py tests/test_space_jepa_population_v1.py tests/test_space_jepa_v2_preparation_integrity.py tests/test_space_jepa_v2_data.py tests/test_prequential.py

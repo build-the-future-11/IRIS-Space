@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "IRIS / SIDEREA / Space JEPA 2",
-  "updated_utc": "2026-10-10T05:57:44.278854+00:00",
+  "updated_utc": "2026-10-10T09:55:00.492675+00:00",
   "repository_base_commit": "f336ce1552d5270f3b3ad81682cd2fb0565ea0c2",
   "scientific_question": "Does predictive memory improve transient retrieval at fixed review cost on physical-entity-disjoint chronological and shifted source populations?",
   "scientific_disposition": "SUCCESSOR_PROTOCOL_NOT_FROZEN; no confirmatory successor result or discovery claim",
@@ -148,6 +148,57 @@
       },
       "metadata_note": "This closure update changes state and verification prose only; source, tests, workflow and generated artifacts remain exactly as independently reviewed and executed.",
       "scientific_outcomes_created": false
+    },
+    {
+      "date": "2026-10-10",
+      "session": "population-as-of-v2-20261010",
+      "kind": "development_as_of_input_policy",
+      "record": "research/DEVELOPMENT_POPULATION_AS_OF_V2_20261010.md",
+      "previous_gap": "enrollment chronology alone does not establish global training-label availability",
+      "new_property": "opt-in v2 bounds training labels/vocabulary, validation labels and evaluation forecasts by caller-declared fit/selection times",
+      "result": "63 generated checks pass; source-only independent review passes",
+      "failure_preserved": "one initial v1 error-text compatibility failure; fixed without altering the expected legacy contract",
+      "scientific_outcomes_created": false
+    }
+  ],
+  "development_sessions": [
+    {
+      "id": "population-as-of-v2-20261010",
+      "status": "IMPLEMENTED_VERIFIED_REVIEWED",
+      "parent_commit": "5b4b6ec4ab5bc90e0e74e0f14941c7415c17fc04",
+      "contract": "research/DEVELOPMENT_POPULATION_AS_OF_V2_20261010.md",
+      "budget": {
+        "local_test_commands": 6,
+        "local_test_wall_seconds": 180,
+        "independent_review_commands": 1,
+        "cpu_threads": 1,
+        "optimizer_steps": 0,
+        "scientific_runs": 0,
+        "protected_outcomes": 0,
+        "paid_compute": 0
+      },
+      "scientific_outcomes_created": false,
+      "tests": {
+        "new": 17,
+        "inherited": 46,
+        "passed": 63,
+        "failed": 0,
+        "skipped": 0
+      },
+      "verification_receipt": "research/verification/population_as_of_v2_20261010/receipt.json",
+      "consumed": {
+        "local_test_commands": 2,
+        "local_test_wall_seconds": 12.96790312801022
+      },
+      "independent_review": {
+        "reviewer": "root agent",
+        "status": "PASS",
+        "scope": "source-only; no extra tests or scientific validation"
+      },
+      "remaining_gates": [
+        "review and integrate the explicit v2 development policy",
+        "qualify actual source membership, completeness and model availability before a scientific freeze"
+      ]
     }
   ]
 }

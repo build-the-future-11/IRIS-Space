@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "project": "IRIS / SIDEREA / Space JEPA 2",
+  "updated_utc": "2026-10-10",
+  "repository_base_commit": "7f14c66f9018db0e15d4e87d713bbe47d9479b10",
+  "scientific_question": "Does the proposed predictive-memory mechanism improve useful transient retrieval at fixed review cost on entity-disjoint chronological and shifted populations?",
+  "scientific_disposition": "No successor confirmatory result; no discovery or promotion claim",
+  "current_phase": "ENGINEERING_DEVELOPMENT_REVIEW",
+  "current_hypothesis_change": false,
+  "protected_evaluation_opened": false,
+  "scientific_runs_this_revision": 0,
+  "execution_budget": {
+    "scope": "Bounded generated-data regression and existing correctness tests only",
+    "paid_compute": false,
+    "training_campaigns": 0,
+    "protected_runs": 0
+  },
+  "current_change": "Make the episodic residual bank an immutable byte-backed snapshot and vectorize its weighted quaternion retrieval while preserving numerical results on ordinary finite inputs. Version the bank digest; large finite metric weights no longer overflow normalization.",
+  "required_session_reads": [
+    "research/aqpm_successor/FREEZE_STATUS_2026-10-05.json",
+    "research/aqpm_successor/README.md",
+    "docs/SPACE_JEPA_2_PROTOCOL.md",
+    "configs/space-jepa-2-protocol.json",
+    "research/DEVELOPMENT_MEMORY_SNAPSHOT_20261010.md"
+  ],
+  "preserved_history_index": [
+    "paper/research/claim-source-ledger.md",
+    "submission/iris-2026-27/CLAIM_LEDGER.md",
+    "https://github.com/build-the-future-11/IRIS-Space/pull/36",
+    "https://github.com/build-the-future-11/IRIS-Space/pull/40"
+  ],
+  "history_index_scope": "Entry points to retained repository history and existing PRs; this is not a claim to have re-audited all historical evidence.",
+  "pending_gates": [
+    "GitHub review and integration of the independently reviewed memory kernel.",
+    "Real trajectory/source provenance, a source-population holdout and full successor freeze are still required.",
+    "Do not open protected data or seeds, including the separately supplied 1000–1029 lock, during this engineering work.",
+    "Residual availability times, training-only membership and label provenance require an explicit input/protocol contract; immutable arrays alone do not establish them."
+  ],
+  "history": [
+    {
+      "date": "2026-10-10",
+      "kind": "engineering_revision",
+      "record": "research/DEVELOPMENT_MEMORY_SNAPSHOT_20261010.md",
+      "status": "implemented; 27 tests passed; independent source review passed; integration pending",
+      "scientific_outcomes_created": false
+    }
+  ]
+}

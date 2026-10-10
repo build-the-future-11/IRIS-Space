@@ -219,6 +219,19 @@ class EpisodicResidualMemory:
         allow_cross_population: bool = False,
         force_gate: float | None = None,
     ) -> RetrievalResult:
+        # Policy controls are validated before inspecting eligibility. A string
+        # such as "false" is truthy in Python and must never broaden the
+        # admitted population. Invalid forced gates must not be hidden by an
+        # empty neighbor set either.
+        if type(allow_cross_population) is not bool:
+            raise ValueError("allow_cross_population must be an explicit boolean")
+        if force_gate is not None and (
+            isinstance(force_gate, (bool, np.bool_))
+            or not isinstance(force_gate, Real)
+            or not math.isfinite(force_gate)
+            or not 0.0 <= force_gate <= 1.0
+        ):
+            raise ValueError("force_gate must be a finite real number within [0, 1]")
         key = _quaternion_array(query, "query")
         base = _quaternion_array(base_forecast, "base_forecast")
         if key.shape != self.entries[0].key.shape or base.shape != key.shape:
@@ -264,12 +277,7 @@ class EpisodicResidualMemory:
         normalized_entropy = entropy / math.log(len(weights)) if len(weights) > 1 else 0.0
         automatic_gate = 1.0 / (1.0 + math.exp(min(60.0, distances[0])))
         automatic_gate *= 1.0 - 0.5 * normalized_entropy
-        if force_gate is None:
-            gate = automatic_gate
-        else:
-            if not math.isfinite(force_gate) or not 0.0 <= force_gate <= 1.0:
-                raise ValueError("force_gate must lie within [0, 1]")
-            gate = force_gate
+        gate = automatic_gate if force_gate is None else float(force_gate)
         return RetrievalResult(
             residual=residual,
             gate=gate,

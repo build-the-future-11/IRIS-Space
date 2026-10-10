@@ -2993,18 +2993,7 @@ def _command_space_jepa_v2_memory(args: argparse.Namespace) -> int:
     raw = json.loads(args.entries_json.read_text(encoding="utf-8"))
     if not isinstance(raw, list) or any(not isinstance(item, Mapping) for item in raw):
         raise ValueError("memory entries JSON must contain an array of objects")
-    entries = [
-        MemoryEntry(
-            entry_id=str(item["entry_id"]),
-            key=item["key"],
-            residual=item["residual"],
-            source_group=str(item["source_group"]),
-            cutoff_mjd=float(item["cutoff_mjd"]),
-            population=str(item["population"]),
-            calibration=str(item["calibration"]),
-        )
-        for item in raw
-    ]
+    entries = [MemoryEntry.from_mapping(item) for item in raw]
     memory = EpisodicResidualMemory(
         entries,
         temperature=args.temperature,
@@ -3023,34 +3012,14 @@ def _command_space_jepa_v2_memory(args: argparse.Namespace) -> int:
 
 
 def _command_space_jepa_v2_route(args: argparse.Namespace) -> int:
-    from siderea.ml.episodic_memory import EpisodicResidualMemory, MemoryEntry
+    from siderea.ml.episodic_memory import EpisodicResidualMemory
     from siderea.ml.space_jepa_v2_router import route_space_jepa_v2_evidence
 
     payload = _load_json_mapping(args.input, "Space JEPA 2 routing input")
     memory = None
     if args.memory is not None:
         memory_payload = _load_json_mapping(args.memory, "APENic memory")
-        raw_entries = memory_payload.get("entries")
-        if not isinstance(raw_entries, list) or any(
-            not isinstance(item, Mapping) for item in raw_entries
-        ):
-            raise ValueError("APENic memory artifact lacks entry objects")
-        memory = EpisodicResidualMemory(
-            [
-                MemoryEntry(
-                    entry_id=str(item["entry_id"]),
-                    key=item["key"],
-                    residual=item["residual"],
-                    source_group=str(item["source_group"]),
-                    cutoff_mjd=float(item["cutoff_mjd"]),
-                    population=str(item["population"]),
-                    calibration=str(item["calibration"]),
-                )
-                for item in raw_entries
-            ],
-            temperature=float(memory_payload.get("temperature", 1.0)),
-            maximum_neighbors=int(memory_payload.get("maximum_neighbors", 16)),
-        )
+        memory = EpisodicResidualMemory.from_artifact(memory_payload)
     result = route_space_jepa_v2_evidence(
         base_forecast=payload["base_forecast"],
         observed_target=payload["observed_target"],

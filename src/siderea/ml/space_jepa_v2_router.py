@@ -76,6 +76,7 @@ def route_space_jepa_v2_evidence(
         corrected = retrieval.corrected
         memory_payload = {
             "status": "applied" if retrieval.supported else "unsupported",
+            "memory_digest": memory.digest,
             "supported": retrieval.supported,
             "gate": retrieval.gate,
             "neighbor_ids": list(retrieval.neighbor_ids),

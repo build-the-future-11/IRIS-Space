@@ -5,7 +5,6 @@ from __future__ import annotations
 import math
 from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import cast
 
 import numpy as np
 from numpy.typing import NDArray
@@ -54,8 +53,9 @@ def planck_nu(
         raise ValueError("frequencies must be positive and finite")
     exponent = PLANCK_J_S * frequency / (BOLTZMANN_J_K * temperature_k)
     denominator = np.expm1(np.clip(exponent, 0.0, 700.0))
-    # NumPy 2.3's ufunc typing loses this expression's known float64 dtype.
-    return cast(FloatArray, 2.0 * PLANCK_J_S * frequency**3 / LIGHT_SPEED_M_S**2 / denominator)
+    # Keep the known dtype explicit across NumPy versions' ufunc annotations.
+    radiance: FloatArray = 2.0 * PLANCK_J_S * frequency**3 / LIGHT_SPEED_M_S**2 / denominator
+    return radiance
 
 
 def luminosity_distance_mpc(

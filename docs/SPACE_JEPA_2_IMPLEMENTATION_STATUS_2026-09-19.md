@@ -14,10 +14,13 @@ also rejects duplicate or ambiguous row identities before executing the model.
 The exact supported behavior and compatibility boundary are in
 `SPACE_JEPA_2_MASK_CONTRACT.md`; the draft PR records the executed checks.
 
-The same draft makes two existing physics annotations compatible with local
-NumPy 2.3 typing: it marks the known Planck-result dtype and converts the
+The same draft makes two existing physics annotations compatible with
+NumPy 2.3 and newer typing: it annotates the known Planck-result dtype and converts the
 float64 probability floor to a Python float. The arithmetic expressions and
 threshold value are unchanged. No physics-model adjustment is introduced.
+The first cast-based annotation passed locally but triggered a redundant-cast
+error with hosted NumPy 2.4.6; an annotated intermediate preserves the expression
+and avoids that version-dependent diagnostic.
 
 This follow-up is engineering validation on constructed inputs. It does not
 supersede `research/aqpm_successor/FREEZE_STATUS_2026-10-05.json`, authorize a

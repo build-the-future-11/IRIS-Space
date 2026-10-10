@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "project": "IRIS / SIDEREA / Space JEPA 2",
+  "updated_utc": "2026-10-10T05:54:23.299734+00:00",
+  "repository_base_commit": "f336ce1552d5270f3b3ad81682cd2fb0565ea0c2",
+  "scientific_question": "Does predictive memory improve transient retrieval at fixed review cost on physical-entity-disjoint chronological and shifted source populations?",
+  "scientific_disposition": "SUCCESSOR_PROTOCOL_NOT_FROZEN; no confirmatory successor result or discovery claim",
+  "current_phase": "DEVELOPMENT_INPUT_PATH_VERIFIED_PENDING_INTEGRATION",
+  "current_change": "Opt-in population-B preparation with explicit physical aliases, metadata membership, A-only vocabulary and four executable tensor partitions.",
+  "protected_evaluation_opened": false,
+  "scientific_runs_this_revision": 0,
+  "research_complete": false,
+  "required_session_reads": [
+    "research/aqpm_successor/README.md",
+    "research/aqpm_successor/FREEZE_STATUS_2026-10-05.json",
+    "docs/SPACE_JEPA_2_PROTOCOL.md",
+    "configs/space-jepa-2-protocol.json",
+    "research/DEVELOPMENT_POPULATION_PREPARATION_V1_20261010.md"
+  ],
+  "active_session": {
+    "id": "20261010-population-preparation-v1",
+    "authorization": "Fresh user continuation requesting substantive GitHub research improvements; root approved this bounded development scope.",
+    "status": "VERIFICATION_COMPLETE_DRAFT_PUBLICATION_AUTHORIZED",
+    "budget": {
+      "local_targeted_test_commands": 4,
+      "local_targeted_test_wall_seconds": 180,
+      "independent_review_test_commands": 1,
+      "retained_generated_demo_attempts": 1,
+      "retained_demo_wall_seconds": 60,
+      "cpu_threads": 1,
+      "generated_demo_photometry_rows": 64,
+      "training_steps": 0,
+      "paid_jobs": 0,
+      "protected_runs": 0
+    },
+    "consumed": {
+      "local_targeted_test_commands": 2,
+      "local_targeted_test_wall_seconds": 16.321,
+      "retained_generated_demo_attempts": 1,
+      "retained_demo_wall_seconds": 6.969
+    }
+  },
+  "preserved_history_index": [
+    "paper/research/claim-source-ledger.md",
+    "submission/iris-2026-27/CLAIM_LEDGER.md",
+    "research/aqpm_successor/FREEZE_STATUS_2026-10-05.json",
+    "https://github.com/build-the-future-11/IRIS-Space/pull/40",
+    "https://github.com/build-the-future-11/IRIS-Space/pull/42",
+    "https://github.com/build-the-future-11/IRIS-Space/pull/43",
+    "https://github.com/build-the-future-11/IRIS-Space/pull/44"
+  ],
+  "history_index_scope": "Indices preserve existing source/PR/artifact history; these branch-local records do not replace other branches' canonical states or claim a complete retrospective evidence audit.",
+  "pending_gates": [
+    "Publish reviewed stacked draft, verify the complete remote tree and its bounded hosted checks; do not merge.",
+    "Real metadata/alias/measurement provenance and a separately frozen source-population study remain unqualified.",
+    "Enrollment chronology is not a global training-label availability embargo; the new manifest must explicitly retain this distinction.",
+    "Protected outcomes and seeds 1000\u20131029 remain closed; no model promotion or TNS reporting is authorized.",
+    "No changes to the completed Eigen geometry-v3 session or its budget."
+  ],
+  "history": [
+    {
+      "at_utc": "2026-10-10T05:38:53Z",
+      "kind": "development_contract_and_budget",
+      "session": "20261010-population-preparation-v1",
+      "record": "research/DEVELOPMENT_POPULATION_PREPARATION_V1_20261010.md",
+      "observation": "The declared source-population-B protocol has no executable population partition in existing preparation; only three A partitions are emitted.",
+      "status": "recorded before source/test implementation",
+      "scientific_outcomes_created": false
+    },
+    {
+      "kind": "local_targeted_test",
+      "session": "20261010-population-preparation-v1",
+      "record": "research/verification/population_preparation_v1_20261010/attempt_01.json",
+      "exit_code": 1,
+      "wall_seconds": 10.57,
+      "scientific_outcomes_created": false
+    },
+    {
+      "kind": "local_targeted_test",
+      "session": "20261010-population-preparation-v1",
+      "record": "research/verification/population_preparation_v1_20261010/attempt_02.json",
+      "exit_code": 0,
+      "wall_seconds": 5.751,
+      "scientific_outcomes_created": false
+    },
+    {
+      "kind": "independent_source_review",
+      "reviewer": "root",
+      "status": "PASS",
+      "scope": "population module, all29 new tests, demo, workflow and guide",
+      "scientific_outcomes_created": false
+    },
+    {
+      "kind": "generated_demo_started",
+      "record": "research/verification/population_preparation_v1_20261010/demo_attempt_started.json",
+      "scientific_outcomes_created": false
+    },
+    {
+      "kind": "generated_demo_finished",
+      "status": "PASSED",
+      "record": "research/verification/population_preparation_v1_20261010/demo_attempt.json",
+      "wall_seconds": 6.969,
+      "scientific_outcomes_created": false
+    },
+    {
+      "at_utc": "2026-10-10T05:54:23.299734+00:00",
+      "kind": "engineering_verification_complete",
+      "session": "20261010-population-preparation-v1",
+      "status": "PASS; independent review accepted; draft publication authorized",
+      "tests": {
+        "new": 29,
+        "existing": 17,
+        "total": 46,
+        "last_pytest_seconds": 4.47
+      },
+      "demo_record": "research/verification/population_preparation_v1_20261010/demo_attempt.json",
+      "scientific_outcomes_created": false
+    }
+  ]
+}

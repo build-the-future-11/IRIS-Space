@@ -1,0 +1,50 @@
+{
+  "schema": "siderea.population_preparation_engineering_receipt.v1",
+  "at_utc": "2026-10-10T05:54:23.299734+00:00",
+  "repository": "build-the-future-11/IRIS-Space",
+  "parent_pr": 40,
+  "parent_commit": "f336ce1552d5270f3b3ad81682cd2fb0565ea0c2",
+  "parent_tree": "edfdc96d691dfa4d9749b2063bcb0e5509ddf386",
+  "branch": "codex/research-pipeline-20261010-population-preparation-v1",
+  "source_sha256": {
+    "src/siderea/ml/space_jepa_population_v1.py": "99c35b11b60cbc336ef3b0987e6481638184410264a34bee0427bc25583eb74b",
+    "tests/test_space_jepa_population_v1.py": "dede82109378e23f7e3bb47344927a0eed4ba686b879d3d17f1ce2189e599b0d",
+    "scripts/demo_space_jepa_population_v1.py": "c92360c671432b15c48afe7dd9353e9678377a45424f93d3533941eeb4c417e6",
+    ".github/workflows/population-preparation.yml": "1145a96bc4e9d82acd8e4cf26ad692b604b84ee0642d71b982d67ffc669f012c"
+  },
+  "test_attempts": [
+    "attempt_01.json",
+    "attempt_02.json"
+  ],
+  "final_tests": {
+    "passed": 46,
+    "new": 29,
+    "parent": 17,
+    "pytest_seconds": 4.47,
+    "command_seconds": 5.751,
+    "warnings_as_errors": true
+  },
+  "static_checks": {
+    "ruff": "PASS",
+    "changed_module_strict_mypy": "PASS",
+    "patch_whitespace": "PASS after scoped CRLF CSV attributes; original raw CSV byte snapshots preserved exactly"
+  },
+  "independent_source_review": {
+    "reviewer": "root",
+    "status": "PASS",
+    "scope": "full producer,29 new tests,demo,workflow,guide; no blocker"
+  },
+  "demo_attempt": "demo_attempt.json",
+  "scientific_result": "NONE; generated implementation evidence only",
+  "protected_outcomes_opened": false,
+  "optimizer_steps": 0,
+  "paid_compute": 0,
+  "consumed_budget": {
+    "local_targeted_test_commands": 2,
+    "local_targeted_test_wall_seconds": 16.321,
+    "retained_generated_demo_attempts": 1,
+    "retained_demo_wall_seconds": 6.969
+  },
+  "publication_status": "REVIEWED_READY_FOR_DRAFT",
+  "publication_artifact_note": "Complete staged whitespace check initially reported the two byte-bound CSV files' CRLF endings. Scoped -text/whitespace=cr-at-eol attributes preserve those exact input bytes; no generated artifact or runtime code was rewritten. Final staged check passed."
+}

@@ -45,6 +45,20 @@
     "retained_generated_demo_attempts": 1,
     "retained_demo_wall_seconds": 6.969
   },
-  "publication_status": "REVIEWED_READY_FOR_DRAFT",
-  "publication_artifact_note": "Complete staged whitespace check initially reported the two byte-bound CSV files' CRLF endings. Scoped -text/whitespace=cr-at-eol attributes preserve those exact input bytes; no generated artifact or runtime code was rewritten. Final staged check passed."
+  "publication_status": "PUBLISHED_DRAFT_UNMERGED",
+  "publication_artifact_note": "Complete staged whitespace check initially reported the two byte-bound CSV files' CRLF endings. Scoped -text/whitespace=cr-at-eol attributes preserve those exact input bytes; no generated artifact or runtime code was rewritten. Final staged check passed.",
+  "publication": {
+    "pr": 45,
+    "url": "https://github.com/build-the-future-11/IRIS-Space/pull/45",
+    "branch": "codex/research-pipeline-20261010-population-preparation-v1",
+    "base_branch": "codex/research-integrity-20261010-space",
+    "base_commit": "f336ce1552d5270f3b3ad81682cd2fb0565ea0c2",
+    "reviewed_implementation_commit": "3552d99cd8934091dcea5d407b33a463ec5be08c",
+    "reviewed_implementation_tree": "13e0d5027be7c7d1536401823b074a0c4e1d334b",
+    "status": "PUBLISHED_DRAFT_UNMERGED",
+    "full_remote_tree_leaf_count": 536,
+    "full_remote_tree_mismatches": 0,
+    "hosted_checks": "Observe the latest PR head; initial code-head workflows38029221639 and38029221622 were in progress at publication closure."
+  },
+  "metadata_closure": "No runtime, test, workflow or generated artifact changes after the successful demo."
 }

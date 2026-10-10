@@ -171,3 +171,19 @@ No additional demonstration or optional test was run after this success.
 This concludes the bounded engineering verification. Draft publication and exact
 remote-tree/CI receipts follow separately. Research remains `PROTOCOL_NOT_FROZEN`;
 none of these generated results is a protected OOD evaluation or astronomy result.
+
+### Draft publication and complete-tree readback
+
+Published [draft PR #45](https://github.com/build-the-future-11/IRIS-Space/pull/45)
+on the unchanged PR #40 branch. The reviewed implementation commit is
+`3552d99cd8934091dcea5d407b33a463ec5be08c`, tree
+`13e0d5027be7c7d1536401823b074a0c4e1d334b`. All **536 leaf paths, modes and Git
+object identities** match the exact parent plus the 32 intended changed paths,
+including all four original generated tensor blobs. The draft was re-read as
+mergeable; no parent or concurrent branch was moved.
+
+This publication-closure revision changes only state, this development history and
+the engineering receipt. Runtime source, tests, workflow and generated evidence
+remain unchanged. The initial code-head workflow runs were in progress at closure;
+hosted results must be reported for the latest PR head rather than relabeling an
+earlier head's result. The PR body records final-head verification separately.

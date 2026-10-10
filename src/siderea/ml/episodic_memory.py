@@ -115,6 +115,13 @@ class RetrievalResult:
 class EpisodicResidualMemory:
     """Immutable query surface over training-only residual entries."""
 
+    entries: tuple[MemoryEntry, ...]
+    _metric_input: FloatArray
+    metric_weights: FloatArray
+    temperature: float
+    maximum_neighbors: int
+    digest: str
+
     def __init__(
         self,
         entries: Iterable[MemoryEntry],

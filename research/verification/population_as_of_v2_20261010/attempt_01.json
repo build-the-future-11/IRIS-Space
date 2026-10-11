@@ -1,0 +1,23 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-W",
+    "error",
+    "tests/test_space_jepa_population_as_of.py",
+    "tests/test_space_jepa_population_v1.py",
+    "tests/test_space_jepa_v2_preparation_integrity.py",
+    "tests/test_space_jepa_v2_data.py",
+    "tests/test_prequential.py"
+  ],
+  "exit_code": 1,
+  "wall_seconds": 6.302514980008709,
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "source_sha256": {
+    "src/siderea/ml/space_jepa_population_v1.py": "3f44dfb9e33d538f512a9142f7081eb42d1f873f7ac5a117a3114c405ec66bfd",
+    "tests/test_space_jepa_population_as_of.py": "be0af55e4d8cbd0a32df41a5e597663784d9cad0511b1d5cd98e1963aa8b668d"
+  },
+  "scope": "generated input checks only; zero training or protected evaluations"
+}

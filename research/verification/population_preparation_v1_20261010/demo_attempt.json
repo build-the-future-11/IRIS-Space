@@ -1,0 +1,99 @@
+{
+  "status": "PASSED",
+  "at_utc": "2026-10-10T05:52:52.719876+00:00",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "scripts/demo_space_jepa_population_v1.py",
+    "research/verification/population_preparation_v1_20261010/demo"
+  ],
+  "environment": {
+    "PYTHONPATH": "/workspace/scratch/2a0c1e6ddd92/torch-deps:/workspace/scratch/2a0c1e6ddd92/continuation-repos/IRIS-Population-Development/src",
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1"
+  },
+  "python": "3.12.14",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "pytest": "9.1.1"
+  },
+  "source_file_sha256": {
+    "scripts/demo_space_jepa_population_v1.py": "c92360c671432b15c48afe7dd9353e9678377a45424f93d3533941eeb4c417e6",
+    "src/siderea/ml/space_jepa_population_v1.py": "99c35b11b60cbc336ef3b0987e6481638184410264a34bee0427bc25583eb74b",
+    "src/siderea/ml/space_jepa_v2.py": "a1c1d56946a8aa5a9c2ac3325990dd8e255d679150cdf01996f26bd21b5a3032",
+    "src/siderea/ml/quaternion.py": "dd3e8b359cedbdfa8a07dc2b81c9176270a500233c563b1f31acf0b62364b756",
+    "src/siderea/ml/space_jepa_v2_data.py": "c0714c90929c564406cb1c3252b0907524f1d3a5de08c8d17585730f9d253aec",
+    "src/siderea/ml/prequential.py": "533127732e5c535f09a5bb0d73aa53514b446e738c7759681ae4b31b92b07f60",
+    "src/siderea/atomic.py": "342c2742387a72aa2168ae9388490be30dfdf6719a4b10dd53995f083ee32ea1",
+    "src/siderea/provenance.py": "4713e99566e75903a0ebd94139b34ae3620a3c633162dd079f9e0928e896b3fe"
+  },
+  "independent_source_review": "Root reviewed complete module, all29 new tests, demo, workflow and guide; no blocker; authorized this one retained demo.",
+  "generated_rows": 64,
+  "optimizer_steps": 0,
+  "protected_outcomes": false,
+  "paid_compute": 0,
+  "exit_code": 0,
+  "error": null,
+  "wall_seconds": 6.969,
+  "post_source_file_sha256": {
+    "scripts/demo_space_jepa_population_v1.py": "c92360c671432b15c48afe7dd9353e9678377a45424f93d3533941eeb4c417e6",
+    "src/siderea/ml/space_jepa_population_v1.py": "99c35b11b60cbc336ef3b0987e6481638184410264a34bee0427bc25583eb74b",
+    "src/siderea/ml/space_jepa_v2.py": "a1c1d56946a8aa5a9c2ac3325990dd8e255d679150cdf01996f26bd21b5a3032",
+    "src/siderea/ml/quaternion.py": "dd3e8b359cedbdfa8a07dc2b81c9176270a500233c563b1f31acf0b62364b756",
+    "src/siderea/ml/space_jepa_v2_data.py": "c0714c90929c564406cb1c3252b0907524f1d3a5de08c8d17585730f9d253aec",
+    "src/siderea/ml/prequential.py": "533127732e5c535f09a5bb0d73aa53514b446e738c7759681ae4b31b92b07f60",
+    "src/siderea/atomic.py": "342c2742387a72aa2168ae9388490be30dfdf6719a4b10dd53995f083ee32ea1",
+    "src/siderea/provenance.py": "4713e99566e75903a0ebd94139b34ae3620a3c633162dd079f9e0928e896b3fe"
+  },
+  "source_files_unchanged": true,
+  "stdout_sha256": "36d3b0c7c81b3cce354d88f6f315566ec6218adc67a7de47a388ea11ea4f2de2",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "artifacts": {
+    "research/verification/population_preparation_v1_20261010/demo/demo-receipt.json": {
+      "sha256": "ec2e2e3e20f41e509e7688aed6615186cb1929e138efc731cda82a3105391c10",
+      "bytes": 2063
+    },
+    "research/verification/population_preparation_v1_20261010/demo/generated-inputs/membership.json": {
+      "sha256": "bac6e0d410d9dcf117766c278a9e5c533e39db27e91265861911da06f091d1a8",
+      "bytes": 1578
+    },
+    "research/verification/population_preparation_v1_20261010/demo/generated-inputs/photometry.csv": {
+      "sha256": "65e0ad7ac4f6479305dddf099eb764e29db18bdb33ddb0cb9e7264b783e97425",
+      "bytes": 5721
+    },
+    "research/verification/population_preparation_v1_20261010/demo/prepared/manifest.json": {
+      "sha256": "b3b2a26e5edb8e865ba0d3855dd5804d1a2d3c3ae9c711685d399ed9acc81ad7",
+      "bytes": 4215
+    },
+    "research/verification/population_preparation_v1_20261010/demo/prepared/membership-input.json": {
+      "sha256": "bac6e0d410d9dcf117766c278a9e5c533e39db27e91265861911da06f091d1a8",
+      "bytes": 1578
+    },
+    "research/verification/population_preparation_v1_20261010/demo/prepared/photometry-input.csv": {
+      "sha256": "65e0ad7ac4f6479305dddf099eb764e29db18bdb33ddb0cb9e7264b783e97425",
+      "bytes": 5721
+    },
+    "research/verification/population_preparation_v1_20261010/demo/prepared/population_b.pt": {
+      "sha256": "e5c2ef767c4407b47b7fe6ad3cad1f2e2abe66a12eaf176a7fe4b9c2d781d4f7",
+      "bytes": 8447
+    },
+    "research/verification/population_preparation_v1_20261010/demo/prepared/rows.jsonl": {
+      "sha256": "d1f35b409e7e07edcde09553473e58cc249c16d5fdd89655263240aa4d1ab377",
+      "bytes": 97564
+    },
+    "research/verification/population_preparation_v1_20261010/demo/prepared/test.pt": {
+      "sha256": "11e9b4e0a05b30888d9323ab9a2f38d265b9fec7f962e1e21bc3e746735b342a",
+      "bytes": 8447
+    },
+    "research/verification/population_preparation_v1_20261010/demo/prepared/train.pt": {
+      "sha256": "e436c4b5a716cb8663ca378436793b37178c87cb866281df43c528015d811ddb",
+      "bytes": 11635
+    },
+    "research/verification/population_preparation_v1_20261010/demo/prepared/validation.pt": {
+      "sha256": "4424900fd6271d5f3f20e40ed0866fc9a9f324c01fef1f9485c0bbb89496bc52",
+      "bytes": 5261
+    }
+  }
+}

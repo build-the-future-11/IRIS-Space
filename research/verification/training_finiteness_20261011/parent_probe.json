@@ -1,0 +1,58 @@
+{
+  "parent_commit": "8c84939d5c03255722d78f0f313c36f88951672b",
+  "parent_training_source_sha256": "dd2c6469d60cf36da79fb5670cea10531dff72eb8522d6f1f0819bcff662bcff",
+  "probe_source_sha256": "feef32efaa95ec76d8cd4af474efbc0314e9a738d6965957afbc816742f6f866",
+  "python": "3.12.14",
+  "torch": "2.14.1+cpu",
+  "numpy": "2.3.5",
+  "source": "Exact command output retained from the initial pre-repair probe",
+  "observations": [
+    {
+      "scale": 1,
+      "train_loss": "0.12598009407520294",
+      "validation_loss": "0.000980100012384355",
+      "raw_gradient_finite": true,
+      "raw_gradient_max": "124999999488.0",
+      "weights": [
+        "0.00029999998514540493",
+        "0.00029999998514540493",
+        "0.00029999998514540493",
+        "0.00029999998514540493"
+      ],
+      "ema_updates": 1,
+      "global_steps": 1
+    },
+    {
+      "scale": 1e+20,
+      "train_loss": "0.12598009407520294",
+      "validation_loss": "0.12598009407520294",
+      "raw_gradient_finite": true,
+      "raw_gradient_max": "1.250000041476692e+31",
+      "weights": [
+        "0.0",
+        "0.0",
+        "0.0",
+        "0.0"
+      ],
+      "ema_updates": 1,
+      "global_steps": 1
+    },
+    {
+      "scale": 1e+30,
+      "train_loss": "0.12598009407520294",
+      "validation_loss": "nan",
+      "raw_gradient_finite": false,
+      "raw_gradient_max": "inf",
+      "weights": [
+        "nan",
+        "nan",
+        "nan",
+        "nan"
+      ],
+      "ema_updates": 1,
+      "global_steps": 1
+    }
+  ],
+  "scientific_runs": 0,
+  "interpretation": "Arithmetic fixture only; no inference about astronomical efficacy"
+}

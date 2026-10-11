@@ -1,0 +1,68 @@
+[
+  {
+    "path": "docs/MEMORY_AVAILABILITY_V2.md",
+    "sha256": "e237c5079fd7951216c65f6704d5d5a1296256ed5a62f3e2d64a3fdfa2202427",
+    "target_blob": null,
+    "candidate_blob": "e02011e89be24f9072801a189348391bc4c26593"
+  },
+  {
+    "path": "research/ENGINEERING_NUMERICAL_INTEGRITY_20261010.json",
+    "sha256": "b24e33c8f5f432b55b04d3f60986b77692246127ae68d2ea97cd260e07272e1a",
+    "target_blob": null,
+    "candidate_blob": "93c5481c0097133bea763f03baf447d4922a0eba"
+  },
+  {
+    "path": "research/aqpm_successor/README.md",
+    "sha256": "d54abe2c305d47bafc8330f06125cfdcf62760da14919594e236d294546693d1",
+    "target_blob": "abafe2a82b46e2acddebdcdf8df74043ae9c747f",
+    "candidate_blob": "7cc3c38f01af64c097c1a99d13fffd20cfc7075c"
+  },
+  {
+    "path": "src/siderea/cli.py",
+    "sha256": "a188c4c3eec09a94794854b0bd86ec039ac8467691facd521672400062c4789f",
+    "target_blob": "a1fa8458b16cd5bdf59d40d7283f628ed433617b",
+    "candidate_blob": "9980b0fca8e4f6a596cdcf279b37b1b868f097bd"
+  },
+  {
+    "path": "src/siderea/ml/episodic_memory.py",
+    "sha256": "5e87c489e0f1ad79d84824b4e937ddf823797c78190f9b65dbe52f3768226389",
+    "target_blob": "75766de64629bfe6a2291b6887a6616106baf132",
+    "candidate_blob": "0eebb2cac7955bc8b43dc842d7acdf5347753729"
+  },
+  {
+    "path": "src/siderea/ml/space_jepa_v2_router.py",
+    "sha256": "cc01595b61d60a88105648ecce77d1f22e5947116a3328cbf8b9a6dfebceeeac",
+    "target_blob": "c56acfc6b1d894e45fd2171a67fc98377b809dea",
+    "candidate_blob": "38d17dc45e119c0f3c5227284858786388cf16ef"
+  },
+  {
+    "path": "tests/test_episodic_memory.py",
+    "sha256": "009766274a0b065dc4b1851416b1c16f86e34d251b6ad604d231bf16db58c41a",
+    "target_blob": "858e3045938d56e96348b58ffbceadb042608f55",
+    "candidate_blob": "90c97ab97ab689371b71fe1c8746e554bd601194"
+  },
+  {
+    "path": "tests/test_memory_availability.py",
+    "sha256": "73ae8b0b50cdc82de4303f32234ce8b0c18113aec48d1f13263bfce19737a0f6",
+    "target_blob": null,
+    "candidate_blob": "60a22997d66bbc9d0dc41ba52303f77bacb0806f"
+  },
+  {
+    "path": "tests/test_memory_policy_types.py",
+    "sha256": "6621ef12f0c248d69e50112b81aeacad080d3b314c5f584fdc460f2e6d62ead4",
+    "target_blob": null,
+    "candidate_blob": "5423a78fe8a5aac37e29401d09f0972cd03b8439"
+  },
+  {
+    "path": "tests/test_space_jepa_v2_cli.py",
+    "sha256": "160311dfff62226430c16c66e6cb94a10893cde9833a2b4705265b63d02a57f5",
+    "target_blob": "cb6416165af8845a344db071faaeb786ca4eb4ec",
+    "candidate_blob": "1e7f033b49e01f4aa94d00905a5c502fcd1105d1"
+  },
+  {
+    "path": "tests/test_space_jepa_v2_router.py",
+    "sha256": "dd8116a7adac6964841188a33a08492beb3c49b831c5307cfba52b85666eb570",
+    "target_blob": "9dcf6e3820e0df400af4e56873e3d605b04d7712",
+    "candidate_blob": "848e727e4579e19c018ff31ca2a307a680a9f5e1"
+  }
+]

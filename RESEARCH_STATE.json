@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "IRIS / SIDEREA / Space JEPA 2",
-  "updated_utc": "2026-10-11T14:51:33.443234+00:00",
+  "updated_utc": "2026-10-11T14:53:55.006919+00:00",
   "repository_base_commit": "f336ce1552d5270f3b3ad81682cd2fb0565ea0c2",
   "scientific_question": "Does predictive memory improve transient retrieval at fixed review cost on physical-entity-disjoint chronological and shifted source populations?",
   "scientific_disposition": "SUCCESSOR_PROTOCOL_NOT_FROZEN; no confirmatory successor result or discovery claim",
@@ -221,6 +221,25 @@
       "status": "PASS for reproduced loss/gradient-norm failure scope",
       "record": "research/verification/training_finiteness_20261011/review.json",
       "scientific_outcomes_created": false
+    },
+    {
+      "at_utc": "2026-10-11T14:53:55.006919+00:00",
+      "kind": "draft_publication_verified",
+      "session": "training-finiteness-20261011",
+      "publication": {
+        "pull_request": "https://github.com/build-the-future-11/IRIS-Space/pull/45",
+        "tested_source_commit": "fb88e13300dc0f60f95b00425a99cb38466cf616",
+        "tested_source_tree": "5daec51e33965bce1a8398a08242a58be81d3e03",
+        "remote_leaf_identities_verified": 568,
+        "remote_tree_mismatches": 0,
+        "integration_status": "draft_unmerged",
+        "hosted_statuses_observed": 0,
+        "pull_request_workflow_runs_observed": 0,
+        "hosted_validation_claimed": false,
+        "publication_policy": "Conservative [skip ci] choice carried from prior PR45 publication, not required by AGENTS; it does not waive normal CI before integration."
+      },
+      "closure_note": "This closure changes canonical metadata only; tested runtime source/tests and retained evidence remain unchanged.",
+      "scientific_outcomes_created": false
     }
   ],
   "development_sessions": [
@@ -316,7 +335,7 @@
     },
     {
       "id": "training-finiteness-20261011",
-      "status": "VERIFIED_AND_INDEPENDENTLY_REVIEWED",
+      "status": "CLOSED_PUBLISHED_DRAFT_UNMERGED",
       "parent_commit": "8c84939d5c03255722d78f0f313c36f88951672b",
       "contract": "research/verification/training_finiteness_20261011/CONTRACT.md",
       "budget": {
@@ -355,9 +374,21 @@
         "review_summary": "Finite training loss is checked before backward; native clip error_if_nonfinite=True precedes AdamW and EMA; per-batch evaluation loss must be finite; analytic control checks identical finite arithmetic and retention of earlier valid steps. Does not establish protection against every possible optimizer/state overflow."
       },
       "pending": [
-        "Publish a leased fast-forward of existing draft PR45; keep it draft and unmerged.",
+        "Normal current-head CI remains unrun and required before integration; local tests are not a substitute.",
         "Review/integrate the complete development source before any separately frozen scientific study."
-      ]
+      ],
+      "publication": {
+        "pull_request": "https://github.com/build-the-future-11/IRIS-Space/pull/45",
+        "tested_source_commit": "fb88e13300dc0f60f95b00425a99cb38466cf616",
+        "tested_source_tree": "5daec51e33965bce1a8398a08242a58be81d3e03",
+        "remote_leaf_identities_verified": 568,
+        "remote_tree_mismatches": 0,
+        "integration_status": "draft_unmerged",
+        "hosted_statuses_observed": 0,
+        "pull_request_workflow_runs_observed": 0,
+        "hosted_validation_claimed": false,
+        "publication_policy": "Conservative [skip ci] choice carried from prior PR45 publication, not required by AGENTS; it does not waive normal CI before integration."
+      }
     }
   ]
 }

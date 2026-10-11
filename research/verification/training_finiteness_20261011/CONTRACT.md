@@ -65,4 +65,8 @@ new cases. This guards the demonstrated loss and gradient-norm failure paths;
 it is not a guarantee against every possible optimizer-state or aggregate
 arithmetic overflow. Byte compilation and whitespace checks passed. Root
 approved a leased fast-forward of the existing draft, preserving prior history.
-No separate draft, base merge, hosted rerun or scientific execution is needed.
+No separate draft, base merge or scientific execution is needed for this
+arithmetic repair. The conservative [skip ci] publication choice follows the
+prior PR45 convention; it is not mandated by AGENTS and does not waive the
+normal current-head engineering CI required before integration. That CI remains
+unrun, so verification here is local and scoped.

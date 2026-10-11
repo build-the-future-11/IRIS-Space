@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "project": "IRIS / SIDEREA / Space JEPA 2",
-  "updated_utc": "2026-10-10T16:53:05.630641+00:00",
+  "updated_utc": "2026-10-11T14:51:33.443234+00:00",
   "repository_base_commit": "f336ce1552d5270f3b3ad81682cd2fb0565ea0c2",
   "scientific_question": "Does predictive memory improve transient retrieval at fixed review cost on physical-entity-disjoint chronological and shifted source populations?",
   "scientific_disposition": "SUCCESSOR_PROTOCOL_NOT_FROZEN; no confirmatory successor result or discovery claim",
-  "current_phase": "DEVELOPMENT_INPUT_AND_MEMORY_VERIFIED_AWAITING_BASE_INTEGRATION",
-  "current_change": "Compose PR43 residual availability v2 and strict memory policy into PR45 population preparation/as-of v2 without changing PR40 or population implementation.",
+  "current_phase": "DEVELOPMENT_FINITE_TRAINING_VERIFIED_AWAITING_INTEGRATION",
+  "current_change": "Reject nonfinite training/evaluation loss and nonfinite clipping norms before false successful optimizer/EMA steps; retain earlier input and memory integration.",
   "protected_evaluation_opened": false,
   "scientific_runs_this_revision": 0,
   "research_complete": false,
@@ -197,6 +197,30 @@
       "record": "research/integration/memory_population_20261010/receipt.json",
       "status": "PASS for source composition only; no scientific validation or full object immutability claim",
       "scientific_outcomes_created": false
+    },
+    {
+      "at_utc": "2026-10-11T14:48:59.901866+00:00",
+      "kind": "reproduced_numerical_training_failure",
+      "session": "training-finiteness-20261011",
+      "observation": "Real loss/trainer/AdamW path silently zeroed finite gradients with overflowing norm, or returned NaN validation after infinite gradients. Two-row analytic inputs only.",
+      "record": "research/verification/training_finiteness_20261011/CONTRACT.md",
+      "scientific_outcomes_created": false
+    },
+    {
+      "at_utc": "2026-10-11T14:50:22.709490+00:00",
+      "kind": "finite_training_admission_verified",
+      "session": "training-finiteness-20261011",
+      "record": "research/verification/training_finiteness_20261011/candidate.json",
+      "result": "24 focused generated-input tests passed; 6 original baseline failures preserved",
+      "scientific_outcomes_created": false
+    },
+    {
+      "at_utc": "2026-10-11T14:51:33.443234+00:00",
+      "kind": "independent_source_review",
+      "session": "training-finiteness-20261011",
+      "status": "PASS for reproduced loss/gradient-norm failure scope",
+      "record": "research/verification/training_finiteness_20261011/review.json",
+      "scientific_outcomes_created": false
     }
   ],
   "development_sessions": [
@@ -288,6 +312,51 @@
         "PR43 fixes byte-backed array writes, not all public attributes or NumPy view metadata; PR41 full immutability is separate.",
         "Current composition does not connect generated population preparation to an automatically provenance-qualified scientific residual bank.",
         "Existing study/freeze/protected/reporting gates remain in force."
+      ]
+    },
+    {
+      "id": "training-finiteness-20261011",
+      "status": "VERIFIED_AND_INDEPENDENTLY_REVIEWED",
+      "parent_commit": "8c84939d5c03255722d78f0f313c36f88951672b",
+      "contract": "research/verification/training_finiteness_20261011/CONTRACT.md",
+      "budget": {
+        "initial_analytic_probe_commands": 1,
+        "targeted_pytest_commands": 4,
+        "targeted_test_wall_seconds": 180,
+        "independent_source_reviews": 1,
+        "scientific_runs": 0,
+        "protected_outcomes": 0,
+        "paid_jobs": 0
+      },
+      "scientific_outcomes_created": false,
+      "previous_budgets_reopened": false,
+      "validation": {
+        "new_tests": 7,
+        "baseline_failed": 6,
+        "baseline_passed_control": 1,
+        "candidate_passed": 24,
+        "candidate_failed": 0,
+        "candidate_skipped": 0,
+        "warnings_as_errors": true,
+        "candidate_pytest_seconds": 2.28,
+        "candidate_command_seconds": 3.016394690996094,
+        "receipt": "research/verification/training_finiteness_20261011/candidate.json"
+      },
+      "consumed": {
+        "initial_probe_commands": 1,
+        "targeted_pytest_commands": 2,
+        "pytest_reported_seconds": 4.42
+      },
+      "independent_review": {
+        "reviewer": "root coordinator agent",
+        "type": "independent source-only review",
+        "status": "PASS for reproduced loss/gradient-norm failure scope",
+        "tested_by_reviewer": false,
+        "review_summary": "Finite training loss is checked before backward; native clip error_if_nonfinite=True precedes AdamW and EMA; per-batch evaluation loss must be finite; analytic control checks identical finite arithmetic and retention of earlier valid steps. Does not establish protection against every possible optimizer/state overflow."
+      },
+      "pending": [
+        "Publish a leased fast-forward of existing draft PR45; keep it draft and unmerged.",
+        "Review/integrate the complete development source before any separately frozen scientific study."
       ]
     }
   ]

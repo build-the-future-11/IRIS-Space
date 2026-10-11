@@ -99,7 +99,10 @@ def evaluate_space_jepa_v2_loss(
         context, context_mask, target, target_mask = _batch(raw_batch, device)
         prediction = model(context, context_mask)["base_forecast"]
         target_latent = model.encode_targets(target, target_mask)
-        losses.append(float(aqpm_jepa_loss(prediction, target_latent)["loss"].item()))
+        loss = float(aqpm_jepa_loss(prediction, target_latent)["loss"].item())
+        if not math.isfinite(loss):
+            raise ValueError("evaluation loss must be finite")
+        losses.append(loss)
     return float(np.mean(losses))
 
 
@@ -138,15 +141,19 @@ def train_space_jepa_v2(
             prediction = model(context, context_mask)["base_forecast"]
             target_latent = model.encode_targets(target, target_mask)
             losses = aqpm_jepa_loss(prediction, target_latent)
+            training_loss = float(losses["loss"].detach().item())
+            if not math.isfinite(training_loss):
+                raise ValueError("training loss must be finite before backward")
             losses["loss"].backward()
             torch.nn.utils.clip_grad_norm_(
                 trainable_parameters,
                 config.gradient_clip,
+                error_if_nonfinite=True,
             )
             optimizer.step()
             momentum = _ema_momentum(global_step, total_steps, config.ema_start, config.ema_end)
             model.update_target(momentum)
-            epoch_losses.append(float(losses["loss"].detach().item()))
+            epoch_losses.append(training_loss)
             global_step += 1
         validation_loss = evaluate_space_jepa_v2_loss(model, validation_batches, device=device)
         history.append(

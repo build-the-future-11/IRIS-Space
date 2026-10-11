@@ -1,0 +1,29 @@
+{
+  "command": [
+    "/workspace/scratch/979352a87beb/wharton_test_env/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-W",
+    "error",
+    "tests/test_space_jepa_training_finiteness.py",
+    "tests/test_space_jepa_v2_train.py",
+    "tests/test_space_jepa_v2.py",
+    "tests/test_quaternion_mask_gradients.py"
+  ],
+  "exit_code": 0,
+  "wall_seconds": 3.016394690996094,
+  "executed_utc": "2026-10-11T14:49:27.594482+00:00",
+  "environment": {
+    "PYTHONPATH": "src",
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1"
+  },
+  "files": {
+    "src/siderea/ml/space_jepa_v2_train.py": "998cd928f7e106de37d635a163b06d52428db17b22517a8a873c14bb2f739b9c",
+    "tests/test_space_jepa_training_finiteness.py": "e4180ca3346832d7b977545bbbb48fc2c95046fb37a0132fa1a0b3a897a2cec5"
+  },
+  "scientific_runs": 0,
+  "scope": "Generated arithmetic, mask and model/checkpoint fixtures only"
+}

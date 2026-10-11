@@ -1,0 +1,87 @@
+FFFFFF.                                                                  [100%]
+=================================== FAILURES ===================================
+__ test_finite_loss_bad_gradient_norm_cannot_advance_optimizer_or_ema[1e+20] ___
+
+scale = 1e+20
+
+    @pytest.mark.parametrize("scale", [1e20, 1e30])
+    def test_finite_loss_bad_gradient_norm_cannot_advance_optimizer_or_ema(scale: float) -> None:
+        model = AnalyticPredictor(scale)
+        initial = model.context_encoder.weight.detach().clone()
+        observed_gradients: list[Any] = []
+        model.context_encoder.weight.register_hook(
+            lambda gradient: observed_gradients.append(gradient.detach().clone())
+        )
+>       with pytest.raises(RuntimeError, match="non-finite"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE RuntimeError
+
+tests/test_space_jepa_training_finiteness.py:60: Failed
+__ test_finite_loss_bad_gradient_norm_cannot_advance_optimizer_or_ema[1e+30] ___
+
+scale = 1e+30
+
+    @pytest.mark.parametrize("scale", [1e20, 1e30])
+    def test_finite_loss_bad_gradient_norm_cannot_advance_optimizer_or_ema(scale: float) -> None:
+        model = AnalyticPredictor(scale)
+        initial = model.context_encoder.weight.detach().clone()
+        observed_gradients: list[Any] = []
+        model.context_encoder.weight.register_hook(
+            lambda gradient: observed_gradients.append(gradient.detach().clone())
+        )
+>       with pytest.raises(RuntimeError, match="non-finite"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE RuntimeError
+
+tests/test_space_jepa_training_finiteness.py:60: Failed
+___________ test_nonfinite_forward_loss_is_rejected_before_backward ____________
+
+    def test_nonfinite_forward_loss_is_rejected_before_backward() -> None:
+        model = AnalyticPredictor(scale=1e20, initial=1.0)
+        initial = model.context_encoder.weight.detach().clone()
+>       with pytest.raises(ValueError, match="training loss.*finite"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_space_jepa_training_finiteness.py:75: Failed
+_____________ test_nonfinite_validation_loss_is_not_returned[nan] ______________
+
+initial = nan
+
+    @pytest.mark.parametrize("initial", [float("nan"), 1.0])
+    def test_nonfinite_validation_loss_is_not_returned(initial: float) -> None:
+        model = AnalyticPredictor(scale=1e20, initial=initial)
+>       with pytest.raises(ValueError, match="evaluation loss.*finite"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_space_jepa_training_finiteness.py:90: Failed
+_____________ test_nonfinite_validation_loss_is_not_returned[1.0] ______________
+
+initial = 1.0
+
+    @pytest.mark.parametrize("initial", [float("nan"), 1.0])
+    def test_nonfinite_validation_loss_is_not_returned(initial: float) -> None:
+        model = AnalyticPredictor(scale=1e20, initial=initial)
+>       with pytest.raises(ValueError, match="evaluation loss.*finite"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_space_jepa_training_finiteness.py:90: Failed
+___________ test_failed_validation_preserves_earlier_successful_step ___________
+
+    def test_failed_validation_preserves_earlier_successful_step() -> None:
+        model = AnalyticPredictor()
+>       with pytest.raises(ValueError, match="evaluation loss.*finite"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_space_jepa_training_finiteness.py:97: Failed
+=========================== short test summary info ============================
+FAILED tests/test_space_jepa_training_finiteness.py::test_finite_loss_bad_gradient_norm_cannot_advance_optimizer_or_ema[1e+20]
+FAILED tests/test_space_jepa_training_finiteness.py::test_finite_loss_bad_gradient_norm_cannot_advance_optimizer_or_ema[1e+30]
+FAILED tests/test_space_jepa_training_finiteness.py::test_nonfinite_forward_loss_is_rejected_before_backward
+FAILED tests/test_space_jepa_training_finiteness.py::test_nonfinite_validation_loss_is_not_returned[nan]
+FAILED tests/test_space_jepa_training_finiteness.py::test_nonfinite_validation_loss_is_not_returned[1.0]
+FAILED tests/test_space_jepa_training_finiteness.py::test_failed_validation_preserves_earlier_successful_step
+6 failed, 1 passed in 2.14s

@@ -29,7 +29,7 @@ def _endpoint(value: str) -> str:
     return value
 
 
-def _object_reply(payload: Mapping[str, Any]) -> Mapping[str, Any]:
+def _object_reply(payload: Mapping[str, Any], object_name: str) -> Mapping[str, Any]:
     try:
         successful = int(str(payload.get("id_code"))) == 200
     except ValueError:
@@ -40,6 +40,9 @@ def _object_reply(payload: Mapping[str, Any]) -> Mapping[str, Any]:
     reply = data.get("reply") if isinstance(data, Mapping) else None
     if not isinstance(reply, Mapping):
         raise ValueError("TNS Get Object response lacks an object reply")
+    returned_name = reply.get("objname")
+    if not isinstance(returned_name, str) or returned_name != object_name:
+        raise ValueError("TNS Get Object reply does not identify the requested object")
     return reply
 
 
@@ -120,13 +123,13 @@ class TNSObjectClient:
                 include_photometry=include_photometry,
                 include_spectra=include_spectra,
             ),
-            has_match=lambda payload: bool(_object_reply(payload)),
-            match_names=lambda payload: (name,) if _object_reply(payload) else (),
+            has_match=lambda payload: bool(_object_reply(payload, name)),
+            match_names=lambda payload: (name,) if _object_reply(payload, name) else (),
             retry_if=lambda exc: not isinstance(exc, ValueError),
         )
         if result.value is None:
             return result
-        reply = _object_reply(result.value)
+        reply = _object_reply(result.value, name)
         provenance = CheckProvenance(
             service="tns_object",
             status=CheckStatus.MATCH,
@@ -136,7 +139,7 @@ class TNSObjectClient:
             attempts=result.provenance.attempts,
             latency_ms=result.provenance.latency_ms,
             response_digest=digest_value(reply),
-            service_version="tns-get-object.v1",
+            service_version="tns-get-object.v2",
         )
         return ServiceResult(provenance=provenance, value=reply, records=result.records)
 

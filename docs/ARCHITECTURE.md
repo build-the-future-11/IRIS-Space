@@ -185,6 +185,15 @@ The binding layer accepts imported TNS `clear` evidence only when it declares
 `internal_name_and_position_cone` coverage policy, and matching candidate/internal
 identity. A generic or legacy cone-only clearance cannot open the gate.
 
+The separate read-only `TNSObjectClient` binds a Get Object response to the
+requested designation: `reply.objname` must be a string equal to the normalized
+query name. Empty, missing, malformed, or different identities produce `error`
+evidence without retries or returned object data. Successful receipts use
+`tns-get-object.v2` and retain the digest of the unmodified reply. Historical v1
+receipts do not establish this identity check and must not be relabeled as v2;
+re-fetch the object to obtain a new identity-checked receipt. This check does not
+establish a physical classification or authorize a report.
+
 ### 5. Models cannot override vetoes
 
 The external-evidence and quality gates are independent of ranking. A high

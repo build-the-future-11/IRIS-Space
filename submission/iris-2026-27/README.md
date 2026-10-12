@@ -2,10 +2,10 @@
 
 **Project:** SIDEREA: Evidence-Bound and Human-Supervised Triage of Optical Transient Alerts  
 **Working category:** Physics & Astronomy  
-**Submission deadline:** 13 October 2026, 11:59 pm (extended; live portal re-checked 5 October 2026; timezone not stated)
+**Submission deadline:** 13 October 2026, 11:59 pm (extended; live portal re-checked 12 October 2026; timezone not stated)
 **Status:** DRAFT / evidence-bound; no locked evaluation is authorized by this package.
 
-## Current official requirements checked on 5 Oct 2026
+## Current official requirements checked on 12 Oct 2026
 
 Current registration portal:
 https://register.irisnationalfair.org/
@@ -13,13 +13,13 @@ https://register.irisnationalfair.org/
 The portal currently states:
 - registration window: 1 Aug 2026, 4:00 pm to 13 Oct 2026, 11:59 pm;
 - 22 ISEF-aligned categories, including Physics & Astronomy and Software Design;
-- project title, category, and 200–500 word abstract;
-- research synopsis PDF;
-- research paper PDF;
-- YouTube project-video link;
+- project title, category, and an abstract of roughly 250 words (**300-word hard cap**);
+- research synopsis PDF (guidance: roughly 650–1,250 words across the six listed sections);
+- a separate full research paper PDF reporting the executed study (guidance: roughly 10–15 pages, not a hard page limit);
+- a public or unlisted YouTube project-video link (**maximum 90 seconds**);
 - individual or two-student team entry.
 
-The live portal was re-checked on 5 October and explicitly announces the extension to 13 October at 11:59 pm. It does not state
+The live portal was re-checked on 12 October and explicitly announces the extension to 13 October at 11:59 pm. It does not state
 the deadline's timezone; do not silently label it UTC or infer an offset. The
 older 3 October date in issue #26 is historical. The extended deadline does not
 resolve eligibility, contribution ownership, evidence or submission approval.
@@ -28,7 +28,11 @@ Current sample pages:
 - Synopsis: https://register.irisnationalfair.org/examples/synopsis
 - Research paper: https://register.irisnationalfair.org/examples/research-paper
 
-The latest separately published submission guideline found on the official IRIS site is for 2025–26 and specifies a maximum 90-second project video and warns not to disclose school name, city, or state in project materials. Treat those as conservative safeguards until the 2026–27 portal instructions are checked at final upload.
+The current portal directly confirms the 90-second maximum and public/unlisted YouTube visibility. It also states that autosaving is not submission: nothing is sent for review until the entrant clicks **Submit**. Do not mark this project submitted from an autosave, a prepared PDF, or a saved application.
+
+The earlier separately published privacy guidance warns against disclosing school name, city, or state in project materials. Keep this as a conservative review-copy safeguard and confirm current anonymity instructions in the entrant account; the public FAQ checked here does not settle that question.
+
+Use `FINAL_UPLOAD_CHECKLIST_20261012.md` for the final asset, author-review, upload-readback and receipt checks. This checklist is an administrative control, not scientific or submission approval.
 
 ## Entry-type gate
 

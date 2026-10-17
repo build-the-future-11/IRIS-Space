@@ -55,7 +55,14 @@ def test_fixed_budget_benchmark_and_pipeline_join() -> None:
     }
     evaluation_identity = {
         "schema": "siderea.space_jepa_v2_evaluation.v1",
-        "rows": [{"example_id": "a", "mean_absolute_latent_error": [1.0, 2.0]}],
+        "row_count": 1,
+        "rows": [
+            {
+                "example_id": "a",
+                "horizons_days": [1.0, 3.0],
+                "mean_absolute_latent_error": [1.0, 2.0],
+            }
+        ],
     }
     evaluation = {
         **evaluation_identity,

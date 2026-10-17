@@ -46,3 +46,18 @@ not by itself authorize the protected run.
 If the eventual frozen successor fails its gate, preserve that negative result.
 Do not retrofit the mechanism matrix, readout, split, metric, or resource
 ceiling after seeing the outcome.
+
+## Development repair, 10 October 2026
+
+The current memory implementation discarded residual availability and could
+retrieve a future-target residual before that target was available. The
+versioned [memory availability contract v2](../../docs/MEMORY_AVAILABILITY_V2.md)
+repairs eligibility, persists the timestamp in bank identity, verifies bank
+digests on replay, and requires explicit regeneration of old banks. A constructed
+cutoff-10 / availability-20 / query-15 example now preserves the base forecast.
+
+This is an implementation validity repair with bounded synthetic tests. The
+5 October freeze receipt and all retained outcomes are unchanged. Actual
+point-in-time photometry/target provenance, training-only bank membership,
+frozen predictor identity, mechanism controls and the successor freeze remain
+required before scientific interpretation or protected execution.

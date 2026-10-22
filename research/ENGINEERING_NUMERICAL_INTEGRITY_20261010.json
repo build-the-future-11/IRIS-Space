@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-10",
+  "kind": "ENGINEERING_CORRECTNESS_REVISION",
+  "repository": "build-the-future-11/IRIS-Space",
+  "parent_commit": "a44f571cfbb5331ba999cac475c060c60a8e38da",
+  "existing_draft_pr": 43,
+  "title": "Reject ambiguous retrieval policy controls before population admission",
+  "observation": "The string 'false' is truthy and broadens residual retrieval across populations; invalid forced gates can escape validation when no neighbors are eligible.",
+  "cause": "Policy controls depended on generic Python truthiness, and forced-gate validation ran only after neighbor selection.",
+  "severity": "incorrect arithmetic, state or evidence admission on valid/ambiguous boundary inputs",
+  "implemented_change": "Require an explicit boolean cross-population override and a finite real nonboolean forced gate in [0,1], validating both before eligibility lookup.",
+  "predicted_consequence": "New constructed regressions fail on the recorded parent and pass after the repair while the existing bounded suite passes.",
+  "evidence": {
+    "pre_fix_new_tests_failed": 12,
+    "pre_fix_control_tests_passed": 4,
+    "post_fix_suite_tests_passed": 55,
+    "command": "PYTHONPATH=src OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 python -m pytest -q tests/test_memory_policy_types.py tests/test_memory_availability.py tests/test_episodic_memory.py tests/test_space_jepa_v2_router.py tests/test_space_jepa_v2_cli.py",
+    "environment": {
+      "python": "3.12.14",
+      "numpy": "2.3.5",
+      "torch": "2.14.1+cpu",
+      "pytest": "9.1.1",
+      "device": "CPU"
+    },
+    "critical_static_checks": "Ruff E9,F821,F822,F823 passed for all changed Python files",
+    "compilation": "All changed Python sources compiled",
+    "whitespace": "git diff --check passed"
+  },
+  "changed_python_sha256": {
+    "src/siderea/ml/episodic_memory.py": "5e87c489e0f1ad79d84824b4e937ddf823797c78190f9b65dbe52f3768226389",
+    "tests/test_memory_policy_types.py": "6621ef12f0c248d69e50112b81aeacad080d3b314c5f584fdc460f2e6d62ead4"
+  },
+  "scientific_runs": 0,
+  "scientific_result_changed": false,
+  "scientific_disposition": "SUCCESSOR_PROTOCOL_NOT_FROZEN; implementation review only",
+  "protected_boundary": "reporting_authorized remains false. No protected labels, outcome artifacts, old Space-JEPA experiments or frozen protocols were opened or changed; v2 availability and digest requirements remain in force.",
+  "research_complete": false,
+  "independent_review": "pending",
+  "integration": "draft pull request; not merged",
+  "release_gate": "Review/integrate the implementation and retain source identities; scientific successors remain separately gated."
+}

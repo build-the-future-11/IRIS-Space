@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "project": "IRIS / SIDEREA / Space JEPA 2",
+  "updated_utc": "2026-10-22",
+  "repository_base_commit": "942cba56987151ac6e0d87c6d244ef9b3e1f5f1a",
+  "scientific_question": "Does the proposed predictive-memory mechanism improve useful transient retrieval at fixed review cost on entity-disjoint chronological and shifted populations?",
+  "scientific_disposition": "SUCCESSOR_PROTOCOL_NOT_FROZEN; no successor confirmatory result, discovery or promotion claim",
+  "current_phase": "ENGINEERING_INTEGRATION_REVIEW",
+  "current_hypothesis_change": false,
+  "protected_evaluation_opened": false,
+  "scientific_runs_this_revision": 0,
+  "execution_budget": {
+    "scope": "Bounded generated-data regression and existing correctness tests only",
+    "paid_compute": false,
+    "training_campaigns": 0,
+    "protected_runs": 0
+  },
+  "current_change": "Reconcile PRs40\u201343 with merged44: retain fresh immutable byte views, frozen bank settings, vectorized retrieval, explicit residual availability and v2 replay; preserve preparation, masking, gradient and shadow-admission corrections. Reject CLI query-identity coercion. Preserve both historical engineering records.",
+  "required_session_reads": [
+    "research/aqpm_successor/FREEZE_STATUS_2026-10-05.json",
+    "research/aqpm_successor/README.md",
+    "docs/SPACE_JEPA_2_PROTOCOL.md",
+    "configs/space-jepa-2-protocol.json",
+    "research/DEVELOPMENT_MEMORY_SNAPSHOT_20261010.md",
+    "docs/MEMORY_AVAILABILITY_V2.md",
+    "research/ENGINEERING_NUMERICAL_INTEGRITY_20261010.json",
+    "docs/EPISODIC_MEMORY_INTEGRATION_20261022.md",
+    "research/ENGINEERING_MEMORY_INTEGRATION_20261022.json"
+  ],
+  "preserved_history_index": [
+    "paper/research/claim-source-ledger.md",
+    "submission/iris-2026-27/CLAIM_LEDGER.md",
+    "https://github.com/build-the-future-11/IRIS-Space/pull/36",
+    "https://github.com/build-the-future-11/IRIS-Space/pull/40"
+  ],
+  "history_index_scope": "Entry points to retained repository history and existing PRs; this is not a claim to have re-audited all historical evidence.",
+  "pending_gates": [
+    "Independent integration review and exact-head hosted quality, full test, package, security and CPU engineering checks.",
+    "Actual target/model availability provenance, training-only membership, source-population holdout and full successor freeze remain required.",
+    "Protected outcomes and the separately supplied seed 1000\u20131029 lock remain closed; this engineering revision authorizes no scientific run.",
+    "Hypothesis, falsifier, fixed development budget and pre-outcome confirmatory freeze remain governed by the retained scientific contracts."
+  ],
+  "history": [
+    {
+      "date": "2026-10-10",
+      "kind": "engineering_revision",
+      "record": "research/DEVELOPMENT_MEMORY_SNAPSHOT_20261010.md",
+      "status": "implemented; 27 tests passed; independent source review passed; integration pending",
+      "scientific_outcomes_created": false
+    },
+    {
+      "date": "2026-10-10",
+      "kind": "engineering_revision",
+      "record": "research/ENGINEERING_NUMERICAL_INTEGRITY_20261010.json",
+      "status": "implemented; 55 bounded tests passed; integration pending",
+      "scientific_outcomes_created": false
+    },
+    {
+      "date": "2026-10-22",
+      "kind": "engineering_integration",
+      "record": "research/ENGINEERING_MEMORY_INTEGRATION_20261022.json",
+      "status": "254 bounded tests passed; review and exact-head hosted integration pending",
+      "scientific_outcomes_created": false
+    }
+  ],
+  "scientific_scope_authority": [
+    "research/aqpm_successor/README.md",
+    "research/aqpm_successor/FREEZE_STATUS_2026-10-05.json",
+    "docs/MEMORY_AVAILABILITY_V2.md"
+  ],
+  "engineering_question": "Can immutable vectorized memory, explicit residual availability and strict artifact admission coexist without changing digest-bound behavior?",
+  "protected_boundary": "reporting_authorized remains false. No protected labels, outcomes or seeds, including 1000\u20131029, were opened. Historical results, source bindings and frozen protocols remain unchanged.",
+  "research_complete": false
+}

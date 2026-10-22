@@ -18,6 +18,7 @@ def test_dual_router_keeps_prediction_anomaly_memory_and_physics_inspectable() -
                 residual=np.ones((2, 4)) * 0.1,
                 source_group="training-object",
                 cutoff_mjd=59_000.0,
+                available_at_mjd=59_001.0,
                 population="A",
                 calibration="cal-v1",
             )
@@ -38,6 +39,7 @@ def test_dual_router_keeps_prediction_anomaly_memory_and_physics_inspectable() -
         score_weights={"corrected_surprise": 1.0, "physics_residual": 0.5},
     )
     assert result["memory_route"]["status"] == "applied"
+    assert result["memory_route"]["memory_digest"] == memory.digest
     assert result["anomaly_route"]["status"] == "evaluated"
     assert result["physics_route"]["status"] == "physics_identifiable"
     assert result["ranking_score"] is not None

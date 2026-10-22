@@ -32,7 +32,7 @@ except ImportError as exc:  # pragma: no cover - depends on installation profile
 else:
     _TORCH_IMPORT_ERROR = None
 
-SPACE_JEPA_V2_CHECKPOINT_SCHEMA = "siderea.space_jepa_v2_checkpoint.v1"
+SPACE_JEPA_V2_CHECKPOINT_SCHEMA = "siderea.space_jepa_v2_checkpoint.v2"
 
 
 @dataclass(frozen=True)
@@ -122,6 +122,10 @@ if nn is not None:
                 raise ValueError("tokens must have shape [batch, time, input_dim]")
             if valid_mask.shape != tokens.shape[:2] or valid_mask.dtype != torch.bool:
                 raise ValueError("valid_mask must be boolean with shape [batch, time]")
+            if tokens.shape[0] < 1 or tokens.shape[1] < 1:
+                raise ValueError("tokens must contain a nonempty batch and time axis")
+            if valid_mask.device != tokens.device:
+                raise ValueError("valid_mask must be on the tokens device")
             if bool((valid_mask.sum(dim=1) < 1).any()):
                 raise ValueError("every sequence needs at least one valid token")
             if not tokens.is_floating_point():

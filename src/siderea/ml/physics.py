@@ -53,7 +53,9 @@ def planck_nu(
         raise ValueError("frequencies must be positive and finite")
     exponent = PLANCK_J_S * frequency / (BOLTZMANN_J_K * temperature_k)
     denominator = np.expm1(np.clip(exponent, 0.0, 700.0))
-    return 2.0 * PLANCK_J_S * frequency**3 / LIGHT_SPEED_M_S**2 / denominator
+    # Keep the known dtype explicit across NumPy versions' ufunc annotations.
+    radiance: FloatArray = 2.0 * PLANCK_J_S * frequency**3 / LIGHT_SPEED_M_S**2 / denominator
+    return radiance
 
 
 def luminosity_distance_mpc(
@@ -240,7 +242,7 @@ def censored_student_t_negative_log_likelihood(
     if scale <= 0.0 or not math.isfinite(scale):
         raise ValueError("scale must be positive and finite")
     probability = student_t_cdf((upper_limit - location) / scale, degrees_of_freedom)
-    return -math.log(max(probability, np.finfo(np.float64).tiny))
+    return -math.log(max(probability, float(np.finfo(np.float64).tiny)))
 
 
 @dataclass(frozen=True)

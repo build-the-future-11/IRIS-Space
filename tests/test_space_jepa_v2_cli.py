@@ -79,7 +79,7 @@ def test_prepare_cli_writes_causal_entity_disjoint_batches(tmp_path: Path) -> No
         == 0
     )
     manifest = json.loads((output / "manifest.json").read_text())
-    assert manifest["schema"] == "siderea.space_jepa_v2_tensor_batches.v1"
+    assert manifest["schema"] == "siderea.space_jepa_v2_tensor_batches.v2"
     assert (output / "train.pt").is_file()
     assert (output / "validation.pt").is_file()
     assert (output / "test.pt").is_file()

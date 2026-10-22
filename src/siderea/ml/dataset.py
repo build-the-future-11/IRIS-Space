@@ -17,7 +17,7 @@ import sys
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass, field
 from numbers import Integral, Real
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from siderea.bands import normalize_passband
 from siderea.provenance import digest_value
@@ -587,7 +587,15 @@ def batch_token_contract_digest(batch: Any) -> str | None:
     return next(iter(digests), None)
 
 
-class LightCurveDataset(Dataset[TokenizedLightCurve]):
+if TYPE_CHECKING:
+    _LightCurveDatasetBase = Dataset[TokenizedLightCurve]
+else:
+    # The torch-free fallback is object, which cannot be subscripted. Preserve
+    # the generic type for static checking without evaluating it at import time.
+    _LightCurveDatasetBase = Dataset
+
+
+class LightCurveDataset(_LightCurveDatasetBase):
     """Lazy adapter from mappings to :class:`TokenizedLightCurve` objects."""
 
     def __init__(

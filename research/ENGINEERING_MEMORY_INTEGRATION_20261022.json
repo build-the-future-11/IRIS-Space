@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-22",
+  "kind": "ENGINEERING_INTEGRATION",
+  "repository": "build-the-future-11/IRIS-Space",
+  "main_before_integration": "942cba56987151ac6e0d87c6d244ef9b3e1f5f1a",
+  "integrated_pr_heads": {
+    "40": "f336ce1552d5270f3b3ad81682cd2fb0565ea0c2",
+    "41": "52a1152bf273f044fbccb4704adc9579d0270873",
+    "42": "86be58b453bfa785a31e7a4fd93df1a7d62d962e",
+    "43": "fa004bccc0aa75565898ef13c434c584f7c24ea0"
+  },
+  "already_merged_pr44_head": "7e204b39c687dd2048f52987112039db2ca77244",
+  "observed_defects": [
+    {
+      "source_pr": 42,
+      "observation": "Read-only byte-backed ndarray objects still allow dtype and shape metadata mutation. Reinterpreting metric_weights as uint64 changed retrieval while digest remained fixed.",
+      "before_distance": 4.0,
+      "after_distance": 1.842872967520007e+19,
+      "before_correction": 0.01798620996209156,
+      "after_correction": 8.75651076269652e-27,
+      "negative_control": "10 metadata cases failed and one buffer-write protection control passed on exact original42 source; the initial local repair passed31 combined cases."
+    },
+    {
+      "source_pr": 43,
+      "observation": "The CLI coerced boolean, integer and null query group/population/calibration values into strings, bypassing strict memory input admission.",
+      "negative_control": "All9 new CLI query-type cases failed against the exact original43 CLI imported with the integrated strict memory module; each returned success instead of error status2."
+    }
+  ],
+  "resolution": [
+    "Use41 immutable bytes and fresh array properties for entries, normalized/raw metric and stacked caches; freeze every bank setting.",
+    "Retain42 vectorized distances, deterministic distance/entry-ID ordering and native serialization of NumPy integer neighbor counts.",
+    "Retain43 availability-before-selection, v2 schema/digest/serialization, strict population/gate controls and routed eligibility context.",
+    "Retain40 preparation/gradient/checkpoint/shadow contracts and44 mask/evaluation admission; reconcile their shared encoder without dropping either behavior.",
+    "Retain both integrity suites under distinct filenames; adapt constructed entries to mandatory v2 availability and use public mapping reconstruction for changed entries.",
+    "Pass CLI query identity values through strict validation without coercion; reject unknown bank/entry fields."
+  ],
+  "compatibility": {
+    "v2_schema": "siderea.space_jepa_v2_memory.v2",
+    "original43_constructed_fixture_digest": "eaadfcd451fee681b88ebee65373334abfaeb42d6717eebd3798fd906694262b",
+    "exact_original43_payload_digest_prediction_and_json_replay_match": true,
+    "v1": "Historical files remain unchanged; current loading explicitly requires provenance-backed v2 regeneration. Availability is never inferred from prefix cutoff.",
+    "preparation_schema": "siderea.space_jepa_v2_tensor_batches.v2",
+    "checkpoint_schema": "siderea.space_jepa_v2_checkpoint.v2"
+  },
+  "validation": {
+    "command": "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 python -m pytest -q tests/test_episodic_memory.py tests/test_episodic_memory_integrity.py tests/test_episodic_memory_vectorized.py tests/test_memory_availability.py tests/test_memory_policy_types.py tests/test_memory_snapshot_metadata.py tests/test_space_jepa_v2_router.py tests/test_prequential.py tests/test_space_jepa_v2_data.py tests/test_space_jepa_v2_train.py tests/test_space_jepa_v2_preparation_integrity.py tests/test_optional_ml_import.py tests/test_space_jepa_v2_cli.py tests/test_space_jepa_v2_shadow_integrity.py tests/test_quaternion.py tests/test_space_jepa_v2.py tests/test_quaternion_mask_gradients.py tests/test_space_jepa_v2_masked_evaluation.py tests/test_space_jepa_v2_physics.py tests/test_space_jepa_v2_benchmark.py tests/test_space_jepa_v2_review.py",
+    "passed": 254,
+    "failed": 0,
+    "skipped": 0,
+    "elapsed_seconds": 4.0,
+    "environment": {
+      "python": "3.12.14",
+      "numpy": "2.3.5",
+      "pandas": "2.2.3",
+      "torch": "2.14.1+cpu",
+      "pytest": "8.4.2",
+      "ruff": "0.17.1",
+      "device": "CPU"
+    },
+    "new_integration_cases": {
+      "metadata_and_read_only_buffers": 13,
+      "strict_cli_query_identities": 9,
+      "unknown_fields": 2,
+      "legacy_parser_alias": 1
+    },
+    "initial_local_fixture_gap": "An earlier broad invocation had240 passes and2 failures because the sparse local snapshot omitted unchanged configs/space-jepa-2-protocol.json. The exact source fixture was restored; final254-case run passed.",
+    "ruff": "All126 materialized source/test Python files passed lint and format checks.",
+    "mypy": "Not executed locally: Mypy is absent from available dependency environments. Exact-head hosted strict typing remains required.",
+    "hosted": "Pending after publication; prior PR checks do not certify this combined head."
+  },
+  "changed_python_sha256": {
+    "src/siderea/ml/episodic_memory.py": "a78e4381b431fbf2bcca09d3c991f9d743d099e9f0178ccc4a8f4cdcf096e986",
+    "src/siderea/cli.py": "371d5d9283ef66be7a90cece445cbdd40cd8fffe7482729569188591a1e68c19",
+    "src/siderea/ml/space_jepa_v2_router.py": "cc01595b61d60a88105648ecce77d1f22e5947116a3328cbf8b9a6dfebceeeac",
+    "src/siderea/ml/space_jepa_v2.py": "844c4276fae54a06db7835f116ba5b0c4ad319d4ec485f3d34d3e051e78aa49d",
+    "tests/test_memory_snapshot_metadata.py": "cec98941ef1e0a8d88ed37882d902a4d2758e28dcbcf9e899b49b45504ccca8e",
+    "tests/test_memory_availability.py": "af66a543975e45ac1288b87c1999c1e42ee2e53ad38c12daa42ad96280ce065f"
+  },
+  "scientific_runs": 0,
+  "paid_compute": false,
+  "protected_runs": 0,
+  "scientific_result_changed": false,
+  "reporting_authorized": false,
+  "research_complete": false,
+  "scientific_disposition": "SUCCESSOR_PROTOCOL_NOT_FROZEN; implementation evidence only",
+  "independent_review": "pending",
+  "integration": "prepared locally; not published or merged",
+  "history_preservation": "Both dated10October records remain retained. The metadata-defect correction supplements their bounded historical test receipts; it does not rewrite those results or certify scientific provenance."
+}

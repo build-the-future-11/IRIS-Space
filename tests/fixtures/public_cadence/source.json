@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "source_id": "lightkurve:tess-pimen-100-cadences:dc0dfa20313af527bc74d5fbabbd0d8abe54fb95",
+  "source_uri": "https://github.com/lightkurve/lightkurve/blob/dc0dfa20313af527bc74d5fbabbd0d8abe54fb95/tests/data/test-lc-tess-pimen-100-cadences.fits",
+  "source_revision": "dc0dfa20313af527bc74d5fbabbd0d8abe54fb95; SPOC DR42; spoc-5.0.10-20200904; FILEVER=1.0",
+  "source_kind": "public_fixture",
+  "retrieved_at_utc": "2026-10-08T17:13:11Z",
+  "raw_sha256": "7577c14d6eef06d5c09c0f3d9521e8e756eea584bcc91ac407fd3d090e5979a1",
+  "tic_id": 261136679,
+  "sector": 1,
+  "camera": 4,
+  "ccd": 2
+}

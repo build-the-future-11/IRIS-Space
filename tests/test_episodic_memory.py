@@ -10,7 +10,7 @@ def _entry(
 ) -> MemoryEntry:
     key = np.full((2, 4), value)
     residual = np.full((2, 4), value / 10.0)
-    return MemoryEntry(name, key, residual, group, cutoff, population, "cal-v1")
+    return MemoryEntry(name, key, residual, group, cutoff, population, "cal-v1", cutoff + 1.0)
 
 
 def test_memory_excludes_same_source_future_and_wrong_population() -> None:

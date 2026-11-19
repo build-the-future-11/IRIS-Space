@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "timestamp_utc": "2026-11-19T10:54:35Z",
+  "kind": "INPUT_ONLY_ENGINEERING_REPAIR",
+  "repository": "build-the-future-11/IRIS-Space",
+  "base_main": "d18598662cf00ae39e7f411ce406bc5f5926d13c",
+  "finding": "A generated FITS file with an invalid EXTEND card opens but hdus.verify(\"exception\") raises astropy.io.fits.verify.VerifyError, a direct Exception subclass. The old specific-exception handler did not translate it to CadenceInputError, so both API and CLI escaped their rejection contract.",
+  "finding_url": "https://github.com/build-the-future-11/IRIS-Space/pull/37#discussion_r4627375512",
+  "upstream_source": "https://github.com/astropy/astropy/blob/v8.0.1/astropy/io/fits/verify.py",
+  "upstream_verify_blob": "f7e1a23dfface220bd67a94623686867faf5be3c",
+  "change": "Lazily import VerifyError with VerifyWarning and include it in the existing specific parser-exception tuple. Verification still runs with exception mode; no broad catch or input repair was added.",
+  "regression": "Generate malformed FITS bytes with a deliberately invalid EXTEND card. Confirm actual Astropy verification raises VerifyError after the file opens; check API invalid_fits exception with preserved cause and CLI status 2 with exact machine-readable rejected payload, no stderr, no output directory and unchanged input bytes.",
+  "fresh_local_validation": {
+    "before_repair": {
+      "command": "python -m pytest -q tests/test_public_cadence.py -k verification_errors",
+      "source": "Exact original parser plus final new regression file",
+      "failed": 2,
+      "deselected": 61,
+      "elapsed_seconds": 1.65,
+      "failures": "Both API and CLI cases escape with actual astropy.io.fits.verify.VerifyError."
+    },
+    "after_repair": {
+      "command": "python -m pytest -q tests/test_public_cadence.py",
+      "passed": 63,
+      "failed": 0,
+      "skipped": 0,
+      "elapsed_seconds": 3.54
+    },
+    "static_checks": [
+      "Ruff 0.16.7 check passed on both changed Python files",
+      "Ruff 0.16.7 format --check passed on both changed Python files"
+    ],
+    "environment": {
+      "python": "3.12.14",
+      "astropy": "8.0.1",
+      "numpy": "2.3.5",
+      "pytest": "9.1.1",
+      "ruff": "0.16.7",
+      "pyerfa": "2.0.1.5",
+      "astropy_iers_data": "0.2026.11.16.0.37.44"
+    },
+    "environment_scope": "Isolated venv with inherited runtime packages; Astropy/Pytest/Ruff versions match project lock. Bounded exact source/dependency fixture subset, not a full locked repository or full CI reproduction.",
+    "fixture_identity": "Existing public cadence fixture Git blob 0381f5bd0628fdf9047547383996463a0423a19b verified; the new failing input is generated only for this parser regression."
+  },
+  "source_identities": [
+    {
+      "path": "src/siderea/public_cadence.py",
+      "base_blob": "2fe149df4371d3e8827e6c2f7f8ab3c36e9a4cd8",
+      "new_blob": "d4682fed55725d97ad5f1662c64f18c93867f6b2",
+      "new_sha256": "141c4104a034db7c1b130e6db453361eecc767281ca7eb5aba0b8fdbe0fc47ef"
+    },
+    {
+      "path": "tests/test_public_cadence.py",
+      "base_blob": "969c1192ef6a34f8d8bdbe8adb065fc64867a4be",
+      "new_blob": "57dd1e5ef50ac3798b0feaca277b527623a0ca12",
+      "new_sha256": "471d1875a860be006828533d33ee3cb94f1a3ccef534740f207ba768d528f232"
+    }
+  ],
+  "required_session_reads": [
+    {
+      "path": "research/aqpm_successor/FREEZE_STATUS_2026-10-05.json",
+      "blob": "acbc2ba83ca49dce3a9deaafd3b8c9538e9587c0"
+    },
+    {
+      "path": "research/aqpm_successor/README.md",
+      "blob": "59575071c8122c0100f7af85c98906b1d7bc54d0"
+    },
+    {
+      "path": "docs/SPACE_JEPA_2_PROTOCOL.md",
+      "blob": "61261de796110a3373b1a08a470e6396fdc9fd77"
+    },
+    {
+      "path": "configs/space-jepa-2-protocol.json",
+      "blob": "85b8c4262611ddac2af116ec02bee68b0811f137"
+    },
+    {
+      "path": "research/DEVELOPMENT_MEMORY_SNAPSHOT_20261010.md",
+      "blob": "1da12bb4791dc6b003bf5339d27cc62379af8101"
+    },
+    {
+      "path": "docs/MEMORY_AVAILABILITY_V2.md",
+      "blob": "8fe5d50b24341f74a3f5e2140f5ac9e9b9e6630c"
+    },
+    {
+      "path": "research/ENGINEERING_NUMERICAL_INTEGRITY_20261010.json",
+      "blob": "93c5481c0097133bea763f03baf447d4922a0eba"
+    },
+    {
+      "path": "docs/EPISODIC_MEMORY_INTEGRATION_20261022.md",
+      "blob": "18d3ead2968466bb30aacbd8f042b8414465e227"
+    },
+    {
+      "path": "research/ENGINEERING_MEMORY_INTEGRATION_20261022.json",
+      "blob": "4d25040250fc58ba4cbc9090f4eaa65b3a4ef2dc"
+    }
+  ],
+  "history_preservation": "Only updated_utc and an appended engineering history entry change in RESEARCH_STATE.json. Every prior history entry and every scientific/protocol field is preserved.",
+  "scientific_runs": 0,
+  "protected_evaluation_opened": false,
+  "reporting_authorized": false,
+  "research_complete": false,
+  "scientific_disposition": "SUCCESSOR_PROTOCOL_NOT_FROZEN; parser correctness evidence only",
+  "integration_gate": "Normal exact-head public-cadence and full repository hosted checks and independent review remain required before integration."
+}

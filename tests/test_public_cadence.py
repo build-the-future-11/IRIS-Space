@@ -203,6 +203,54 @@ def test_malformed_whole_file_is_not_repaired(raw):
     assert error.value.code == "invalid_fits"
 
 
+@pytest.mark.parametrize("entrypoint", ["api", "cli"])
+def test_fits_verification_errors_are_structured_rejections(tmp_path, capsys, entrypoint):
+    # This generated file opens successfully but fails real FITS verification.
+    # Ignore verification only while writing the deliberately invalid fixture.
+    primary = fits.PrimaryHDU()
+    primary.header["EXTEND"] = "invalid"
+    stream = io.BytesIO()
+    primary.writeto(stream, output_verify="ignore")
+    raw = stream.getvalue()
+    with (
+        fits.open(io.BytesIO(raw), memmap=False, lazy_load_hdus=False) as hdus,
+        pytest.raises(fits.verify.VerifyError),
+    ):
+        hdus.verify("exception")
+
+    source = replace(
+        SOURCE,
+        raw_sha256=hashlib.sha256(raw).hexdigest(),
+        source_id="siderea:synthetic-invalid-fits-verification",
+        source_kind="synthetic_parser_fixture",
+        source_revision="generated invalid EXTEND card for parser regression",
+    )
+    if entrypoint == "api":
+        with pytest.raises(CadenceInputError) as error:
+            build_report(raw, source)
+        assert error.value.code == "invalid_fits"
+        assert isinstance(error.value.__cause__, fits.verify.VerifyError)
+    else:
+        raw_path = tmp_path / "invalid.fits"
+        raw_path.write_bytes(raw)
+        receipt_path = tmp_path / "source.json"
+        receipt_path.write_text(json.dumps(asdict(source)))
+        output_dir = tmp_path / "reports"
+        assert (
+            main([str(raw_path), "--source", str(receipt_path), "--output-dir", str(output_dir)])
+            == 2
+        )
+        output = capsys.readouterr()
+        assert json.loads(output.out) == {
+            "status": "rejected",
+            "reason": "invalid_fits",
+            "detail": "FITS could not be parsed without repair",
+        }
+        assert output.err == ""
+        assert not output_dir.exists()
+        assert raw_path.read_bytes() == raw
+
+
 def test_input_size_cap_precedes_parsing():
     with pytest.raises(CadenceInputError) as error:
         build_report(b" " * (MAX_BYTES + 1), SOURCE)

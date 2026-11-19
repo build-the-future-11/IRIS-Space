@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-11-19T12:08:27Z",
+  "kind": "BOUNDED_ENGINEERING_INTEGRATION",
+  "repository": "build-the-future-11/IRIS-Space",
+  "base_main": "b3fd4f76bb7f89e23128928af4242e008d3f0949",
+  "source_pr": 36,
+  "source_head": "ac31f9d6fd0ab55116bb1aaf294f09ea1f3d60a7",
+  "scope": "Extract the independently reviewable ranking arithmetic and input-validation changes from PR36 while retaining its conference/poster/abstract work in that original PR for author review.",
+  "observed_defects": [
+    "Current benchmark uses row order to break equal ranking scores at the review cutoff and for average precision; seeded paired bootstrap also depends on CSV row order.",
+    "Current benchmark converts labels to integers before validation, accepting fractional values, and permits ambiguous option or score coercion.",
+    "The old summary identity does not bind the complete labeled score cohort; a score change can preserve summaries without a cohort identity change."
+  ],
+  "change": [
+    "Use the current reviewed ranking_metrics helper, with expected uniform selection within the equal-score cutoff and threshold-grouped average precision.",
+    "Use the same tie policy in paired bootstrap; canonicalize trimmed entity IDs before seeded resampling and bind the complete cohort digest.",
+    "Validate binary labels before integer conversion, reject complex/nonfinite/boolean scores and ambiguous integer options, and separate observed from bootstrap-mean recall differences.",
+    "Version the output as benchmark.v2 and document renamed fields; retain historical v1 artifacts without reinterpretation."
+  ],
+  "composition": {
+    "exact_donor_files": [
+      "src/siderea/research/space_jepa_v2_benchmark.py",
+      "docs/SPACE_JEPA_2_BENCHMARK_SCHEMA_V2.md",
+      "examples/space_jepa_2_tie_fixture.csv",
+      "docs/evidence/space-jepa-2-tie-report-2026-10-07.json"
+    ],
+    "test_composition": "Keep all three current-main test functions AST-identical, including row_count and horizons evidence validation, then add donor regression imports/helpers/cases.",
+    "initial_integration_failure": "The unmodified donor test suite had23 passes and1 failure because its older shadow-evidence fixture omitted current-main row_count/horizons. The production shadow-evidence validator remains unchanged; the corrected test composition retains main's exact fixture and assertions.",
+    "unchanged_functions": [
+      "extrapolation_forecast",
+      "verify_complete_grid"
+    ],
+    "preserved_main_test_functions": [
+      "test_extrapolation_baselines_degrade_with_short_history",
+      "test_complete_grid_requires_failure_receipts",
+      "test_fixed_budget_benchmark_and_pipeline_join"
+    ]
+  },
+  "verification": {
+    "local_command": "python -m pytest -q tests/test_space_jepa_v2_benchmark.py",
+    "negative_control": {
+      "source": "b3fd4f76bb7f89e23128928af4242e008d3f0949",
+      "failed": 15,
+      "passed": 9,
+      "expected_warnings": 4
+    },
+    "candidate": {
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0
+    },
+    "ruff": "All changed Python files pass lint and format checks with the current-main configuration.",
+    "synthetic_fixture": {
+      "retained_synthetic_report_matches": true,
+      "result_digest": "1dff78fa1c80af1b18dc93243228150572945d98516a18e3197cff7099f2e50c",
+      "cohort_digest": "9f170315e05111974c210079a0df82642e011f06d6ea50e226f222e8cea7f56f",
+      "python": "3.12.14",
+      "versions": {
+        "numpy": "2.3.5",
+        "pandas": "2.2.3",
+        "pytest": "9.1.1",
+        "ruff": "0.16.7"
+      }
+    },
+    "local_materialization_limit": "Scoped exact-source namespace packages; package __init__ files are not materialized. Full installed-package and CLI integration remain exact-head hosted CI gates.",
+    "hosted": "Pending normal exact-head full quality/type, Python3.11-3.14, security, package and maintained engineering checks. Previous source-head receipts do not qualify this combined head."
+  },
+  "consumer_review": {
+    "cli": "The current CLI passes the same arguments and emits the returned report; no v1 result-field interpretation occurs in this command.",
+    "pipeline": "Shadow evidence consumes space_jepa_v2_evaluation.v1, a separate artifact, and retains its row_count/horizon/digest checks.",
+    "campaign": "The current campaign declares an artifact directory named benchmarks but does not parse the changed benchmark fields.",
+    "scope": "Reviewed current CLI, direct unit/CLI tests, shadow join and campaign paths. This is not an assertion about unobserved external consumers; the v2 migration contract is explicit.",
+    "source_blobs": {
+      "tests/test_space_jepa_v2_cli.py": "1e7f033b49e01f4aa94d00905a5c502fcd1105d1",
+      "src/siderea/research/space_jepa_v2_campaign.py": "901f4c2039e773f6edda003a0d7a1ffe4327c220",
+      "tests/test_space_jepa_v2_campaign.py": "922f2655316f04a826c0293ad89eb01379e24de5",
+      ".github/workflows/ci.yml": "b42b714e721361c3bbac616c5c1b52920aeeb55e",
+      "src/siderea/__init__.py": "e2bb09ebf9afde5f77473dd25a53bad9eb48018b",
+      "src/siderea/research/__init__.py": "856cc6b334b478d084461f52ad854be260dcc756"
+    }
+  },
+  "changed_content_git_blobs": {
+    "src/siderea/research/space_jepa_v2_benchmark.py": "ed7bf0ae42047f8a7611ed1dbf98282e96131a97",
+    "tests/test_space_jepa_v2_benchmark.py": "6d10d34bfcd43cc93ba8714371976a5fba06c30c",
+    "docs/SPACE_JEPA_2_BENCHMARK_SCHEMA_V2.md": "b7d5dec35d0e49bce2a794a719f5d7b62dc09df5",
+    "examples/space_jepa_2_tie_fixture.csv": "a6e3bb807d1d7c29c837a9d988543f6f348df708",
+    "docs/evidence/space-jepa-2-tie-report-2026-10-07.json": "109cde7713e968cb168c56e8e2e67fb2970b0da4"
+  },
+  "required_read_blobs": {
+    "research/aqpm_successor/FREEZE_STATUS_2026-10-05.json": "acbc2ba83ca49dce3a9deaafd3b8c9538e9587c0",
+    "research/aqpm_successor/README.md": "59575071c8122c0100f7af85c98906b1d7bc54d0",
+    "docs/SPACE_JEPA_2_PROTOCOL.md": "61261de796110a3373b1a08a470e6396fdc9fd77",
+    "configs/space-jepa-2-protocol.json": "85b8c4262611ddac2af116ec02bee68b0811f137",
+    "research/DEVELOPMENT_MEMORY_SNAPSHOT_20261010.md": "1da12bb4791dc6b003bf5339d27cc62379af8101",
+    "docs/MEMORY_AVAILABILITY_V2.md": "8fe5d50b24341f74a3f5e2140f5ac9e9b9e6630c",
+    "research/ENGINEERING_NUMERICAL_INTEGRITY_20261010.json": "93c5481c0097133bea763f03baf447d4922a0eba",
+    "docs/EPISODIC_MEMORY_INTEGRATION_20261022.md": "18d3ead2968466bb30aacbd8f042b8414465e227",
+    "research/ENGINEERING_MEMORY_INTEGRATION_20261022.json": "4d25040250fc58ba4cbc9090f4eaa65b3a4ef2dc"
+  },
+  "scientific_runs": 0,
+  "training_campaigns": 0,
+  "paid_compute": false,
+  "protected_runs": 0,
+  "protected_evaluation_opened": false,
+  "scientific_result_changed": false,
+  "reporting_authorized": false,
+  "research_complete": false,
+  "scientific_disposition": "SUCCESSOR_PROTOCOL_NOT_FROZEN; generated-fixture implementation evidence only",
+  "preservation": "Canonical scientific fields, all previous history entries, freeze documents, protocols, retained outcomes and protected seed1000-1029 boundaries remain unchanged. The retained four-row synthetic example is copied byte-for-byte from the original PR; no conference manuscript or poster is included.",
+  "independent_review": "Pending"
+}

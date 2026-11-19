@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import json
 from copy import deepcopy
-from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
@@ -88,7 +87,9 @@ def test_memory_payload_roundtrip_preserves_digest_and_predictions(weights):
 def test_availability_is_bound_into_memory_identity():
     entry = _entry()
     first = EpisodicResidualMemory([entry])
-    second = EpisodicResidualMemory([replace(entry, available_at_mjd=30.0)])
+    second = EpisodicResidualMemory(
+        [MemoryEntry.from_mapping({**entry.to_mapping(), "available_at_mjd": 30.0})]
+    )
     assert first.digest != second.digest
 
 
@@ -192,3 +193,34 @@ def test_cli_rejects_tampered_availability_without_publishing(tmp_path: Path):
     assert main(["space-jepa-2-route", str(request), str(output), "--memory", str(bank)]) != 0
     assert not output.exists()
     assert bank.read_bytes() == before
+
+
+@pytest.mark.parametrize("field", ["query_source_group", "population", "calibration"])
+@pytest.mark.parametrize("value", [True, 7, None])
+def test_cli_preserves_strict_query_identity_types(tmp_path: Path, field, value):
+    bank, request, output = (tmp_path / name for name in ("bank.json", "query.json", "out.json"))
+    bank.write_text(json.dumps(EpisodicResidualMemory([_entry()]).to_payload()))
+    payload = _routing_input()
+    payload["query_cutoff_mjd"] = 21.0
+    payload[field] = value
+    request.write_text(json.dumps(payload))
+    before = bank.read_bytes(), request.read_bytes()
+    assert main(["space-jepa-2-route", str(request), str(output), "--memory", str(bank)]) == 2
+    assert not output.exists()
+    assert (bank.read_bytes(), request.read_bytes()) == before
+
+
+@pytest.mark.parametrize("scope", ["entry", "bank"])
+def test_replayed_memory_rejects_unrecognized_fields(scope):
+    payload = EpisodicResidualMemory([_entry()]).to_payload()
+    target = payload if scope == "bank" else payload["entries"][0]
+    target["unrecognized"] = "must not be silently discarded"
+    with pytest.raises(ValueError, match="schema"):
+        EpisodicResidualMemory.from_payload(payload)
+
+
+def test_legacy_artifact_alias_also_requires_real_availability():
+    payload = EpisodicResidualMemory([_entry()]).to_payload()
+    payload["schema"] = "siderea.space_jepa_v2_memory.v1"
+    with pytest.raises(ValueError, match="rebuild"):
+        EpisodicResidualMemory.from_artifact(payload)

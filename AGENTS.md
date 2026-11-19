@@ -1,15 +1,11 @@
 # Research session contract
 
-Read `RESEARCH_STATE.json` and its required session reads before changing research
-code or interpreting results. Append session, budget, failure and decision records
-before finishing. Preserve every prior result, frozen protocol and source identity.
+Read `RESEARCH_STATE.json` and its `required_session_reads` before changing research code or making scientific claims. Update that state and add an append-only development record before ending a research session.
 
-This branch adds a separately versioned development input path. Passing generated
-tests does not establish scientific efficacy or reopen a closed predecessor. Keep
-protected outcomes and seeds 1000–1029 closed. Reconcile overlapping pull requests
-before integrating; do not silently substitute new preparation into frozen studies.
+Preserve all existing negative, mixed, inconclusive and invalid evidence, frozen protocols, failed runs and decisions. A code correction is implementation evidence; it is not a new scientific result and does not reopen a closed predecessor.
 
-For the memory/population integration, also read
-`research/integration/memory_population_20261010/CONTRACT.md`. The exact imported
-PR43 state and instructions are retained in its `source_proposals/` directory;
-retain those histories and the existing PR45/PR40 scientific boundaries.
+Use generated fixtures for correctness tests. Do not inspect protected outcomes while developing or retuning a successor. Any behavior-changing scientific run needs its own explicit hypothesis, source and input identities, finite budget and pre-outcome evaluation protocol. Keep historical artifacts and their source bindings intact.
+
+Report exactly which tests ran, their environment and any remaining blockers. Never label a project complete solely because code tests pass. Reconcile existing pull requests before starting overlapping work.
+
+Respect the specific protected boundary recorded in state. A new hypothesis also needs a separately versioned specification and falsifier before confirmatory freeze.

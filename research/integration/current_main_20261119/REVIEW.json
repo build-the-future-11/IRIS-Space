@@ -1,0 +1,387 @@
+{
+  "schema": "iris-space-engineering-integration-review-v1",
+  "reviewed_at_utc": "2026-11-19T10:39:15Z",
+  "source_head": "a182a6399c40fdbc32fa952749dae7e520da6d47",
+  "base_main": "a5adc1aba375bf83e155e1cf67d89fbd6cc9c53f",
+  "semantic_review": "Full new population producer, finite-training changes, generated demo, v1/as-of/finite tests and required research-session reads reviewed. Population B excluded from A enrollment/vocabulary; aliases resolved before split; v2 fits/selection chronology enforced without clipping targets. Source identity, no-clobber/failure receipts, bounded file/tensor limits preserved. Runtime dependencies unchanged in main, except newer corrected model masking which must qualify with composed tests.",
+  "new_paths": [
+    {
+      "path": ".gitattributes",
+      "sha": "5d2b8cdd7b4abf18f1d13e54d3f2cf943bc0d21f",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": ".github/workflows/population-preparation.yml",
+      "sha": "fb03247a23dc75e967cd8e647a3f8ee2fc0ced7f",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "docs/SPACE_JEPA_POPULATION_PREPARATION_V1.md",
+      "sha": "2b02a99d72c58898ee0956013ec9308569729286",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/DEVELOPMENT_POPULATION_AS_OF_V2_20261010.md",
+      "sha": "40fcebd2a0f090bee1d4afa1c30592aaef674559",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/DEVELOPMENT_POPULATION_PREPARATION_V1_20261010.md",
+      "sha": "b0a365f4add71bde84c47ce551718aa8a40d969f",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/integration/memory_population_20261010/CONTRACT.md",
+      "sha": "ce88c7d428e6e918406365171ab6d4fa938e09c2",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/integration/memory_population_20261010/receipt.json",
+      "sha": "f06e7e70adc9c8a29750e1a3f7448ea9540d4518",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/integration/memory_population_20261010/source_composition_files.json",
+      "sha": "cd8ab9c61fc7cf378beeed7beeda7430019fc605",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/integration/memory_population_20261010/source_proposals/pr43_AGENTS.md",
+      "sha": "03f6cf58e0f09aff6f3cc8dd3a9241c320bbff52",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/integration/memory_population_20261010/source_proposals/pr43_RESEARCH_STATE.json",
+      "sha": "b08d1d34aa9bd16b881b67733e9b283e7ff9b453",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/integration/memory_population_20261010/verification/attempt_01.json",
+      "sha": "de1c6d527fcdfb6292d7d85a17fe1e4a2a124528",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/integration/memory_population_20261010/verification/attempt_01.log",
+      "sha": "fc320d3b9faa8aac488451a28f0ae9d01bf93c0b",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/integration/memory_population_20261010/verification/attempt_01.started.json",
+      "sha": "84ef8085c1b0fd80410762ed50d1715a1c4c5b23",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/integration/memory_population_20261010/verification/attempt_02.json",
+      "sha": "fab1f8421c12941b22cefb1af09007f682357741",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/integration/memory_population_20261010/verification/attempt_02.log",
+      "sha": "de1574df052163586647b846f09c1f9adaf4bdb0",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/integration/memory_population_20261010/verification/attempt_02.started.json",
+      "sha": "51fad4a9541f4044dbfe14085192164f2bbe871c",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_as_of_v2_20261010/attempt_01.json",
+      "sha": "6a99245d54e041a77ca5621d0232e3103ce6b20f",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_as_of_v2_20261010/attempt_01_stderr.txt",
+      "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_as_of_v2_20261010/attempt_01_stdout.txt",
+      "sha": "560c0d5feab4b8e8c599a6a8e6c4697ad083ff8d",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_as_of_v2_20261010/attempt_02.json",
+      "sha": "440126f153aa66ec403cd4a0bdf3e14ad9fa5b29",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_as_of_v2_20261010/attempt_02_stderr.txt",
+      "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_as_of_v2_20261010/attempt_02_stdout.txt",
+      "sha": "8fb29f2400b9c173c52ba30ddc2639c4eb118ef2",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_as_of_v2_20261010/receipt.json",
+      "sha": "372d054dbb4b09195e66d952949fab4a82487c32",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_preparation_v1_20261010/attempt_01.json",
+      "sha": "9554f7c4b5589460ce66d26efbfc18196cf819ba",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_preparation_v1_20261010/attempt_01.log",
+      "sha": "363e7fe10e37ed11035d016dd55a6e363bb425d9",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_preparation_v1_20261010/attempt_01_sources.json",
+      "sha": "38ef18472623a1c316cf149e29a2cecf4414fa7b",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_preparation_v1_20261010/attempt_02.json",
+      "sha": "5283b95b1bae457daca67b4c41e0d641096f6741",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_preparation_v1_20261010/attempt_02.log",
+      "sha": "900565753fa111718b7376513d1b79341d630eea",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_preparation_v1_20261010/attempt_02_sources.json",
+      "sha": "b338be39eb2fa531e349f40a86411b41496ac863",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_preparation_v1_20261010/demo/demo-receipt.json",
+      "sha": "b92dd5d52b908586070b9c1f2dfe697dfa46eb48",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_preparation_v1_20261010/demo/generated-inputs/membership.json",
+      "sha": "fd21c5811b89e4683f265311f1ed09cb2c96b377",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_preparation_v1_20261010/demo/generated-inputs/photometry.csv",
+      "sha": "4146edda183551a3521f9a23bec88675f6bc288e",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_preparation_v1_20261010/demo/prepared/manifest.json",
+      "sha": "929c9fc1ec27482247199ceecab02abba92d4c28",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_preparation_v1_20261010/demo/prepared/membership-input.json",
+      "sha": "fd21c5811b89e4683f265311f1ed09cb2c96b377",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_preparation_v1_20261010/demo/prepared/photometry-input.csv",
+      "sha": "4146edda183551a3521f9a23bec88675f6bc288e",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_preparation_v1_20261010/demo/prepared/population_b.pt",
+      "sha": "0bc7934f2356a9dac791fd8610891ba85c5859e3",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_preparation_v1_20261010/demo/prepared/rows.jsonl",
+      "sha": "a1f7b176af32219ba6acd255d85de2fbde874344",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_preparation_v1_20261010/demo/prepared/test.pt",
+      "sha": "b107007b5b74650ea0e7b89eb77067f269060b66",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_preparation_v1_20261010/demo/prepared/train.pt",
+      "sha": "cee912ed892b36763eb62bdb2a6739878d3463bc",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_preparation_v1_20261010/demo/prepared/validation.pt",
+      "sha": "194b53f547c70289b2a7d09cb5c2f528df92c20e",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_preparation_v1_20261010/demo_attempt.json",
+      "sha": "c58e131d3c92a18a02f5677c06a631e75bd49805",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_preparation_v1_20261010/demo_attempt_started.json",
+      "sha": "8afcea0164cab4c1ee7e32d0dda2cf93a56c365e",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_preparation_v1_20261010/demo_stderr.log",
+      "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_preparation_v1_20261010/demo_stdout.log",
+      "sha": "ed0d0cbf27108b8fa15d350465ed0b3f27bf3a00",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/population_preparation_v1_20261010/engineering_receipt.json",
+      "sha": "fec90c52562f09fc17966633149fb9043fcb875e",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/training_finiteness_20261011/CONTRACT.md",
+      "sha": "f29dd8ae8ab62c5273ab391c079d9cb8002fd79e",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/training_finiteness_20261011/baseline.log",
+      "sha": "5cb19223da80a01487383ee47d99572163a581bd",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/training_finiteness_20261011/candidate.json",
+      "sha": "4ec7c8a76c785b8960aa0989cb4975283502b0a5",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/training_finiteness_20261011/candidate.log",
+      "sha": "b1fa327409075c166abad07fa2e8edc087b77b6a",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/training_finiteness_20261011/parent_probe.json",
+      "sha": "dfc94a310bffacf81a2fa9ae4bd3c58fc1733650",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/training_finiteness_20261011/parent_probe.py",
+      "sha": "f86722158c495d3d7c8b1ea8eaebccab119902aa",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "research/verification/training_finiteness_20261011/review.json",
+      "sha": "bbd0be6792a2c6b87148304ba087e10870371cfa",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "scripts/demo_space_jepa_population_v1.py",
+      "sha": "ecc6b03e70554d95e993878c6ae99ddd6f88765f",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "src/siderea/ml/space_jepa_population_v1.py",
+      "sha": "a1872b136a02cd307b82fa9fbdabbf93086f98d3",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_space_jepa_population_as_of.py",
+      "sha": "9732b620d0d603deade7233b6a2ffa74eed10981",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_space_jepa_population_v1.py",
+      "sha": "3f97667a6b084ab56c42b3e7e1fff083ae0ee5ee",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "tests/test_space_jepa_training_finiteness.py",
+      "sha": "8ca9c7d891f33996fa989952454584e9b54b8aba",
+      "mode": "100644",
+      "type": "blob"
+    }
+  ],
+  "reviewed_replacements": [
+    {
+      "path": "README.md",
+      "sha": "41f79aae601e8f6ed822a3ace633829460b48cfc",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "src/siderea/ml/space_jepa_v2_train.py",
+      "sha": "5c8c39b686dc06cfe6a84984569b347e63093648",
+      "mode": "100644",
+      "type": "blob"
+    }
+  ],
+  "preserved_main_paths": [
+    "AGENTS.md",
+    "docs/MEMORY_AVAILABILITY_V2.md",
+    "research/ENGINEERING_NUMERICAL_INTEGRITY_20261010.json",
+    "research/aqpm_successor/README.md",
+    "src/siderea/cli.py",
+    "src/siderea/ml/episodic_memory.py",
+    "src/siderea/ml/space_jepa_v2_router.py",
+    "tests/test_episodic_memory.py",
+    "tests/test_memory_availability.py",
+    "tests/test_memory_policy_types.py",
+    "tests/test_space_jepa_v2_cli.py",
+    "tests/test_space_jepa_v2_router.py"
+  ],
+  "qualification": "Local compilation passed. Exact composed-head ordinary CPU tests, matrix and packaging pending; hosted fixture tests confer no scientific execution authority.",
+  "scientific_execution_authorized": false,
+  "protected_evaluation_opened": false,
+  "research_complete": false,
+  "retained_source_proposals": [
+    "research/integration/current_main_20261119/source_proposals/pr45_RESEARCH_STATE.json",
+    "research/integration/current_main_20261119/source_proposals/pr45_AGENTS.md"
+  ]
+}

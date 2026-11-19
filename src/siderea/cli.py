@@ -3018,10 +3018,10 @@ def _command_space_jepa_v2_route(args: argparse.Namespace) -> int:
         covariance=payload["covariance"],
         memory=memory,
         memory_query=payload.get("memory_query"),
-        query_source_group=str(payload["query_source_group"]),
+        query_source_group=payload["query_source_group"],
         query_cutoff_mjd=payload["query_cutoff_mjd"],
-        population=str(payload["population"]),
-        calibration=str(payload["calibration"]),
+        population=payload["population"],
+        calibration=payload["calibration"],
         physics_residual=(
             None if payload.get("physics_residual") is None else float(payload["physics_residual"])
         ),

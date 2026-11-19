@@ -65,3 +65,12 @@ arrays and the real build/route CLI. The existing small train/infer/route fixtur
 uses generated tensors and synthetic photometry only. The versioned repair is
 development evidence; it neither changes protected data nor establishes a model
 gain, candidate discovery, or successor protocol freeze.
+
+## 22 October integration correction
+
+The [combined memory integration](EPISODIC_MEMORY_INTEGRATION_20261022.md)
+preserves this availability and v2 digest contract. Bank settings are now frozen,
+and entry, metric and cached arrays are exposed through fresh read-only views so
+dtype/shape mutation cannot change digest-bound behavior. The CLI also preserves
+strict query-identity types. Historical v2 replay was checked against the exact
+original source; this does not certify upstream timestamp provenance.

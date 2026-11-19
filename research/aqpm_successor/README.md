@@ -61,3 +61,9 @@ This is an implementation validity repair with bounded synthetic tests. The
 point-in-time photometry/target provenance, training-only bank membership,
 frozen predictor identity, mechanism controls and the successor freeze remain
 required before scientific interpretation or protected execution.
+
+The 22 October combined engineering correction is recorded in
+[`ENGINEERING_MEMORY_INTEGRATION_20261022.json`](../ENGINEERING_MEMORY_INTEGRATION_20261022.json).
+It reconciles the overlapping memory/preparation implementations and repairs
+array-metadata mutation and CLI identity coercion. It does not complete or amend
+the successor freeze, authorize protected execution, or replace prior evidence.

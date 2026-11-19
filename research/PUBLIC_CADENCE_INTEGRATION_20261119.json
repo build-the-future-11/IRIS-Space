@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-19",
+  "kind": "INPUT_ONLY_ENGINEERING_INTEGRATION_REVIEW",
+  "repository": "build-the-future-11/IRIS-Space",
+  "current_main_before_integration": "c75652599b31b32e23532950845def599711cd87",
+  "reviewed_cadence_stack": "ddad7f281c374d96e3ba0d8a9e0d784802ef3e04",
+  "stack_merge_parent": "14dd6c4fd6049f4d256a704ce181e38679cdcb47",
+  "pull_requests": [
+    37,
+    38,
+    39
+  ],
+  "scope": "Compose the reviewed source parser, cohort assembly and time-offset admission into current main without changing their code or any retained scientific source, protocol, outcome or claim.",
+  "review": {
+    "status": "source_review_complete_no_blocking_finding",
+    "reviewer": "ChatGPT repository maintenance agent",
+    "reviewed": "Complete source parser, cohort implementation, three test modules, source/cohort contracts, workflow, acquisition receipt, retained verification records and MIT notice; current atomic publication dependency and current workflows; AGENTS.md, canonical state and all required session reads.",
+    "boundaries": [
+      "Only local explicitly supplied FITS/receipt paths; no network acquisition.",
+      "Exact native BTJD/TDB identity and unchanged quality flags; no flux extraction, conversion, scoring, fitting or qualification.",
+      "Complete row conservation and deterministic overlap quarantine; a conflicted identity cannot be revived.",
+      "Byte-preserved public test fixture and upstream MIT notice; no broader archive licensing assertion.",
+      "All13 cadence paths are absent from current main; the atomic publication dependency has the same Git blob on both source generations."
+    ]
+  },
+  "preserved_cadence_blobs": [
+    {
+      "path": ".github/workflows/public-cadence.yml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "97d6a611a9e0fbff323723e84a1f2ec4cfdbd61a"
+    },
+    {
+      "path": "docs/PUBLIC_CADENCE_COHORT_CONTRACT.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2c05ea38616a38e6c0b46b7e1108f7d20957d10c"
+    },
+    {
+      "path": "docs/PUBLIC_CADENCE_SOURCE_CONTRACT.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6bc0255b5ad6c569a968f5d0ba79b37c22f237d5"
+    },
+    {
+      "path": "docs/public-cadence/verification-20261008.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9903bfba109583b7a10c06809d631998fc88a232"
+    },
+    {
+      "path": "docs/public-cadence/verification-20261009-cohort.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "30994e534a70c4602f48b98b02436aed84963d11"
+    },
+    {
+      "path": "src/siderea/public_cadence.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2fe149df4371d3e8827e6c2f7f8ab3c36e9a4cd8"
+    },
+    {
+      "path": "src/siderea/public_cadence_cohort.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "05db6730ccabf2636bc69586b1917a216d682d13"
+    },
+    {
+      "path": "tests/fixtures/public_cadence/LICENSE.lightkurve",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3f3cba477d09973ae1230ddb9f094b23ca480931"
+    },
+    {
+      "path": "tests/fixtures/public_cadence/source.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f16f26fffcdf13bf157660a2f075dad0518d8a50"
+    },
+    {
+      "path": "tests/fixtures/public_cadence/tess-pimen-100.fits",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0381f5bd0628fdf9047547383996463a0423a19b"
+    },
+    {
+      "path": "tests/test_public_cadence.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "969c1192ef6a34f8d8bdbe8adb065fc64867a4be"
+    },
+    {
+      "path": "tests/test_public_cadence_cohort.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f4afc4a566cf3748ba360b454293d9c00e6424a6"
+    },
+    {
+      "path": "tests/test_public_cadence_time_offsets.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f9082ea6c3568c8f760cd597398b04a2d8563722"
+    }
+  ],
+  "tree_contract": "Start from exact current-main tree ec2c5e4095c6f815ba69a9eab494c0fea8db2401. Add only the13 exact cadence blobs, this development record, and an append-only canonical history entry. Preserve every other current-main blob/mode.",
+  "verification": {
+    "prior_exact_cadence_head": {
+      "sha": "ddad7f281c374d96e3ba0d8a9e0d784802ef3e04",
+      "full_ci_success": [
+        44502847832,
+        44502839802
+      ],
+      "input_contract_success": [
+        44502847754,
+        44502839866
+      ],
+      "focused_cases": 127,
+      "notes": "Historical evidence for the cadence tree before current-main composition; not a pass for this new combined head."
+    },
+    "current_combined_head": "Normal existing push/PR CI and dedicated input contract must pass after this commit is published. Their result remains in GitHub Actions and the PR discussion; no local rerun or future pass is claimed by this prepublication record."
+  },
+  "scientific_execution_authorized": false,
+  "protected_evaluation_opened": false,
+  "scientific_runs": 0,
+  "paid_compute": false,
+  "reporting_authorized": false,
+  "research_complete": false,
+  "scientific_disposition": "SUCCESSOR_PROTOCOL_NOT_FROZEN; engineering input readiness only",
+  "history_preservation": "Existing negative/mixed/invalid outcomes, protocols, failed runs, source identities and all canonical histories remain unchanged. Protected seeds1000–1029 remain closed. No paper or scientific claim is adopted."
+}

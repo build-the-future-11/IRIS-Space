@@ -35,6 +35,7 @@ unqualified or unimplemented. External report submission is deliberately absent.
 - **Run it locally:** follow the setup and quickstart below.
 - **Understand JEPA and detection together:** [the dedicated JEPA/pipeline README](README_JEPA_PIPELINE.md) explains the data flow, model training, current connections and missing integration.
 - **Run Space JEPA 2:** [implementation status](docs/SPACE_JEPA_2_IMPLEMENTATION_STATUS_2026-09-19.md), [protocol](docs/SPACE_JEPA_2_PROTOCOL.md), and [mathematical specification](docs/SPACE_JEPA_2_HYPERCOMPLEX_PHYSICS_SPEC_2026-09-19.md).
+- **Prepare a separate development population:** [the four-partition input walkthrough](docs/SPACE_JEPA_POPULATION_PREPARATION_V1.md) binds declared physical aliases and keeps population B outside A's split and vocabulary.
 - **Inspect module responsibilities:** [repository layout](#repository-layout) and [architecture](docs/ARCHITECTURE.md).
 - **Read scientific boundaries:** [transient-search guide](docs/TRANSIENT_SEARCH.md) and [validation plan](docs/SCIENTIFIC_VALIDATION.md).
 

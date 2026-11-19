@@ -1,0 +1,77 @@
+{
+  "schema": "siderea.space_jepa_population_membership.v1",
+  "purpose": "development",
+  "population_a": "source_A",
+  "population_b": "source_B",
+  "population_basis": "Artificial source labels declared by this generated fixture",
+  "measurement": {
+    "value_kind": "flux",
+    "unit": "arbitrary_common_flux_unit"
+  },
+  "entities": [
+    {
+      "physical_entity_id": "physical-0",
+      "population": "source_A",
+      "aliases": [
+        "survey:0",
+        "catalog:0"
+      ]
+    },
+    {
+      "physical_entity_id": "physical-1",
+      "population": "source_A",
+      "aliases": [
+        "survey:1",
+        "catalog:1"
+      ]
+    },
+    {
+      "physical_entity_id": "physical-2",
+      "population": "source_A",
+      "aliases": [
+        "survey:2",
+        "catalog:2"
+      ]
+    },
+    {
+      "physical_entity_id": "physical-3",
+      "population": "source_A",
+      "aliases": [
+        "survey:3",
+        "catalog:3"
+      ]
+    },
+    {
+      "physical_entity_id": "physical-4",
+      "population": "source_A",
+      "aliases": [
+        "survey:4",
+        "catalog:4"
+      ]
+    },
+    {
+      "physical_entity_id": "physical-5",
+      "population": "source_A",
+      "aliases": [
+        "survey:5",
+        "catalog:5"
+      ]
+    },
+    {
+      "physical_entity_id": "physical-6",
+      "population": "source_B",
+      "aliases": [
+        "survey:6",
+        "catalog:6"
+      ]
+    },
+    {
+      "physical_entity_id": "physical-7",
+      "population": "source_B",
+      "aliases": [
+        "survey:7",
+        "catalog:7"
+      ]
+    }
+  ]
+}

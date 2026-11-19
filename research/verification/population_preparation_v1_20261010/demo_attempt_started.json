@@ -1,0 +1,37 @@
+{
+  "status": "STARTED",
+  "at_utc": "2026-10-10T05:52:52.719876+00:00",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "scripts/demo_space_jepa_population_v1.py",
+    "research/verification/population_preparation_v1_20261010/demo"
+  ],
+  "environment": {
+    "PYTHONPATH": "/workspace/scratch/2a0c1e6ddd92/torch-deps:/workspace/scratch/2a0c1e6ddd92/continuation-repos/IRIS-Population-Development/src",
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1"
+  },
+  "python": "3.12.14",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "packages": {
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "pytest": "9.1.1"
+  },
+  "source_file_sha256": {
+    "scripts/demo_space_jepa_population_v1.py": "c92360c671432b15c48afe7dd9353e9678377a45424f93d3533941eeb4c417e6",
+    "src/siderea/ml/space_jepa_population_v1.py": "99c35b11b60cbc336ef3b0987e6481638184410264a34bee0427bc25583eb74b",
+    "src/siderea/ml/space_jepa_v2.py": "a1c1d56946a8aa5a9c2ac3325990dd8e255d679150cdf01996f26bd21b5a3032",
+    "src/siderea/ml/quaternion.py": "dd3e8b359cedbdfa8a07dc2b81c9176270a500233c563b1f31acf0b62364b756",
+    "src/siderea/ml/space_jepa_v2_data.py": "c0714c90929c564406cb1c3252b0907524f1d3a5de08c8d17585730f9d253aec",
+    "src/siderea/ml/prequential.py": "533127732e5c535f09a5bb0d73aa53514b446e738c7759681ae4b31b92b07f60",
+    "src/siderea/atomic.py": "342c2742387a72aa2168ae9388490be30dfdf6719a4b10dd53995f083ee32ea1",
+    "src/siderea/provenance.py": "4713e99566e75903a0ebd94139b34ae3620a3c633162dd079f9e0928e896b3fe"
+  },
+  "independent_source_review": "Root reviewed complete module, all29 new tests, demo, workflow and guide; no blocker; authorized this one retained demo.",
+  "generated_rows": 64,
+  "optimizer_steps": 0,
+  "protected_outcomes": false,
+  "paid_compute": 0
+}

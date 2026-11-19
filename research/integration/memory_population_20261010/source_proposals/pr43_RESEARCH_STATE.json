@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "project": "IRIS-Space",
+  "updated_utc": "2026-10-10",
+  "current_phase": "ENGINEERING_DEVELOPMENT_REVIEW",
+  "scientific_disposition": "SUCCESSOR_PROTOCOL_NOT_FROZEN; implementation review only",
+  "scientific_scope_authority": [
+    "research/aqpm_successor/README.md",
+    "research/aqpm_successor/FREEZE_STATUS_2026-10-05.json",
+    "docs/MEMORY_AVAILABILITY_V2.md"
+  ],
+  "engineering_question": "Reject ambiguous retrieval policy controls before population admission",
+  "current_change": "Require an explicit boolean cross-population override and a finite real nonboolean forced gate in [0,1], validating both before eligibility lookup.",
+  "required_session_reads": [
+    "research/aqpm_successor/README.md",
+    "research/aqpm_successor/FREEZE_STATUS_2026-10-05.json",
+    "docs/MEMORY_AVAILABILITY_V2.md",
+    "research/ENGINEERING_NUMERICAL_INTEGRITY_20261010.json"
+  ],
+  "protected_boundary": "reporting_authorized remains false. No protected labels, outcome artifacts, old Space-JEPA experiments or frozen protocols were opened or changed; v2 availability and digest requirements remain in force.",
+  "protected_evaluation_opened": false,
+  "scientific_runs_this_revision": 0,
+  "research_complete": false,
+  "execution_budget": {
+    "scope": "bounded constructed regressions and existing correctness tests only",
+    "paid_compute": false,
+    "training_campaigns": 0,
+    "protected_runs": 0
+  },
+  "pending_gates": [
+    "Independent review and GitHub integration.",
+    "Scientific hypothesis/specification/methodology/freeze/evidence/release gates remain governed by the retained study contracts."
+  ],
+  "history": [
+    {
+      "date": "2026-10-10",
+      "kind": "engineering_revision",
+      "record": "research/ENGINEERING_NUMERICAL_INTEGRITY_20261010.json",
+      "status": "implemented; 55 bounded tests passed; integration pending",
+      "scientific_outcomes_created": false
+    }
+  ],
+  "history_index_scope": "Index to retained project records and this revision; not a reconstruction or replacement of the complete git/artifact history."
+}

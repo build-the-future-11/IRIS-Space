@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "IRIS / SIDEREA / Space JEPA 2",
-  "updated_utc": "2026-11-19",
+  "updated_utc": "2026-11-19T10:39:15Z",
   "repository_base_commit": "942cba56987151ac6e0d87c6d244ef9b3e1f5f1a",
   "scientific_question": "Does the proposed predictive-memory mechanism improve useful transient retrieval at fixed review cost on entity-disjoint chronological and shifted populations?",
   "scientific_disposition": "SUCCESSOR_PROTOCOL_NOT_FROZEN; no successor confirmatory result, discovery or promotion claim",
@@ -68,6 +68,17 @@
       "record": "research/PUBLIC_CADENCE_INTEGRATION_20261119.json",
       "status": "Complete source review; current-main composition prepared for normal exact-head engineering CI. See source-bound PR37 workflow receipts for subsequent outcome.",
       "scientific_outcomes_created": false
+    },
+    {
+      "date": "2026-11-19T10:39:15Z",
+      "event": "Integrate reviewed population-preparation and training-finiteness source with current main",
+      "source_head": "a182a6399c40fdbc32fa952749dae7e520da6d47",
+      "base_main": "a5adc1aba375bf83e155e1cf67d89fbd6cc9c53f",
+      "record": "research/integration/current_main_20261119/REVIEW.json",
+      "scope": "Prospective engineering only; preserve current-main memory immutability, masking, cadence and all canonical scientific fields. Retain exact original PR45 state/instructions as source proposals.",
+      "qualification": "Local compilation passed; exact-head ordinary CI pending.",
+      "scientific_execution_authorized": false,
+      "protected_evaluation_opened": false
     }
   ],
   "scientific_scope_authority": [

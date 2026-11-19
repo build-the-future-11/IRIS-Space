@@ -1,0 +1,27 @@
+......................................F........................          [100%]
+=================================== FAILURES ===================================
+_________ test_no_complete_b_rows_retains_failure_and_finished_a_files _________
+
+inputs = (PosixPath('/tmp/pytest-of-root/pytest-379/test_no_complete_b_rows_retain0/inputs/photometry.csv'), PosixPath('/tmp/pytest-of-root/pytest-379/test_no_complete_b_rows_retain0/inputs/membership.json'))
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-379/test_no_complete_b_rows_retain0')
+
+    def test_no_complete_b_rows_retains_failure_and_finished_a_files(
+        inputs: tuple[Path, Path], tmp_path: Path
+    ) -> None:
+        rows = [
+            row
+            for row in read_rows(inputs[0])
+            if row["survey"] != "source_B" or row["observation_id"] == "observation-0"
+        ]
+        write_rows(inputs[0], rows)
+        output = tmp_path / "failed"
+>       with pytest.raises(ValueError, match="population_b.*no complete"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'population_b.*no complete'
+E         Actual message: "partition 'population_b' has no admitted complete multi-horizon rows"
+
+tests/test_space_jepa_population_v1.py:313: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_space_jepa_population_v1.py::test_no_complete_b_rows_retains_failure_and_finished_a_files
+1 failed, 62 passed in 5.06s

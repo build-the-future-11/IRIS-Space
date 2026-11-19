@@ -1,0 +1,92 @@
+{
+  "receipt_version": "siderea-public-cadence-cohort-verification/1",
+  "recorded_at_utc": "2026-10-09T01:48:27Z",
+  "input_only": true,
+  "scientific_execution_authorized": false,
+  "issue": "https://github.com/build-the-future-11/IRIS-Space/issues/11",
+  "source": {
+    "base_pull_request": 37,
+    "base_commit": "58b6b48ace5718931c3929a1c443de9d9bb1b25e",
+    "implementation_commit": "4b470360577eb55b2d96e89c1ad7af15a0d9cff4",
+    "independently_reviewed_tree": "241ae022a4d4777b01a6db7690a62af3528cc0bd",
+    "receipt_only_successor": true,
+    "sha256": {
+      "src/siderea/public_cadence_cohort.py": "a6c5b4ed37125450127ba4ae7bc5cad49044afd8769b2ae4c52aab07e186bce0",
+      "tests/test_public_cadence_cohort.py": "e21f1c7ab1a99ddbae266ebe9965db914043cc6822be1a6d5d083bc4e24066cc",
+      "docs/PUBLIC_CADENCE_COHORT_CONTRACT.md": "97b6632f6b8cbadd7e6bc3e908d9db56b85d7f52f555c231afe033bb965d69fb",
+      "docs/PUBLIC_CADENCE_SOURCE_CONTRACT.md": "3f0a853ab0ad52dcf6fe533964da881253ae7bec70542fdd06f1f3b7bd5d2054",
+      ".github/workflows/public-cadence.yml": "77e180411b82730431ff3740daae888e79957ba9e4a289d1314b0e0b0d102560"
+    }
+  },
+  "fixture": {
+    "path": "tests/fixtures/public_cadence/tess-pimen-100.fits",
+    "raw_sha256": "7577c14d6eef06d5c09c0f3d9521e8e756eea584bcc91ac407fd3d090e5979a1",
+    "raw_bytes": 40320,
+    "selected_test_rows": 100,
+    "native_timesys": "TDB",
+    "time_conversion_performed": false,
+    "scope": "Existing pinned public parser fixture plus explicitly derived artificial test mutations; no population study."
+  },
+  "local_validation": {
+    "command": "python -m pytest -q tests/test_public_cadence.py tests/test_public_cadence_cohort.py --tb=short",
+    "passed": 95,
+    "existing_source_adapter_cases": 61,
+    "new_cohort_cases": 34,
+    "author_run_seconds": 2.82,
+    "ruff": "passed for new module and tests",
+    "strict_mypy": "passed for new module",
+    "git_diff_check": "passed"
+  },
+  "independent_review": {
+    "reviewer": "Separate product integration agent",
+    "source_commit": "4b470360577eb55b2d96e89c1ad7af15a0d9cff4",
+    "source_tree": "241ae022a4d4777b01a6db7690a62af3528cc0bd",
+    "reviewed": "All five changed files, existing source adapter, and atomic publication contract",
+    "source_tree_unchanged": true,
+    "same_95_tests_passed": true,
+    "run_seconds": 3.15,
+    "count_note": "The independent 95-case rerun overlaps the author gate; these are not 190 distinct cases.",
+    "additional_artificial_probe": {
+      "sources": "Public 100 rows, two identical same-cadence artificial rows, and three internally conflicting same-cadence artificial rows",
+      "input_orderings_checked": 6,
+      "report_identical_across_all_orderings": true,
+      "input_source_rows": 105,
+      "accepted_unique_cadence_identities": 99,
+      "quarantined_conflicting_source_rows": 6,
+      "conflicted_identity_revived": false,
+      "source_dispositions_and_row_references_conserved": true
+    },
+    "blocking_findings": [],
+    "approval_scope": "Bounded input-only source deduplication, provenance, native time/quality/TIMEDEL agreement, conflict propagation, replay ownership, and declared limits."
+  },
+  "actual_cli_smoke": {
+    "first_supplied_source_pairs": 2,
+    "first_distinct_raw_sources": 1,
+    "first_repeated_source_pairs": 1,
+    "first_new_artifacts": 1,
+    "accepted_unique_cadence_identities": 100,
+    "input_rows_across_distinct_sources": 100,
+    "quarantined_source_rows": 0,
+    "subsequent_supplied_source_pairs": 1,
+    "subsequent_status": "reused",
+    "subsequent_new_artifacts": 0,
+    "output_artifact_count": 1,
+    "cohort_sha256": "3e150e4cb8285a1f3c551801b6610512216643132f9cb7674ae52bdd1b573c90",
+    "artifact_sha256": "1988c3850605e5d83e81057b0c3b369dc3dec96acd31f5404b02c75ec807dfa0",
+    "artifact_bytes": 55482,
+    "both_exit_codes": 0,
+    "byte_identical_replay": true
+  },
+  "publication": {
+    "intended_state": "Draft pull request stacked on PR37",
+    "intended_base_branch": "research/public-cadence-inputs-20261008-1719",
+    "hosted_ci": "Pending exact published successor; local checks do not establish hosted status.",
+    "merge_authorized": false
+  },
+  "exclusions": [
+    "No model training, scoring, detector qualification, real-sky cohort selection, candidate discovery, or scientific outcome.",
+    "No additional source schema, external acquisition, flux extraction, time conversion, or raw fixture modification.",
+    "No protected study or frozen protocol released; input counts are cadence identities, not distinct scientific observations.",
+    "Output ancestors remain caller-trusted; there is no overwrite, force, or re-bless path."
+  ]
+}

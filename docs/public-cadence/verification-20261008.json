@@ -1,0 +1,143 @@
+{
+  "schema_version": "siderea-public-cadence-verification/1",
+  "recorded_at_utc": "2026-10-08T17:19:36Z",
+  "repository": "build-the-future-11/IRIS-Space",
+  "base_commit": "7f14c66f9018db0e15d4e87d713bbe47d9479b10",
+  "input_only": true,
+  "scientific_execution_authorized": false,
+  "local_checkout_scope": "Exact copied package dependencies and new adapter files only; existing held research outcome artifacts were not materialized.",
+  "verified_files": [
+    {
+      "path": "src/siderea/public_cadence.py",
+      "sha256": "2c258f00ddf28142f5618960bd80f3444374c77c1020172f74fbbbf9ce53742c",
+      "size_bytes": 17908
+    },
+    {
+      "path": "tests/test_public_cadence.py",
+      "sha256": "f1d9ed9cb326f0a157db30cab64c92bf16347dc71a40c85b3d446d341a93a193",
+      "size_bytes": 13368
+    },
+    {
+      "path": "docs/PUBLIC_CADENCE_SOURCE_CONTRACT.md",
+      "sha256": "66099f534bab5c778aae160e537570edc22b86258e1b9f2d99c4cf176832b663",
+      "size_bytes": 5652
+    },
+    {
+      "path": ".github/workflows/public-cadence.yml",
+      "sha256": "80dd6359eb81be21556284e2b8a6e991de0c9debcba8d4fcd7313d91de18b187",
+      "size_bytes": 994
+    },
+    {
+      "path": "tests/fixtures/public_cadence/tess-pimen-100.fits",
+      "sha256": "7577c14d6eef06d5c09c0f3d9521e8e756eea584bcc91ac407fd3d090e5979a1",
+      "size_bytes": 40320
+    },
+    {
+      "path": "tests/fixtures/public_cadence/source.json",
+      "sha256": "9a2f24d3b450050657bd33426bedbf3beb25b7b753af018c4c2d0d08c5479067",
+      "size_bytes": 615
+    },
+    {
+      "path": "tests/fixtures/public_cadence/LICENSE.lightkurve",
+      "sha256": "bc7e9f3af057b11c5c8647f0bba07bb9abd9d8f3813c551605b6eb1bb2cc8758",
+      "size_bytes": 1073
+    }
+  ],
+  "runtime": {
+    "python": "3.12.14",
+    "astropy": "8.0.1",
+    "numpy": "2.4.6",
+    "pytest": "9.1.1",
+    "ruff": "0.16.10",
+    "mypy": "2.4.0"
+  },
+  "checks": [
+    {
+      "command": "python -m pytest -q tests/test_public_cadence.py",
+      "exit_code": 0,
+      "passed": 61,
+      "duration_seconds": 2.46
+    },
+    {
+      "command": "python -m ruff check src/siderea/public_cadence.py tests/test_public_cadence.py",
+      "exit_code": 0
+    },
+    {
+      "command": "python -m ruff format --check src/siderea/public_cadence.py tests/test_public_cadence.py",
+      "exit_code": 0
+    },
+    {
+      "command": "python -m mypy src/siderea/public_cadence.py",
+      "exit_code": 0
+    },
+    {
+      "command": "PYTHONPATH=src python -m siderea.public_cadence tests/fixtures/public_cadence/tess-pimen-100.fits --source tests/fixtures/public_cadence/source.json --output-dir <temporary-output-dir>",
+      "exit_code": 0,
+      "initial_status": "created",
+      "initial_new_artifacts": 1,
+      "replay_status": "reused",
+      "replay_new_artifacts": 0,
+      "counts": {
+        "input": 100,
+        "accepted": 100,
+        "rejected": 0
+      }
+    }
+  ],
+  "independent_review": {
+    "reviewed_at_utc": "2026-10-08T17:19:16.785507+00:00",
+    "reviewer": "product_execution",
+    "source_path": "/workspace/scratch/8158355509d7/research-IRIS-Space/src/siderea/public_cadence.py",
+    "source_sha256": "2c258f00ddf28142f5618960bd80f3444374c77c1020172f74fbbbf9ce53742c",
+    "public_fixture_sha256": "7577c14d6eef06d5c09c0f3d9521e8e756eea584bcc91ac407fd3d090e5979a1",
+    "scope": "Only the three original review findings; no scientific execution or held outcome access",
+    "pre_fix_evidence": "Independent reviewer reproductions in session transcript; no preserved pre-fix source snapshot/hash or log artifact",
+    "checks": [
+      {
+        "case": "conflicting duplicate TUNIT1",
+        "status": "rejected",
+        "code": "schema_drift"
+      },
+      {
+        "case": "conflicting duplicate TUNIT4",
+        "status": "rejected",
+        "code": "schema_drift"
+      },
+      {
+        "case": "conflicting receipt JSON key",
+        "status": "rejected",
+        "code": "invalid_source_receipt"
+      },
+      {
+        "case": "receipt FIFO admission",
+        "bounded_subprocess_timeout_seconds": 2,
+        "status": "rejected",
+        "code": "invalid_source_receipt"
+      },
+      {
+        "case": "replay FIFO admission",
+        "bounded_subprocess_timeout_seconds": 2,
+        "status": "rejected",
+        "code": "artifact_conflict"
+      },
+      {
+        "case": "raw FIFO admission",
+        "bounded_subprocess_timeout_seconds": 2,
+        "status": "rejected",
+        "code": "local_input_error"
+      }
+    ],
+    "outcome": "All original findings now fail closed; no additional blocking issue in the reviewed input/provenance/quarantine/replay contract"
+  },
+  "pending_before_merge": [
+    "Clean exact-head CI and normal repository quality gates, including make check, have not been claimed complete by this local narrow snapshot.",
+    "Input-only source-contract review and maintainer merge decision.",
+    "Issue #11 remains open: cross-file cohort assembly, global overlap reconciliation, and authorization for additional source schemas are not implemented."
+  ],
+  "excluded_work": [
+    "No robust-search-v2 development, calibration, locked evaluation, generalization, or compound-probe performance outcomes.",
+    "No modification of frozen cadence generators, seeds, trial allocations, statistics, thresholds, promotion gates, or negative evidence.",
+    "No real-sky completeness, purity, class accuracy, discovery, or scientific qualification inference.",
+    "No bulk source acquisition, paid compute, or model fitting."
+  ]
+}

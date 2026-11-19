@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "IRIS / SIDEREA / Space JEPA 2",
-  "updated_utc": "2026-10-22",
+  "updated_utc": "2026-11-19",
   "repository_base_commit": "942cba56987151ac6e0d87c6d244ef9b3e1f5f1a",
   "scientific_question": "Does the proposed predictive-memory mechanism improve useful transient retrieval at fixed review cost on entity-disjoint chronological and shifted populations?",
   "scientific_disposition": "SUCCESSOR_PROTOCOL_NOT_FROZEN; no successor confirmatory result, discovery or promotion claim",
@@ -15,7 +15,7 @@
     "training_campaigns": 0,
     "protected_runs": 0
   },
-  "current_change": "Reconcile PRs40\u201343 with merged44: retain fresh immutable byte views, frozen bank settings, vectorized retrieval, explicit residual availability and v2 replay; preserve preparation, masking, gradient and shadow-admission corrections. Reject CLI query-identity coercion. Preserve both historical engineering records.",
+  "current_change": "Reconcile PRs40–43 with merged44: retain fresh immutable byte views, frozen bank settings, vectorized retrieval, explicit residual availability and v2 replay; preserve preparation, masking, gradient and shadow-admission corrections. Reject CLI query-identity coercion. Preserve both historical engineering records.",
   "required_session_reads": [
     "research/aqpm_successor/FREEZE_STATUS_2026-10-05.json",
     "research/aqpm_successor/README.md",
@@ -37,7 +37,7 @@
   "pending_gates": [
     "Independent integration review and exact-head hosted quality, full test, package, security and CPU engineering checks.",
     "Actual target/model availability provenance, training-only membership, source-population holdout and full successor freeze remain required.",
-    "Protected outcomes and the separately supplied seed 1000\u20131029 lock remain closed; this engineering revision authorizes no scientific run.",
+    "Protected outcomes and the separately supplied seed 1000–1029 lock remain closed; this engineering revision authorizes no scientific run.",
     "Hypothesis, falsifier, fixed development budget and pre-outcome confirmatory freeze remain governed by the retained scientific contracts."
   ],
   "history": [
@@ -61,6 +61,13 @@
       "record": "research/ENGINEERING_MEMORY_INTEGRATION_20261022.json",
       "status": "254 bounded tests passed; review and exact-head hosted integration pending",
       "scientific_outcomes_created": false
+    },
+    {
+      "date": "2026-11-19",
+      "kind": "input_only_engineering_integration",
+      "record": "research/PUBLIC_CADENCE_INTEGRATION_20261119.json",
+      "status": "Complete source review; current-main composition prepared for normal exact-head engineering CI. See source-bound PR37 workflow receipts for subsequent outcome.",
+      "scientific_outcomes_created": false
     }
   ],
   "scientific_scope_authority": [
@@ -69,6 +76,6 @@
     "docs/MEMORY_AVAILABILITY_V2.md"
   ],
   "engineering_question": "Can immutable vectorized memory, explicit residual availability and strict artifact admission coexist without changing digest-bound behavior?",
-  "protected_boundary": "reporting_authorized remains false. No protected labels, outcomes or seeds, including 1000\u20131029, were opened. Historical results, source bindings and frozen protocols remain unchanged.",
+  "protected_boundary": "reporting_authorized remains false. No protected labels, outcomes or seeds, including 1000–1029, were opened. Historical results, source bindings and frozen protocols remain unchanged.",
   "research_complete": false
 }

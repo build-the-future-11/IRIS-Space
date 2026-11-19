@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "IRIS / SIDEREA / Space JEPA 2",
-  "updated_utc": "2026-11-19T10:39:15Z",
+  "updated_utc": "2026-11-19T10:54:35Z",
   "repository_base_commit": "942cba56987151ac6e0d87c6d244ef9b3e1f5f1a",
   "scientific_question": "Does the proposed predictive-memory mechanism improve useful transient retrieval at fixed review cost on entity-disjoint chronological and shifted populations?",
   "scientific_disposition": "SUCCESSOR_PROTOCOL_NOT_FROZEN; no successor confirmatory result, discovery or promotion claim",
@@ -79,6 +79,13 @@
       "qualification": "Local compilation passed; exact-head ordinary CI pending.",
       "scientific_execution_authorized": false,
       "protected_evaluation_opened": false
+    },
+    {
+      "date": "2026-11-19T10:54:35Z",
+      "kind": "input_only_engineering_repair",
+      "record": "research/PUBLIC_CADENCE_VERIFY_ERROR_REPAIR_20261119.json",
+      "status": "Two real VerifyError regressions reproduce on the original parser; all 63 corrected parser tests and changed-file lint/format checks pass. Exact-head hosted review and CI pending.",
+      "scientific_outcomes_created": false
     }
   ],
   "scientific_scope_authority": [

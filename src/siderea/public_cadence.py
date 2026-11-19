@@ -208,7 +208,7 @@ def _extract(raw: bytes, source: SourceReceipt) -> tuple[list[dict[str, Any]], f
     # Lazy optional dependency: importing SIDEREA or this module does not load Astropy.
     try:
         from astropy.io import fits
-        from astropy.io.fits.verify import VerifyWarning
+        from astropy.io.fits.verify import VerifyError, VerifyWarning
     except ImportError as exc:
         raise CadenceInputError(
             "missing_astropy", "Install the astronomy extra or astropy>=6"
@@ -301,7 +301,7 @@ def _extract(raw: bytes, source: SourceReceipt) -> tuple[list[dict[str, Any]], f
                 return rows, cadence_interval
     except CadenceInputError:
         raise
-    except (OSError, ValueError, TypeError, KeyError, VerifyWarning) as exc:
+    except (OSError, ValueError, TypeError, KeyError, VerifyError, VerifyWarning) as exc:
         raise CadenceInputError("invalid_fits", "FITS could not be parsed without repair") from exc
 
 

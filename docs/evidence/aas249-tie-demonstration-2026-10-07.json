@@ -1,0 +1,2011 @@
+{
+  "schema": "siderea.aas249_tie_demonstration.v1",
+  "evidence_type": "constructed four-row arithmetic illustration, not sky data",
+  "permutations": 24,
+  "models": 2,
+  "budgets": 4,
+  "evaluations": 192,
+  "result": "PASS",
+  "summary": [
+    {
+      "model_label": "incumbent",
+      "budget": 1,
+      "exact_expected_precision": "1/2",
+      "exact_expected_recall": "1/4",
+      "threshold_average_precision": 0.5,
+      "row_order_precision_min": "0",
+      "row_order_precision_max": "1"
+    },
+    {
+      "model_label": "incumbent",
+      "budget": 2,
+      "exact_expected_precision": "1/2",
+      "exact_expected_recall": "1/2",
+      "threshold_average_precision": 0.5,
+      "row_order_precision_min": "0",
+      "row_order_precision_max": "1"
+    },
+    {
+      "model_label": "incumbent",
+      "budget": 3,
+      "exact_expected_precision": "1/2",
+      "exact_expected_recall": "3/4",
+      "threshold_average_precision": 0.5,
+      "row_order_precision_min": "1/3",
+      "row_order_precision_max": "2/3"
+    },
+    {
+      "model_label": "incumbent",
+      "budget": 4,
+      "exact_expected_precision": "1/2",
+      "exact_expected_recall": "1",
+      "threshold_average_precision": 0.5,
+      "row_order_precision_min": "1/2",
+      "row_order_precision_max": "1/2"
+    },
+    {
+      "model_label": "candidate",
+      "budget": 1,
+      "exact_expected_precision": "1",
+      "exact_expected_recall": "1/2",
+      "threshold_average_precision": 1.0,
+      "row_order_precision_min": "1",
+      "row_order_precision_max": "1"
+    },
+    {
+      "model_label": "candidate",
+      "budget": 2,
+      "exact_expected_precision": "1",
+      "exact_expected_recall": "1",
+      "threshold_average_precision": 1.0,
+      "row_order_precision_min": "1",
+      "row_order_precision_max": "1"
+    },
+    {
+      "model_label": "candidate",
+      "budget": 3,
+      "exact_expected_precision": "2/3",
+      "exact_expected_recall": "1",
+      "threshold_average_precision": 1.0,
+      "row_order_precision_min": "2/3",
+      "row_order_precision_max": "2/3"
+    },
+    {
+      "model_label": "candidate",
+      "budget": 4,
+      "exact_expected_precision": "1/2",
+      "exact_expected_recall": "1",
+      "threshold_average_precision": 1.0,
+      "row_order_precision_min": "1/2",
+      "row_order_precision_max": "1/2"
+    }
+  ],
+  "rows": [
+    {
+      "order": "dcba",
+      "model_label": "incumbent",
+      "review_budget": 1,
+      "expected_precision": 0.5,
+      "expected_recall": 0.25,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "dcba",
+      "model_label": "incumbent",
+      "review_budget": 2,
+      "expected_precision": 0.5,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "dcba",
+      "model_label": "incumbent",
+      "review_budget": 3,
+      "expected_precision": 0.5,
+      "expected_recall": 0.75,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dcba",
+      "model_label": "incumbent",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dcba",
+      "model_label": "candidate",
+      "review_budget": 1,
+      "expected_precision": 1.0,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "dcba",
+      "model_label": "candidate",
+      "review_budget": 2,
+      "expected_precision": 1.0,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dcba",
+      "model_label": "candidate",
+      "review_budget": 3,
+      "expected_precision": 0.6666666666666666,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dcba",
+      "model_label": "candidate",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dcab",
+      "model_label": "incumbent",
+      "review_budget": 1,
+      "expected_precision": 0.5,
+      "expected_recall": 0.25,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "dcab",
+      "model_label": "incumbent",
+      "review_budget": 2,
+      "expected_precision": 0.5,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "dcab",
+      "model_label": "incumbent",
+      "review_budget": 3,
+      "expected_precision": 0.5,
+      "expected_recall": 0.75,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/3",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "dcab",
+      "model_label": "incumbent",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dcab",
+      "model_label": "candidate",
+      "review_budget": 1,
+      "expected_precision": 1.0,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "dcab",
+      "model_label": "candidate",
+      "review_budget": 2,
+      "expected_precision": 1.0,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dcab",
+      "model_label": "candidate",
+      "review_budget": 3,
+      "expected_precision": 0.6666666666666666,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dcab",
+      "model_label": "candidate",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dbca",
+      "model_label": "incumbent",
+      "review_budget": 1,
+      "expected_precision": 0.5,
+      "expected_recall": 0.25,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "dbca",
+      "model_label": "incumbent",
+      "review_budget": 2,
+      "expected_precision": 0.5,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dbca",
+      "model_label": "incumbent",
+      "review_budget": 3,
+      "expected_precision": 0.5,
+      "expected_recall": 0.75,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dbca",
+      "model_label": "incumbent",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dbca",
+      "model_label": "candidate",
+      "review_budget": 1,
+      "expected_precision": 1.0,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "dbca",
+      "model_label": "candidate",
+      "review_budget": 2,
+      "expected_precision": 1.0,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dbca",
+      "model_label": "candidate",
+      "review_budget": 3,
+      "expected_precision": 0.6666666666666666,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dbca",
+      "model_label": "candidate",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dbac",
+      "model_label": "incumbent",
+      "review_budget": 1,
+      "expected_precision": 0.5,
+      "expected_recall": 0.25,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "dbac",
+      "model_label": "incumbent",
+      "review_budget": 2,
+      "expected_precision": 0.5,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dbac",
+      "model_label": "incumbent",
+      "review_budget": 3,
+      "expected_precision": 0.5,
+      "expected_recall": 0.75,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dbac",
+      "model_label": "incumbent",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dbac",
+      "model_label": "candidate",
+      "review_budget": 1,
+      "expected_precision": 1.0,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "dbac",
+      "model_label": "candidate",
+      "review_budget": 2,
+      "expected_precision": 1.0,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dbac",
+      "model_label": "candidate",
+      "review_budget": 3,
+      "expected_precision": 0.6666666666666666,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dbac",
+      "model_label": "candidate",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dacb",
+      "model_label": "incumbent",
+      "review_budget": 1,
+      "expected_precision": 0.5,
+      "expected_recall": 0.25,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "dacb",
+      "model_label": "incumbent",
+      "review_budget": 2,
+      "expected_precision": 0.5,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "dacb",
+      "model_label": "incumbent",
+      "review_budget": 3,
+      "expected_precision": 0.5,
+      "expected_recall": 0.75,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/3",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "dacb",
+      "model_label": "incumbent",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dacb",
+      "model_label": "candidate",
+      "review_budget": 1,
+      "expected_precision": 1.0,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "dacb",
+      "model_label": "candidate",
+      "review_budget": 2,
+      "expected_precision": 1.0,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dacb",
+      "model_label": "candidate",
+      "review_budget": 3,
+      "expected_precision": 0.6666666666666666,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dacb",
+      "model_label": "candidate",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dabc",
+      "model_label": "incumbent",
+      "review_budget": 1,
+      "expected_precision": 0.5,
+      "expected_recall": 0.25,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "dabc",
+      "model_label": "incumbent",
+      "review_budget": 2,
+      "expected_precision": 0.5,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "dabc",
+      "model_label": "incumbent",
+      "review_budget": 3,
+      "expected_precision": 0.5,
+      "expected_recall": 0.75,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dabc",
+      "model_label": "incumbent",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dabc",
+      "model_label": "candidate",
+      "review_budget": 1,
+      "expected_precision": 1.0,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "dabc",
+      "model_label": "candidate",
+      "review_budget": 2,
+      "expected_precision": 1.0,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dabc",
+      "model_label": "candidate",
+      "review_budget": 3,
+      "expected_precision": 0.6666666666666666,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "dabc",
+      "model_label": "candidate",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "cdba",
+      "model_label": "incumbent",
+      "review_budget": 1,
+      "expected_precision": 0.5,
+      "expected_recall": 0.25,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "0",
+      "row_order_recall_fraction": "0"
+    },
+    {
+      "order": "cdba",
+      "model_label": "incumbent",
+      "review_budget": 2,
+      "expected_precision": 0.5,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "cdba",
+      "model_label": "incumbent",
+      "review_budget": 3,
+      "expected_precision": 0.5,
+      "expected_recall": 0.75,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "cdba",
+      "model_label": "incumbent",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "cdba",
+      "model_label": "candidate",
+      "review_budget": 1,
+      "expected_precision": 1.0,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "cdba",
+      "model_label": "candidate",
+      "review_budget": 2,
+      "expected_precision": 1.0,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "cdba",
+      "model_label": "candidate",
+      "review_budget": 3,
+      "expected_precision": 0.6666666666666666,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "cdba",
+      "model_label": "candidate",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "cdab",
+      "model_label": "incumbent",
+      "review_budget": 1,
+      "expected_precision": 0.5,
+      "expected_recall": 0.25,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "0",
+      "row_order_recall_fraction": "0"
+    },
+    {
+      "order": "cdab",
+      "model_label": "incumbent",
+      "review_budget": 2,
+      "expected_precision": 0.5,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "cdab",
+      "model_label": "incumbent",
+      "review_budget": 3,
+      "expected_precision": 0.5,
+      "expected_recall": 0.75,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/3",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "cdab",
+      "model_label": "incumbent",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "cdab",
+      "model_label": "candidate",
+      "review_budget": 1,
+      "expected_precision": 1.0,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "cdab",
+      "model_label": "candidate",
+      "review_budget": 2,
+      "expected_precision": 1.0,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "cdab",
+      "model_label": "candidate",
+      "review_budget": 3,
+      "expected_precision": 0.6666666666666666,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "cdab",
+      "model_label": "candidate",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "cbda",
+      "model_label": "incumbent",
+      "review_budget": 1,
+      "expected_precision": 0.5,
+      "expected_recall": 0.25,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "0",
+      "row_order_recall_fraction": "0"
+    },
+    {
+      "order": "cbda",
+      "model_label": "incumbent",
+      "review_budget": 2,
+      "expected_precision": 0.5,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "cbda",
+      "model_label": "incumbent",
+      "review_budget": 3,
+      "expected_precision": 0.5,
+      "expected_recall": 0.75,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "cbda",
+      "model_label": "incumbent",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "cbda",
+      "model_label": "candidate",
+      "review_budget": 1,
+      "expected_precision": 1.0,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "cbda",
+      "model_label": "candidate",
+      "review_budget": 2,
+      "expected_precision": 1.0,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "cbda",
+      "model_label": "candidate",
+      "review_budget": 3,
+      "expected_precision": 0.6666666666666666,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "cbda",
+      "model_label": "candidate",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "cbad",
+      "model_label": "incumbent",
+      "review_budget": 1,
+      "expected_precision": 0.5,
+      "expected_recall": 0.25,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "0",
+      "row_order_recall_fraction": "0"
+    },
+    {
+      "order": "cbad",
+      "model_label": "incumbent",
+      "review_budget": 2,
+      "expected_precision": 0.5,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "cbad",
+      "model_label": "incumbent",
+      "review_budget": 3,
+      "expected_precision": 0.5,
+      "expected_recall": 0.75,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/3",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "cbad",
+      "model_label": "incumbent",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "cbad",
+      "model_label": "candidate",
+      "review_budget": 1,
+      "expected_precision": 1.0,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "cbad",
+      "model_label": "candidate",
+      "review_budget": 2,
+      "expected_precision": 1.0,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "cbad",
+      "model_label": "candidate",
+      "review_budget": 3,
+      "expected_precision": 0.6666666666666666,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "cbad",
+      "model_label": "candidate",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "cadb",
+      "model_label": "incumbent",
+      "review_budget": 1,
+      "expected_precision": 0.5,
+      "expected_recall": 0.25,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "0",
+      "row_order_recall_fraction": "0"
+    },
+    {
+      "order": "cadb",
+      "model_label": "incumbent",
+      "review_budget": 2,
+      "expected_precision": 0.5,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "0",
+      "row_order_recall_fraction": "0"
+    },
+    {
+      "order": "cadb",
+      "model_label": "incumbent",
+      "review_budget": 3,
+      "expected_precision": 0.5,
+      "expected_recall": 0.75,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/3",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "cadb",
+      "model_label": "incumbent",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "cadb",
+      "model_label": "candidate",
+      "review_budget": 1,
+      "expected_precision": 1.0,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "cadb",
+      "model_label": "candidate",
+      "review_budget": 2,
+      "expected_precision": 1.0,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "cadb",
+      "model_label": "candidate",
+      "review_budget": 3,
+      "expected_precision": 0.6666666666666666,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "cadb",
+      "model_label": "candidate",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "cabd",
+      "model_label": "incumbent",
+      "review_budget": 1,
+      "expected_precision": 0.5,
+      "expected_recall": 0.25,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "0",
+      "row_order_recall_fraction": "0"
+    },
+    {
+      "order": "cabd",
+      "model_label": "incumbent",
+      "review_budget": 2,
+      "expected_precision": 0.5,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "0",
+      "row_order_recall_fraction": "0"
+    },
+    {
+      "order": "cabd",
+      "model_label": "incumbent",
+      "review_budget": 3,
+      "expected_precision": 0.5,
+      "expected_recall": 0.75,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/3",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "cabd",
+      "model_label": "incumbent",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "cabd",
+      "model_label": "candidate",
+      "review_budget": 1,
+      "expected_precision": 1.0,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "cabd",
+      "model_label": "candidate",
+      "review_budget": 2,
+      "expected_precision": 1.0,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "cabd",
+      "model_label": "candidate",
+      "review_budget": 3,
+      "expected_precision": 0.6666666666666666,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "cabd",
+      "model_label": "candidate",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "bdca",
+      "model_label": "incumbent",
+      "review_budget": 1,
+      "expected_precision": 0.5,
+      "expected_recall": 0.25,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "bdca",
+      "model_label": "incumbent",
+      "review_budget": 2,
+      "expected_precision": 0.5,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "bdca",
+      "model_label": "incumbent",
+      "review_budget": 3,
+      "expected_precision": 0.5,
+      "expected_recall": 0.75,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "bdca",
+      "model_label": "incumbent",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "bdca",
+      "model_label": "candidate",
+      "review_budget": 1,
+      "expected_precision": 1.0,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "bdca",
+      "model_label": "candidate",
+      "review_budget": 2,
+      "expected_precision": 1.0,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "bdca",
+      "model_label": "candidate",
+      "review_budget": 3,
+      "expected_precision": 0.6666666666666666,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "bdca",
+      "model_label": "candidate",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "bdac",
+      "model_label": "incumbent",
+      "review_budget": 1,
+      "expected_precision": 0.5,
+      "expected_recall": 0.25,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "bdac",
+      "model_label": "incumbent",
+      "review_budget": 2,
+      "expected_precision": 0.5,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "bdac",
+      "model_label": "incumbent",
+      "review_budget": 3,
+      "expected_precision": 0.5,
+      "expected_recall": 0.75,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "bdac",
+      "model_label": "incumbent",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "bdac",
+      "model_label": "candidate",
+      "review_budget": 1,
+      "expected_precision": 1.0,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "bdac",
+      "model_label": "candidate",
+      "review_budget": 2,
+      "expected_precision": 1.0,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "bdac",
+      "model_label": "candidate",
+      "review_budget": 3,
+      "expected_precision": 0.6666666666666666,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "bdac",
+      "model_label": "candidate",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "bcda",
+      "model_label": "incumbent",
+      "review_budget": 1,
+      "expected_precision": 0.5,
+      "expected_recall": 0.25,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "bcda",
+      "model_label": "incumbent",
+      "review_budget": 2,
+      "expected_precision": 0.5,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "bcda",
+      "model_label": "incumbent",
+      "review_budget": 3,
+      "expected_precision": 0.5,
+      "expected_recall": 0.75,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "bcda",
+      "model_label": "incumbent",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "bcda",
+      "model_label": "candidate",
+      "review_budget": 1,
+      "expected_precision": 1.0,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "bcda",
+      "model_label": "candidate",
+      "review_budget": 2,
+      "expected_precision": 1.0,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "bcda",
+      "model_label": "candidate",
+      "review_budget": 3,
+      "expected_precision": 0.6666666666666666,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "bcda",
+      "model_label": "candidate",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "bcad",
+      "model_label": "incumbent",
+      "review_budget": 1,
+      "expected_precision": 0.5,
+      "expected_recall": 0.25,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "bcad",
+      "model_label": "incumbent",
+      "review_budget": 2,
+      "expected_precision": 0.5,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "bcad",
+      "model_label": "incumbent",
+      "review_budget": 3,
+      "expected_precision": 0.5,
+      "expected_recall": 0.75,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/3",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "bcad",
+      "model_label": "incumbent",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "bcad",
+      "model_label": "candidate",
+      "review_budget": 1,
+      "expected_precision": 1.0,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "bcad",
+      "model_label": "candidate",
+      "review_budget": 2,
+      "expected_precision": 1.0,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "bcad",
+      "model_label": "candidate",
+      "review_budget": 3,
+      "expected_precision": 0.6666666666666666,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "bcad",
+      "model_label": "candidate",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "badc",
+      "model_label": "incumbent",
+      "review_budget": 1,
+      "expected_precision": 0.5,
+      "expected_recall": 0.25,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "badc",
+      "model_label": "incumbent",
+      "review_budget": 2,
+      "expected_precision": 0.5,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "badc",
+      "model_label": "incumbent",
+      "review_budget": 3,
+      "expected_precision": 0.5,
+      "expected_recall": 0.75,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "badc",
+      "model_label": "incumbent",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "badc",
+      "model_label": "candidate",
+      "review_budget": 1,
+      "expected_precision": 1.0,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "badc",
+      "model_label": "candidate",
+      "review_budget": 2,
+      "expected_precision": 1.0,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "badc",
+      "model_label": "candidate",
+      "review_budget": 3,
+      "expected_precision": 0.6666666666666666,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "badc",
+      "model_label": "candidate",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "bacd",
+      "model_label": "incumbent",
+      "review_budget": 1,
+      "expected_precision": 0.5,
+      "expected_recall": 0.25,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "bacd",
+      "model_label": "incumbent",
+      "review_budget": 2,
+      "expected_precision": 0.5,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "bacd",
+      "model_label": "incumbent",
+      "review_budget": 3,
+      "expected_precision": 0.5,
+      "expected_recall": 0.75,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/3",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "bacd",
+      "model_label": "incumbent",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "bacd",
+      "model_label": "candidate",
+      "review_budget": 1,
+      "expected_precision": 1.0,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "bacd",
+      "model_label": "candidate",
+      "review_budget": 2,
+      "expected_precision": 1.0,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "bacd",
+      "model_label": "candidate",
+      "review_budget": 3,
+      "expected_precision": 0.6666666666666666,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "bacd",
+      "model_label": "candidate",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "adcb",
+      "model_label": "incumbent",
+      "review_budget": 1,
+      "expected_precision": 0.5,
+      "expected_recall": 0.25,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "0",
+      "row_order_recall_fraction": "0"
+    },
+    {
+      "order": "adcb",
+      "model_label": "incumbent",
+      "review_budget": 2,
+      "expected_precision": 0.5,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "adcb",
+      "model_label": "incumbent",
+      "review_budget": 3,
+      "expected_precision": 0.5,
+      "expected_recall": 0.75,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/3",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "adcb",
+      "model_label": "incumbent",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "adcb",
+      "model_label": "candidate",
+      "review_budget": 1,
+      "expected_precision": 1.0,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "adcb",
+      "model_label": "candidate",
+      "review_budget": 2,
+      "expected_precision": 1.0,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "adcb",
+      "model_label": "candidate",
+      "review_budget": 3,
+      "expected_precision": 0.6666666666666666,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "adcb",
+      "model_label": "candidate",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "adbc",
+      "model_label": "incumbent",
+      "review_budget": 1,
+      "expected_precision": 0.5,
+      "expected_recall": 0.25,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "0",
+      "row_order_recall_fraction": "0"
+    },
+    {
+      "order": "adbc",
+      "model_label": "incumbent",
+      "review_budget": 2,
+      "expected_precision": 0.5,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "adbc",
+      "model_label": "incumbent",
+      "review_budget": 3,
+      "expected_precision": 0.5,
+      "expected_recall": 0.75,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "adbc",
+      "model_label": "incumbent",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "adbc",
+      "model_label": "candidate",
+      "review_budget": 1,
+      "expected_precision": 1.0,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "adbc",
+      "model_label": "candidate",
+      "review_budget": 2,
+      "expected_precision": 1.0,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "adbc",
+      "model_label": "candidate",
+      "review_budget": 3,
+      "expected_precision": 0.6666666666666666,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "adbc",
+      "model_label": "candidate",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "acdb",
+      "model_label": "incumbent",
+      "review_budget": 1,
+      "expected_precision": 0.5,
+      "expected_recall": 0.25,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "0",
+      "row_order_recall_fraction": "0"
+    },
+    {
+      "order": "acdb",
+      "model_label": "incumbent",
+      "review_budget": 2,
+      "expected_precision": 0.5,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "0",
+      "row_order_recall_fraction": "0"
+    },
+    {
+      "order": "acdb",
+      "model_label": "incumbent",
+      "review_budget": 3,
+      "expected_precision": 0.5,
+      "expected_recall": 0.75,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/3",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "acdb",
+      "model_label": "incumbent",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "acdb",
+      "model_label": "candidate",
+      "review_budget": 1,
+      "expected_precision": 1.0,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "acdb",
+      "model_label": "candidate",
+      "review_budget": 2,
+      "expected_precision": 1.0,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "acdb",
+      "model_label": "candidate",
+      "review_budget": 3,
+      "expected_precision": 0.6666666666666666,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "acdb",
+      "model_label": "candidate",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "acbd",
+      "model_label": "incumbent",
+      "review_budget": 1,
+      "expected_precision": 0.5,
+      "expected_recall": 0.25,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "0",
+      "row_order_recall_fraction": "0"
+    },
+    {
+      "order": "acbd",
+      "model_label": "incumbent",
+      "review_budget": 2,
+      "expected_precision": 0.5,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "0",
+      "row_order_recall_fraction": "0"
+    },
+    {
+      "order": "acbd",
+      "model_label": "incumbent",
+      "review_budget": 3,
+      "expected_precision": 0.5,
+      "expected_recall": 0.75,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/3",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "acbd",
+      "model_label": "incumbent",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "acbd",
+      "model_label": "candidate",
+      "review_budget": 1,
+      "expected_precision": 1.0,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "acbd",
+      "model_label": "candidate",
+      "review_budget": 2,
+      "expected_precision": 1.0,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "acbd",
+      "model_label": "candidate",
+      "review_budget": 3,
+      "expected_precision": 0.6666666666666666,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "acbd",
+      "model_label": "candidate",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "abdc",
+      "model_label": "incumbent",
+      "review_budget": 1,
+      "expected_precision": 0.5,
+      "expected_recall": 0.25,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "0",
+      "row_order_recall_fraction": "0"
+    },
+    {
+      "order": "abdc",
+      "model_label": "incumbent",
+      "review_budget": 2,
+      "expected_precision": 0.5,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "abdc",
+      "model_label": "incumbent",
+      "review_budget": 3,
+      "expected_precision": 0.5,
+      "expected_recall": 0.75,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "abdc",
+      "model_label": "incumbent",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "abdc",
+      "model_label": "candidate",
+      "review_budget": 1,
+      "expected_precision": 1.0,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "abdc",
+      "model_label": "candidate",
+      "review_budget": 2,
+      "expected_precision": 1.0,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "abdc",
+      "model_label": "candidate",
+      "review_budget": 3,
+      "expected_precision": 0.6666666666666666,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "abdc",
+      "model_label": "candidate",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "abcd",
+      "model_label": "incumbent",
+      "review_budget": 1,
+      "expected_precision": 0.5,
+      "expected_recall": 0.25,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "0",
+      "row_order_recall_fraction": "0"
+    },
+    {
+      "order": "abcd",
+      "model_label": "incumbent",
+      "review_budget": 2,
+      "expected_precision": 0.5,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "abcd",
+      "model_label": "incumbent",
+      "review_budget": 3,
+      "expected_precision": 0.5,
+      "expected_recall": 0.75,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/3",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "abcd",
+      "model_label": "incumbent",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 0.5,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "abcd",
+      "model_label": "candidate",
+      "review_budget": 1,
+      "expected_precision": 1.0,
+      "expected_recall": 0.5,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1/2"
+    },
+    {
+      "order": "abcd",
+      "model_label": "candidate",
+      "review_budget": 2,
+      "expected_precision": 1.0,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "abcd",
+      "model_label": "candidate",
+      "review_budget": 3,
+      "expected_precision": 0.6666666666666666,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "2/3",
+      "row_order_recall_fraction": "1"
+    },
+    {
+      "order": "abcd",
+      "model_label": "candidate",
+      "review_budget": 4,
+      "expected_precision": 0.5,
+      "expected_recall": 1.0,
+      "threshold_average_precision": 1.0,
+      "row_order_precision_fraction": "1/2",
+      "row_order_recall_fraction": "1"
+    }
+  ],
+  "no_training_or_protected_outcomes": true,
+  "sources_sha256": {
+    "examples/space_jepa_2_tie_fixture.csv": "b2f0744295ab927c817801d895502d88926e43c8bf53d615d4b570a6f5cde39d",
+    "src/siderea/evaluation.py": "07a65965e2f2828358ce3c799f0ab4c133973a5f746715f301ab8d1f19216162",
+    "scripts/aas249_tie_demonstration.py": "23abf75f53c4cb36c28da7b4f31840f1b13aaefeb3892bce4d528c946ea4127e"
+  }
+}
